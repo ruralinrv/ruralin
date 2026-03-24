@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo Executivo | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+
+        /* Auth Wall */
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700;
+            cursor: pointer; font-size: 0.95rem;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        /* Main Content */
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 25px 30px;
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto;
+        }
+
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        /* Cards Grid */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin-bottom: 35px;
+        }
+
+        .kpi-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 14px; padding: 24px;
+            transition: all 0.3s;
+        }
+        .kpi-card:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .kpi-card .kpi-label {
+            font-size: 0.75rem; color: #64748b;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-weight: 600; margin-bottom: 8px;
+        }
+
+        .kpi-card .kpi-value {
+            font-size: 1.8rem; font-weight: 800; color: #f0fdf4;
+        }
+
+        .kpi-card .kpi-sub {
+            font-size: 0.8rem; color: #94a3b8; margin-top: 4px;
+        }
+
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        /* Tables */
+        .table-container {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 14px; overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-container table {
+            width: 100%; border-collapse: collapse;
+        }
+
+        .table-container th {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 14px 16px; text-align: left;
+            font-size: 0.75rem; color: #10b981;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-weight: 700; border-bottom: 1px solid rgba(16,185,129,0.15);
+        }
+
+        .table-container td {
+            padding: 12px 16px; font-size: 0.88rem;
+            border-bottom: 1px solid rgba(71,85,105,0.15);
+            color: #cbd5e1;
+        }
+
+        .table-container tr:hover td {
+            background: rgba(16, 185, 129, 0.03);
+        }
+
+        .table-container tr:last-child td { border-bottom: none; }
+
+        .val-pos { color: #10b981; font-weight: 600; }
+        .val-neg { color: #ef4444; font-weight: 600; }
+        .val-warn { color: #f59e0b; font-weight: 600; }
+        .val-highlight { color: #f0fdf4; font-weight: 700; }
+
+        /* Bar visual */
+        .bar-container {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .bar {
+            height: 8px; border-radius: 4px;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.6s ease;
+        }
+        .bar.negative {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        /* Insight boxes */
+        .insight-box {
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px; padding: 20px;
+            margin-bottom: 25px;
+        }
+        .insight-box h4 {
+            color: #f59e0b; font-size: 0.85rem;
+            margin-bottom: 8px; display: flex;
+            align-items: center; gap: 8px;
+        }
+        .insight-box p {
+            color: #94a3b8; font-size: 0.85rem; line-height: 1.6;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2);
+            margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .kpi-card .kpi-value { font-size: 1.4rem; }
+            .table-container { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH WALL -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha de acesso" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>📊 Resumo Executivo — <span>Fazenda Modelo</span></h1>
+                <a href="index.html" class="btn-back">← Menu Principal</a>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- HERO KPIs -->
+            <div class="section-title">🎯 Indicadores-Chave da Safra 2022/2023</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Receita Total</div>
+                    <div class="kpi-value">R$ 47,79 Mi</div>
+                    <div class="kpi-sub">Variação: <span class="val-neg">-11,50%</span> vs safra anterior</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custos Totais</div>
+                    <div class="kpi-value">R$ 45,66 Mi</div>
+                    <div class="kpi-sub">Variação: <span class="val-neg">+22,15%</span> vs safra anterior</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Resultado Operacional</div>
+                    <div class="kpi-value">R$ 2,13 Mi</div>
+                    <div class="kpi-sub">Variação: <span class="val-neg">-87,16%</span> vs safra anterior</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Lucratividade</div>
+                    <div class="kpi-value">4,47%</div>
+                    <div class="kpi-sub">Safra anterior: 30,78% &bull; Média 9 safras: 28,50%</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Rentabilidade</div>
+                    <div class="kpi-value">4,68%</div>
+                    <div class="kpi-sub">Retorno sobre capital investido</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBITDA</div>
+                    <div class="kpi-value">R$ 12,82 Mi</div>
+                    <div class="kpi-sub">Margem EBITDA: <span class="val-warn">26,83%</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Resultado Líquido (DRE)</div>
+                    <div class="kpi-value">R$ 2,81 Mi</div>
+                    <div class="kpi-sub">Margem Líquida: 5,88%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Área Total Cultivada</div>
+                    <div class="kpi-value">3.814,14 ha</div>
+                    <div class="kpi-sub">Variação: <span class="val-neg">-6,74%</span> vs safra anterior</div>
+                </div>
+            </div>
+
+            <!-- INSIGHT BOX -->
+            <div class="insight-box">
+                <h4>💡 Análise do Cenário</h4>
+                <p>
+                    A safra 22/23 representou o período mais desafiador em 9 safras. Enquanto os custos subiram 22,15%
+                    (de R$ 37,38 Mi para R$ 45,66 Mi), a receita caiu 11,50% (de R$ 54,01 Mi para R$ 47,79 Mi).
+                    O efeito tesoura — custos subindo e receitas caindo — comprimiu a lucratividade de 30,78% para apenas 4,47%.
+                    Mesmo assim, a fazenda manteve resultado positivo, evidenciando resiliência operacional construída ao longo dos anos.
+                </p>
+            </div>
+
+            <!-- ÁREA CULTIVADA POR CULTURA -->
+            <div class="section-title">🌾 Área Cultivada por Cultura</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Área (ha)</th>
+                            <th>% da Área</th>
+                            <th>Participação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="val-highlight">🫘 Soja</td>
+                            <td>1.749,14</td>
+                            <td>45,86%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:45.86%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">🌽 Milho Semente (Verão + Inverno)</td>
+                            <td>830,00</td>
+                            <td>22,02%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:22.02%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">🫘 Feijão 2ª Safra</td>
+                            <td>680,00</td>
+                            <td>17,83%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:17.83%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">🌾 Trigo</td>
+                            <td>315,00</td>
+                            <td>8,26%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:8.26%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">🌽 Milho 2ª Safra</td>
+                            <td>198,00</td>
+                            <td>5,19%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:5.19%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">🌿 Sorgo</td>
+                            <td>32,00</td>
+                            <td>0,84%</td>
+                            <td><div class="bar-container"><div class="bar" style="width:2%"></div></div></td>
+                        </tr>
+                        <tr style="background: rgba(16,185,129,0.05);">
+                            <td class="val-highlight" style="font-weight:800;">TOTAL</td>
+                            <td class="val-highlight" style="font-weight:800;">3.814,14</td>
+                            <td class="val-highlight">100%</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RESUMO POR CULTURA -->
+            <div class="section-title">💰 Performance Econômica por Cultura</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>% Área</th>
+                            <th>% Custo</th>
+                            <th>Lucratividade</th>
+                            <th>% Faturamento</th>
+                            <th>% Lucro Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="val-highlight">Soja</td>
+                            <td>45,86%</td>
+                            <td>40,97%</td>
+                            <td class="val-neg">-13,82%</td>
+                            <td>34,39%</td>
+                            <td class="val-neg">-106,41%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Milho Semente</td>
+                            <td>22,02%</td>
+                            <td>25,09%</td>
+                            <td class="val-pos">21,46%</td>
+                            <td>30,51%</td>
+                            <td class="val-pos">146,58%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Feijão 2ª Safra</td>
+                            <td>17,83%</td>
+                            <td>18,91%</td>
+                            <td class="val-pos">32,91%</td>
+                            <td>26,93%</td>
+                            <td class="val-pos">198,44%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Milho 2ª Safra</td>
+                            <td>5,19%</td>
+                            <td>5,50%</td>
+                            <td class="val-neg">-62,69%</td>
+                            <td>3,23%</td>
+                            <td class="val-neg">-45,34%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Sorgo</td>
+                            <td>0,84%</td>
+                            <td>0,82%</td>
+                            <td class="val-neg">-85,45%</td>
+                            <td>0,42%</td>
+                            <td class="val-neg">-8,07%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Trigo</td>
+                            <td>8,26%</td>
+                            <td>8,71%</td>
+                            <td class="val-neg">-84,33%</td>
+                            <td>4,51%</td>
+                            <td class="val-neg">-85,20%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- INSIGHT -->
+            <div class="insight-box">
+                <h4>💡 Leitura Estratégica</h4>
+                <p>
+                    <strong>Feijão 2ª Safra</strong> foi o grande destaque da safra — com apenas 17,83% da área,
+                    gerou <strong>198,44% do lucro total</strong> e lucratividade de 32,91%. <strong>Milho Semente</strong>
+                    complementou com 146,58% do lucro. Juntas, essas duas culturas carregaram o resultado inteiro da fazenda.
+                    <br><br>
+                    A <strong>Soja</strong>, que ocupa 45,86% da área, apresentou prejuízo de -13,82%, consumindo -106,41%
+                    do lucro gerado pelas demais. Trigo, Milho 2ª Safra e Sorgo também operaram no vermelho.
+                    A diversificação de culturas foi o que salvou o resultado da safra.
+                </p>
+            </div>
+
+            <!-- RESULTADO FINANCEIRO POR CULTURA -->
+            <div class="section-title">📊 Resultado Financeiro por Cultura (R$)</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Receita</th>
+                            <th>Custo</th>
+                            <th>Resultado</th>
+                            <th>Lucratividade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="val-highlight">Soja</td>
+                            <td>R$ 16.435.396,75</td>
+                            <td>R$ 18.707.318,60</td>
+                            <td class="val-neg">R$ (2.271.921,84)</td>
+                            <td class="val-neg">-13,82%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Milho Sem. Verão</td>
+                            <td>R$ 9.431.520,00</td>
+                            <td>R$ 6.335.317,80</td>
+                            <td class="val-pos">R$ 3.096.202,20</td>
+                            <td class="val-pos">32,83%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Milho Sem. Inverno</td>
+                            <td>R$ 5.152.631,50</td>
+                            <td>R$ 5.119.262,03</td>
+                            <td class="val-pos">R$ 33.369,47</td>
+                            <td class="val-warn">0,65%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Feijão 2ª Safra</td>
+                            <td>R$ 12.872.331,50</td>
+                            <td>R$ 8.635.520,36</td>
+                            <td class="val-pos">R$ 4.236.811,14</td>
+                            <td class="val-pos">32,91%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Milho 2ª Safra</td>
+                            <td>R$ 1.543.961,50</td>
+                            <td>R$ 2.511.887,33</td>
+                            <td class="val-neg">R$ (967.925,83)</td>
+                            <td class="val-neg">-62,69%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Sorgo</td>
+                            <td>R$ 201.720,96</td>
+                            <td>R$ 374.099,32</td>
+                            <td class="val-neg">R$ (172.378,36)</td>
+                            <td class="val-neg">-85,45%</td>
+                        </tr>
+                        <tr>
+                            <td class="val-highlight">Trigo</td>
+                            <td>R$ 2.157.097,80</td>
+                            <td>R$ 3.976.236,90</td>
+                            <td class="val-neg">R$ (1.819.139,10)</td>
+                            <td class="val-neg">-84,33%</td>
+                        </tr>
+                        <tr style="background: rgba(16,185,129,0.08);">
+                            <td class="val-highlight" style="font-size:1rem;">TOTAL</td>
+                            <td class="val-highlight">R$ 47.794.660,01</td>
+                            <td class="val-highlight">R$ 45.659.642,33</td>
+                            <td class="val-pos" style="font-size:1rem;">R$ 2.135.017,68</td>
+                            <td class="val-warn" style="font-size:1rem;">4,47%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TRIÂNGULO ESTRATÉGICO -->
+            <div class="section-title">🔺 Triângulo Estratégico da Perenidade</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="kpi-card" style="text-align:center; border-color: rgba(245,158,11,0.3);">
+                    <div class="kpi-label">1º Pilar</div>
+                    <div class="kpi-value" style="font-size:1.3rem; color:#f59e0b;">Custo de Produção</div>
+                    <div class="kpi-sub">Gestão e controle de custos</div>
+                </div>
+                <div class="kpi-card" style="text-align:center; border-color: rgba(59,130,246,0.3);">
+                    <div class="kpi-label">2º Pilar</div>
+                    <div class="kpi-value" style="font-size:1.3rem; color:#3b82f6;">Produtividade</div>
+                    <div class="kpi-sub">Eficiência por hectare</div>
+                </div>
+                <div class="kpi-card" style="text-align:center; border-color: rgba(16,185,129,0.3);">
+                    <div class="kpi-label">3º Pilar</div>
+                    <div class="kpi-value" style="font-size:1.3rem; color:#10b981;">Estratégia Comercial</div>
+                    <div class="kpi-sub">Preço médio de venda</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Ciência Financeira do Produtor</h4>
+                <p>
+                    A perenidade do negócio rural depende do equilíbrio entre três pilares fundamentais.
+                    Na safra 22/23, o <strong>custo de produção</strong> foi o principal vilão — cresceu 22,15% enquanto a receita caiu.
+                    O custo total/ha da soja saltou de R$ 8.578,70 para R$ 10.695,15 (+24,67%).
+                    A produtividade se manteve razoável, mas o preço médio de venda da soja caiu 27,49%
+                    (de R$ 175,50 para R$ 127,25/sc). A combinação de custos altos + preços baixos criou a tempestade perfeita.
+                </p>
+            </div>
+
+            <!-- ACUMULADO 9 SAFRAS -->
+            <div class="section-title">📈 Acumulado de 9 Safras (2014/2015 a 2022/2023)</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Receita Total Acumulada</div>
+                    <div class="kpi-value" style="font-size:1.5rem;">R$ 292,58 Mi</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Total Acumulado</div>
+                    <div class="kpi-value" style="font-size:1.5rem;">R$ 209,20 Mi</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Resultado Total Acumulado</div>
+                    <div class="kpi-value" style="font-size:1.5rem;">R$ 83,38 Mi</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Lucratividade Média</div>
+                    <div class="kpi-value">28,50%</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Rentabilidade Média</div>
+                    <div class="kpi-value">39,86%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBITDA Acumulado (8 safras)</div>
+                    <div class="kpi-value" style="font-size:1.5rem;">R$ 125,03 Mi</div>
+                    <div class="kpi-sub">Média: R$ 15,63 Mi/safra</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Perspectiva de Longo Prazo</h4>
+                <p>
+                    Apesar da safra 22/23 ter sido a mais difícil, o acumulado de 9 safras mostra uma fazenda que
+                    gerou <strong>R$ 83,38 milhões de resultado</strong> com lucratividade média de 28,50%.
+                    Excluindo a safra 22/23, a lucratividade média das 8 safras anteriores foi de 33,19%.
+                    Isso demonstra que o modelo de gestão é robusto e a safra desafiadora foi exceção, não regra.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

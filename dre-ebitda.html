@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRE / EBIT / EBITDA | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px; margin-bottom: 35px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 22px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+        .kpi-card .kpi-label {
+            font-size: 0.72rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 8px;
+        }
+        .kpi-card .kpi-value { font-size: 1.6rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.78rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        /* DRE Table Style */
+        .dre-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 16px; overflow: hidden; margin-bottom: 30px;
+        }
+        .dre-header {
+            padding: 18px 24px; background: rgba(16,185,129,0.08);
+            border-bottom: 1px solid rgba(16,185,129,0.15);
+            font-size: 1rem; font-weight: 700; color: #10b981;
+        }
+        .dre-table { width: 100%; border-collapse: collapse; }
+        .dre-table tr { border-bottom: 1px solid rgba(71,85,105,0.1); }
+        .dre-table tr:last-child { border-bottom: none; }
+        .dre-table tr:hover { background: rgba(16,185,129,0.02); }
+        .dre-table td { padding: 12px 24px; font-size: 0.88rem; }
+        .dre-table td:first-child { color: #cbd5e1; }
+        .dre-table td:nth-child(2) { text-align: center; color: #64748b; font-size: 0.8rem; width: 30px; }
+        .dre-table td:last-child { text-align: right; font-weight: 600; color: #e2e8f0; white-space: nowrap; }
+
+        .dre-table tr.dre-revenue td { color: #10b981; font-weight: 700; }
+        .dre-table tr.dre-deduction td:first-child { padding-left: 44px; color: #94a3b8; font-size: 0.84rem; }
+        .dre-table tr.dre-subtotal { background: rgba(16,185,129,0.05); }
+        .dre-table tr.dre-subtotal td { font-weight: 700; color: #f0fdf4; }
+        .dre-table tr.dre-expense td:first-child { padding-left: 44px; color: #94a3b8; font-size: 0.84rem; }
+        .dre-table tr.dre-sub-expense td:first-child { padding-left: 64px; color: #64748b; font-size: 0.8rem; }
+        .dre-table tr.dre-result { background: rgba(16,185,129,0.1); }
+        .dre-table tr.dre-result td { font-weight: 800; font-size: 1rem; }
+        .dre-table tr.dre-result-neg { background: rgba(239,68,68,0.05); }
+
+        .margin-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 700; margin-left: 10px;
+        }
+        .margin-green { background: rgba(16,185,129,0.15); color: #10b981; }
+        .margin-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+        /* Bar charts */
+        .chart-bar-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 100px 1fr 140px;
+            gap: 12px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.78rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 28px; background: rgba(30,41,59,0.6); border-radius: 6px; overflow: hidden;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 6px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 8px; font-size: 0.7rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .chart-bar-item .value { font-size: 0.82rem; color: #e2e8f0; font-weight: 600; }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+
+        /* Table */
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 12px 14px; text-align: right;
+            font-size: 0.72rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 700; border-bottom: 1px solid rgba(16,185,129,0.15);
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 11px 14px; font-size: 0.84rem;
+            border-bottom: 1px solid rgba(71,85,105,0.12);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr.row-highlight td { background: rgba(245,158,11,0.05); }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+            .chart-bar-item { grid-template-columns: 70px 1fr 110px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🏦 DRE / EBIT / EBITDA — <span>Fazenda Modelo</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="resumo-executivo.html" class="btn-back">📊 Resumo</a>
+                    <a href="endividamento.html" class="btn-back">🔐 Endivid.</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO DAS 3 MÉTRICAS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Visão Geral — Safra 22/23</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Resultado Líquido (DRE)</div>
+                    <div class="kpi-value">R$ 2,81 Mi</div>
+                    <div class="kpi-sub">Margem Líquida: <span class="val-warn">5,88%</span></div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBIT (LAJIR)</div>
+                    <div class="kpi-value">R$ 5,07 Mi</div>
+                    <div class="kpi-sub">Margem EBIT: <span class="val-warn">10,60%</span></div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">EBITDA (LAJIDA)</div>
+                    <div class="kpi-value">R$ 12,82 Mi</div>
+                    <div class="kpi-sub">Margem EBITDA: <span class="val-pos">26,83%</span></div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Por que três métricas?</h4>
+                <p>
+                    <strong>DRE (Resultado Líquido)</strong>: mostra o lucro real após todos os custos, impostos e despesas.
+                    <strong>EBIT</strong>: remove o efeito de impostos/taxas financeiras, mostrando a eficiência operacional pura.
+                    <strong>EBITDA</strong>: vai além e remove depreciação e amortização — revela a <strong>geração de caixa operacional</strong>.
+                    <br><br>
+                    O EBITDA de R$ 12,82 Mi mostra que a fazenda gera caixa. O gap entre EBITDA e DRE (R$ 10 Mi) é consumido
+                    por TMA (R$ 5,76 Mi), depreciação (R$ 2 Mi), impostos (R$ 1,51 Mi) e IR (R$ 0,75 Mi).
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- DRE COMPLETA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📄 DRE Gerencial — Safra 2022/2023</div>
+
+            <div class="dre-container">
+                <div class="dre-header">Demonstrativo de Resultado do Exercício</div>
+                <table class="dre-table">
+                    <tr class="dre-revenue">
+                        <td>Receita Bruta de Vendas</td>
+                        <td></td>
+                        <td>R$ 47.794.660,01</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Impostos sobre venda (Funrural)</td>
+                        <td>R$</td>
+                        <td style="color:#ef4444;">1.194.866,50</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Receita Líquida de Vendas</td>
+                        <td></td>
+                        <td>R$ 46.599.793,51</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Custo dos produtos/insumos</td>
+                        <td>R$</td>
+                        <td style="color:#ef4444;">19.386.960,73</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado Bruto <span class="margin-badge margin-green">M. Bruta: 56,94%</span></td>
+                        <td></td>
+                        <td>R$ 27.212.832,79</td>
+                    </tr>
+                    <tr class="dre-expense">
+                        <td>(-) Despesas Operacionais</td>
+                        <td>R$</td>
+                        <td style="color:#ef4444;">23.653.436,00</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Desp. ADM</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.742.917,01</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Impostos/Taxas/Financeiro</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.773,01</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Energia</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.043.674,06</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>TMA (Custo da Terra)</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.756.764,00</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Manut. Máquinas/Pivôs/Patrimônio/Dep.</td>
+                        <td></td>
+                        <td style="color:#64748b;">8.095.296,68</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Frete/Colheita 3º</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.011,24</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado antes de IR e CSLL</td>
+                        <td></td>
+                        <td>R$ 3.559.396,79</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) IRRF — 15%</td>
+                        <td>R$</td>
+                        <td style="color:#ef4444;">533.909,52</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Outros impostos e taxas — 6%</td>
+                        <td>R$</td>
+                        <td style="color:#ef4444;">213.563,81</td>
+                    </tr>
+                    <tr class="dre-result">
+                        <td>(=) Resultado Líquido <span class="margin-badge margin-amber">5,88%</span></td>
+                        <td></td>
+                        <td style="color:#f59e0b;">R$ 2.811.923,46</td>
+                    </tr>
+                </table>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- EBIT -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📄 LAJIR / EBIT — Safra 2022/2023</div>
+
+            <div class="dre-container">
+                <div class="dre-header">Lucro Antes de Juros e Imposto de Renda</div>
+                <table class="dre-table">
+                    <tr class="dre-revenue">
+                        <td>Receita Bruta de Vendas</td>
+                        <td></td>
+                        <td>R$ 47.794.660,01</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Funrural</td>
+                        <td></td>
+                        <td style="color:#ef4444;">1.194.866,50</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Receita Líquida</td>
+                        <td></td>
+                        <td>R$ 46.599.793,51</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Custo dos produtos/insumos</td>
+                        <td></td>
+                        <td style="color:#ef4444;">19.386.960,73</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado Bruto</td>
+                        <td></td>
+                        <td>R$ 27.212.832,79</td>
+                    </tr>
+                    <tr class="dre-expense">
+                        <td>(-) Despesas Operacionais (sem fin.)</td>
+                        <td></td>
+                        <td style="color:#ef4444;">22.145.662,99</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Desp. ADM</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.742.917,01</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Frete/Colheita 3º</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.011,24</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Energia</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.043.674,06</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>TMA</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.756.764,00</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Manut. Máquinas/Pivôs/Dep.</td>
+                        <td></td>
+                        <td style="color:#64748b;">8.095.296,68</td>
+                    </tr>
+                    <tr class="dre-result">
+                        <td>(=) LAJIR / EBIT <span class="margin-badge margin-amber">10,60%</span></td>
+                        <td></td>
+                        <td style="color:#f59e0b;">R$ 5.067.169,80</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Impostos/Taxas/Financeiro</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.773,01</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado antes de IR</td>
+                        <td></td>
+                        <td>R$ 3.559.396,79</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) IR + outros impostos</td>
+                        <td></td>
+                        <td style="color:#ef4444;">747.473,33</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">(=) Resultado Líquido</td>
+                        <td></td>
+                        <td style="color:#94a3b8;">R$ 2.811.923,46</td>
+                    </tr>
+                </table>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- EBITDA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📄 LAJIDA / EBITDA — Safra 2022/2023</div>
+
+            <div class="dre-container">
+                <div class="dre-header">Lucro Antes de Juros, Impostos, Depreciação e Amortização</div>
+                <table class="dre-table">
+                    <tr class="dre-revenue">
+                        <td>Receita Bruta de Vendas</td>
+                        <td></td>
+                        <td>R$ 47.794.660,01</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Funrural</td>
+                        <td></td>
+                        <td style="color:#ef4444;">1.194.866,50</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Receita Líquida</td>
+                        <td></td>
+                        <td>R$ 46.599.793,51</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Custo dos produtos/insumos</td>
+                        <td></td>
+                        <td style="color:#ef4444;">19.386.960,73</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado Bruto</td>
+                        <td></td>
+                        <td>R$ 27.212.832,79</td>
+                    </tr>
+                    <tr class="dre-expense">
+                        <td>(-) Despesas Operacionais (sem D&A, TMA, fin.)</td>
+                        <td></td>
+                        <td style="color:#ef4444;">14.388.898,99</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Desp. ADM</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.742.917,01</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Manut. de Máquinas (sem dep.)</td>
+                        <td></td>
+                        <td style="color:#64748b;">6.095.296,68</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Energia</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.043.674,06</td>
+                    </tr>
+                    <tr class="dre-sub-expense">
+                        <td>Frete/Colheita 3º</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.011,24</td>
+                    </tr>
+                    <tr class="dre-result">
+                        <td>(=) LAJIDA / EBITDA <span class="margin-badge margin-green">26,83%</span></td>
+                        <td></td>
+                        <td style="color:#10b981; font-size:1.1rem;">R$ 12.823.933,80</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) TMA</td>
+                        <td></td>
+                        <td style="color:#64748b;">5.756.764,00</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Amortização Máquinas/Patrimônio</td>
+                        <td></td>
+                        <td style="color:#64748b;">2.000.000,00</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) Impostos/Taxas/Financeiro</td>
+                        <td></td>
+                        <td style="color:#64748b;">1.507.773,01</td>
+                    </tr>
+                    <tr class="dre-subtotal">
+                        <td>(=) Resultado antes de IR</td>
+                        <td></td>
+                        <td>R$ 3.559.396,79</td>
+                    </tr>
+                    <tr class="dre-deduction">
+                        <td>(-) IR + outros impostos</td>
+                        <td></td>
+                        <td style="color:#ef4444;">747.473,33</td>
+                    </tr>
+                    <tr>
+                        <td style="color:#94a3b8;">(=) Resultado Líquido</td>
+                        <td></td>
+                        <td style="color:#94a3b8;">R$ 2.811.923,46</td>
+                    </tr>
+                </table>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- HISTÓRICO EBITDA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📈 Histórico do EBITDA (8 Safras)</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">15/16</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:19.2%;">R$ 5,30 Mi</div></div>
+                    <div class="value">R$ 5.304.022</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">16/17</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:22.8%;">R$ 6,30 Mi</div></div>
+                    <div class="value">R$ 6.304.022</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">17/18</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:38.1%;">R$ 10,52 Mi</div></div>
+                    <div class="value">R$ 10.524.610</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">18/19</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:54.5%;">R$ 15,06 Mi</div></div>
+                    <div class="value">R$ 15.057.787</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">19/20</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:78.2%;">R$ 21,61 Mi</div></div>
+                    <div class="value">R$ 21.609.288</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">20/21</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:93.2%;">R$ 25,76 Mi</div></div>
+                    <div class="value">R$ 25.763.447</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">21/22</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">R$ 27,64 Mi ★</div></div>
+                    <div class="value val-pos"><strong>R$ 27.640.888</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label"><strong>22/23</strong></div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:46.4%;">R$ 12,82 Mi</div></div>
+                    <div class="value val-warn"><strong>R$ 12.823.933</strong></div>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card positive">
+                    <div class="kpi-label">EBITDA Acumulado</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 125,03 Mi</div>
+                    <div class="kpi-sub">Total de 8 safras</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBITDA Médio</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 15,63 Mi</div>
+                    <div class="kpi-sub">Média por safra</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">Var% 22/23</div>
+                    <div class="kpi-value">-53,61%</div>
+                    <div class="kpi-sub">Maior queda do histórico</div>
+                </div>
+            </div>
+
+            <!-- Histórico Margem EBITDA -->
+            <div class="section-title" style="font-size:1rem;">📉 Histórico da Margem EBITDA</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">15/16</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:66.5%;">35,27%</div></div>
+                    <div class="value">35,27%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">16/17</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:59.4%;">31,51%</div></div>
+                    <div class="value">31,51%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">17/18</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:84.2%;">44,65%</div></div>
+                    <div class="value">44,65%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">18/19</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:84.9%;">45,00%</div></div>
+                    <div class="value">45,00%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">19/20</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">52,98% ★</div></div>
+                    <div class="value val-pos"><strong>52,98%</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">20/21</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:95.7%;">50,68%</div></div>
+                    <div class="value">50,68%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">21/22</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:96.6%;">51,18%</div></div>
+                    <div class="value">51,18%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label"><strong>22/23</strong></div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:50.6%;">26,83%</div></div>
+                    <div class="value val-warn"><strong>26,83%</strong></div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPARATIVO HISTÓRICO DRE/EBIT/EBITDA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Comparativo Histórico: DRE vs EBIT vs EBITDA (Margens %)</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Safra</th>
+                            <th>M. Líquida (DRE)</th>
+                            <th>M. EBIT</th>
+                            <th>M. EBITDA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2015/2016</td>
+                            <td>22,07%</td>
+                            <td>29,51%</td>
+                            <td>35,27%</td>
+                        </tr>
+                        <tr>
+                            <td>2016/2017</td>
+                            <td>19,52%</td>
+                            <td>25,98%</td>
+                            <td>31,51%</td>
+                        </tr>
+                        <tr>
+                            <td>2017/2018</td>
+                            <td>30,55%</td>
+                            <td>40,41%</td>
+                            <td>44,65%</td>
+                        </tr>
+                        <tr>
+                            <td>2018/2019</td>
+                            <td>31,61%</td>
+                            <td>41,80%</td>
+                            <td>45,00%</td>
+                        </tr>
+                        <tr>
+                            <td>2019/2020</td>
+                            <td>40,12%</td>
+                            <td>40,98%</td>
+                            <td class="val-pos">52,98%</td>
+                        </tr>
+                        <tr>
+                            <td>2020/2021</td>
+                            <td>35,35%</td>
+                            <td>39,41%</td>
+                            <td>50,68%</td>
+                        </tr>
+                        <tr>
+                            <td>2021/2022</td>
+                            <td>31,35%</td>
+                            <td>35,02%</td>
+                            <td>51,18%</td>
+                        </tr>
+                        <tr class="row-highlight">
+                            <td><strong>2022/2023</strong></td>
+                            <td class="val-warn"><strong>5,88%</strong></td>
+                            <td class="val-warn"><strong>10,60%</strong></td>
+                            <td class="val-warn"><strong>26,83%</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 O Gap entre EBITDA e Lucro Líquido</h4>
+                <p>
+                    Na safra 22/23, o gap entre EBITDA e DRE foi de <strong>20,95 pontos percentuais</strong>
+                    (26,83% - 5,88%). Nas safras anteriores, esse gap variava entre 10 e 20 pp.
+                    Isso significa que TMA, depreciação, impostos e financeiro estão consumindo uma parcela maior
+                    da geração operacional de caixa.
+                    <br><br>
+                    <strong>Ponto positivo:</strong> a margem EBITDA de 26,83%, embora a menor do histórico, ainda é sólida.
+                    A fazenda gera caixa — o problema está nos custos abaixo da linha EBITDA, especialmente a TMA e a depreciação.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- INDICADORES FUNDAMENTALISTAS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔍 Indicadores Fundamentalistas</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>2021/2022</th>
+                            <th>2022/2023</th>
+                            <th>Direção</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EV/EBITDA</td>
+                            <td>8,88</td>
+                            <td class="val-neg">20,82</td>
+                            <td class="val-neg">↑ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>Dív. Líq./EBITDA</td>
+                            <td>1,17</td>
+                            <td class="val-warn">1,33</td>
+                            <td class="val-neg">↑ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>Passivo/Ativos</td>
+                            <td>0,92</td>
+                            <td class="val-neg">1,89</td>
+                            <td class="val-neg">↑ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>Margem Bruta</td>
+                            <td>73,34%</td>
+                            <td class="val-warn">56,94%</td>
+                            <td class="val-neg">↓ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>Margem Líquida</td>
+                            <td>31,92%</td>
+                            <td class="val-warn">6,03%</td>
+                            <td class="val-neg">↓ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>Margem EBITDA</td>
+                            <td>54,09%</td>
+                            <td class="val-warn">26,83%</td>
+                            <td class="val-neg">↓ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>ROE (Ret. s/ Patrimônio)</td>
+                            <td>6,72%</td>
+                            <td class="val-warn">1,12%</td>
+                            <td class="val-neg">↓ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>ROA (Ret. s/ Ativos)</td>
+                            <td>46,27%</td>
+                            <td>14,74%</td>
+                            <td class="val-neg">↓ Piorou</td>
+                        </tr>
+                        <tr>
+                            <td>CAGR Receitas (5-6a)</td>
+                            <td>25,15%</td>
+                            <td>18,06%</td>
+                            <td class="val-neg">↓</td>
+                        </tr>
+                        <tr>
+                            <td>CAGR Lucros (5-6a)</td>
+                            <td>29,34%</td>
+                            <td>11,32%</td>
+                            <td class="val-neg">↓</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Leitura dos Fundamentalistas</h4>
+                <p>
+                    Todos os indicadores pioraram entre 21/22 e 22/23. Os mais preocupantes:
+                    <br><br>
+                    • <strong>EV/EBITDA de 20,82</strong> — subiu de 8,88, indicando que o "valor da empresa" ficou muito caro
+                    em relação à geração de caixa (EBITDA caiu enquanto o EV se manteve).
+                    <br>• <strong>Passivo/Ativos de 1,89</strong> — ultrapassou 1,0, significando que o passivo supera os ativos
+                    circulantes pela primeira vez.
+                    <br>• <strong>ROE de 1,12%</strong> — retorno sobre patrimônio praticamente nulo, contra 6,72% na safra anterior.
+                    <br><br>
+                    No entanto, os <strong>CAGRs ainda são positivos</strong> (18% receita, 11% lucro em 5-6 anos), mostrando
+                    que a base de crescimento de longo prazo permanece intacta apesar da safra desafiadora.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão Estratégica & Inteligência de Mercado | Fazenda Modelo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1500px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.15rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.76rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1500px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.1rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+        .section-title.purple { color: #8b5cf6; border-color: rgba(139,92,246,0.2); }
+        .section-title.blue { color: #3b82f6; border-color: rgba(59,130,246,0.2); }
+        .section-title.amber { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 11px 12px; text-align: right;
+            font-size: 0.66rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 12px; font-size: 0.8rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .td-left { text-align: left !important; font-weight: 400 !important; color: #94a3b8 !important; }
+        .td-wrap { white-space: normal !important; line-height: 1.4; max-width: 300px; }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-blue { color: #3b82f6 !important; font-weight: 700; }
+        .val-purple { color: #8b5cf6 !important; font-weight: 700; }
+
+        /* SWOT */
+        .swot-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px;
+        }
+        .swot-card {
+            border-radius: 14px; padding: 22px; border: 2px solid;
+        }
+        .swot-card h3 { font-size: 0.95rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .swot-card ul { list-style: none; padding: 0; }
+        .swot-card li {
+            font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            line-height: 1.5; color: #cbd5e1;
+        }
+        .swot-card li:last-child { border-bottom: none; }
+        .swot-card li strong { color: #f0fdf4; }
+        .swot-s { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.03); }
+        .swot-s h3 { color: #10b981; }
+        .swot-w { border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.03); }
+        .swot-w h3 { color: #ef4444; }
+        .swot-o { border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.03); }
+        .swot-o h3 { color: #3b82f6; }
+        .swot-t { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.03); }
+        .swot-t h3 { color: #f59e0b; }
+
+        /* BCG */
+        .bcg-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px;
+        }
+        .bcg-card {
+            border-radius: 14px; padding: 20px; border: 2px solid;
+        }
+        .bcg-card h3 { font-size: 0.9rem; margin-bottom: 10px; }
+        .bcg-card .bcg-members { font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px; }
+        .bcg-card .bcg-desc { font-size: 0.78rem; color: #cbd5e1; line-height: 1.55; }
+        .bcg-card .bcg-desc strong { color: #f0fdf4; }
+        .bcg-star { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.04); }
+        .bcg-star h3 { color: #f59e0b; }
+        .bcg-cash { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.04); }
+        .bcg-cash h3 { color: #10b981; }
+        .bcg-quest { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.04); }
+        .bcg-quest h3 { color: #3b82f6; }
+        .bcg-dog { border-color: rgba(239,68,68,0.4); background: rgba(239,68,68,0.04); }
+        .bcg-dog h3 { color: #ef4444; }
+
+        /* GUT */
+        .gut-bar { display: inline-block; height: 14px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+
+        /* BSC */
+        .bsc-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 14px; margin-bottom: 30px;
+        }
+        .bsc-card {
+            background: rgba(15,23,42,0.7); border-radius: 14px; padding: 20px;
+            border: 2px solid; transition: all 0.3s;
+        }
+        .bsc-card:hover { transform: translateY(-2px); }
+        .bsc-card h3 { font-size: 0.88rem; margin-bottom: 12px; }
+        .bsc-card .bsc-obj { font-size: 0.76rem; color: #cbd5e1; line-height: 1.6; }
+        .bsc-card .bsc-obj strong { color: #f0fdf4; }
+        .bsc-fin { border-color: rgba(16,185,129,0.3); }
+        .bsc-fin h3 { color: #10b981; }
+        .bsc-cli { border-color: rgba(59,130,246,0.3); }
+        .bsc-cli h3 { color: #3b82f6; }
+        .bsc-proc { border-color: rgba(245,158,11,0.3); }
+        .bsc-proc h3 { color: #f59e0b; }
+        .bsc-apr { border-color: rgba(139,92,246,0.3); }
+        .bsc-apr h3 { color: #8b5cf6; }
+
+        /* PDCA */
+        .pdca-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px;
+        }
+        .pdca-card {
+            background: rgba(15,23,42,0.7); border-radius: 14px; padding: 20px;
+            border: 2px solid; transition: all 0.3s;
+        }
+        .pdca-card h3 { font-size: 0.9rem; margin-bottom: 10px; }
+        .pdca-card ul { list-style: none; padding: 0; }
+        .pdca-card li { font-size: 0.78rem; color: #cbd5e1; padding: 5px 0; line-height: 1.5; }
+        .pdca-card li strong { color: #f0fdf4; }
+        .pdca-p { border-color: rgba(59,130,246,0.3); }
+        .pdca-p h3 { color: #3b82f6; }
+        .pdca-d { border-color: rgba(16,185,129,0.3); }
+        .pdca-d h3 { color: #10b981; }
+        .pdca-c { border-color: rgba(245,158,11,0.3); }
+        .pdca-c h3 { color: #f59e0b; }
+        .pdca-a { border-color: rgba(139,92,246,0.3); }
+        .pdca-a h3 { color: #8b5cf6; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .alert-box {
+            background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .info-box {
+            background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .info-box h4 { color: #3b82f6; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .info-box p strong { color: #e2e8f0; }
+
+        .purple-box {
+            background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .purple-box h4 { color: #8b5cf6; font-size: 0.85rem; margin-bottom: 8px; }
+        .purple-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .purple-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 16px;
+        }
+        .kpi-card .kpi-label { font-size: 0.66rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+        .kpi-card .kpi-value { font-size: 1.2rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.72rem; color: #94a3b8; margin-top: 4px; }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item { display: grid; grid-template-columns: 120px 1fr 140px; gap: 10px; align-items: center; }
+        .chart-bar-item .label { font-size: 0.72rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track { height: 22px; background: rgba(30,41,59,0.6); border-radius: 5px; overflow: hidden; }
+        .chart-bar-item .bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.6rem; font-weight: 700; color: #fff; min-width: 2px; }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .bar-purple { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .chart-bar-item .value { font-size: 0.76rem; color: #e2e8f0; font-weight: 600; }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .swot-grid, .bcg-grid, .pdca-grid { grid-template-columns: 1fr; }
+            .bsc-grid { grid-template-columns: 1fr; }
+            .chart-bar-item { grid-template-columns: 80px 1fr 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🏗️ Gestão Estratégica & Inteligência de Mercado — <span>Safra 22/23 → Futuro</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="benchmarking.html" class="btn-back">📊 Benchmarking</a>
+                    <a href="analise-avancada.html" class="btn-back">🧠 Análise Avançada</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CONTEXTO MACRO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title blue">🌍 Contexto Macroeconômico & Oferta Global — Dados USDA Mar/2026</div>
+
+            <div class="info-box">
+                <h4>📡 Cenário Global Atualizado (WASDE — Março 2026)</h4>
+                <p>
+                    Os dados mais recentes do <strong>USDA (Relatório WASDE, março/2026)</strong> confirmam um
+                    cenário de <strong>oferta global abundante</strong> que pressiona preços de grãos:
+                </p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Commodity</th>
+                            <th>Produção Mundial 25/26</th>
+                            <th>Consumo Mundial</th>
+                            <th>Estoque Final</th>
+                            <th>Relação Est/Consumo</th>
+                            <th>Tendência de Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td>427 Mi ton</td>
+                            <td>424 Mi ton</td>
+                            <td>125 Mi ton</td>
+                            <td class="val-neg">29,5% — folgado</td>
+                            <td class="val-neg">↓ Pressão baixista</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 Milho</td>
+                            <td>1.215 Mi ton</td>
+                            <td>1.226 Mi ton</td>
+                            <td>288 Mi ton</td>
+                            <td class="val-warn">23,5% — neutro</td>
+                            <td class="val-warn">→ Lateralizado / leve alta</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td>794 Mi ton</td>
+                            <td>806 Mi ton</td>
+                            <td>260 Mi ton</td>
+                            <td class="val-pos">32,3% — consumo > produção</td>
+                            <td class="val-pos">↑ Viés de alta</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fator Global</th>
+                            <th>Dado</th>
+                            <th>Impacto na Fazenda</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🇧🇷 Safra BR Soja 25/26</td>
+                            <td>180 Mi ton (recorde)</td>
+                            <td class="val-neg td-wrap td-left">Pressão sobre preço doméstico da soja — mais oferta = preço mais baixo</td>
+                        </tr>
+                        <tr>
+                            <td>🇧🇷 Milho BR 25/26</td>
+                            <td>131 Mi ton (-3,7%)</td>
+                            <td class="val-pos td-wrap td-left">Menor oferta + etanol milho = suporte ao preço</td>
+                        </tr>
+                        <tr>
+                            <td>🇨🇳 Importação China Soja</td>
+                            <td>112 Mi ton (estável)</td>
+                            <td class="val-warn td-wrap td-left">Sem crescimento na demanda chinesa = teto nos preços</td>
+                        </tr>
+                        <tr>
+                            <td>🇺🇸 Área Milho EUA 26/27</td>
+                            <td>38,04 Mi ha (-2 Mi ha)</td>
+                            <td class="val-pos td-wrap td-left">Menos milho nos EUA = alta potencial em Chicago</td>
+                        </tr>
+                        <tr>
+                            <td>🌍 Pop. Mundial 2026</td>
+                            <td>8,12 bilhões (+0,9%/ano)</td>
+                            <td class="val-pos td-wrap td-left">Demanda crescente estrutural — suporte de longo prazo</td>
+                        </tr>
+                        <tr>
+                            <td>💰 Renda Per Capita Global</td>
+                            <td>+2,3% aa (média)</td>
+                            <td class="val-pos td-wrap td-left">Classe média emergente consome mais proteína = mais ração = mais grãos</td>
+                        </tr>
+                        <tr>
+                            <td>⛽ Etanol de Milho BR</td>
+                            <td>Expansão acelerada</td>
+                            <td class="val-pos td-wrap td-left">Novo canal de demanda doméstica para milho — reduz excedente exportável</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>⚠️ Leitura Estratégica: Soja em Excesso, Milho em Reequilíbrio</h4>
+                <p>
+                    A <strong>soja enfrenta superprodução global</strong>: Brasil com 180 Mi ton (recorde), estoques
+                    mundiais de 125 Mi ton e relação estoque/consumo de 29,5%. Isso pressiona preços para baixo
+                    e <strong>confirma o cenário desfavorável que a fazenda já enfrentou na 22/23</strong>.
+                    <br><br>
+                    O <strong>milho mostra sinais de reequilíbrio</strong>: redução de área nos EUA (-2 Mi ha),
+                    consumo por etanol no Brasil crescente, e milho 2027 já operando a US$ 4,90/bu em Chicago
+                    (viés de US$ 5,00). Isso pode melhorar a rentabilidade do milho semente.
+                    <br><br>
+                    O <strong>trigo está com consumo superando a produção</strong> — viés altista. É uma
+                    <strong>janela de oportunidade</strong> para expandir trigo irrigado na fazenda.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MATRIZ SWOT -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 1. Matriz SWOT — Fazenda Modelo (Baseada em Dados)</div>
+
+            <div class="swot-grid">
+                <div class="swot-card swot-s">
+                    <h3>💪 FORÇAS (Strengths)</h3>
+                    <ul>
+                        <li><strong>Produtividade acima da média em 100% das culturas</strong> — supera GO e BR em todas</li>
+                        <li><strong>Feijão e M. Semente Verão no Top 10%</strong> do setor (IEE 91-97)</li>
+                        <li><strong>Infraestrutura de irrigação robusta</strong> — 56,3% da área irrigada</li>
+                        <li><strong>Diversificação de 7 culturas</strong> — reduz dependência de 1 commodity</li>
+                        <li><strong>Margem irrigada de 25,45%</strong> — próxima dos melhores do Brasil</li>
+                        <li><strong>ROI Insumos de 2,67x</strong> nas culturas líderes — alta eficiência</li>
+                        <li><strong>Resultado positivo global</strong> (+R$ 2,13M) mesmo com 55% da área deficitária</li>
+                        <li><strong>Capacidade técnica comprovada</strong> — alta produtividade = bom manejo agronômico</li>
+                    </ul>
+                </div>
+
+                <div class="swot-card swot-w">
+                    <h3>⚠️ FRAQUEZAS (Weaknesses)</h3>
+                    <ul>
+                        <li><strong>55,4% da área (Cluster D) destrói R$ 4,3M</strong> de valor</li>
+                        <li><strong>Soja ocupa 39% da área e tem prejuízo de -13,82%</strong> — concentração em cultura deficitária</li>
+                        <li><strong>Custos fixos elevados:</strong> ADM/rateio consome 17-36% da receita por cultura</li>
+                        <li><strong>Sharpe Ratio de 0,64</strong> — retorno não compensa plenamente o risco</li>
+                        <li><strong>27,3% de probabilidade de prejuízo</strong> em qualquer safra</li>
+                        <li><strong>Custo/sc acima do CONAB em 5 de 7 culturas</strong></li>
+                        <li><strong>Endividamento elevado:</strong> passivo total significativo (ver pág. endividamento)</li>
+                        <li><strong>Sorgo e milho safrinha sem viabilidade econômica</strong> — capital desperdiçado</li>
+                    </ul>
+                </div>
+
+                <div class="swot-card swot-o">
+                    <h3>🚀 OPORTUNIDADES (Opportunities)</h3>
+                    <ul>
+                        <li><strong>Expansão de irrigação:</strong> cada ha convertido gera +R$ 3.845/ha (regressão)</li>
+                        <li><strong>Trigo com viés de alta global:</strong> consumo > produção — expandir trigo irrigado</li>
+                        <li><strong>Milho em reequilíbrio:</strong> etanol BR + menos área EUA = suporte ao preço</li>
+                        <li><strong>Feijão irrigado com margem de 33%</strong> — ampliar se houver água/pivô</li>
+                        <li><strong>Milho semente premium:</strong> agregar valor via sementes certificadas</li>
+                        <li><strong>Hedge estruturado:</strong> proteger 70% da soja a R$ 75+/sc (elimina risco #1)</li>
+                        <li><strong>Agricultura digital:</strong> VRT, drones, sensores — potencial de +5 sc/ha</li>
+                        <li><strong>Pecuária integrada:</strong> ILP nos 105 ha do sorgo — renda extra + solo</li>
+                        <li><strong>Certificação ESG/Sustentável:</strong> prêmio no preço de exportação</li>
+                    </ul>
+                </div>
+
+                <div class="swot-card swot-t">
+                    <h3>🔴 AMEAÇAS (Threats)</h3>
+                    <ul>
+                        <li><strong>Superprodução global de soja:</strong> estoques de 125 Mi ton — pressão baixista persistente</li>
+                        <li><strong>China sem crescimento de importação:</strong> 112 Mi ton estável — teto nos preços</li>
+                        <li><strong>Insumos com viés de alta:</strong> ureia próxima de US$ 700/ton (mar/2026)</li>
+                        <li><strong>Risco climático:</strong> seca no sequeiro pode derrubar produtividade em 20-30%</li>
+                        <li><strong>Câmbio desfavorável:</strong> real forte pode achatar preços em BRL</li>
+                        <li><strong>Conflitos geopolíticos:</strong> Irã, Ormuz — volatilidade no petróleo e frete</li>
+                        <li><strong>Juros elevados:</strong> custo do crédito rural pode subir</li>
+                        <li><strong>Recuperação judicial no agro:</strong> GO é um dos estados mais afetados (2025)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MATRIZ BCG -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title purple">⭐ 2. Matriz BCG — Portfólio de Culturas</div>
+
+            <div class="info-box">
+                <h4>📌 Adaptação da BCG para o Agro</h4>
+                <p>
+                    Na matriz BCG clássica, os eixos são <strong>participação de mercado</strong> e <strong>crescimento de mercado</strong>.
+                    Adaptamos para o contexto agrícola: <strong>eixo X = margem de contribuição (lucratividade)</strong>
+                    e <strong>eixo Y = potencial de crescimento do mercado (tendência global USDA)</strong>.
+                </p>
+            </div>
+
+            <div class="bcg-grid">
+                <div class="bcg-card bcg-star">
+                    <h3>⭐ ESTRELAS — Alta Margem + Mercado em Crescimento</h3>
+                    <div class="bcg-members">🌽 Milho Semente Verão (Lucrat. 32,83%) | 🫘 Feijão 2ª Safra (Lucrat. 32,91%)</div>
+                    <div class="bcg-desc">
+                        <strong>Estratégia: INVESTIR e EXPANDIR.</strong> Ambas têm margem &gt; 30% e mercados com tendência
+                        positiva. Milho semente premium tem demanda crescente (biotecnologia). Feijão irrigado tem
+                        mercado interno forte e poucos competidores de alta qualidade.
+                        <br><br>
+                        <strong>Ação:</strong> Ampliar área irrigada para estas culturas. Cada hectare adicional gera
+                        +R$ 3.500-4.200/ha de resultado.
+                    </div>
+                </div>
+
+                <div class="bcg-card bcg-cash">
+                    <h3>🐄 VACAS LEITEIRAS — Alta Margem + Mercado Maduro</h3>
+                    <div class="bcg-members">🌾 Trigo Irrigado (Lucrat. ~22-26%)</div>
+                    <div class="bcg-desc">
+                        <strong>Estratégia: MANTER e COLHER RESULTADOS.</strong> O trigo irrigado gera margem sólida e
+                        o mercado global está com <strong>consumo superando produção</strong> (viés altista).
+                        Na verdade, pode até migrar para "Estrela" se os preços subirem.
+                        <br><br>
+                        <strong>Ação:</strong> Manter área atual, considerar expansão moderada. Aproveitar a janela
+                        de preço favorável para travar contratos futuros.
+                    </div>
+                </div>
+
+                <div class="bcg-card bcg-quest">
+                    <h3>❓ INTERROGAÇÃO — Baixa Margem + Potencial Incerto</h3>
+                    <div class="bcg-members">🌽 M. Semente Inverno (Lucrat. 0,65%) | 🫘 Soja (Lucrat. -13,82%)</div>
+                    <div class="bcg-desc">
+                        <strong>Estratégia: DECIDIR — investir para virar Estrela ou abandonar.</strong>
+                        <br><br>
+                        <strong>M.S. Inverno:</strong> Margem quase zero, mas tem potencial se o preço de semente subir.
+                        Otimizar custos pode torná-lo rentável. <strong>Decisão: manter com otimização.</strong>
+                        <br><br>
+                        <strong>Soja:</strong> Maior área da fazenda, mas mercado global em superprodução.
+                        Estoques recordes de 125 Mi ton. <strong>Decisão: reduzir área, hedge agressivo, ou
+                        migrar para soja semente se possível.</strong>
+                    </div>
+                </div>
+
+                <div class="bcg-card bcg-dog">
+                    <h3>🐕 ABACAXIS — Baixa Margem + Mercado Desfavorável</h3>
+                    <div class="bcg-members">🌿 Sorgo (Lucrat. -110,69%) | 🌽 Milho Safrinha (Lucrat. -28,81%) | 🌾 Trigo Sequeiro (-19,44%)</div>
+                    <div class="bcg-desc">
+                        <strong>Estratégia: ELIMINAR ou SUBSTITUIR.</strong>
+                        <br><br>
+                        <strong>Sorgo:</strong> Lucrat. -110,69%, sem cenário de viabilidade. <strong>Eliminar imediatamente.</strong>
+                        <br><br>
+                        <strong>Milho Safrinha:</strong> Lucrat. -28,81%. Porém, o milho tem viés de reequilíbrio
+                        (etanol BR + menos área EUA). <strong>Reavaliar na 23/24 com hedge.</strong>
+                        <br><br>
+                        <strong>Trigo Sequeiro:</strong> Alto CV (21,72%), resultado inconsistente.
+                        <strong>Migrar para irrigado ou substituir por cobertura.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MATRIZ GUT -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title amber">🔥 3. Matriz GUT — Priorização de Problemas</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Problema Identificado</th>
+                            <th>G (Gravidade)</th>
+                            <th>U (Urgência)</th>
+                            <th>T (Tendência)</th>
+                            <th>GUT Score</th>
+                            <th>Prioridade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-total">
+                            <td>Soja deficitária com 39% da área</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg"><strong>125</strong></td>
+                            <td class="val-neg">#1 — CRÍTICO</td>
+                        </tr>
+                        <tr>
+                            <td>Custos fixos elevados (ADM/rateio)</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg"><strong>100</strong></td>
+                            <td class="val-neg">#2 — MUITO ALTO</td>
+                        </tr>
+                        <tr>
+                            <td>Sorgo/Milho Safrinha inviáveis</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg"><strong>100</strong></td>
+                            <td class="val-neg">#2 — MUITO ALTO</td>
+                        </tr>
+                        <tr>
+                            <td>Ausência de hedge/proteção de preço</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-neg"><strong>100</strong></td>
+                            <td class="val-neg">#2 — MUITO ALTO</td>
+                        </tr>
+                        <tr>
+                            <td>55% da área em Cluster D (deficitário)</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-warn"><strong>80</strong></td>
+                            <td class="val-warn">#5 — ALTO</td>
+                        </tr>
+                        <tr>
+                            <td>Sharpe Ratio baixo (0,64) — risco elevado</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-warn">4</td>
+                            <td class="val-warn"><strong>64</strong></td>
+                            <td class="val-warn">#6 — ALTO</td>
+                        </tr>
+                        <tr>
+                            <td>Sequeiro sem retorno em 83% dos talhões</td>
+                            <td class="val-warn">4</td>
+                            <td>3</td>
+                            <td class="val-warn">4</td>
+                            <td><strong>48</strong></td>
+                            <td>#7 — MODERADO</td>
+                        </tr>
+                        <tr>
+                            <td>Custo de insumos acima do CONAB</td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td class="val-warn">4</td>
+                            <td><strong>36</strong></td>
+                            <td>#8 — MODERADO</td>
+                        </tr>
+                        <tr>
+                            <td>Superprodução global de soja (exógeno)</td>
+                            <td class="val-neg">5</td>
+                            <td>3</td>
+                            <td class="val-neg">5</td>
+                            <td class="val-warn"><strong>75</strong></td>
+                            <td class="val-warn">#9 — ALTO (externo)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 GUT Revela: Soja é o Problema #1</h4>
+                <p>
+                    A <strong>soja deficitária com 39% da área</strong> atinge o score máximo (125 = 5×5×5)
+                    porque é grave (maior contribuição para prejuízo), urgente (já impacta agora) e com
+                    tendência de piora (superprodução global crescente, estoques recordes).
+                    <br><br>
+                    Os 3 problemas empatados em GUT 100 (#2) são todos <strong>acionáveis pelo produtor</strong>:
+                    custos fixos podem ser renegociados, sorgo pode ser eliminado e hedge pode ser contratado.
+                    <strong>Não são fatalidades — são decisões de gestão.</strong>
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- BSC -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 4. Balanced Scorecard (BSC) — Fazenda Modelo</div>
+
+            <div class="bsc-grid">
+                <div class="bsc-card bsc-fin">
+                    <h3>💰 Perspectiva Financeira</h3>
+                    <div class="bsc-obj">
+                        <strong>Objetivo 1:</strong> Elevar lucratividade de 4,46% para 12%+ em 2 safras
+                        <br>→ <em>Meta:</em> R$ 5,7M de resultado | <em>Indicador:</em> Lucratividade %
+                        <br><br>
+                        <strong>Objetivo 2:</strong> Reduzir custos fixos/ha em 15%
+                        <br>→ <em>Meta:</em> ADM/rateio &lt; R$ 750/ha | <em>Indicador:</em> R$/ha fixo
+                        <br><br>
+                        <strong>Objetivo 3:</strong> Proteger 70% da receita com hedge
+                        <br>→ <em>Meta:</em> VaR 5% &gt; -R$ 2M | <em>Indicador:</em> VaR, Sharpe Ratio
+                        <br><br>
+                        <strong>Objetivo 4:</strong> Reduzir endividamento em 20% em 3 safras
+                        <br>→ <em>Meta:</em> Dívida/EBITDA &lt; 3,0x | <em>Indicador:</em> Alavancagem
+                    </div>
+                </div>
+
+                <div class="bsc-card bsc-cli">
+                    <h3>🤝 Perspectiva do Cliente / Mercado</h3>
+                    <div class="bsc-obj">
+                        <strong>Objetivo 1:</strong> Diversificar canais de venda (mín. 3 compradores por cultura)
+                        <br>→ <em>Meta:</em> Nenhum comprador com &gt; 40% | <em>Indicador:</em> Concentração de clientes
+                        <br><br>
+                        <strong>Objetivo 2:</strong> Obter prêmio de qualidade em milho semente (+10% sobre grão)
+                        <br>→ <em>Meta:</em> PMV semente ≥ R$ 110/sc | <em>Indicador:</em> PMV efetivo
+                        <br><br>
+                        <strong>Objetivo 3:</strong> Certificação rastreabilidade/sustentabilidade
+                        <br>→ <em>Meta:</em> Obter selo até safra 24/25 | <em>Indicador:</em> Certificação vigente
+                        <br><br>
+                        <strong>Objetivo 4:</strong> Contratos antecipados para 50%+ da produção
+                        <br>→ <em>Meta:</em> Hedge + forward &gt; 50% | <em>Indicador:</em> % protegido
+                    </div>
+                </div>
+
+                <div class="bsc-card bsc-proc">
+                    <h3>⚙️ Perspectiva de Processos Internos</h3>
+                    <div class="bsc-obj">
+                        <strong>Objetivo 1:</strong> Eliminar culturas com IEE &lt; 15 (Sorgo, piores safrinhas)
+                        <br>→ <em>Meta:</em> 0 talhões com IEE &lt; 15 | <em>Indicador:</em> IEE mínimo
+                        <br><br>
+                        <strong>Objetivo 2:</strong> Converter 300+ ha de sequeiro para irrigado
+                        <br>→ <em>Meta:</em> 2 novos pivôs até safra 24/25 | <em>Indicador:</em> ha irrigados
+                        <br><br>
+                        <strong>Objetivo 3:</strong> Reduzir custo de insumos em 8% via compra antecipada
+                        <br>→ <em>Meta:</em> Insumos 8% &lt; CONAB | <em>Indicador:</em> Custo/sc vs benchmark
+                        <br><br>
+                        <strong>Objetivo 4:</strong> Implementar VRT (taxa variável) em 100% da área irrigada
+                        <br>→ <em>Meta:</em> +5 sc/ha produtividade | <em>Indicador:</em> Produtiv. vs safra anterior
+                    </div>
+                </div>
+
+                <div class="bsc-card bsc-apr">
+                    <h3>🎓 Perspectiva de Aprendizado & Inovação</h3>
+                    <div class="bsc-obj">
+                        <strong>Objetivo 1:</strong> Implantar sistema de gestão de custos por talhão em tempo real
+                        <br>→ <em>Meta:</em> Dashboard operacional ativo | <em>Indicador:</em> Frequência de atualização
+                        <br><br>
+                        <strong>Objetivo 2:</strong> Capacitar equipe em gestão financeira agrícola
+                        <br>→ <em>Meta:</em> 2 treinamentos/safra | <em>Indicador:</em> Horas de capacitação
+                        <br><br>
+                        <strong>Objetivo 3:</strong> Testar 2 culturas alternativas por safra (ILP, especiais)
+                        <br>→ <em>Meta:</em> 2 pilotos/safra | <em>Indicador:</em> Nº de experimentos
+                        <br><br>
+                        <strong>Objetivo 4:</strong> Monitorar semanalmente CBOT, câmbio e custo de insumos
+                        <br>→ <em>Meta:</em> Relatório semanal de mercado | <em>Indicador:</em> Aderência ao monitoramento
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CICLO PDCA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔄 5. Ciclo PDCA — Plano de Ação Safra 23/24</div>
+
+            <div class="pdca-grid">
+                <div class="pdca-card pdca-p">
+                    <h3>📋 PLAN (Planejar)</h3>
+                    <ul>
+                        <li><strong>1. Eliminar sorgo</strong> → Substituir por cobertura vegetal (braquiária/crotalária) nos 105 ha</li>
+                        <li><strong>2. Hedge de soja</strong> → Travar 70% da produção a R$ 75+/sc via barter ou NDF</li>
+                        <li><strong>3. Expandir irrigação</strong> → Instalar 2 pivôs (120 ha) — converter soja sequeiro para feijão irrigado</li>
+                        <li><strong>4. Renegociar custos fixos</strong> → Meta: ADM/rateio -15% vs 22/23</li>
+                        <li><strong>5. Compra antecipada de insumos</strong> → Fechar fertilizantes em mai-jul (sazonalidade de preço)</li>
+                        <li><strong>6. Avaliar milho safrinha</strong> → Apenas com hedge a R$ 55+/sc, senão substituir por trigo</li>
+                        <li><strong>7. Implementar VRT</strong> → Agricultura de precisão nos 8 pivôs existentes</li>
+                    </ul>
+                </div>
+
+                <div class="pdca-card pdca-d">
+                    <h3>🚀 DO (Executar)</h3>
+                    <ul>
+                        <li><strong>Abr-Jun:</strong> Contratação de hedge (soja + milho) — definir preço-alvo e volume</li>
+                        <li><strong>Mai-Jul:</strong> Compra antecipada de fertilizantes — aproveitar sazonalidade</li>
+                        <li><strong>Jul-Set:</strong> Instalação dos pivôs — obra civil + elétrica + bombeamento</li>
+                        <li><strong>Ago-Out:</strong> Planejamento de safra por talhão — definir cultura, variedade, dose</li>
+                        <li><strong>Set-Out:</strong> Plantio soja (com hedge já contratado) + feijão irrigado (novos pivôs)</li>
+                        <li><strong>Nov-Mar:</strong> Manejo, monitoramento e colheita — acompanhar custos em tempo real</li>
+                        <li><strong>Contínuo:</strong> Monitoramento semanal de CBOT, câmbio, insumos — dashboard ativo</li>
+                    </ul>
+                </div>
+
+                <div class="pdca-card pdca-c">
+                    <h3>📊 CHECK (Verificar)</h3>
+                    <ul>
+                        <li><strong>Mensal:</strong> Custo realizado vs orçado por talhão — desvio máximo tolerado: 10%</li>
+                        <li><strong>Mensal:</strong> Acompanhar posição de hedge — ajustar se PMV variar &gt; 15%</li>
+                        <li><strong>Trimestral:</strong> Relatório de IEE parcial — identificar talhões em risco</li>
+                        <li><strong>Pós-colheita:</strong> Recalcular lucratividade real vs projetada por cultura</li>
+                        <li><strong>Anual:</strong> Comparar resultado 23/24 vs 22/23 — meta: +R$ 2,7M (de R$ 2,13M para R$ 4,85M)</li>
+                        <li><strong>Anual:</strong> Recalcular Sharpe Ratio — meta: de 0,64 para 1,15+</li>
+                        <li><strong>Anual:</strong> Atualizar SWOT, BCG e GUT com dados da nova safra</li>
+                    </ul>
+                </div>
+
+                <div class="pdca-card pdca-a">
+                    <h3>🔧 ACT (Agir / Corrigir)</h3>
+                    <ul>
+                        <li><strong>Se lucratividade &lt; 8%:</strong> Revisar mix de culturas — migrar mais área para irrigado</li>
+                        <li><strong>Se custo/sc &gt; CONAB +10%:</strong> Auditar rateio de custos fixos — possível distorção</li>
+                        <li><strong>Se hedge insuficiente:</strong> Ampliar cobertura para 85% na safra seguinte</li>
+                        <li><strong>Se produtividade cair &gt; 10%:</strong> Investigar causas (clima, manejo, solo) — ajustar protocolo</li>
+                        <li><strong>Se talhão novo (pivô) performar IEE &lt; 60:</strong> Trocar cultura no ciclo seguinte</li>
+                        <li><strong>Incorporar aprendizados</strong> no planejamento 24/25 — o PDCA é cíclico, cada safra melhora</li>
+                        <li><strong>Documentar decisões</strong> que funcionaram e que falharam — construir base de conhecimento</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- FLUXO DE CAIXA PROJETADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title blue">💸 6. Fluxo de Caixa Projetado — 3 Safras (23/24 a 25/26)</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>22/23 (Real)</th>
+                            <th>23/24 (Otimizado)</th>
+                            <th>24/25 (c/ Pivôs)</th>
+                            <th>25/26 (Consolidado)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Receita Bruta</td>
+                            <td>R$ 47,86M</td>
+                            <td class="val-pos">R$ 50,12M</td>
+                            <td class="val-pos">R$ 55,83M</td>
+                            <td class="val-pos">R$ 59,47M</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Custo Insumos</td>
+                            <td>R$ 18,24M</td>
+                            <td>R$ 17,82M</td>
+                            <td>R$ 19,41M</td>
+                            <td>R$ 19,87M</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Custos Fixos</td>
+                            <td>R$ 16,24M</td>
+                            <td>R$ 13,81M</td>
+                            <td>R$ 14,52M</td>
+                            <td>R$ 14,89M</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Outros Variáveis</td>
+                            <td>R$ 11,24M</td>
+                            <td>R$ 10,98M</td>
+                            <td>R$ 11,86M</td>
+                            <td>R$ 12,14M</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td>= Resultado Operacional</td>
+                            <td class="val-pos">R$ 2,13M</td>
+                            <td class="val-pos"><strong>R$ 7,51M</strong></td>
+                            <td class="val-pos"><strong>R$ 10,04M</strong></td>
+                            <td class="val-pos"><strong>R$ 12,57M</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Lucratividade</td>
+                            <td class="val-warn">4,46%</td>
+                            <td class="val-pos">14,98%</td>
+                            <td class="val-pos">17,98%</td>
+                            <td class="val-pos">21,14%</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Investimento Pivôs</td>
+                            <td>—</td>
+                            <td class="val-neg">R$ (3,20M)</td>
+                            <td class="val-neg">R$ (3,20M)</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>(-) Amortização Dívida</td>
+                            <td>R$ (1,80M)</td>
+                            <td>R$ (2,00M)</td>
+                            <td>R$ (2,20M)</td>
+                            <td>R$ (2,40M)</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td>= Fluxo Caixa Livre</td>
+                            <td class="val-pos">R$ 0,33M</td>
+                            <td class="val-pos"><strong>R$ 2,31M</strong></td>
+                            <td class="val-pos"><strong>R$ 4,64M</strong></td>
+                            <td class="val-pos"><strong>R$ 10,17M</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Premissas da Projeção</h4>
+                <p>
+                    <strong>23/24:</strong> Eliminação do sorgo, hedge de 70% da soja a R$ 75/sc,
+                    renegociação de ADM (-15%), compra antecipada de insumos (-8%), instalação de 2 pivôs (120 ha).
+                    <br><br>
+                    <strong>24/25:</strong> 2 pivôs adicionais (+120 ha irrigados), migração de 100 ha de milho
+                    safrinha para trigo irrigado, VRT em toda área irrigada (+5 sc/ha), hedge de 50% do milho.
+                    <br><br>
+                    <strong>25/26:</strong> Consolidação — 60%+ irrigado, mix otimizado (mais feijão, mais trigo irr,
+                    menos soja, zero sorgo), hedge estruturado como política permanente.
+                    <br><br>
+                    <strong>A lucratividade projetada salta de 4,46% para 21,14% em 3 safras</strong> —
+                    entrando na faixa do <strong>Top 10% das fazendas brasileiras</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MATRIZ DE RISCO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title amber">⚠️ 7. Matriz de Risco & Mitigação</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Risco</th>
+                            <th>Probabilidade</th>
+                            <th>Impacto</th>
+                            <th>Nível</th>
+                            <th>Estratégia de Mitigação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Queda de 20% no PMV da soja</td>
+                            <td class="val-warn">Médio-Alto</td>
+                            <td class="val-neg">Crítico (-R$ 4,8M)</td>
+                            <td class="val-neg">EXTREMO</td>
+                            <td class="td-left td-wrap">Hedge de 70% a R$ 75+/sc via NDF ou barter. Diversificar para culturas de maior valor</td>
+                        </tr>
+                        <tr>
+                            <td>Seca severa no sequeiro</td>
+                            <td class="val-warn">Médio</td>
+                            <td class="val-neg">Alto (-R$ 3,8M)</td>
+                            <td class="val-neg">ALTO</td>
+                            <td class="td-left td-wrap">Expandir irrigação. Seguro agrícola (Proagro/PSR). Variedades tolerantes</td>
+                        </tr>
+                        <tr>
+                            <td>Alta de 30% nos insumos</td>
+                            <td class="val-warn">Médio</td>
+                            <td class="val-warn">Alto (-R$ 2,3M)</td>
+                            <td class="val-warn">ALTO</td>
+                            <td class="td-left td-wrap">Compra antecipada (mai-jul). Barter com travas de preço. Ajustar dose via VRT</td>
+                        </tr>
+                        <tr>
+                            <td>Câmbio desfavorável (BRL forte)</td>
+                            <td>Médio</td>
+                            <td class="val-warn">Moderado</td>
+                            <td class="val-warn">MODERADO</td>
+                            <td class="td-left td-wrap">Hedge cambial parcial. Focar em culturas com demanda doméstica (feijão, semente)</td>
+                        </tr>
+                        <tr>
+                            <td>Perda de contrato de semente</td>
+                            <td>Baixo</td>
+                            <td class="val-neg">Crítico (-R$ 5,9M)</td>
+                            <td class="val-warn">ALTO</td>
+                            <td class="td-left td-wrap">Manter 2+ empresas parceiras. Diversificar para grão se necessário. Contrato multi-safra</td>
+                        </tr>
+                        <tr>
+                            <td>Juros acima de 14% aa</td>
+                            <td class="val-warn">Médio-Alto</td>
+                            <td>Moderado</td>
+                            <td>MODERADO</td>
+                            <td class="td-left td-wrap">Antecipar amortizações. Renegociar taxas. Reduzir alavancagem com FCL projetado</td>
+                        </tr>
+                        <tr>
+                            <td>Conflito geopolítico (Irã/Ormuz)</td>
+                            <td>Baixo</td>
+                            <td class="val-warn">Alto (frete + petróleo)</td>
+                            <td>MODERADO</td>
+                            <td class="td-left td-wrap">Monitorar. Impacto pode ser positivo (alta de commodities) ou negativo (insumos)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- OPORTUNIDADES DISRUPTIVAS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title purple">💡 8. Oportunidades Disruptivas — Pensar Diferente para Rentabilizar</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Oportunidade</th>
+                            <th>Investimento Est.</th>
+                            <th>Retorno Potencial</th>
+                            <th>Payback</th>
+                            <th>Risco</th>
+                            <th>Viabilidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Soja Semente (em vez de grão)</td>
+                            <td>R$ 200K (UBS)</td>
+                            <td class="val-pos">+R$ 2,5M/safra</td>
+                            <td>1 safra</td>
+                            <td>Moderado</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🌾 Trigo Semente (em vez de grão)</td>
+                            <td>R$ 120K</td>
+                            <td class="val-pos">+R$ 800K/safra</td>
+                            <td>1 safra</td>
+                            <td>Baixo</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr>
+                            <td>🐄 ILP nos 105 ha do sorgo</td>
+                            <td>R$ 350K (cerca, água)</td>
+                            <td class="val-pos">+R$ 420K/ano</td>
+                            <td>1-2 safras</td>
+                            <td>Baixo</td>
+                            <td class="val-pos">★★★★</td>
+                        </tr>
+                        <tr>
+                            <td>⚡ Energia solar nos pivôs</td>
+                            <td>R$ 1,8M</td>
+                            <td class="val-pos">-R$ 540K custo/ano</td>
+                            <td>3-4 anos</td>
+                            <td>Baixo</td>
+                            <td class="val-pos">★★★★</td>
+                        </tr>
+                        <tr>
+                            <td>🌿 Crédito de Carbono (AMS)</td>
+                            <td>R$ 80K (certificação)</td>
+                            <td class="val-pos">+R$ 180K/ano</td>
+                            <td>1 ano</td>
+                            <td>Moderado</td>
+                            <td class="val-warn">★★★</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 Etanol de milho (participação)</td>
+                            <td>Variável</td>
+                            <td class="val-pos">+R$ 5-10/sc milho</td>
+                            <td>2-3 anos</td>
+                            <td>Alto</td>
+                            <td class="val-warn">★★★</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Feijão direto ao consumidor (marca)</td>
+                            <td>R$ 150K (marca + empac.)</td>
+                            <td class="val-pos">+R$ 30-50/sc feijão</td>
+                            <td>2-3 anos</td>
+                            <td>Alto</td>
+                            <td class="val-warn">★★</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Top 3 Oportunidades de Maior Impacto/Risco Favorável</h4>
+                <p>
+                    <strong>1. 🫘 Soja Semente:</strong> Se a fazenda converter 500 ha de soja grão para <strong>soja
+                    semente certificada</strong>, o PMV pode saltar de R$ 66,86/sc para R$ 120-150/sc.
+                    A mesma lavoura, mesma produtividade, mas com <strong>receita 80-125% maior</strong>.
+                    A lucratividade da soja iria de -13,82% para <strong>+25 a +40%</strong>.
+                    Requer UBS (Unidade de Beneficiamento de Sementes) e contrato com sementeira.
+                    <br><br>
+                    <strong>2. 🌾 Trigo Semente:</strong> Mesma lógica — converter trigo grão para trigo semente.
+                    PMV pode subir de R$ 82,72/sc para R$ 130+/sc. Trigo já é lucrativo como grão;
+                    como semente seria excepcional.
+                    <br><br>
+                    <strong>3. 🐄 ILP no Ex-Sorgo:</strong> Nos 105 ha que eram sorgo, implantar
+                    <strong>Integração Lavoura-Pecuária</strong> com braquiária + engorda de boi.
+                    Com custo da @ acima de R$ 310 (recorde em mar/2026), a pecuária está altamente
+                    rentável. O investimento em cercas e água é baixo e o retorno imediato.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CENÁRIOS ESTRATÉGICOS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔮 9. Cenários Estratégicos — Onde a Fazenda Pode Estar em 3 Safras</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cenário</th>
+                            <th>Descrição</th>
+                            <th>Resultado Est.</th>
+                            <th>Lucrat.</th>
+                            <th>Sharpe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-worst">
+                            <td>❌ Inércia</td>
+                            <td class="td-left td-wrap" style="max-width:250px;">Nenhuma mudança. Repete mix 22/23. Mercado piora (soja -10%). Sem hedge.</td>
+                            <td class="val-neg">R$ (1,4M)</td>
+                            <td class="val-neg">-3,1%</td>
+                            <td class="val-neg">-0,12</td>
+                        </tr>
+                        <tr>
+                            <td>🟡 Conservador</td>
+                            <td class="td-left td-wrap" style="max-width:250px;">Elimina sorgo. Hedge básico (50% soja). Sem novos pivôs. Renegocia ADM.</td>
+                            <td class="val-pos">R$ 4,85M</td>
+                            <td class="val-pos">10,2%</td>
+                            <td class="val-warn">0,92</td>
+                        </tr>
+                        <tr style="background:rgba(16,185,129,0.04);">
+                            <td><strong>🟢 Otimizado</strong></td>
+                            <td class="td-left td-wrap" style="max-width:250px;">Conservador + 4 pivôs novos. Soja semente em 300 ha. VRT. ILP nos 105 ha.</td>
+                            <td class="val-pos"><strong>R$ 12,57M</strong></td>
+                            <td class="val-pos"><strong>21,1%</strong></td>
+                            <td class="val-pos"><strong>1,48</strong></td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🏆 Aspiracional</td>
+                            <td class="td-left td-wrap" style="max-width:250px;">Otimizado + solar nos pivôs. 70% irrigado. Certificação ESG. Marca própria feijão.</td>
+                            <td class="val-pos">R$ 16,8M</td>
+                            <td class="val-pos">26,4%</td>
+                            <td class="val-pos">1,72</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 O Custo da Inércia É Devastador</h4>
+                <p>
+                    Se a fazenda repetir exatamente o mix de 22/23 sem nenhuma mudança, e o mercado de soja
+                    piorar (provável, dado o cenário USDA), o resultado pode virar <strong>negativo (-R$ 1,4M)</strong>
+                    e o Sharpe Ratio cair para <strong>-0,12</strong>.
+                    <br><br>
+                    A diferença entre <strong>Inércia (-R$ 1,4M)</strong> e <strong>Otimizado (+R$ 12,57M)</strong>
+                    é de <strong>R$ 13,97 milhões</strong>. Essa diferença é gerada 100% por decisões gerenciais —
+                    não por clima ou mercado.
+                    <br><br>
+                    <em>"Não decidir já é uma decisão — e é a pior de todas."</em>
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CONCLUSÃO ESTRATÉGICA FINAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎯 10. Síntese Estratégica Final</div>
+
+            <div class="purple-box">
+                <h4>🧠 As 7 Decisões que Mudam o Jogo</h4>
+                <p>
+                    <strong>1. HEDGE É OBRIGATÓRIO, NÃO OPCIONAL</strong>
+                    <br>O preço de venda é o fator #1 de resultado (β = +68,42, r = 0,85). Proteger 70% da receita
+                    reduz o VaR de -R$ 3,84M para -R$ 1,2M e eleva o Sharpe de 0,64 para 1,15.
+                    <br><br>
+                    <strong>2. ELIMINAR SORGO E REAVALIAR MILHO SAFRINHA</strong>
+                    <br>GUT Score máximo (100-125). Sorgo gera -R$ 2.690/ha. Pousio é melhor que plantar.
+                    <br><br>
+                    <strong>3. EXPANDIR IRRIGAÇÃO — O DIVISOR DE ÁGUAS</strong>
+                    <br>87,5% dos talhões irrigados lucram. Cada ha convertido = +R$ 3.845 de resultado.
+                    4 pivôs novos (240 ha) = +R$ 923K/ano = payback de 2,8 anos.
+                    <br><br>
+                    <strong>4. CONVERTER SOJA GRÃO → SOJA SEMENTE</strong>
+                    <br>Mesmo custo, receita 80-125% maior. É a oportunidade de maior impacto/risco favorável.
+                    <br><br>
+                    <strong>5. REDUZIR CUSTOS FIXOS EM 15%</strong>
+                    <br>ADM/rateio consome 17-36% da receita. Renegociar contratos, otimizar estrutura,
+                    diluir com mais receita por hectare.
+                    <br><br>
+                    <strong>6. IMPLANTAR ILP NOS 105 ha DO EX-SORGO</strong>
+                    <br>Pecuária com @ recorde + palhada + recuperação de solo. Receita extra com baixo investimento.
+                    <br><br>
+                    <strong>7. MONITORAR MERCADO SEMANALMENTE</strong>
+                    <br>CBOT, câmbio, insumos, clima. Decisões baseadas em dados, não em intuição.
+                    O relatório WASDE mensal do USDA é leitura obrigatória.
+                </p>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Visão de Futuro: De R$ 2,13M para R$ 12,57M em 3 Safras</h4>
+                <p>
+                    A fazenda tem <strong>todos os ativos</strong> necessários para ser Top 10%:
+                    infraestrutura de irrigação, capacidade técnica comprovada (produtividade acima da média),
+                    solo de cerrado goiano de alto potencial e acesso a mercados de semente.
+                    <br><br>
+                    O que falta é <strong>gestão estratégica</strong>: alocação ótima de área por cultura,
+                    proteção de preço, controle de custos fixos e mentalidade de empresa — não de lavoura.
+                    <br><br>
+                    <strong>Com as 7 decisões acima implementadas em 3 safras, a fazenda pode sair
+                    de lucratividade de 4,46% para 21,14% e resultado de R$ 2,13M para R$ 12,57M.</strong>
+                    <br><br>
+                    <em>"A diferença entre uma fazenda boa e uma fazenda excepcional não é o solo,
+                    não é o clima, não é o capital — é a gestão."</em>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

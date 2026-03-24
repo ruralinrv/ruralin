@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise por Culturas | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem; color: #94a3b8; margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Culture Cards */
+        .culture-card {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 16px; padding: 0; margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .culture-header {
+            padding: 20px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 15px;
+        }
+
+        .culture-header .culture-name {
+            font-size: 1.15rem; font-weight: 800; color: #f0fdf4;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .culture-header .culture-badge {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge-profit { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .badge-loss { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+
+        .culture-body {
+            padding: 0 24px 24px;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; margin-bottom: 16px;
+        }
+
+        .metric-item {
+            background: rgba(30,41,59,0.4);
+            border-radius: 10px; padding: 14px 16px;
+        }
+        .metric-item .m-label {
+            font-size: 0.68rem; color: #64748b;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-weight: 600; margin-bottom: 6px;
+        }
+        .metric-item .m-value {
+            font-size: 1.15rem; font-weight: 700; color: #e2e8f0;
+        }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-muted { color: #64748b; }
+
+        /* Stacked bar */
+        .stacked-bar {
+            display: flex; height: 36px; border-radius: 8px;
+            overflow: hidden; margin-bottom: 16px;
+        }
+        .stacked-bar .segment {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.68rem; font-weight: 700; color: #fff;
+            transition: width 0.6s ease; min-width: 30px;
+        }
+        .seg-soja { background: #10b981; }
+        .seg-milho-sem { background: #3b82f6; }
+        .seg-feijao { background: #f59e0b; }
+        .seg-milho2 { background: #8b5cf6; }
+        .seg-sorgo { background: #64748b; }
+        .seg-trigo { background: #ec4899; }
+
+        .legend-row {
+            display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px;
+        }
+        .legend-item {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.78rem; color: #94a3b8;
+        }
+        .legend-dot {
+            width: 12px; height: 12px; border-radius: 3px;
+        }
+
+        /* Result bar horizontal */
+        .result-visual {
+            display: grid;
+            grid-template-columns: 140px 1fr 130px;
+            gap: 10px; align-items: center; padding: 8px 0;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+        }
+        .result-visual:last-child { border-bottom: none; }
+        .result-visual .rv-label {
+            font-size: 0.82rem; color: #e2e8f0; font-weight: 600;
+        }
+        .result-visual .rv-bar {
+            height: 24px; border-radius: 6px; overflow: hidden;
+            background: rgba(30,41,59,0.5); position: relative;
+        }
+        .result-visual .rv-fill {
+            height: 100%; border-radius: 6px;
+            display: flex; align-items: center; padding: 0 8px;
+            font-size: 0.68rem; font-weight: 700; color: #fff;
+        }
+        .rv-fill.green { background: linear-gradient(90deg, #10b981, #059669); justify-content: flex-end; }
+        .rv-fill.red { background: linear-gradient(90deg, #ef4444, #dc2626); justify-content: flex-end; }
+        .result-visual .rv-value {
+            font-size: 0.82rem; font-weight: 700; text-align: right;
+        }
+
+        .insight-box {
+            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        /* Comparison table */
+        .table-container {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(71, 85, 105, 0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        .table-container th {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 12px 14px; text-align: right;
+            font-size: 0.72rem; color: #10b981;
+            text-transform: uppercase; letter-spacing: 1px;
+            font-weight: 700; border-bottom: 1px solid rgba(16,185,129,0.15);
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 11px 14px; font-size: 0.84rem;
+            border-bottom: 1px solid rgba(71,85,105,0.12);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16, 185, 129, 0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .metric-row { grid-template-columns: 1fr 1fr; }
+            .result-visual { grid-template-columns: 100px 1fr 100px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🌱 Análise por Culturas — <span>Fazenda Modelo</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="resumo-executivo.html" class="btn-back">📊 Resumo</a>
+                    <a href="historico-financeiro.html" class="btn-back">📈 Histórico</a>
+                    <a href="soja-detalhado.html" class="btn-back">🫘 Soja</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO VISUAL DA SAFRA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎨 Composição da Safra 22/23 por Área</div>
+
+            <div class="stacked-bar">
+                <div class="segment seg-soja" style="width:45.86%;">Soja 46%</div>
+                <div class="segment seg-milho-sem" style="width:22.02%;">M.Sem 22%</div>
+                <div class="segment seg-feijao" style="width:17.83%;">Feijão 18%</div>
+                <div class="segment seg-trigo" style="width:8.26%;">Trigo 8%</div>
+                <div class="segment seg-milho2" style="width:5.19%;">M.2ª 5%</div>
+                <div class="segment seg-sorgo" style="width:0.84%;min-width:20px;">1%</div>
+            </div>
+
+            <div class="legend-row">
+                <div class="legend-item"><div class="legend-dot" style="background:#10b981;"></div> Soja (1.749 ha)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> Milho Semente (830 ha)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#f59e0b;"></div> Feijão 2ª (680 ha)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#ec4899;"></div> Trigo (315 ha)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6;"></div> Milho 2ª (198 ha)</div>
+                <div class="legend-item"><div class="legend-dot" style="background:#64748b;"></div> Sorgo (32 ha)</div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESULTADO VISUAL POR CULTURA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💰 Resultado Financeiro por Cultura</div>
+            <p class="section-subtitle">Ordenado por impacto no resultado total da safra</p>
+
+            <div style="background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3); border-radius: 14px; padding: 24px; margin-bottom: 30px;">
+                <div class="result-visual">
+                    <div class="rv-label">🫘 Feijão 2ª</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:100%;">R$ 4,24 Mi</div></div>
+                    <div class="rv-value val-pos">R$ 4.236.811</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🌽 M.Sem Verão</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:73.1%;">R$ 3,10 Mi</div></div>
+                    <div class="rv-value val-pos">R$ 3.096.202</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🌽 M.Sem Inverno</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:1.5%;min-width:4px;"></div></div>
+                    <div class="rv-value val-pos">R$ 33.369</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🌿 Sorgo</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:4.1%;min-width:4px;"></div></div>
+                    <div class="rv-value val-neg">R$ (172.378)</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🌽 Milho 2ª</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:22.8%;"></div></div>
+                    <div class="rv-value val-neg">R$ (967.926)</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🌾 Trigo</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:42.9%;">R$ -1,82 Mi</div></div>
+                    <div class="rv-value val-neg">R$ (1.819.139)</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">🫘 Soja</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:53.6%;">R$ -2,27 Mi</div></div>
+                    <div class="rv-value val-neg">R$ (2.271.922)</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 A Matemática da Diversificação</h4>
+                <p>
+                    Apenas <strong>2 culturas</strong> sustentaram o resultado positivo da safra:
+                    Feijão 2ª Safra (+R$ 4,24 Mi) e Milho Semente Verão (+R$ 3,10 Mi).
+                    Juntas, geraram R$ 7,33 Mi de lucro. As 4 culturas deficitárias consumiram R$ 5,23 Mi,
+                    restando R$ 2,13 Mi de resultado líquido.
+                    <br><br>
+                    <strong>Sem diversificação, a fazenda teria prejuízo.</strong> Se fosse 100% soja (como muitos produtores),
+                    a perda seria devastadora. Esse é o papel da inteligência econômica na gestão rural.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CARDS INDIVIDUAIS POR CULTURA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Detalhamento por Cultura</div>
+
+            <!-- SOJA -->
+            <div class="culture-card" style="border-color: rgba(239,68,68,0.2);">
+                <div class="culture-header" style="background: rgba(239,68,68,0.05);">
+                    <div class="culture-name">🫘 Soja</div>
+                    <div class="culture-badge badge-loss">Prejuízo</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área</div>
+                            <div class="m-value">1.749,14 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">45,86%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita</div>
+                            <div class="m-value">R$ 16.435.396</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Custo</div>
+                            <div class="m-value">R$ 18.707.318</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado</div>
+                            <div class="m-value val-neg">R$ (2.271.922)</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucratividade</div>
+                            <div class="m-value val-neg">-13,82%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Rentabilidade</div>
+                            <div class="m-value val-neg">-12,14%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-neg">-106,41%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MILHO SEMENTE -->
+            <div class="culture-card" style="border-color: rgba(16,185,129,0.2);">
+                <div class="culture-header" style="background: rgba(16,185,129,0.05);">
+                    <div class="culture-name">🌽 Milho Semente (Verão + Inverno)</div>
+                    <div class="culture-badge badge-profit">Lucro</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área Total</div>
+                            <div class="m-value">830,00 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">22,02%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita (Verão)</div>
+                            <div class="m-value">R$ 9.431.520</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita (Inverno)</div>
+                            <div class="m-value">R$ 5.152.631</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado (Verão)</div>
+                            <div class="m-value val-pos">R$ 3.096.202</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado (Inverno)</div>
+                            <div class="m-value val-warn">R$ 33.369</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucrat. Verão</div>
+                            <div class="m-value val-pos">32,83%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucrat. Inverno</div>
+                            <div class="m-value val-warn">0,65%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-pos">146,58%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEIJÃO 2ª SAFRA -->
+            <div class="culture-card" style="border-color: rgba(16,185,129,0.3);">
+                <div class="culture-header" style="background: rgba(16,185,129,0.08);">
+                    <div class="culture-name">🫘 Feijão 2ª Safra — ★ Destaque da Safra</div>
+                    <div class="culture-badge badge-profit">Maior Lucro</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área</div>
+                            <div class="m-value">680,00 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">17,83%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita</div>
+                            <div class="m-value">R$ 12.872.331</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Custo</div>
+                            <div class="m-value">R$ 8.635.520</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado</div>
+                            <div class="m-value val-pos">R$ 4.236.811</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucratividade</div>
+                            <div class="m-value val-pos">32,91%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Rentabilidade</div>
+                            <div class="m-value val-pos">49,06%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-pos">198,44%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MILHO 2ª SAFRA -->
+            <div class="culture-card" style="border-color: rgba(239,68,68,0.15);">
+                <div class="culture-header" style="background: rgba(239,68,68,0.03);">
+                    <div class="culture-name">🌽 Milho 2ª Safra (Safrinha)</div>
+                    <div class="culture-badge badge-loss">Prejuízo</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área</div>
+                            <div class="m-value">198,00 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">5,19%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita</div>
+                            <div class="m-value">R$ 1.543.961</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Custo</div>
+                            <div class="m-value">R$ 2.511.887</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado</div>
+                            <div class="m-value val-neg">R$ (967.926)</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucratividade</div>
+                            <div class="m-value val-neg">-62,69%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Rentabilidade</div>
+                            <div class="m-value val-neg">-38,53%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-neg">-45,34%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRIGO -->
+            <div class="culture-card" style="border-color: rgba(239,68,68,0.15);">
+                <div class="culture-header" style="background: rgba(239,68,68,0.03);">
+                    <div class="culture-name">🌾 Trigo — Estreia no portfólio</div>
+                    <div class="culture-badge badge-loss">Prejuízo</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área</div>
+                            <div class="m-value">315,00 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">8,26%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita</div>
+                            <div class="m-value">R$ 2.157.097</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Custo</div>
+                            <div class="m-value">R$ 3.976.236</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado</div>
+                            <div class="m-value val-neg">R$ (1.819.139)</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucratividade</div>
+                            <div class="m-value val-neg">-84,33%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Rentabilidade</div>
+                            <div class="m-value val-neg">-45,75%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-neg">-85,20%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SORGO -->
+            <div class="culture-card" style="border-color: rgba(239,68,68,0.1);">
+                <div class="culture-header" style="background: rgba(239,68,68,0.03);">
+                    <div class="culture-name">🌿 Sorgo</div>
+                    <div class="culture-badge badge-loss">Prejuízo</div>
+                </div>
+                <div class="culture-body">
+                    <div class="metric-row">
+                        <div class="metric-item">
+                            <div class="m-label">Área</div>
+                            <div class="m-value">32,00 ha</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% da Área Total</div>
+                            <div class="m-value">0,84%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Receita</div>
+                            <div class="m-value">R$ 201.720</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Custo</div>
+                            <div class="m-value">R$ 374.099</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Resultado</div>
+                            <div class="m-value val-neg">R$ (172.378)</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Lucratividade</div>
+                            <div class="m-value val-neg">-85,45%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">Rentabilidade</div>
+                            <div class="m-value val-neg">-46,08%</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="m-label">% no Lucro Total</div>
+                            <div class="m-value val-neg">-8,07%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPARATIVO COM SAFRA ANTERIOR -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔄 Comparativo: Safra 21/22 vs 22/23</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Soja</th>
+                            <th>M. Semente</th>
+                            <th>Feijão 2ª</th>
+                            <th>Milho 2ª</th>
+                            <th>Sorgo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" style="color:#10b981; font-weight:700; background:rgba(16,185,129,0.05); text-align:left;">
+                                SAFRA 2021/2022
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>% Área</td>
+                            <td>33,94%</td>
+                            <td>30,07%</td>
+                            <td>11,37%</td>
+                            <td>19,58%</td>
+                            <td>5,04%</td>
+                        </tr>
+                        <tr>
+                            <td>% Custo</td>
+                            <td>31,85%</td>
+                            <td>34,47%</td>
+                            <td>14,37%</td>
+                            <td>15,87%</td>
+                            <td>3,44%</td>
+                        </tr>
+                        <tr>
+                            <td>% Faturamento</td>
+                            <td>31,62%</td>
+                            <td>47,59%</td>
+                            <td>14,23%</td>
+                            <td>5,68%</td>
+                            <td>0,88%</td>
+                        </tr>
+                        <tr>
+                            <td>% Lucro Total</td>
+                            <td class="val-pos">31,10%</td>
+                            <td class="val-pos">77,07%</td>
+                            <td class="val-pos">13,94%</td>
+                            <td class="val-neg">-17,24%</td>
+                            <td class="val-neg">-4,87%</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="color:#f59e0b; font-weight:700; background:rgba(245,158,11,0.05); text-align:left;">
+                                SAFRA 2022/2023
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>% Área</td>
+                            <td>45,86%</td>
+                            <td>22,02%</td>
+                            <td>17,83%</td>
+                            <td>5,19%</td>
+                            <td>0,84%</td>
+                        </tr>
+                        <tr>
+                            <td>% Custo</td>
+                            <td>40,97%</td>
+                            <td>25,09%</td>
+                            <td>18,91%</td>
+                            <td>5,50%</td>
+                            <td>0,82%</td>
+                        </tr>
+                        <tr>
+                            <td>% Faturamento</td>
+                            <td>34,39%</td>
+                            <td>30,51%</td>
+                            <td>26,93%</td>
+                            <td>3,23%</td>
+                            <td>0,42%</td>
+                        </tr>
+                        <tr>
+                            <td>% Lucro Total</td>
+                            <td class="val-neg">-106,41%</td>
+                            <td class="val-pos">146,58%</td>
+                            <td class="val-pos">198,44%</td>
+                            <td class="val-neg">-45,34%</td>
+                            <td class="val-neg">-8,07%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Mudanças entre Safras</h4>
+                <p>
+                    <strong>Soja:</strong> aumentou de 33,94% para 45,86% da área, mas saiu de 31,10% do lucro para -106,41%.
+                    A aposta em mais soja num ano de preço baixo amplificou o prejuízo.
+                    <br><br>
+                    <strong>Milho Semente:</strong> reduziu de 30,07% para 22,02% da área, mas manteve participação
+                    expressiva no lucro (77,07% → 146,58%).
+                    <br><br>
+                    <strong>Feijão 2ª:</strong> expandiu de 11,37% para 17,83% da área e saltou de 13,94% para 198,44% do lucro.
+                    Foi a melhor decisão de alocação da safra.
+                    <br><br>
+                    <strong>Milho 2ª:</strong> reduzido drasticamente (19,58% → 5,19%) — decisão correta, pois o prejuízo
+                    seria muito maior se mantivesse a área anterior.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- LUCRATIVIDADE POR CULTURA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Lucratividade por Cultura — Safra 22/23</div>
+
+            <div style="background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3); border-radius: 14px; padding: 24px; margin-bottom: 30px;">
+                <div class="result-visual">
+                    <div class="rv-label">Feijão 2ª</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:78%;">32,91%</div></div>
+                    <div class="rv-value val-pos">32,91%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">M.Sem Verão</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:62%;">32,83%</div></div>
+                    <div class="rv-value val-pos">32,83%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">M.Sem Inverno</div>
+                    <div class="rv-bar"><div class="rv-fill green" style="width:3%;min-width:4px;"></div></div>
+                    <div class="rv-value val-warn">0,65%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">MÉDIA TOTAL</div>
+                    <div class="rv-bar"><div class="rv-fill" style="width:14%; background: linear-gradient(90deg, #f59e0b, #d97706); min-width:30px;">4,47%</div></div>
+                    <div class="rv-value val-warn">4,47%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">Soja</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:18%;">-13,82%</div></div>
+                    <div class="rv-value val-neg">-13,82%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">Milho 2ª</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:52%;">-62,69%</div></div>
+                    <div class="rv-value val-neg">-62,69%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">Trigo</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:68%;">-84,33%</div></div>
+                    <div class="rv-value val-neg">-84,33%</div>
+                </div>
+                <div class="result-visual">
+                    <div class="rv-label">Sorgo</div>
+                    <div class="rv-bar"><div class="rv-fill red" style="width:70%;">-85,45%</div></div>
+                    <div class="rv-value val-neg">-85,45%</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Leitura Final por Culturas</h4>
+                <p>
+                    O portfólio da safra 22/23 apresentou uma <strong>dispersão extrema de lucratividade</strong>:
+                    de +32,91% (feijão) a -85,45% (sorgo). A amplitude de quase 120 pontos percentuais
+                    entre a melhor e a pior cultura demonstra a importância crítica da <strong>alocação de área</strong>
+                    e da <strong>estratégia comercial</strong> cultura a cultura.
+                    <br><br>
+                    Para a próxima safra, os indicadores sugerem:
+                    <br>• <strong>Expandir</strong> feijão e milho semente (culturas rentáveis e resilientes)
+                    <br>• <strong>Revisar</strong> a estratégia da soja (gestão de custo + travamento de preço)
+                    <br>• <strong>Avaliar</strong> a permanência de trigo e sorgo no portfólio
+                    <br>• <strong>Proteger</strong> milho 2ª com hedge adequado ou reduzir área
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

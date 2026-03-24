@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soja Detalhado | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 20px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+        .kpi-card .kpi-label {
+            font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value { font-size: 1.5rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.76rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        /* Tables */
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 12px 12px; text-align: right;
+            font-size: 0.68rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 12px; font-size: 0.82rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(239,68,68,0.04); }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-muted { color: #64748b; }
+
+        /* Bar charts */
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 70px 1fr 120px;
+            gap: 10px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.72rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 22px; background: rgba(30,41,59,0.6); border-radius: 5px; overflow: hidden;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 5px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 6px; font-size: 0.62rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .chart-bar-item .value { font-size: 0.78rem; color: #e2e8f0; font-weight: 600; }
+
+        /* Donut grid */
+        .donut-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px; margin-bottom: 30px;
+        }
+        .donut-item {
+            background: rgba(30,41,59,0.4); border-radius: 10px; padding: 14px;
+            text-align: center; border: 1px solid rgba(71,85,105,0.2);
+        }
+        .donut-item .d-pct { font-size: 1.4rem; font-weight: 800; }
+        .donut-item .d-label { font-size: 0.68rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+        .donut-item .d-value { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .alert-box {
+            background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        /* Variety tag */
+        .var-tag {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.68rem; font-weight: 600; background: rgba(59,130,246,0.15);
+            color: #60a5fa; margin-left: 6px;
+        }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .chart-bar-item { grid-template-columns: 55px 1fr 90px; }
+            .donut-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🫘 Soja Detalhado — <span>Fazenda Modelo</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="analise-culturas.html" class="btn-back">🌱 Culturas</a>
+                    <a href="resumo-executivo.html" class="btn-back">📊 Resumo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO GERAL DA SOJA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🫘 Resumo Geral — Soja Safra 22/23</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Área Total</div>
+                    <div class="kpi-value">1.749,14 ha</div>
+                    <div class="kpi-sub">45,86% da área cultivada</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nº de Talhões</div>
+                    <div class="kpi-value">20</div>
+                    <div class="kpi-sub">12 sequeiro + 8 irrigado</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Produtividade Média</div>
+                    <div class="kpi-value">73,84 sc/ha</div>
+                    <div class="kpi-sub">Variação: 57,83 a 92,21 sc/ha</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">PMV</div>
+                    <div class="kpi-value">R$ 127,25/sc</div>
+                    <div class="kpi-sub">Safra anterior: R$ 175,50 (<span class="val-neg">-27,49%</span>)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Total Médio/ha</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 10.695,15</div>
+                    <div class="kpi-sub">Insumos: R$ 4.335,26/ha</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">Resultado Total</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ (2.271.922)</div>
+                    <div class="kpi-sub">Lucratividade: <span class="val-neg">-13,82%</span></div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 144,84/sc</div>
+                    <div class="kpi-sub">PMV está <span class="val-neg">12,15%</span> abaixo do P.E.</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">84,05 sc/ha</div>
+                    <div class="kpi-sub">Produtividade está <span class="val-neg">12,14%</span> abaixo</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 Diagnóstico da Soja — Safra 22/23</h4>
+                <p>
+                    A soja apresentou <strong>prejuízo pela primeira vez</strong> na série histórica da fazenda.
+                    A combinação de queda no PMV (-27,49%, de R$ 175,50 para R$ 127,25/sc) com aumento no custo/ha
+                    (+24,67%, de R$ 8.578 para R$ 10.695/ha) criou o efeito tesoura mais severo entre todas as culturas.
+                    <br><br>
+                    A produtividade média de 73,84 sc/ha ficou <strong>abaixo do ponto de equilíbrio</strong> (84,05 sc/ha),
+                    e o PMV ficou abaixo do P.E. em valor (R$ 144,84/sc). Dupla insuficiência: produtividade E preço.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MAPEAMENTO DOS TALHÕES -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🗺️ Mapeamento dos Talhões</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>Tipo</th>
+                            <th>Variedade</th>
+                            <th>Área (ha)</th>
+                            <th>% Área</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CHN1</td><td>Sequeiro</td><td>Neo750</td><td>87,00</td><td>4,97%</td></tr>
+                        <tr><td>CHN2</td><td>Sequeiro</td><td>Desafio</td><td>60,00</td><td>3,43%</td></tr>
+                        <tr><td>CHN3</td><td>Sequeiro</td><td>Neo750</td><td>90,00</td><td>5,15%</td></tr>
+                        <tr><td>CHN4</td><td>Sequeiro</td><td>Neo750</td><td>74,10</td><td>4,24%</td></tr>
+                        <tr><td>CHS1</td><td>Sequeiro</td><td>VA79/Neo750</td><td>73,00</td><td>4,17%</td></tr>
+                        <tr><td>CHS2</td><td>Sequeiro</td><td>Neo750</td><td>86,00</td><td>4,92%</td></tr>
+                        <tr><td>CHS3</td><td>Sequeiro</td><td>VA79</td><td>95,00</td><td>5,43%</td></tr>
+                        <tr><td>CHS4</td><td>Sequeiro</td><td>VA79</td><td>91,14</td><td>5,21%</td></tr>
+                        <tr><td>CHL1</td><td>Sequeiro</td><td>Aporé</td><td>102,00</td><td>5,83%</td></tr>
+                        <tr><td>CHL2</td><td>Sequeiro</td><td>Aporé</td><td>87,00</td><td>4,97%</td></tr>
+                        <tr><td>CHL3</td><td>Sequeiro</td><td>Aporé</td><td>121,90</td><td>6,97%</td></tr>
+                        <tr><td>RCV1</td><td>Sequeiro</td><td>Aporé</td><td>62,00</td><td>3,54%</td></tr>
+                        <tr><td>IRR1</td><td>Irrigado</td><td>Neo750</td><td>135,00</td><td>7,72%</td></tr>
+                        <tr><td>IRR2</td><td>Irrigado</td><td>6719</td><td>95,00</td><td>5,43%</td></tr>
+                        <tr><td>IRR3</td><td>Irrigado</td><td>6719</td><td>150,00</td><td>8,58%</td></tr>
+                        <tr><td>IRR4</td><td>Irrigado</td><td>Neo750</td><td>120,00</td><td>6,86%</td></tr>
+                        <tr><td>IRR5</td><td>Irrigado</td><td>VA79</td><td>95,00</td><td>5,43%</td></tr>
+                        <tr><td>IRR6</td><td>Irrigado</td><td>6719</td><td>130,00</td><td>7,43%</td></tr>
+                        <tr><td>IRR7</td><td>Irrigado</td><td>VA79</td><td>—</td><td>—</td></tr>
+                        <tr><td>IRR8</td><td>Irrigado</td><td>Desafio</td><td>—</td><td>—</td></tr>
+                        <tr class="row-total">
+                            <td colspan="3">TOTAL</td>
+                            <td>1.749,14</td>
+                            <td>100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Variedades Utilizadas</h4>
+                <p>
+                    A fazenda trabalhou com <strong>4 variedades principais</strong>: Neo750, VA79, Aporé e 6719,
+                    além da Desafio. A diversificação de cultivares é uma boa prática para mitigar riscos
+                    climáticos e fitossanitários. A variedade <strong>6719</strong> foi usada exclusivamente nos
+                    talhões irrigados, enquanto <strong>Aporé</strong> dominou a área leste (CHL1, CHL2, CHL3, RCV1).
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PRODUTIVIDADE POR TALHÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Produtividade por Talhão (sc/ha)</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">IRR1</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">92,21</div></div>
+                    <div class="value val-pos"><strong>92,21 ★</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR4</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:95.4%;">87,93</div></div>
+                    <div class="value val-pos">87,93</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR7</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:86.9%;">80,11</div></div>
+                    <div class="value">80,11</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR8</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:85.1%;">78,46</div></div>
+                    <div class="value">78,46</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS4</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:83.2%;">76,74</div></div>
+                    <div class="value">76,74</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR5</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:82.2%;">75,80</div></div>
+                    <div class="value">75,80</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:81.5%;">75,15</div></div>
+                    <div class="value">75,15</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">MÉDIA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:80.1%;">73,84</div></div>
+                    <div class="value val-warn"><strong>73,84</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:79.3%;">73,10</div></div>
+                    <div class="value">73,10</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR6</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:78.7%;">72,62</div></div>
+                    <div class="value">72,62</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:77.3%;">71,31</div></div>
+                    <div class="value">71,31</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS3</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:77.3%;">71,29</div></div>
+                    <div class="value">71,29</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">RCV1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:77.2%;">71,24</div></div>
+                    <div class="value">71,24</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL3</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:76.8%;">70,84</div></div>
+                    <div class="value">70,84</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR2</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:75.1%;">69,20</div></div>
+                    <div class="value">69,20</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR3</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:73.3%;">67,57</div></div>
+                    <div class="value">67,57</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS2</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:72.8%;">67,09</div></div>
+                    <div class="value">67,09</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL2</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:71.9%;">66,26</div></div>
+                    <div class="value">66,26</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN3</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:70.4%;">64,90</div></div>
+                    <div class="value">64,90</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN4</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:66.6%;">61,38</div></div>
+                    <div class="value">61,38</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN2</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:62.7%;">57,83</div></div>
+                    <div class="value val-neg"><strong>57,83 ✗</strong></div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Análise de Produtividade</h4>
+                <p>
+                    <strong>Amplitude: 34,38 sc/ha</strong> (de 57,83 a 92,21). O IRR1 (irrigado) lidera com
+                    92,21 sc/ha — o único talhão acima do P.E. de 84,05 sc/ha. O CHN2 (sequeiro, variedade Desafio)
+                    teve a pior performance: 57,83 sc/ha, 31,20% abaixo da média.
+                    <br><br>
+                    <strong>Padrão claro:</strong> os talhões irrigados (IRR) geralmente superam os de sequeiro (CHN/CHS/CHL),
+                    com exceção do IRR2 e IRR3 (variedade 6719) que ficaram abaixo da média.
+                    O grupo Aporé (CHL) teve performance homogênea entre 66-73 sc/ha.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CUSTO TOTAL POR TALHÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💵 Custo Total/ha por Talhão</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">IRR3</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">11.593</div></div>
+                    <div class="value val-neg"><strong>R$ 11.593 ★</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR8</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:97.2%;">11.264</div></div>
+                    <div class="value">R$ 11.264</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS1</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:96.6%;">11.205</div></div>
+                    <div class="value">R$ 11.205</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR7</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:95.6%;">11.080</div></div>
+                    <div class="value">R$ 11.080</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR5</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:94.9%;">11.009</div></div>
+                    <div class="value">R$ 11.009</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR6</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:93.6%;">10.846</div></div>
+                    <div class="value">R$ 10.846</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR2</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:92.5%;">10.725</div></div>
+                    <div class="value">R$ 10.725</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">MÉDIA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:92.2%;">10.695</div></div>
+                    <div class="value val-warn"><strong>R$ 10.695</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">RCV1</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:91.5%;">10.605</div></div>
+                    <div class="value">R$ 10.605</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN2</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:91.3%;">10.579</div></div>
+                    <div class="value">R$ 10.579</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS4</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:90.7%;">10.516</div></div>
+                    <div class="value">R$ 10.516</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN3</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:89.9%;">10.420</div></div>
+                    <div class="value">R$ 10.420</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:89.8%;">10.408</div></div>
+                    <div class="value">R$ 10.408</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS3</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:89.7%;">10.399</div></div>
+                    <div class="value">R$ 10.399</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN4</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:89.5%;">10.373</div></div>
+                    <div class="value">R$ 10.373</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR4</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:88.9%;">10.301</div></div>
+                    <div class="value">R$ 10.301</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL1</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:86.7%;">10.048</div></div>
+                    <div class="value">R$ 10.048</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHN1</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:85.7%;">9.930</div></div>
+                    <div class="value">R$ 9.930</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHS2</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:85.1%;">9.869</div></div>
+                    <div class="value">R$ 9.869</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL3</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:85.1%;">9.860</div></div>
+                    <div class="value val-pos">R$ 9.860</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL2</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:85.0%;">9.851</div></div>
+                    <div class="value val-pos"><strong>R$ 9.851 ✓</strong></div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Análise de Custos</h4>
+                <p>
+                    O custo total/ha variou de R$ 9.851 (CHL2) a R$ 11.593 (IRR3) — amplitude de R$ 1.742/ha.
+                    Os talhões irrigados tendem a ter custos mais altos (energia de irrigação), mas o IRR1 é exceção
+                    com R$ 10.408/ha (menor entre irrigados). Os talhões CHL (Aporé) e CHS2 concentram os menores custos.
+                    <br><br>
+                    <strong>O IRR3 é o mais caro e também tem produtividade abaixo da média</strong> — pior relação custo/benefício.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DOS INSUMOS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🧪 Composição dos Insumos/ha — Média</div>
+
+            <div class="donut-grid">
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#ef4444;">49%</div>
+                    <div class="d-label">Fertilizantes</div>
+                    <div class="d-value">R$ 2.141,85</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#8b5cf6;">14%</div>
+                    <div class="d-label">Fungicida</div>
+                    <div class="d-value">R$ 614,07</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#3b82f6;">13%</div>
+                    <div class="d-label">Herbicida</div>
+                    <div class="d-value">R$ 553,10</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#f59e0b;">10%</div>
+                    <div class="d-label">Inseticida</div>
+                    <div class="d-value">R$ 430,10</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#10b981;">7%</div>
+                    <div class="d-label">TS</div>
+                    <div class="d-value">R$ 320,91</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#ec4899;">5%</div>
+                    <div class="d-label">Foliares/Outros</div>
+                    <div class="d-value">R$ 208,31</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#64748b;">2%</div>
+                    <div class="d-label">TM</div>
+                    <div class="d-value">R$ 66,92</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Sobre os Insumos</h4>
+                <p>
+                    <strong>Fertilizantes representam 49% dos insumos</strong> (R$ 2.141,85/ha) — quase metade do investimento
+                    em insumos vai para adubação. Fungicida (14%) e Herbicida (13%) completam os 3 maiores blocos.
+                    O total de insumos é R$ 4.335,26/ha, representando <strong>40,5% do custo total</strong>.
+                    Os outros 59,5% são custos fixos/rateio — reforçando o peso da estrutura.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DO CUSTO TOTAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Composição do Custo Total/ha — Média Soja</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">Fertilizantes</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">20%</div></div>
+                    <div class="value">R$ 2.141,85 (20%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">ADM</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:70.3%;">14%</div></div>
+                    <div class="value">R$ 1.505,69 (14%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">TMA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:70.5%;">14%</div></div>
+                    <div class="value">R$ 1.509,32 (14%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Manut. Máq</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:40%;">8%</div></div>
+                    <div class="value">R$ 857,78 (8%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Combustível</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:34.6%;">7%</div></div>
+                    <div class="value">R$ 740,30 (7%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Fungicida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:28.7%;">6%</div></div>
+                    <div class="value">R$ 614,07 (6%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Herbicida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:25.8%;">5%</div></div>
+                    <div class="value">R$ 553,10 (5%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Depreciação</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:24.5%; background:#64748b;">5%</div></div>
+                    <div class="value">R$ 524,36 (5%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Rem. Capital</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:22.3%; background:#64748b;">4%</div></div>
+                    <div class="value">R$ 477,50 (4%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Inseticida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:20.1%;">4%</div></div>
+                    <div class="value">R$ 430,10 (4%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Imp/Tx/Trf</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:18.5%; background:#475569;">4%</div></div>
+                    <div class="value">R$ 395,31 (4%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Serv. Terc.</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:18.4%; background:#475569;">4%</div></div>
+                    <div class="value">R$ 395,11 (4%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">TS + TM + Fol.</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:13%;">3%</div></div>
+                    <div class="value">R$ 596,14 (6%)</div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- TABELA COMPLETA - TODOS OS TALHÕES -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Tabela Completa — Todos os 20 Talhões</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>Variedade</th>
+                            <th>Área (ha)</th>
+                            <th>Produt. (sc/ha)</th>
+                            <th>Insumos/ha</th>
+                            <th>Custo Total/ha</th>
+                            <th>Receita/ha</th>
+                            <th>Resultado/ha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>IRR1 <span class="var-tag">★ Melhor</span></td>
+                            <td>Neo750</td>
+                            <td>135,00</td>
+                            <td class="val-pos">92,21</td>
+                            <td>R$ 4.048,24</td>
+                            <td>R$ 10.408,12</td>
+                            <td>R$ 11.733,73</td>
+                            <td class="val-pos">R$ 1.325,61</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>IRR4</td>
+                            <td>Neo750</td>
+                            <td>120,00</td>
+                            <td class="val-pos">87,93</td>
+                            <td>R$ 3.941,26</td>
+                            <td>R$ 10.301,14</td>
+                            <td>R$ 11.189,19</td>
+                            <td class="val-pos">R$ 888,05</td>
+                        </tr>
+                        <tr>
+                            <td>IRR7</td>
+                            <td>VA79</td>
+                            <td>—</td>
+                            <td>80,11</td>
+                            <td>R$ 4.720,20</td>
+                            <td>R$ 11.080,08</td>
+                            <td>R$ 10.193,99</td>
+                            <td class="val-neg">R$ (886,09)</td>
+                        </tr>
+                        <tr>
+                            <td>IRR8</td>
+                            <td>Desafio</td>
+                            <td>—</td>
+                            <td>78,46</td>
+                            <td>R$ 4.904,34</td>
+                            <td>R$ 11.264,22</td>
+                            <td>R$ 9.984,04</td>
+                            <td class="val-neg">R$ (1.280,18)</td>
+                        </tr>
+                        <tr>
+                            <td>CHS4</td>
+                            <td>VA79</td>
+                            <td>91,14</td>
+                            <td>76,74</td>
+                            <td>R$ 4.156,39</td>
+                            <td>R$ 10.516,27</td>
+                            <td>R$ 9.765,15</td>
+                            <td class="val-neg">R$ (751,12)</td>
+                        </tr>
+                        <tr>
+                            <td>IRR5</td>
+                            <td>VA79</td>
+                            <td>95,00</td>
+                            <td>75,80</td>
+                            <td>R$ 4.649,61</td>
+                            <td>R$ 11.009,49</td>
+                            <td>R$ 9.645,55</td>
+                            <td class="val-neg">R$ (1.363,94)</td>
+                        </tr>
+                        <tr>
+                            <td>CHS1</td>
+                            <td>VA79/Neo750</td>
+                            <td>73,00</td>
+                            <td>75,15</td>
+                            <td>R$ 4.845,12</td>
+                            <td>R$ 11.205,00</td>
+                            <td>R$ 9.562,84</td>
+                            <td class="val-neg">R$ (1.642,16)</td>
+                        </tr>
+                        <tr>
+                            <td>CHL1</td>
+                            <td>Aporé</td>
+                            <td>102,00</td>
+                            <td>73,10</td>
+                            <td>R$ 3.688,43</td>
+                            <td>R$ 10.048,31</td>
+                            <td>R$ 9.301,48</td>
+                            <td class="val-neg">R$ (746,84)</td>
+                        </tr>
+                        <tr>
+                            <td>IRR6</td>
+                            <td>6719</td>
+                            <td>130,00</td>
+                            <td>72,62</td>
+                            <td>R$ 4.486,08</td>
+                            <td>R$ 10.845,96</td>
+                            <td>R$ 9.240,90</td>
+                            <td class="val-neg">R$ (1.605,06)</td>
+                        </tr>
+                        <tr>
+                            <td>CHN1</td>
+                            <td>Neo750</td>
+                            <td>87,00</td>
+                            <td>71,31</td>
+                            <td>R$ 3.569,63</td>
+                            <td>R$ 9.929,51</td>
+                            <td>R$ 9.074,15</td>
+                            <td class="val-neg">R$ (855,36)</td>
+                        </tr>
+                        <tr>
+                            <td>CHS3</td>
+                            <td>VA79</td>
+                            <td>95,00</td>
+                            <td>71,29</td>
+                            <td>R$ 4.039,20</td>
+                            <td>R$ 10.399,08</td>
+                            <td>R$ 9.071,60</td>
+                            <td class="val-neg">R$ (1.327,48)</td>
+                        </tr>
+                        <tr>
+                            <td>RCV1</td>
+                            <td>Aporé</td>
+                            <td>62,00</td>
+                            <td>71,24</td>
+                            <td>R$ 4.244,80</td>
+                            <td>R$ 10.604,68</td>
+                            <td>R$ 9.065,30</td>
+                            <td class="val-neg">R$ (1.539,38)</td>
+                        </tr>
+                        <tr>
+                            <td>CHL3</td>
+                            <td>Aporé</td>
+                            <td>121,90</td>
+                            <td>70,84</td>
+                            <td>R$ 3.500,26</td>
+                            <td>R$ 9.860,14</td>
+                            <td>R$ 9.014,39</td>
+                            <td class="val-neg">R$ (845,75)</td>
+                        </tr>
+                        <tr>
+                            <td>IRR2</td>
+                            <td>6719</td>
+                            <td>95,00</td>
+                            <td>69,20</td>
+                            <td>R$ 4.364,81</td>
+                            <td>R$ 10.724,69</td>
+                            <td>R$ 8.805,70</td>
+                            <td class="val-neg">R$ (1.918,99)</td>
+                        </tr>
+                        <tr>
+                            <td>IRR3</td>
+                            <td>6719</td>
+                            <td>150,00</td>
+                            <td>67,57</td>
+                            <td>R$ 5.233,50</td>
+                            <td>R$ 11.593,38</td>
+                            <td>R$ 8.598,29</td>
+                            <td class="val-neg">R$ (2.995,09)</td>
+                        </tr>
+                        <tr>
+                            <td>CHS2</td>
+                            <td>Neo750</td>
+                            <td>86,00</td>
+                            <td>67,09</td>
+                            <td>R$ 3.508,62</td>
+                            <td>R$ 9.868,50</td>
+                            <td>R$ 8.537,20</td>
+                            <td class="val-neg">R$ (1.331,30)</td>
+                        </tr>
+                        <tr>
+                            <td>CHL2</td>
+                            <td>Aporé</td>
+                            <td>87,00</td>
+                            <td>66,26</td>
+                            <td>R$ 3.491,24</td>
+                            <td>R$ 9.851,12</td>
+                            <td>R$ 8.431,60</td>
+                            <td class="val-neg">R$ (1.419,52)</td>
+                        </tr>
+                        <tr>
+                            <td>CHN3</td>
+                            <td>Neo750</td>
+                            <td>90,00</td>
+                            <td>64,90</td>
+                            <td>R$ 4.060,42</td>
+                            <td>R$ 10.420,30</td>
+                            <td>R$ 8.258,53</td>
+                            <td class="val-neg">R$ (2.161,78)</td>
+                        </tr>
+                        <tr>
+                            <td>CHN4</td>
+                            <td>Neo750</td>
+                            <td>74,10</td>
+                            <td>61,38</td>
+                            <td>R$ 4.012,69</td>
+                            <td>R$ 10.372,57</td>
+                            <td>R$ 7.810,60</td>
+                            <td class="val-neg">R$ (2.561,97)</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>CHN2 <span style="color:#ef4444; font-size:0.68rem;">✗ Pior</span></td>
+                            <td>Desafio</td>
+                            <td>60,00</td>
+                            <td class="val-neg">57,83</td>
+                            <td>R$ 4.219,24</td>
+                            <td>R$ 10.579,12</td>
+                            <td>R$ 7.358,87</td>
+                            <td class="val-neg">R$ (3.220,25)</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td colspan="2">MÉDIA / TOTAL</td>
+                            <td>1.749,14</td>
+                            <td>73,84</td>
+                            <td>R$ 4.335,26</td>
+                            <td>R$ 10.695,15</td>
+                            <td>R$ 9.396,15</td>
+                            <td class="val-neg">R$ (1.299,00)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Destaques Positivos</h4>
+                <p>
+                    <strong>IRR1 (Neo750, 135 ha):</strong> Único talhão com resultado positivo (R$ +1.325,61/ha).
+                    Combinou a maior produtividade (92,21 sc/ha) com custo controlado (R$ 10.408/ha).
+                    <br><br>
+                    <strong>IRR4 (Neo750, 120 ha):</strong> Segundo melhor resultado (R$ +888,05/ha).
+                    Produtividade de 87,93 sc/ha e menor custo entre irrigados (R$ 10.301/ha).
+                    <br><br>
+                    <strong>Padrão:</strong> Os dois talhões positivos são irrigados com variedade Neo750.
+                </p>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 Pontos Críticos</h4>
+                <p>
+                    <strong>CHN2 (Desafio, 60 ha):</strong> Pior resultado: -R$ 3.220,25/ha. Menor produtividade
+                    (57,83 sc/ha) com custo acima da média (R$ 10.579/ha).
+                    <br><br>
+                    <strong>IRR3 (6719, 150 ha):</strong> Segundo pior resultado: -R$ 2.995,09/ha.
+                    Maior custo da soja (R$ 11.593/ha) com produtividade abaixo da média (67,57 sc/ha).
+                    É o talhão com maior área irrigada — impacto no prejuízo total é expressivo.
+                    <br><br>
+                    <strong>Variedade 6719:</strong> Os 3 talhões com essa cultivar (IRR2, IRR3, IRR6) ficaram
+                    todos abaixo da média em produtividade e todos com resultado negativo pesado.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PONTO DE EQUILÍBRIO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚖️ Ponto de Equilíbrio</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 144,84/sc</div>
+                    <div class="kpi-sub">PMV (R$ 127,25) está 12,15% abaixo</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">84,05 sc/ha</div>
+                    <div class="kpi-sub">Produtiv. (73,84) está 12,14% abaixo</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Gap de Preço</div>
+                    <div class="kpi-value">R$ 17,59/sc</div>
+                    <div class="kpi-sub">Falta para atingir P.E. em valor</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">Gap de Produtividade</div>
+                    <div class="kpi-value">10,21 sc/ha</div>
+                    <div class="kpi-sub">Falta para atingir P.E. em quantidade</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Simulação: O que precisaria para empatar?</h4>
+                <p>
+                    Para a soja ter resultado zero (breakeven), precisaria de UMA destas condições:
+                    <br><br>
+                    • <strong>Cenário A (só preço):</strong> PMV de R$ 144,84/sc (+13,83% vs atual) — mantendo a produtividade
+                    <br>
+                    • <strong>Cenário B (só produtividade):</strong> 84,05 sc/ha (+13,82% vs atual) — mantendo o preço
+                    <br>
+                    • <strong>Cenário C (misto):</strong> PMV de R$ 135/sc + produtividade de 79,22 sc/ha
+                    <br>
+                    • <strong>Cenário D (só custo):</strong> Custo total de R$ 9.394/ha (-12,17% vs atual) — mantendo tudo
+                    <br><br>
+                    Na prática, o mais realista é uma combinação dos três pilares: reduzir custo, melhorar produtividade
+                    e travar preço a patamares melhores.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- ANÁLISE POR VARIEDADE -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🧬 Performance por Variedade</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variedade</th>
+                            <th>Nº Talhões</th>
+                            <th>Produt. Média</th>
+                            <th>Custo Médio/ha</th>
+                            <th>Resultado Médio/ha</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>Neo750 <span class="var-tag">★ Melhor</span></td>
+                            <td>7 talhões</td>
+                            <td class="val-pos">72,29</td>
+                            <td>R$ 10.268,48</td>
+                            <td class="val-neg">R$ (1.049,42)</td>
+                            <td class="val-warn">Menor prejuízo</td>
+                        </tr>
+                        <tr>
+                            <td>VA79</td>
+                            <td>5 talhões</td>
+                            <td>75,82</td>
+                            <td>R$ 10.721,58</td>
+                            <td class="val-neg">R$ (1.194,16)</td>
+                            <td class="val-neg">Prejuízo</td>
+                        </tr>
+                        <tr>
+                            <td>Aporé</td>
+                            <td>4 talhões</td>
+                            <td>70,36</td>
+                            <td>R$ 10.091,06</td>
+                            <td class="val-neg">R$ (1.137,87)</td>
+                            <td class="val-neg">Prejuízo</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>6719 <span style="color:#ef4444; font-size:0.68rem;">✗ Pior</span></td>
+                            <td>3 talhões</td>
+                            <td class="val-neg">69,80</td>
+                            <td class="val-neg">R$ 11.054,68</td>
+                            <td class="val-neg">R$ (2.173,05)</td>
+                            <td class="val-neg">Maior prejuízo</td>
+                        </tr>
+                        <tr>
+                            <td>Desafio</td>
+                            <td>2 talhões</td>
+                            <td>68,15</td>
+                            <td>R$ 10.921,67</td>
+                            <td class="val-neg">R$ (2.250,22)</td>
+                            <td class="val-neg">Prejuízo alto</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Recomendação por Variedade</h4>
+                <p>
+                    <strong>Neo750:</strong> Melhor desempenho geral — menor custo médio (R$ 10.268) e menor prejuízo.
+                    Foi a variedade nos dois únicos talhões positivos (IRR1 e IRR4). Manter e priorizar.
+                    <br><br>
+                    <strong>VA79:</strong> Maior produtividade média (75,82 sc/ha), mas custo mais elevado.
+                    Performance boa quando combinada com bom manejo (CHS4 = 76,74 sc/ha).
+                    <br><br>
+                    <strong>6719:</strong> Pior relação custo/produtividade. Maior custo médio (R$ 11.055)
+                    com menor produtividade (69,80 sc/ha). Recomenda-se <strong>reavaliar para a próxima safra</strong>.
+                    <br><br>
+                    <strong>Desafio:</strong> Apenas 2 talhões, mas desempenho fraco. O CHN2 foi o pior da soja inteira.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- ANÁLISE IRRIGADO vs SEQUEIRO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💧 Irrigado vs Sequeiro</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="kpi-card" style="border-color: rgba(59,130,246,0.3);">
+                    <div class="kpi-label">IRRIGADO (8 talhões)</div>
+                    <div class="kpi-value" style="font-size:1.1rem;">Produt: 77,86 sc/ha</div>
+                    <div class="kpi-sub">
+                        Custo: R$ 10.904,14/ha<br>
+                        Receita: R$ 9.906,17/ha<br>
+                        Resultado: <span class="val-neg">R$ (997,97)/ha</span>
+                    </div>
+                </div>
+                <div class="kpi-card" style="border-color: rgba(245,158,11,0.3);">
+                    <div class="kpi-label">SEQUEIRO (12 talhões)</div>
+                    <div class="kpi-value" style="font-size:1.1rem;">Produt: 69,43 sc/ha</div>
+                    <div class="kpi-sub">
+                        Custo: R$ 10.330,22/ha<br>
+                        Receita: R$ 8.835,02/ha<br>
+                        Resultado: <span class="val-neg">R$ (1.495,20)/ha</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Irrigado vs Sequeiro</h4>
+                <p>
+                    Os talhões irrigados tiveram <strong>produtividade 12,14% maior</strong> (77,86 vs 69,43 sc/ha),
+                    mas custo 5,56% superior (R$ 10.904 vs R$ 10.330/ha). No balanço final, o irrigado
+                    teve <strong>menor prejuízo por hectare</strong> (-R$ 998 vs -R$ 1.495), mostrando que
+                    a irrigação se paga parcialmente pelo ganho de produtividade.
+                    <br><br>
+                    O diferencial de R$ 497/ha a favor do irrigado em 8 talhões geraria uma economia de
+                    aproximadamente R$ 371 mil se toda a soja fosse irrigada — porém há limitação física de área sob pivô.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO CONSOLIDADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Resumo Financeiro Consolidado — Soja</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Área Total</td><td>1.749,14 ha</td></tr>
+                        <tr><td>Receita Total</td><td>R$ 16.435.396,75</td></tr>
+                        <tr><td>Custo Total</td><td>R$ 18.707.318,60</td></tr>
+                        <tr><td>Resultado</td><td class="val-neg">R$ (2.271.921,84)</td></tr>
+                        <tr><td>Lucratividade</td><td class="val-neg">-13,82%</td></tr>
+                        <tr><td>Rentabilidade</td><td class="val-neg">-12,14%</td></tr>
+                        <tr><td>Produtividade Média</td><td>73,84 sc/ha</td></tr>
+                        <tr><td>PMV</td><td>R$ 127,25/sc</td></tr>
+                        <tr><td>Custo Total/ha</td><td>R$ 10.695,15</td></tr>
+                        <tr><td>Insumos/ha</td><td>R$ 4.335,26</td></tr>
+                        <tr><td>P.E. em Valor</td><td>R$ 144,84/sc</td></tr>
+                        <tr><td>P.E. em Quantidade</td><td>84,05 sc/ha</td></tr>
+                        <tr><td>% Área da Fazenda</td><td>45,86%</td></tr>
+                        <tr><td>% do Custo Total</td><td>40,97%</td></tr>
+                        <tr><td>% do Faturamento</td><td>34,39%</td></tr>
+                        <tr><td>% do Lucro Total</td><td class="val-neg">-106,41%</td></tr>
+                        <tr><td>Talhões Positivos</td><td class="val-pos">2 de 20 (10%)</td></tr>
+                        <tr><td>Talhões Negativos</td><td class="val-neg">18 de 20 (90%)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>🎯 Conclusão — Soja Safra 22/23</h4>
+                <p>
+                    A soja foi a <strong>maior responsável pelo resultado apertado da safra</strong>.
+                    Com 45,86% da área, consumiu 40,97% dos custos mas gerou apenas 34,39% da receita,
+                    resultando em -106,41% do lucro total — ou seja, destruiu mais valor do que todo o lucro gerado.
+                    <br><br>
+                    <strong>Apenas 2 de 20 talhões foram positivos</strong> (IRR1 e IRR4, ambos Neo750 irrigados).
+                    A variedade 6719 teve o pior desempenho e deve ser reavaliada. O efeito tesoura
+                    (custo +24,67% e preço -27,49%) foi devastador.
+                    <br><br>
+                    <strong>Para a próxima safra:</strong> priorizar Neo750 em áreas irrigadas, reavaliar 6719 e Desafio,
+                    travamento antecipado de preço acima de R$ 145/sc, e meta de redução de custo/ha em pelo menos 10%.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

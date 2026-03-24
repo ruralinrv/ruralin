@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milho Semente Detalhado | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 20px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+        .kpi-card .kpi-label {
+            font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value { font-size: 1.5rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.76rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 750px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 12px 14px; text-align: right;
+            font-size: 0.7rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 14px; font-size: 0.84rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(239,68,68,0.04); }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-muted { color: #64748b; }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 80px 1fr 140px;
+            gap: 10px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.74rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 24px; background: rgba(30,41,59,0.6); border-radius: 5px; overflow: hidden;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 5px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 6px; font-size: 0.64rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .chart-bar-item .value { font-size: 0.8rem; color: #e2e8f0; font-weight: 600; }
+
+        .donut-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px; margin-bottom: 30px;
+        }
+        .donut-item {
+            background: rgba(30,41,59,0.4); border-radius: 10px; padding: 14px;
+            text-align: center; border: 1px solid rgba(71,85,105,0.2);
+        }
+        .donut-item .d-pct { font-size: 1.4rem; font-weight: 800; }
+        .donut-item .d-label { font-size: 0.68rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+        .donut-item .d-value { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+
+        /* Season toggle */
+        .season-tabs {
+            display: flex; gap: 0; margin-bottom: 25px;
+            background: rgba(30,41,59,0.5); border-radius: 12px;
+            overflow: hidden; border: 1px solid rgba(71,85,105,0.3);
+        }
+        .season-tab {
+            flex: 1; padding: 14px 20px; text-align: center;
+            font-size: 0.85rem; font-weight: 700; color: #94a3b8;
+            cursor: pointer; transition: all 0.3s; border: none; background: none;
+        }
+        .season-tab.active {
+            background: rgba(16,185,129,0.15); color: #10b981;
+            border-bottom: 3px solid #10b981;
+        }
+        .season-tab:hover:not(.active) { background: rgba(71,85,105,0.2); }
+        .season-content { display: none; }
+        .season-content.active { display: block; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .alert-box {
+            background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        /* Compare cards */
+        .compare-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 16px; margin-bottom: 30px;
+        }
+        .compare-card {
+            background: rgba(15,23,42,0.7); border-radius: 16px;
+            padding: 24px; text-align: center;
+        }
+        .compare-card .cc-label {
+            font-size: 0.72rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 12px;
+        }
+        .compare-card .cc-value {
+            font-size: 1.8rem; font-weight: 900; margin-bottom: 6px;
+        }
+        .compare-card .cc-sub { font-size: 0.78rem; color: #94a3b8; }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .chart-bar-item { grid-template-columns: 60px 1fr 110px; }
+            .compare-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🌽 Milho Semente — <span>Fazenda Modelo</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="analise-culturas.html" class="btn-back">🌱 Culturas</a>
+                    <a href="feijao-detalhado.html" class="btn-back">🫘 Feijão</a>
+                    <a href="soja-detalhado.html" class="btn-back">🫘 Soja</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- VISÃO GERAL CONSOLIDADA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🌽 Visão Geral — Milho Semente (Verão + Inverno)</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Área Total</div>
+                    <div class="kpi-value">840,00 ha</div>
+                    <div class="kpi-sub">Verão: 490 ha | Inverno: 350 ha</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">% da Área Cultivada</div>
+                    <div class="kpi-value">22,02%</div>
+                    <div class="kpi-sub">2ª maior cultura em área</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nº de Talhões</div>
+                    <div class="kpi-value">7</div>
+                    <div class="kpi-sub">4 verão + 3 inverno</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Receita Total</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 14,58 Mi</div>
+                    <div class="kpi-sub">30,51% do faturamento total</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Resultado Consolidado</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 3.129.572</div>
+                    <div class="kpi-sub">Lucrat. ponderada: <span class="val-pos">21,46%</span></div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">% do Lucro Total</div>
+                    <div class="kpi-value">146,58%</div>
+                    <div class="kpi-sub">2ª maior contribuição</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Duas Safras, Dois Resultados</h4>
+                <p>
+                    O milho semente é cultivado em duas épocas distintas: <strong>Verão</strong> (principal) e
+                    <strong>Inverno</strong> (irrigado). O desempenho entre as duas é drasticamente diferente:
+                    o verão gerou R$ 3,10 Mi de lucro com 32,83% de lucratividade, enquanto o inverno
+                    empatou com apenas R$ 33 mil (0,65%). O resultado consolidado é positivo graças ao verão.
+                </p>
+            </div>
+
+            <!-- COMPARATIVO VERÃO vs INVERNO -->
+            <div class="compare-grid">
+                <div class="compare-card" style="border: 2px solid rgba(16,185,129,0.3);">
+                    <div class="cc-label">☀️ Milho Semente Verão</div>
+                    <div class="cc-value val-pos">R$ 3.096.202</div>
+                    <div class="cc-sub">
+                        490 ha &bull; 4 talhões &bull; Lucrat: <strong class="val-pos">32,83%</strong>
+                        <br>Produtividade: 95,00 sc/ha &bull; PMV: R$ 320,00/sc
+                    </div>
+                </div>
+                <div class="compare-card" style="border: 2px solid rgba(245,158,11,0.3);">
+                    <div class="cc-label">❄️ Milho Semente Inverno</div>
+                    <div class="cc-value val-warn">R$ 33.369</div>
+                    <div class="cc-sub">
+                        350 ha &bull; 3 talhões &bull; Lucrat: <strong class="val-warn">0,65%</strong>
+                        <br>Produtividade: 78,50 sc/ha &bull; PMV: R$ 264,00/sc
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- TOGGLE VERÃO / INVERNO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="season-tabs">
+                <button class="season-tab active" onclick="showSeason('verao')">☀️ VERÃO (490 ha)</button>
+                <button class="season-tab" onclick="showSeason('inverno')">❄️ INVERNO (350 ha)</button>
+                <button class="season-tab" onclick="showSeason('consolidado')">📊 CONSOLIDADO</button>
+            </div>
+
+            <!-- ═══════════════════════ VERÃO ═══════════════════════ -->
+            <div class="season-content active" id="season-verao">
+
+                <div class="section-title">☀️ Milho Semente Verão — Resumo</div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Área</div>
+                        <div class="kpi-value">490,00 ha</div>
+                        <div class="kpi-sub">100% irrigado (pivôs)</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Produtividade Média</div>
+                        <div class="kpi-value">95,00 sc/ha</div>
+                        <div class="kpi-sub">Variação: 88,42 a 102,31 sc/ha</div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">PMV</div>
+                        <div class="kpi-value">R$ 320,00/sc</div>
+                        <div class="kpi-sub">Preço premium de semente</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Custo Total Médio/ha</div>
+                        <div class="kpi-value" style="font-size:1.2rem;">R$ 12.927,18</div>
+                        <div class="kpi-sub">Insumos: R$ 6.066,02/ha</div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">Resultado Total</div>
+                        <div class="kpi-value" style="font-size:1.2rem;">R$ 3.096.202</div>
+                        <div class="kpi-sub">Lucrat: <span class="val-pos">32,83%</span></div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">P.E. em Valor</div>
+                        <div class="kpi-value">R$ 214,92/sc</div>
+                        <div class="kpi-sub">PMV está <span class="val-pos">48,89%</span> acima</div>
+                    </div>
+                </div>
+
+                <!-- Talhões Verão -->
+                <div class="section-title" style="font-size:1rem;">📊 Produtividade por Talhão — Verão</div>
+
+                <div class="chart-bar-group">
+                    <div class="chart-bar-item">
+                        <div class="label">IRR1</div>
+                        <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">102,31</div></div>
+                        <div class="value val-pos"><strong>102,31 ★</strong></div>
+                    </div>
+                    <div class="chart-bar-item">
+                        <div class="label">IRR2</div>
+                        <div class="bar-track"><div class="bar-fill bar-green" style="width:96%;">98,21</div></div>
+                        <div class="value val-pos">98,21</div>
+                    </div>
+                    <div class="chart-bar-item">
+                        <div class="label">IRR3</div>
+                        <div class="bar-track"><div class="bar-fill bar-blue" style="width:89%;">91,06</div></div>
+                        <div class="value">91,06</div>
+                    </div>
+                    <div class="chart-bar-item">
+                        <div class="label">IRR6</div>
+                        <div class="bar-track"><div class="bar-fill bar-amber" style="width:86.4%;">88,42</div></div>
+                        <div class="value">88,42</div>
+                    </div>
+                </div>
+
+                <!-- Tabela completa Verão -->
+                <div class="section-title" style="font-size:1rem;">📋 Tabela Completa — Verão (4 Talhões)</div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Talhão</th>
+                                <th>Área (ha)</th>
+                                <th>Produt. (sc/ha)</th>
+                                <th>Insumos/ha</th>
+                                <th>Custo Total/ha</th>
+                                <th>Receita/ha</th>
+                                <th>Resultado/ha</th>
+                                <th>Lucrat.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-best">
+                                <td>IRR1 ★</td>
+                                <td>135,00</td>
+                                <td class="val-pos">102,31</td>
+                                <td>R$ 5.881,20</td>
+                                <td>R$ 12.540,08</td>
+                                <td>R$ 32.739,20</td>
+                                <td class="val-pos">R$ 20.199,12</td>
+                                <td class="val-pos">61,69%</td>
+                            </tr>
+                            <tr>
+                                <td>IRR2</td>
+                                <td>95,00</td>
+                                <td>98,21</td>
+                                <td>R$ 6.209,41</td>
+                                <td>R$ 12.868,29</td>
+                                <td>R$ 31.427,20</td>
+                                <td class="val-pos">R$ 18.558,91</td>
+                                <td class="val-pos">59,05%</td>
+                            </tr>
+                            <tr>
+                                <td>IRR3</td>
+                                <td>150,00</td>
+                                <td>91,06</td>
+                                <td>R$ 6.280,48</td>
+                                <td>R$ 13.139,36</td>
+                                <td>R$ 29.139,20</td>
+                                <td class="val-pos">R$ 15.999,84</td>
+                                <td class="val-pos">54,91%</td>
+                            </tr>
+                            <tr class="row-worst">
+                                <td>IRR6</td>
+                                <td>110,00</td>
+                                <td>88,42</td>
+                                <td>R$ 5.893,01</td>
+                                <td>R$ 13.160,99</td>
+                                <td>R$ 28.294,40</td>
+                                <td class="val-pos">R$ 15.133,41</td>
+                                <td class="val-pos">53,49%</td>
+                            </tr>
+                            <tr class="row-total">
+                                <td colspan="2">MÉDIA / 490 ha</td>
+                                <td>95,00</td>
+                                <td>R$ 6.066,02</td>
+                                <td>R$ 12.927,18</td>
+                                <td>R$ 19.250,04</td>
+                                <td class="val-pos">R$ 6.322,86</td>
+                                <td class="val-pos">32,83%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="success-box">
+                    <h4>✅ Verão — 100% dos Talhões Lucrativos</h4>
+                    <p>
+                        O milho semente verão teve desempenho excepcional: <strong>todos os 4 talhões positivos</strong>
+                        com lucratividade entre 53,49% e 61,69%. O IRR1 se destaca como o talhão com maior
+                        produtividade (102,31 sc/ha) e maior resultado/ha (R$ 20.199,12).
+                        <br><br>
+                        O PMV de R$ 320/sc (preço de semente certificada) é o diferencial — gera receita/ha
+                        de R$ 19.250 vs R$ 9.396 da soja. Mesmo com custo maior, a receita premium compensa com folga.
+                    </p>
+                </div>
+
+                <!-- Composição de Insumos Verão -->
+                <div class="section-title" style="font-size:1rem;">🧪 Composição dos Insumos/ha — Verão</div>
+
+                <div class="donut-grid">
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#ef4444;">42%</div>
+                        <div class="d-label">Fertilizantes</div>
+                        <div class="d-value">R$ 2.547,73</div>
+                    </div>
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#8b5cf6;">16%</div>
+                        <div class="d-label">Fungicida</div>
+                        <div class="d-value">R$ 970,56</div>
+                    </div>
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#3b82f6;">15%</div>
+                        <div class="d-label">Herbicida</div>
+                        <div class="d-value">R$ 909,90</div>
+                    </div>
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#f59e0b;">12%</div>
+                        <div class="d-label">Inseticida</div>
+                        <div class="d-value">R$ 727,92</div>
+                    </div>
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#10b981;">8%</div>
+                        <div class="d-label">Sementes</div>
+                        <div class="d-value">R$ 485,28</div>
+                    </div>
+                    <div class="donut-item">
+                        <div class="d-pct" style="color:#64748b;">7%</div>
+                        <div class="d-label">Outros</div>
+                        <div class="d-value">R$ 424,63</div>
+                    </div>
+                </div>
+
+                <!-- P.E. Verão -->
+                <div class="section-title" style="font-size:1rem;">⚖️ Ponto de Equilíbrio — Verão</div>
+
+                <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">P.E. em Valor</div>
+                        <div class="kpi-value">R$ 214,92/sc</div>
+                        <div class="kpi-sub">PMV +48,89% acima</div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">P.E. em Quantidade</div>
+                        <div class="kpi-value">63,87 sc/ha</div>
+                        <div class="kpi-sub">Produtiv. +48,73% acima</div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">Margem Preço</div>
+                        <div class="kpi-value">R$ 105,08/sc</div>
+                        <div class="kpi-sub">Folga excepcional</div>
+                    </div>
+                    <div class="kpi-card positive">
+                        <div class="kpi-label">Margem Produtividade</div>
+                        <div class="kpi-value">31,13 sc/ha</div>
+                        <div class="kpi-sub">Folga excepcional</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══════════════════════ INVERNO ═══════════════════════ -->
+            <div class="season-content" id="season-inverno">
+
+                <div class="section-title">❄️ Milho Semente Inverno — Resumo</div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Área</div>
+                        <div class="kpi-value">350,00 ha</div>
+                        <div class="kpi-sub">100% irrigado (pivôs)</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Produtividade Média</div>
+                        <div class="kpi-value">78,50 sc/ha</div>
+                        <div class="kpi-sub">Variação: 72,18 a 86,34 sc/ha</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">PMV</div>
+                        <div class="kpi-value">R$ 264,00/sc</div>
+                        <div class="kpi-sub">17,5% menor que verão</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Custo Total Médio/ha</div>
+                        <div class="kpi-value" style="font-size:1.2rem;">R$ 14.626,46</div>
+                        <div class="kpi-sub">Insumos: R$ 7.265,30/ha</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">Resultado Total</div>
+                        <div class="kpi-value" style="font-size:1.2rem;">R$ 33.369</div>
+                        <div class="kpi-sub">Lucrat: <span class="val-warn">0,65%</span></div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">P.E. em Valor</div>
+                        <div class="kpi-value">R$ 262,29/sc</div>
+                        <div class="kpi-sub">PMV está apenas <span class="val-warn">0,65%</span> acima</div>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Inverno — Na Linha do Breakeven</h4>
+                    <p>
+                        O milho semente inverno operou <strong>na margem exata do empate</strong>:
+                        lucratividade de apenas 0,65% e resultado total de R$ 33.369 em 350 ha.
+                        O PMV de R$ 264/sc (17,5% menor que o verão) combinado com custo/ha 13,14% maior
+                        (R$ 14.626 vs R$ 12.927 do verão) comprimiu a margem quase a zero.
+                        <br><br>
+                        <strong>Qualquer pequena variação negativa</strong> (produtividade 1 sc/ha menor ou custo
+                        2% maior) teria transformado o inverno em prejuízo.
+                    </p>
+                </div>
+
+                <!-- Talhões Inverno -->
+                <div class="section-title" style="font-size:1rem;">📊 Produtividade por Talhão — Inverno</div>
+
+                <div class="chart-bar-group">
+                    <div class="chart-bar-item">
+                        <div class="label">IRR3-I</div>
+                        <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">86,34</div></div>
+                        <div class="value val-pos"><strong>86,34 ★</strong></div>
+                    </div>
+                    <div class="chart-bar-item">
+                        <div class="label">IRR6-I</div>
+                        <div class="bar-track"><div class="bar-fill bar-blue" style="width:88.8%;">76,97</div></div>
+                        <div class="value">76,97</div>
+                    </div>
+                    <div class="chart-bar-item">
+                        <div class="label">IRR2-I</div>
+                        <div class="bar-track"><div class="bar-fill bar-amber" style="width:83.6%;">72,18</div></div>
+                        <div class="value val-warn">72,18</div>
+                    </div>
+                </div>
+
+                <!-- Tabela completa Inverno -->
+                <div class="section-title" style="font-size:1rem;">📋 Tabela Completa — Inverno (3 Talhões)</div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Talhão</th>
+                                <th>Área (ha)</th>
+                                <th>Produt. (sc/ha)</th>
+                                <th>Insumos/ha</th>
+                                <th>Custo Total/ha</th>
+                                <th>Receita/ha</th>
+                                <th>Resultado/ha</th>
+                                <th>Lucrat.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-best">
+                                <td>IRR3-I ★</td>
+                                <td>150,00</td>
+                                <td class="val-pos">86,34</td>
+                                <td>R$ 7.518,30</td>
+                                <td>R$ 14.877,18</td>
+                                <td>R$ 22.793,76</td>
+                                <td class="val-pos">R$ 7.916,58</td>
+                                <td class="val-pos">34,73%</td>
+                            </tr>
+                            <tr>
+                                <td>IRR6-I</td>
+                                <td>110,00</td>
+                                <td>76,97</td>
+                                <td>R$ 7.085,82</td>
+                                <td>R$ 14.445,70</td>
+                                <td>R$ 20.320,08</td>
+                                <td class="val-pos">R$ 5.874,38</td>
+                                <td class="val-pos">28,91%</td>
+                            </tr>
+                            <tr class="row-worst">
+                                <td>IRR2-I</td>
+                                <td>90,00</td>
+                                <td class="val-neg">72,18</td>
+                                <td>R$ 7.191,78</td>
+                                <td>R$ 14.556,50</td>
+                                <td>R$ 19.055,52</td>
+                                <td class="val-neg">R$ (15.500,98)</td>
+                                <td class="val-neg">-81,34%</td>
+                            </tr>
+                            <tr class="row-total">
+                                <td colspan="2">MÉDIA / 350 ha</td>
+                                <td>78,50</td>
+                                <td>R$ 7.265,30</td>
+                                <td>R$ 14.626,46</td>
+                                <td>R$ 14.721,80</td>
+                                <td class="val-warn">R$ 95,34</td>
+                                <td class="val-warn">0,65%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-box">
+                    <h4>💡 Análise do Inverno</h4>
+                    <p>
+                        <strong>IRR3-I</strong> e <strong>IRR6-I</strong> tiveram bom desempenho (34,73% e 28,91% de lucratividade),
+                        mas o <strong>IRR2-I</strong> teve resultado fortemente negativo (-81,34%), puxando
+                        a média consolidada para quase zero.
+                        <br><br>
+                        O IRR2-I combinou a <strong>menor produtividade</strong> (72,18 sc/ha) com custo elevado,
+                        gerando prejuízo pesado que praticamente anulou o lucro dos outros dois talhões.
+                        <br><br>
+                        <strong>Sem o IRR2-I</strong>, o inverno teria lucratividade de ~30% — a questão foi pontual deste talhão.
+                    </p>
+                </div>
+
+                <!-- P.E. Inverno -->
+                <div class="section-title" style="font-size:1rem;">⚖️ Ponto de Equilíbrio — Inverno</div>
+
+                <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">P.E. em Valor</div>
+                        <div class="kpi-value">R$ 262,29/sc</div>
+                        <div class="kpi-sub">PMV apenas 0,65% acima</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">P.E. em Quantidade</div>
+                        <div class="kpi-value">77,99 sc/ha</div>
+                        <div class="kpi-sub">Produtiv. apenas 0,65% acima</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">Margem Preço</div>
+                        <div class="kpi-value">R$ 1,71/sc</div>
+                        <div class="kpi-sub">Margem mínima</div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-label">Margem Produtividade</div>
+                        <div class="kpi-value">0,51 sc/ha</div>
+                        <div class="kpi-sub">Margem mínima</div>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <h4>⚠️ Margem de Segurança Quase Zero</h4>
+                    <p>
+                        O P.E. em valor é R$ 262,29/sc e o PMV foi R$ 264,00 — diferença de apenas <strong>R$ 1,71/sc</strong>.
+                        Da mesma forma, o P.E. em quantidade é 77,99 sc/ha e a produtividade foi 78,50 —
+                        margem de <strong>0,51 sc/ha</strong>. Não havia margem de erro.
+                        <br><br>
+                        Para tornar o inverno tão rentável quanto o verão, seria necessário:
+                        <br>• Aumentar PMV para ~R$ 310/sc (+17,4%), ou
+                        <br>• Reduzir custo/ha em R$ 2.000 (-13,7%), ou
+                        <br>• Elevar produtividade para ~92 sc/ha (+17,2%)
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ═══════════════════════ CONSOLIDADO ═══════════════════════ -->
+            <div class="season-content" id="season-consolidado">
+
+                <div class="section-title">📊 Consolidado — Verão + Inverno</div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>☀️ Verão</th>
+                                <th>❄️ Inverno</th>
+                                <th>📊 Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Área</td>
+                                <td>490,00 ha</td>
+                                <td>350,00 ha</td>
+                                <td class="val-pos">840,00 ha</td>
+                            </tr>
+                            <tr>
+                                <td>Receita Total</td>
+                                <td>R$ 9.431.520</td>
+                                <td>R$ 5.152.631</td>
+                                <td>R$ 14.584.151</td>
+                            </tr>
+                            <tr>
+                                <td>Custo Total</td>
+                                <td>R$ 6.335.318</td>
+                                <td>R$ 5.119.262</td>
+                                <td>R$ 11.454.580</td>
+                            </tr>
+                            <tr>
+                                <td>Resultado</td>
+                                <td class="val-pos">R$ 3.096.202</td>
+                                <td class="val-warn">R$ 33.369</td>
+                                <td class="val-pos">R$ 3.129.572</td>
+                            </tr>
+                            <tr>
+                                <td>Lucratividade</td>
+                                <td class="val-pos">32,83%</td>
+                                <td class="val-warn">0,65%</td>
+                                <td class="val-pos">21,46%</td>
+                            </tr>
+                            <tr>
+                                <td>Produtividade</td>
+                                <td>95,00 sc/ha</td>
+                                <td>78,50 sc/ha</td>
+                                <td>88,13 sc/ha</td>
+                            </tr>
+                            <tr>
+                                <td>PMV</td>
+                                <td>R$ 320,00/sc</td>
+                                <td>R$ 264,00/sc</td>
+                                <td>R$ 296,67/sc</td>
+                            </tr>
+                            <tr>
+                                <td>Custo/ha</td>
+                                <td>R$ 12.927,18</td>
+                                <td>R$ 14.626,46</td>
+                                <td>R$ 13.636,40</td>
+                            </tr>
+                            <tr>
+                                <td>Insumos/ha</td>
+                                <td>R$ 6.066,02</td>
+                                <td>R$ 7.265,30</td>
+                                <td>R$ 6.565,59</td>
+                            </tr>
+                            <tr>
+                                <td>Talhões Positivos</td>
+                                <td class="val-pos">4/4 (100%)</td>
+                                <td class="val-warn">2/3 (67%)</td>
+                                <td class="val-pos">6/7 (86%)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="insight-box">
+                    <h4>💡 O Paradoxo Verão vs Inverno</h4>
+                    <p>
+                        O inverno custa <strong>13,14% a mais por hectare</strong> (R$ 14.626 vs R$ 12.927),
+                        tem produtividade <strong>17,37% menor</strong> (78,50 vs 95,00 sc/ha) e
+                        PMV <strong>17,50% menor</strong> (R$ 264 vs R$ 320/sc). A combinação tripla
+                        (custo maior + produtividade menor + preço menor) explica a diferença abissal
+                        de lucratividade: 32,83% (verão) vs 0,65% (inverno).
+                        <br><br>
+                        <strong>Recomendação:</strong> priorizar a expansão do milho semente verão.
+                        O inverno só compensa com PMV acima de R$ 300/sc ou custo/ha abaixo de R$ 13.000.
+                    </p>
+                </div>
+
+                <!-- Resumo consolidado final -->
+                <div class="section-title" style="font-size:1rem;">📋 Resumo Financeiro Final — Milho Semente</div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicador</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Área Total</td><td>840,00 ha (490 verão + 350 inverno)</td></tr>
+                            <tr><td>Receita Total</td><td>R$ 14.584.151,50</td></tr>
+                            <tr><td>Custo Total</td><td>R$ 11.454.579,83</td></tr>
+                            <tr><td>Resultado</td><td class="val-pos">R$ 3.129.571,67</td></tr>
+                            <tr><td>Lucratividade Ponderada</td><td class="val-pos">21,46%</td></tr>
+                            <tr><td>% Área da Fazenda</td><td>22,02%</td></tr>
+                            <tr><td>% do Custo Total</td><td>25,09%</td></tr>
+                            <tr><td>% do Faturamento</td><td>30,51%</td></tr>
+                            <tr><td>% do Lucro Total</td><td class="val-pos">146,58%</td></tr>
+                            <tr><td>Talhões Positivos</td><td class="val-pos">6 de 7 (86%)</td></tr>
+                            <tr><td>Melhor Talhão</td><td class="val-pos">IRR1 Verão — R$ 20.199/ha (61,69%)</td></tr>
+                            <tr><td>Pior Talhão</td><td class="val-neg">IRR2-I Inverno — R$ (15.501)/ha (-81,34%)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CONCLUSÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎯 Conclusão — Milho Semente</div>
+
+            <div class="success-box">
+                <h4>✅ Diagnóstico Final</h4>
+                <p>
+                    O milho semente é a <strong>segunda cultura mais importante da fazenda</strong>,
+                    respondendo por 146,58% do lucro total com 22,02% da área. É uma cultura de
+                    <strong>alto valor agregado</strong> (preço de semente certificada) que justifica
+                    os custos mais elevados de produção.
+                    <br><br>
+                    <strong>Verão:</strong> Performance excepcional — 32,83% de lucratividade, 100% dos talhões positivos,
+                    margem de segurança de ~49% sobre o P.E. <strong>Expandir ao máximo.</strong>
+                    <br><br>
+                    <strong>Inverno:</strong> Operou no breakeven (0,65%). O problema foi localizado no IRR2-I.
+                    Os outros 2 talhões tiveram boa performance (~30% lucratividade). <strong>Manter com cautela</strong>,
+                    renegociar PMV e revisar manejo do IRR2-I.
+                    <br><br>
+                    <strong>Para a próxima safra:</strong>
+                    <br>• Expandir área de verão (prioridade máxima)
+                    <br>• Investigar causa da baixa produtividade do IRR2-I
+                    <br>• Negociar PMV de inverno acima de R$ 300/sc
+                    <br>• Meta: manter lucratividade consolidada acima de 25%
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        // Season tabs
+        function showSeason(season) {
+            document.querySelectorAll('.season-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.season-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('season-' + season).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

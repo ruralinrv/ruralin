@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Avançada | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1500px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.2rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.78rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1500px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.12rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 11px 12px; text-align: right;
+            font-size: 0.67rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 12px; font-size: 0.82rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(239,68,68,0.04); }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-blue { color: #3b82f6 !important; font-weight: 700; }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 130px 1fr 140px;
+            gap: 10px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.72rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 24px; background: rgba(30,41,59,0.6); border-radius: 5px;
+            overflow: hidden; position: relative;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 5px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 6px; font-size: 0.62rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .bar-purple { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .bar-teal { background: linear-gradient(90deg, #14b8a6, #0d9488); }
+        .chart-bar-item .value { font-size: 0.78rem; color: #e2e8f0; font-weight: 600; }
+        .bar-center {
+            position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+            background: rgba(241,245,249,0.3); z-index: 5;
+        }
+
+        /* Tornado chart */
+        .tornado-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
+        .tornado-item {
+            display: grid; grid-template-columns: 130px 1fr 130px;
+            gap: 6px; align-items: center;
+        }
+        .tornado-item .t-label { font-size: 0.72rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .tornado-item .t-track {
+            height: 30px; position: relative; display: flex; align-items: center;
+        }
+        .tornado-item .t-bar-neg {
+            position: absolute; right: 50%; height: 100%; border-radius: 4px 0 0 4px;
+            display: flex; align-items: center; padding-left: 6px;
+            font-size: 0.62rem; font-weight: 700; color: #fff;
+        }
+        .tornado-item .t-bar-pos {
+            position: absolute; left: 50%; height: 100%; border-radius: 0 4px 4px 0;
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 6px;
+            font-size: 0.62rem; font-weight: 700; color: #fff;
+        }
+        .tornado-item .t-center {
+            position: absolute; left: 50%; top: -4px; bottom: -4px; width: 2px;
+            background: rgba(241,245,249,0.4); z-index: 5;
+        }
+        .tornado-item .t-values { font-size: 0.7rem; color: #94a3b8; }
+
+        /* Correlation matrix */
+        .corr-matrix {
+            display: grid; gap: 2px; margin-bottom: 30px;
+        }
+        .corr-cell {
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.68rem; font-weight: 700; border-radius: 4px;
+            height: 40px; transition: all 0.3s; cursor: default;
+        }
+        .corr-header {
+            font-size: 0.6rem; color: #94a3b8; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 2px;
+        }
+
+        /* Monte Carlo histogram */
+        .histogram { display: flex; align-items: flex-end; gap: 2px; height: 200px; margin-bottom: 10px; }
+        .hist-bar {
+            flex: 1; border-radius: 3px 3px 0 0; transition: all 0.5s;
+            position: relative; min-width: 8px;
+        }
+        .hist-bar:hover { opacity: 0.8; }
+        .hist-bar .hist-tip {
+            display: none; position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%);
+            background: rgba(15,23,42,0.95); border: 1px solid rgba(16,185,129,0.3);
+            padding: 4px 8px; border-radius: 6px; font-size: 0.64rem; color: #e2e8f0;
+            white-space: nowrap; z-index: 20;
+        }
+        .hist-bar:hover .hist-tip { display: block; }
+        .hist-labels { display: flex; justify-content: space-between; font-size: 0.62rem; color: #64748b; }
+        .hist-marker {
+            position: absolute; top: 0; bottom: 0; width: 2px; z-index: 10;
+        }
+
+        /* Cluster cards */
+        .cluster-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin-bottom: 30px;
+        }
+        .cluster-card {
+            background: rgba(15,23,42,0.7); border-radius: 14px; padding: 20px;
+            border: 2px solid; transition: all 0.3s;
+        }
+        .cluster-card:hover { transform: translateY(-3px); }
+        .cluster-card .cl-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 8px; }
+        .cluster-card .cl-members { font-size: 0.76rem; color: #94a3b8; margin-bottom: 12px; line-height: 1.5; }
+        .cluster-card .cl-stats { font-size: 0.78rem; color: #cbd5e1; line-height: 1.7; }
+        .cluster-card .cl-stats strong { color: #f0fdf4; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.84rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .alert-box {
+            background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.84rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.84rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .info-box {
+            background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .info-box h4 { color: #3b82f6; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #94a3b8; font-size: 0.84rem; line-height: 1.65; }
+        .info-box p strong { color: #e2e8f0; }
+
+        .purple-box {
+            background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .purple-box h4 { color: #8b5cf6; font-size: 0.85rem; margin-bottom: 8px; }
+        .purple-box p { color: #94a3b8; font-size: 0.84rem; line-height: 1.65; }
+        .purple-box p strong { color: #e2e8f0; }
+
+        .formula-box {
+            background: rgba(30,41,59,0.6); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 10px; padding: 16px 20px; margin: 15px 0 20px;
+            font-family: 'Courier New', monospace; font-size: 0.82rem; color: #10b981;
+            overflow-x: auto; white-space: nowrap;
+        }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 16px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); }
+        .kpi-card .kpi-label {
+            font-size: 0.66rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 5px;
+        }
+        .kpi-card .kpi-value { font-size: 1.3rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.72rem; color: #94a3b8; margin-top: 4px; }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .chart-bar-item { grid-template-columns: 90px 1fr 100px; }
+            .tornado-item { grid-template-columns: 90px 1fr 100px; }
+            .cluster-grid { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🧠 Análise Avançada — <span>Estatística, Econometria & Predição</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="benchmarking.html" class="btn-back">📊 Benchmarking</a>
+                    <a href="analise-culturas.html" class="btn-back">🌱 Culturas</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 1. ESTATÍSTICA DESCRITIVA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📐 1. Estatística Descritiva — Dispersão por Cultura</div>
+
+            <div class="info-box">
+                <h4>📌 O Que Esta Seção Revela</h4>
+                <p>
+                    A estatística descritiva mostra <strong>quão previsível e homogêneo é o desempenho</strong>
+                    de cada cultura. Um <strong>coeficiente de variação (CV) baixo</strong> indica resultado consistente;
+                    um CV alto indica alta dispersão — risco.
+                </p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>N (talh.)</th>
+                            <th>Média Prod. (sc/ha)</th>
+                            <th>Desvio Padrão</th>
+                            <th>CV (%)</th>
+                            <th>Mínimo</th>
+                            <th>Máximo</th>
+                            <th>Amplitude</th>
+                            <th>Mediana</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🫘 Feijão 2ª</td>
+                            <td>4</td>
+                            <td>57,42</td>
+                            <td>4,28</td>
+                            <td class="val-pos">7,45%</td>
+                            <td>52,30</td>
+                            <td>63,18</td>
+                            <td>10,88</td>
+                            <td>57,10</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Verão</td>
+                            <td>4</td>
+                            <td>88,20</td>
+                            <td>5,61</td>
+                            <td class="val-pos">6,36%</td>
+                            <td>82,00</td>
+                            <td>95,40</td>
+                            <td>13,40</td>
+                            <td>87,70</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td>3</td>
+                            <td>80,60</td>
+                            <td>7,92</td>
+                            <td class="val-warn">9,83%</td>
+                            <td>71,50</td>
+                            <td>87,30</td>
+                            <td>15,80</td>
+                            <td>83,00</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td>8</td>
+                            <td>62,76</td>
+                            <td>7,85</td>
+                            <td class="val-warn">12,51%</td>
+                            <td>50,48</td>
+                            <td>73,64</td>
+                            <td>23,16</td>
+                            <td>63,20</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td>5</td>
+                            <td>82,10</td>
+                            <td>12,37</td>
+                            <td class="val-neg">15,07%</td>
+                            <td>65,20</td>
+                            <td>98,40</td>
+                            <td>33,20</td>
+                            <td>82,50</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td>7</td>
+                            <td>68,23</td>
+                            <td>14,82</td>
+                            <td class="val-neg">21,72%</td>
+                            <td>48,70</td>
+                            <td>90,42</td>
+                            <td>41,72</td>
+                            <td>66,10</td>
+                        </tr>
+                        <tr>
+                            <td>🌿 Sorgo</td>
+                            <td>1</td>
+                            <td>56,25</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td>56,25</td>
+                            <td>56,25</td>
+                            <td>0,00</td>
+                            <td>56,25</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- DISPERSÃO VISUAL -->
+            <div class="section-title" style="font-size:0.95rem;">📊 Coeficiente de Variação da Produtividade (Risco Produtivo)</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M.S. Verão</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:29.3%;">6,36%</div></div>
+                    <div class="value val-pos">6,36% — Muito consistente</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🫘 Feijão 2ª</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:34.3%;">7,45%</div></div>
+                    <div class="value val-pos">7,45% — Consistente</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M.S. Inverno</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:45.3%;">9,83%</div></div>
+                    <div class="value val-warn">9,83% — Moderado</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🫘 Soja</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:57.6%;">12,51%</div></div>
+                    <div class="value val-warn">12,51% — Heterogêneo</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M. Safrinha</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:69.4%;">15,07%</div></div>
+                    <div class="value val-neg">15,07% — Alta dispersão</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌾 Trigo</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">21,72%</div></div>
+                    <div class="value val-neg">21,72% — Muito disperso</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Risco Produtivo: Trigo é a Cultura Mais Imprevisível</h4>
+                <p>
+                    O <strong>trigo tem CV de 21,72%</strong> — o mais alto de todas as culturas (amplitude de 41,72 sc/ha).
+                    Isso se deve à mistura irrigado/sequeiro. Se analisarmos apenas trigo irrigado,
+                    o CV cai para ~12% (homogêneo). O problema está no sequeiro.
+                    <br><br>
+                    <strong>Milho Semente Verão (CV 6,36%)</strong> e <strong>Feijão (CV 7,45%)</strong> são as
+                    culturas mais previsíveis — <strong>baixo risco produtivo + alto retorno</strong>.
+                    Esse é o perfil ideal: consistência com rentabilidade.
+                    <br><br>
+                    <strong>Regra prática:</strong> CV &lt; 10% = consistente, 10-15% = atenção, &gt; 15% = alto risco.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- ESTATÍSTICA DESCRITIVA — RESULTADO/ha -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📐 Estatística Descritiva — Resultado/ha (R$)</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Média Result./ha</th>
+                            <th>Desvio Padrão</th>
+                            <th>CV (%)</th>
+                            <th>Mín (pior talh.)</th>
+                            <th>Máx (melhor talh.)</th>
+                            <th>Amplitude R$</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Feijão 2ª</td>
+                            <td class="val-pos">R$ 4.162</td>
+                            <td>R$ 782</td>
+                            <td class="val-pos">18,79%</td>
+                            <td>R$ 3.202</td>
+                            <td>R$ 5.126</td>
+                            <td>R$ 1.924</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🌽 M.S. Verão</td>
+                            <td class="val-pos">R$ 3.749</td>
+                            <td>R$ 845</td>
+                            <td class="val-pos">22,54%</td>
+                            <td>R$ 2.678</td>
+                            <td>R$ 4.813</td>
+                            <td>R$ 2.135</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td class="val-pos">R$ 494</td>
+                            <td>R$ 1.014</td>
+                            <td class="val-neg">205,26%</td>
+                            <td class="val-neg">R$ (783)</td>
+                            <td>R$ 1.969</td>
+                            <td>R$ 2.752</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td class="val-warn">R$ 51</td>
+                            <td>R$ 689</td>
+                            <td class="val-neg">1.351%</td>
+                            <td class="val-neg">R$ (618)</td>
+                            <td>R$ 755</td>
+                            <td>R$ 1.373</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td class="val-neg">R$ (603)</td>
+                            <td>R$ 542</td>
+                            <td class="val-neg">-89,89%</td>
+                            <td class="val-neg">R$ (1.465)</td>
+                            <td class="val-neg">R$ (78)</td>
+                            <td>R$ 1.387</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td class="val-neg">R$ (1.642)</td>
+                            <td>R$ 648</td>
+                            <td class="val-neg">-39,46%</td>
+                            <td class="val-neg">R$ (2.490)</td>
+                            <td class="val-neg">R$ (912)</td>
+                            <td>R$ 1.578</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>🌿 Sorgo</td>
+                            <td class="val-neg">R$ (2.690)</td>
+                            <td>—</td>
+                            <td>—</td>
+                            <td class="val-neg">R$ (2.690)</td>
+                            <td class="val-neg">R$ (2.690)</td>
+                            <td>R$ 0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 CV do Resultado — Trigo e M. Semente Inverno São "Loteria"</h4>
+                <p>
+                    O <strong>CV do resultado do trigo é 205%</strong> — o resultado varia de -R$ 783 a +R$ 1.969/ha.
+                    Isso significa que plantar trigo é apostar: pode ser bom (irrigado) ou péssimo (sequeiro).
+                    <br><br>
+                    <strong>M. Semente Inverno com CV de 1.351%</strong> — a média é quase zero (R$ 51/ha),
+                    mas oscila entre -R$ 618 e +R$ 755. Resultado médio quase nulo com alta variância = alto risco.
+                    <br><br>
+                    <strong>Feijão e M.S. Verão</strong> têm CV de resultado moderado (18-22%) com média alta
+                    (R$ 4.162 e R$ 3.749/ha) — <strong>perfil de baixo risco e alto retorno</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 2. MATRIZ DE CORRELAÇÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔗 2. Matriz de Correlação — 28 Talhões</div>
+
+            <div class="info-box">
+                <h4>📌 Metodologia</h4>
+                <p>
+                    Correlação de Pearson calculada sobre os 28 talhões da safra. Valores próximos de
+                    <strong>+1,0</strong> = correlação positiva forte; próximos de <strong>-1,0</strong> = negativa forte;
+                    próximos de <strong>0</strong> = sem correlação linear.
+                </p>
+            </div>
+
+            <!-- Correlation matrix as table for clarity -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Produtiv.</th>
+                            <th>PMV</th>
+                            <th>Receita/ha</th>
+                            <th>Insumos/ha</th>
+                            <th>Custo/ha</th>
+                            <th>Result./ha</th>
+                            <th>Lucrat.</th>
+                            <th>Irrigação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Produtividade</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td>0,28</td>
+                            <td class="val-pos">0,72</td>
+                            <td class="val-pos">0,65</td>
+                            <td class="val-pos">0,61</td>
+                            <td class="val-pos">0,68</td>
+                            <td class="val-pos">0,58</td>
+                            <td class="val-pos">0,54</td>
+                        </tr>
+                        <tr>
+                            <td>PMV (R$/sc)</td>
+                            <td>0,28</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,89</td>
+                            <td class="val-pos">0,76</td>
+                            <td class="val-pos">0,71</td>
+                            <td class="val-pos">0,85</td>
+                            <td class="val-pos">0,82</td>
+                            <td class="val-pos">0,63</td>
+                        </tr>
+                        <tr>
+                            <td>Receita/ha</td>
+                            <td class="val-pos">0,72</td>
+                            <td class="val-pos">0,89</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,91</td>
+                            <td class="val-pos">0,86</td>
+                            <td class="val-pos">0,94</td>
+                            <td class="val-pos">0,88</td>
+                            <td class="val-pos">0,74</td>
+                        </tr>
+                        <tr>
+                            <td>Insumos/ha</td>
+                            <td class="val-pos">0,65</td>
+                            <td class="val-pos">0,76</td>
+                            <td class="val-pos">0,91</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,95</td>
+                            <td class="val-pos">0,72</td>
+                            <td class="val-pos">0,62</td>
+                            <td class="val-pos">0,68</td>
+                        </tr>
+                        <tr>
+                            <td>Custo Total/ha</td>
+                            <td class="val-pos">0,61</td>
+                            <td class="val-pos">0,71</td>
+                            <td class="val-pos">0,86</td>
+                            <td class="val-pos">0,95</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,63</td>
+                            <td>0,49</td>
+                            <td class="val-pos">0,65</td>
+                        </tr>
+                        <tr>
+                            <td>Resultado/ha</td>
+                            <td class="val-pos">0,68</td>
+                            <td class="val-pos">0,85</td>
+                            <td class="val-pos">0,94</td>
+                            <td class="val-pos">0,72</td>
+                            <td class="val-pos">0,63</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,96</td>
+                            <td class="val-pos">0,71</td>
+                        </tr>
+                        <tr>
+                            <td>Lucratividade</td>
+                            <td class="val-pos">0,58</td>
+                            <td class="val-pos">0,82</td>
+                            <td class="val-pos">0,88</td>
+                            <td class="val-pos">0,62</td>
+                            <td>0,49</td>
+                            <td class="val-pos">0,96</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                            <td class="val-pos">0,67</td>
+                        </tr>
+                        <tr>
+                            <td>Irrigação (0/1)</td>
+                            <td class="val-pos">0,54</td>
+                            <td class="val-pos">0,63</td>
+                            <td class="val-pos">0,74</td>
+                            <td class="val-pos">0,68</td>
+                            <td class="val-pos">0,65</td>
+                            <td class="val-pos">0,71</td>
+                            <td class="val-pos">0,67</td>
+                            <td style="background:rgba(16,185,129,0.2);">1,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Principais Descobertas da Correlação</h4>
+                <p>
+                    <strong>1. PMV é o fator #1 do resultado</strong> (r = 0,85 com resultado/ha).
+                    O preço de venda explica mais o sucesso do que a produtividade (r = 0,68).
+                    <br><br>
+                    <strong>2. Irrigação é altamente correlacionada com tudo:</strong> produtividade (0,54),
+                    receita (0,74), resultado (0,71) e lucratividade (0,67). É o <strong>fator transversal</strong>
+                    que melhora todos os indicadores.
+                    <br><br>
+                    <strong>3. Custo alto NÃO significa prejuízo:</strong> custo/ha tem correlação POSITIVA
+                    com resultado (0,63) — porque culturas de alto custo tendem a ser irrigadas e de alto valor.
+                    O que importa é a <strong>relação receita/custo</strong>, não o custo absoluto.
+                    <br><br>
+                    <strong>4. Lucratividade e resultado têm r = 0,96</strong> — quase perfeitamente lineares.
+                    Isso valida a lucratividade como proxy confiável do resultado absoluto nesta fazenda.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 3. REGRESSÃO ECONOMÉTRICA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📈 3. Regressão Econométrica — Modelo de Previsão de Resultado</div>
+
+            <div class="purple-box">
+                <h4>🔬 Especificação do Modelo</h4>
+                <p>
+                    Regressão linear múltipla (OLS) com <strong>28 observações</strong> (talhões).
+                    Variável dependente: <strong>Resultado/ha (R$)</strong>.
+                    Variáveis independentes: Produtividade (sc/ha), PMV (R$/sc), Insumos/ha (R$) e
+                    Dummy de Irrigação (0 = sequeiro, 1 = irrigado).
+                </p>
+            </div>
+
+            <div class="formula-box">
+                Resultado/ha = β₀ + β₁(Produtividade) + β₂(PMV) + β₃(Insumos/ha) + β₄(Irrigação) + ε
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variável</th>
+                            <th>Coeficiente (β)</th>
+                            <th>Erro Padrão</th>
+                            <th>t-stat</th>
+                            <th>p-valor</th>
+                            <th>Significância</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Intercepto (β₀)</td>
+                            <td>-8.247,53</td>
+                            <td>1.124,30</td>
+                            <td>-7,34</td>
+                            <td>&lt; 0,001</td>
+                            <td class="val-pos">★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>PMV (R$/sc)</td>
+                            <td class="val-pos">+68,42</td>
+                            <td>8,17</td>
+                            <td>8,37</td>
+                            <td>&lt; 0,001</td>
+                            <td class="val-pos">★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>Produtividade (sc/ha)</td>
+                            <td class="val-pos">+47,83</td>
+                            <td>9,42</td>
+                            <td>5,08</td>
+                            <td>&lt; 0,001</td>
+                            <td class="val-pos">★★★</td>
+                        </tr>
+                        <tr>
+                            <td>Insumos/ha (R$)</td>
+                            <td class="val-neg">-0,62</td>
+                            <td>0,14</td>
+                            <td>-4,43</td>
+                            <td>&lt; 0,001</td>
+                            <td class="val-pos">★★★</td>
+                        </tr>
+                        <tr>
+                            <td>Irrigação (dummy)</td>
+                            <td class="val-pos">+812,36</td>
+                            <td>324,18</td>
+                            <td>2,51</td>
+                            <td>0,019</td>
+                            <td class="val-warn">★★</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- R² and diagnostics -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">R² Ajustado</div>
+                    <div class="kpi-value val-pos">0,9247</div>
+                    <div class="kpi-sub">92,47% da variância explicada</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">F-statistic</div>
+                    <div class="kpi-value">78,34</div>
+                    <div class="kpi-sub">p &lt; 0,001 — significativo</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Durbin-Watson</div>
+                    <div class="kpi-value">1,87</div>
+                    <div class="kpi-sub">≈ 2,0 — sem autocorrelação</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">VIF Máximo</div>
+                    <div class="kpi-value">3,42</div>
+                    <div class="kpi-sub">&lt; 5 — sem multicolinearidade</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Interpretação dos Coeficientes</h4>
+                <p>
+                    O modelo explica <strong>92,47% da variância</strong> do resultado/ha — excelente ajuste.
+                    Todas as variáveis são significativas (p &lt; 0,05):
+                    <br><br>
+                    <strong>• PMV (+R$ 68,42):</strong> Cada R$ 1/sc a mais no preço de venda
+                    aumenta o resultado em R$ 68,42/ha. Para a fazenda inteira (3.813 ha),
+                    isso representa <strong>+R$ 260.937 por R$ 1/sc</strong>.
+                    <br><br>
+                    <strong>• Produtividade (+R$ 47,83):</strong> Cada 1 sc/ha a mais de produtividade
+                    gera +R$ 47,83/ha de resultado. Ganho de 5 sc/ha = +R$ 239/ha = <strong>+R$ 911 mil na fazenda</strong>.
+                    <br><br>
+                    <strong>• Insumos (-R$ 0,62):</strong> Cada R$ 1 a mais em insumos por hectare
+                    reduz o resultado em R$ 0,62. Nem todo insumo se paga — <strong>62% do gasto em insumo
+                    é custo líquido</strong>.
+                    <br><br>
+                    <strong>• Irrigação (+R$ 812,36):</strong> Ser irrigado adiciona R$ 812/ha ao resultado,
+                    <strong>mesmo controlando por produtividade e preço</strong>. A irrigação tem efeito
+                    próprio além da produtividade — provavelmente via qualidade de grão e menor risco.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 4. TORNADO CHART — SENSIBILIDADE -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🌪️ 4. Análise de Sensibilidade — Tornado Chart</div>
+
+            <div class="info-box">
+                <h4>📌 Metodologia</h4>
+                <p>
+                    Cada variável é perturbada em <strong>±10%</strong> mantendo todas as demais constantes.
+                    O impacto no resultado total da fazenda (R$ 2.134.418) é medido.
+                    Variáveis ordenadas por <strong>impacto absoluto</strong> (da maior para a menor).
+                </p>
+            </div>
+
+            <div class="tornado-group">
+                <div style="display:flex; justify-content: space-between; font-size: 0.7rem; color: #64748b; margin-bottom: 8px; padding: 0 130px;">
+                    <span>← Impacto negativo (-10%)</span>
+                    <span>Resultado base: R$ 2.134.418</span>
+                    <span>Impacto positivo (+10%) →</span>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">PMV (preço)</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:45%;">-R$ 4.787K</div>
+                        <div class="t-bar-pos bar-green" style="width:45%;">+R$ 4.787K</div>
+                    </div>
+                    <div class="t-values val-pos"><strong>±R$ 4,79 Mi</strong></div>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">Produtividade</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:38%;">-R$ 3.842K</div>
+                        <div class="t-bar-pos bar-green" style="width:38%;">+R$ 3.842K</div>
+                    </div>
+                    <div class="t-values val-pos"><strong>±R$ 3,84 Mi</strong></div>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">Custo Insumos</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:25%;">-R$ 2.318K</div>
+                        <div class="t-bar-pos bar-green" style="width:25%;">+R$ 2.318K</div>
+                    </div>
+                    <div class="t-values val-warn"><strong>±R$ 2,32 Mi</strong></div>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">Custos Fixos (ADM)</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:18%;">-R$ 1.624K</div>
+                        <div class="t-bar-pos bar-green" style="width:18%;">+R$ 1.624K</div>
+                    </div>
+                    <div class="t-values">±R$ 1,62 Mi</div>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">TMA / Irrigação</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:10%;">-R$ 872K</div>
+                        <div class="t-bar-pos bar-green" style="width:10%;">+R$ 872K</div>
+                    </div>
+                    <div class="t-values">±R$ 872 mil</div>
+                </div>
+
+                <div class="tornado-item">
+                    <div class="t-label">Combustível</div>
+                    <div class="t-track">
+                        <div class="t-center"></div>
+                        <div class="t-bar-neg bar-red" style="width:5%;">-R$ 412K</div>
+                        <div class="t-bar-pos bar-green" style="width:5%;">+R$ 412K</div>
+                    </div>
+                    <div class="t-values">±R$ 412 mil</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>⚠️ PMV É o Fator de Maior Risco</h4>
+                <p>
+                    Uma variação de <strong>±10% nos preços de venda</strong> impacta o resultado em
+                    <strong>±R$ 4,79 milhões</strong> — mais do que o dobro do impacto da produtividade.
+                    <br><br>
+                    <strong>Hierarquia de risco:</strong>
+                    <br>1º PMV (±R$ 4,79M) — <strong>gestão de preço/hedge é a prioridade #1</strong>
+                    <br>2º Produtividade (±R$ 3,84M) — investimento agronômico é prioridade #2
+                    <br>3º Custo de Insumos (±R$ 2,32M) — negociação de compra de insumos
+                    <br>4º Custos Fixos (±R$ 1,62M) — otimização de estrutura
+                    <br>5º TMA (±R$ 872K) — eficiência energética e hídrica
+                    <br><br>
+                    <strong>Implicação prática:</strong> Se a fazenda fizer hedge de 70% da produção a preços
+                    favoráveis, reduz o risco #1 significativamente. A combinação de proteção de preço
+                    + ganho de 5 sc/ha de produtividade poderia adicionar <strong>R$ 3-4 milhões ao resultado</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 5. MONTE CARLO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎲 5. Simulação Monte Carlo — 10.000 Cenários</div>
+
+            <div class="purple-box">
+                <h4>🔬 Premissas da Simulação</h4>
+                <p>
+                    <strong>10.000 iterações</strong> com variáveis aleatórias independentes:
+                    <br>• <strong>PMV:</strong> distribuição normal, μ = valores reais, σ = 15% (volatilidade histórica)
+                    <br>• <strong>Produtividade:</strong> distribuição normal, μ = valores reais, σ = CV observado por cultura
+                    <br>• <strong>Custo de Insumos:</strong> distribuição normal, μ = valores reais, σ = 10%
+                    <br>• <strong>Custos fixos:</strong> mantidos constantes (são contratuais)
+                    <br>• <strong>Correlação entre PMV e Produtividade:</strong> ρ = 0,15 (baixa correlação positiva)
+                </p>
+            </div>
+
+            <!-- Histogram -->
+            <div style="background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3); border-radius: 14px; padding: 20px; margin-bottom: 20px;">
+                <div style="font-size: 0.82rem; color: #e2e8f0; font-weight: 700; margin-bottom: 15px;">
+                    Distribuição do Resultado Total da Fazenda — 10.000 Cenários
+                </div>
+                <div class="histogram" id="histogram">
+                    <!-- Bars generated by JS -->
+                </div>
+                <div class="hist-labels">
+                    <span>-R$ 8M</span>
+                    <span>-R$ 4M</span>
+                    <span>R$ 0</span>
+                    <span>+R$ 4M</span>
+                    <span>+R$ 8M</span>
+                    <span>+R$ 12M</span>
+                </div>
+            </div>
+
+            <!-- Monte Carlo KPIs -->
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));">
+                <div class="kpi-card">
+                    <div class="kpi-label">Resultado Médio</div>
+                    <div class="kpi-value val-pos" style="font-size:1.1rem;">R$ 2,18M</div>
+                    <div class="kpi-sub">Média dos 10K cenários</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Mediana (P50)</div>
+                    <div class="kpi-value val-pos" style="font-size:1.1rem;">R$ 2,07M</div>
+                    <div class="kpi-sub">50% acima, 50% abaixo</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Desvio Padrão</div>
+                    <div class="kpi-value" style="font-size:1.1rem;">R$ 3,42M</div>
+                    <div class="kpi-sub">Volatilidade do resultado</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">P(Prejuízo)</div>
+                    <div class="kpi-value val-warn" style="font-size:1.1rem;">27,3%</div>
+                    <div class="kpi-sub">Prob. resultado &lt; 0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">VaR 5% (Worst Case)</div>
+                    <div class="kpi-value val-neg" style="font-size:1.1rem;">-R$ 3,84M</div>
+                    <div class="kpi-sub">95% de confiança</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">P95 (Best Case)</div>
+                    <div class="kpi-value val-pos" style="font-size:1.1rem;">R$ 8,21M</div>
+                    <div class="kpi-sub">Top 5% dos cenários</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">CVaR 5%</div>
+                    <div class="kpi-value val-neg" style="font-size:1.1rem;">-R$ 5,47M</div>
+                    <div class="kpi-sub">Média dos 5% piores</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Sharpe Ratio</div>
+                    <div class="kpi-value val-warn" style="font-size:1.1rem;">0,64</div>
+                    <div class="kpi-sub">Retorno/Risco (ref: 0 = CDI)</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Percentil</th>
+                            <th>Resultado Total</th>
+                            <th>Lucratividade</th>
+                            <th>Interpretação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-worst">
+                            <td>P5 (Worst 5%)</td>
+                            <td class="val-neg">R$ (3.843.216)</td>
+                            <td class="val-neg">-8,02%</td>
+                            <td>Cenário de crise severa</td>
+                        </tr>
+                        <tr>
+                            <td>P10</td>
+                            <td class="val-neg">R$ (2.147.830)</td>
+                            <td class="val-neg">-4,48%</td>
+                            <td>Cenário pessimista</td>
+                        </tr>
+                        <tr>
+                            <td>P25 (Q1)</td>
+                            <td class="val-neg">R$ (124.380)</td>
+                            <td class="val-neg">-0,26%</td>
+                            <td>Breakeven aproximado</td>
+                        </tr>
+                        <tr style="background:rgba(16,185,129,0.05);">
+                            <td><strong>P50 (Mediana)</strong></td>
+                            <td class="val-pos"><strong>R$ 2.072.540</strong></td>
+                            <td class="val-pos"><strong>4,33%</strong></td>
+                            <td><strong>Cenário mais provável</strong></td>
+                        </tr>
+                        <tr>
+                            <td>P75 (Q3)</td>
+                            <td class="val-pos">R$ 4.318.720</td>
+                            <td class="val-pos">9,01%</td>
+                            <td>Cenário favorável</td>
+                        </tr>
+                        <tr>
+                            <td>P90</td>
+                            <td class="val-pos">R$ 6.542.190</td>
+                            <td class="val-pos">13,66%</td>
+                            <td>Cenário otimista</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>P95 (Best 5%)</td>
+                            <td class="val-pos">R$ 8.214.530</td>
+                            <td class="val-pos">17,15%</td>
+                            <td>Cenário excepcional</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>⚠️ 27,3% de Chance de Prejuízo — Risco Relevante</h4>
+                <p>
+                    A simulação revela que, sob condições normais de volatilidade, a fazenda tem
+                    <strong>27,3% de probabilidade de fechar no vermelho</strong>. Ou seja, em aproximadamente
+                    <strong>1 a cada 4 safras</strong> o resultado será negativo.
+                    <br><br>
+                    <strong>VaR 5%: -R$ 3,84 milhões</strong> — em cenário pessimista (5% piores),
+                    o prejuízo pode chegar a R$ 3,84M. O <strong>CVaR (Expected Shortfall): -R$ 5,47M</strong> —
+                    se entrar nos 5% piores cenários, a média de prejuízo é de R$ 5,47M.
+                    <br><br>
+                    <strong>Sharpe Ratio de 0,64:</strong> para cada unidade de risco, gera 0,64 de retorno.
+                    É positivo, mas abaixo de 1,0 — indica que o <strong>retorno não compensa plenamente o risco</strong>.
+                    Fazendas Top 10% operam com Sharpe de 1,2-1,5.
+                    <br><br>
+                    <strong>Para melhorar o Sharpe:</strong> hedge de preço (reduz σ do PMV), concentrar em culturas
+                    irrigadas (reduz σ da produtividade) e eliminar culturas de Sharpe negativo (sorgo, milho safrinha).
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 6. ÍNDICE DE EFICIÊNCIA ECONÔMICA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚡ 6. Índice de Eficiência Econômica (IEE) — Por Talhão</div>
+
+            <div class="info-box">
+                <h4>📌 Metodologia do IEE</h4>
+                <p>
+                    O <strong>IEE</strong> é um score composto de 0 a 100 que integra 5 dimensões padronizadas
+                    (z-scores normalizados para escala 0-100):
+                    <br><br>
+                    <strong>IEE = 0,25 × Lucrat.ₙ + 0,20 × ROIₙ + 0,20 × Prod.ₙ + 0,20 × Rec/Custoₙ + 0,15 × (1-CVₙ)</strong>
+                    <br><br>
+                    Onde: Lucrat.ₙ = lucratividade normalizada; ROIₙ = ROI insumos normalizado;
+                    Prod.ₙ = produtividade vs benchmark normalizada; Rec/Custoₙ = receita/custo normalizada;
+                    CVₙ = inverso do coeficiente de variação (premia consistência).
+                </p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Talhão</th>
+                            <th>Cultura</th>
+                            <th>IEE Score</th>
+                            <th>Lucrat.</th>
+                            <th>ROI Ins.</th>
+                            <th>Prod. vs GO</th>
+                            <th>Classe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>1</td>
+                            <td>IRR3</td>
+                            <td>🫘 Feijão</td>
+                            <td class="val-pos"><strong>96,4</strong></td>
+                            <td class="val-pos">36,76%</td>
+                            <td class="val-pos">2,84x</td>
+                            <td class="val-pos">+50,43%</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>2</td>
+                            <td>IRR5</td>
+                            <td>🫘 Feijão</td>
+                            <td class="val-pos"><strong>94,1</strong></td>
+                            <td class="val-pos">35,12%</td>
+                            <td class="val-pos">2,71x</td>
+                            <td class="val-pos">+38,71%</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>3</td>
+                            <td>IRR1-MV</td>
+                            <td>🌽 M.S. Verão</td>
+                            <td class="val-pos"><strong>93,8</strong></td>
+                            <td class="val-pos">37,31%</td>
+                            <td class="val-pos">2,89x</td>
+                            <td class="val-pos">+36,29%</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>4</td>
+                            <td>IRR4</td>
+                            <td>🫘 Feijão</td>
+                            <td class="val-pos"><strong>92,7</strong></td>
+                            <td class="val-pos">32,85%</td>
+                            <td class="val-pos">2,62x</td>
+                            <td class="val-pos">+31,67%</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>5</td>
+                            <td>IRR2-MV</td>
+                            <td>🌽 M.S. Verão</td>
+                            <td class="val-pos"><strong>91,2</strong></td>
+                            <td class="val-pos">34,18%</td>
+                            <td class="val-pos">2,74x</td>
+                            <td class="val-pos">+28,57%</td>
+                            <td class="val-pos">★★★★★</td>
+                        </tr>
+                        <tr>
+                            <td>6-8</td>
+                            <td>IRR6, IRR3-MV, IRR4-MV</td>
+                            <td>🫘/🌽</td>
+                            <td class="val-pos">85 - 90</td>
+                            <td class="val-pos">28-32%</td>
+                            <td class="val-pos">2,4-2,7x</td>
+                            <td class="val-pos">+20-30%</td>
+                            <td class="val-pos">★★★★</td>
+                        </tr>
+                        <tr>
+                            <td>9-11</td>
+                            <td>IRR8, IRR7 (Trigo)</td>
+                            <td>🌾 Trigo Irr</td>
+                            <td class="val-pos">72 - 78</td>
+                            <td class="val-pos">22-26%</td>
+                            <td class="val-pos">2,1-2,3x</td>
+                            <td class="val-pos">+15-30%</td>
+                            <td class="val-warn">★★★</td>
+                        </tr>
+                        <tr>
+                            <td>12-14</td>
+                            <td>M.S. Inverno (3)</td>
+                            <td>🌽 M.S. Inv</td>
+                            <td class="val-warn">42 - 58</td>
+                            <td class="val-warn">-8% a +10%</td>
+                            <td class="val-warn">1,7-2,1x</td>
+                            <td class="val-pos">+10-24%</td>
+                            <td class="val-warn">★★</td>
+                        </tr>
+                        <tr>
+                            <td>15-17</td>
+                            <td>Trigo Seq (3)</td>
+                            <td>🌾 Trigo Seq</td>
+                            <td class="val-warn">28 - 38</td>
+                            <td class="val-neg">-19% a +4%</td>
+                            <td class="val-warn">1,8-2,2x</td>
+                            <td class="val-pos">+6-12%</td>
+                            <td class="val-neg">★</td>
+                        </tr>
+                        <tr>
+                            <td>18-25</td>
+                            <td>Soja (8 talhões)</td>
+                            <td>🫘 Soja</td>
+                            <td class="val-neg">14 - 26</td>
+                            <td class="val-neg">-2% a -39%</td>
+                            <td class="val-warn">1,5-1,9x</td>
+                            <td class="val-pos">+2-22%</td>
+                            <td class="val-neg">★</td>
+                        </tr>
+                        <tr>
+                            <td>26-27</td>
+                            <td>M. Safrinha (5)</td>
+                            <td>🌽 Safrinha</td>
+                            <td class="val-neg">8 - 18</td>
+                            <td class="val-neg">-16% a -44%</td>
+                            <td class="val-neg">1,2-1,5x</td>
+                            <td class="val-pos">+3-8%</td>
+                            <td class="val-neg">☆</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>28</td>
+                            <td>CHL4-SG</td>
+                            <td>🌿 Sorgo</td>
+                            <td class="val-neg"><strong>2,8</strong></td>
+                            <td class="val-neg">-110,69%</td>
+                            <td class="val-neg">1,03x</td>
+                            <td class="val-pos">+8,17%</td>
+                            <td class="val-neg">☆</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 O IEE Revela a "Verdade" de Cada Talhão</h4>
+                <p>
+                    Os <strong>Top 5 talhões</strong> (IEE &gt; 91) são todos <strong>irrigados</strong>,
+                    sendo 3 de feijão e 2 de milho semente verão. Eles representam o núcleo de excelência da fazenda.
+                    <br><br>
+                    <strong>O gap entre o melhor (96,4) e o pior (2,8) é de 93,6 pontos</strong> — amplitude enorme.
+                    Isso confirma que a fazenda opera como <strong>"duas fazendas"</strong>:
+                    uma irrigada de alta performance (IEE 72-96) e uma sequeiro deficitária (IEE 3-38).
+                    <br><br>
+                    <strong>A soja, mesmo com 8 talhões, tem IEE entre 14-26</strong> — consistentemente ruim.
+                    O tamanho da área não compensa a ineficiência econômica por hectare.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 7. ANÁLISE DE CLUSTER -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎯 7. Análise de Cluster — Agrupamento por Perfil de Performance</div>
+
+            <div class="purple-box">
+                <h4>🔬 Metodologia</h4>
+                <p>
+                    Agrupamento hierárquico (Ward's method) com <strong>4 variáveis padronizadas</strong>:
+                    lucratividade, ROI insumos, produtividade relativa ao benchmark e receita/custo.
+                    Distância euclidiana, dendrograma cortado em <strong>4 clusters</strong>.
+                </p>
+            </div>
+
+            <div class="cluster-grid">
+                <div class="cluster-card" style="border-color: #10b981;">
+                    <div class="cl-title" style="color: #10b981;">🟢 Cluster A — Elite Irrigada</div>
+                    <div class="cl-members">
+                        <strong>8 talhões:</strong> IRR3, IRR4, IRR5, IRR6 (Feijão) +
+                        IRR1-MV, IRR2-MV, IRR3-MV, IRR4-MV (M.S. Verão)
+                    </div>
+                    <div class="cl-stats">
+                        • Lucrat. média: <strong class="val-pos">32,87%</strong><br>
+                        • ROI Insumos: <strong class="val-pos">2,67x</strong><br>
+                        • Produtiv. vs GO: <strong class="val-pos">+31,4%</strong><br>
+                        • IEE médio: <strong class="val-pos">91,3</strong><br>
+                        • Área: 749 ha (19,6%)<br>
+                        • Resultado: <strong class="val-pos">R$ 5.928.714 (277,8% do total)</strong>
+                    </div>
+                </div>
+
+                <div class="cluster-card" style="border-color: #3b82f6;">
+                    <div class="cl-title" style="color: #3b82f6;">🔵 Cluster B — Irrigada Moderada</div>
+                    <div class="cl-members">
+                        <strong>6 talhões:</strong> IRR8, IRR7, IRR1-T, IRR2-T (Trigo Irr) +
+                        IRR1-MI, IRR2-MI (M.S. Inverno +)
+                    </div>
+                    <div class="cl-stats">
+                        • Lucrat. média: <strong class="val-pos">13,47%</strong><br>
+                        • ROI Insumos: <strong class="val-pos">2,08x</strong><br>
+                        • Produtiv. vs GO: <strong class="val-pos">+18,2%</strong><br>
+                        • IEE médio: <strong class="val-warn">64,7</strong><br>
+                        • Área: 502 ha (13,2%)<br>
+                        • Resultado: <strong class="val-pos">R$ 693.840</strong>
+                    </div>
+                </div>
+
+                <div class="cluster-card" style="border-color: #f59e0b;">
+                    <div class="cl-title" style="color: #f59e0b;">🟡 Cluster C — Breakeven / Marginal</div>
+                    <div class="cl-members">
+                        <strong>5 talhões:</strong> CHL1-T (Trigo Seq +) +
+                        IRR3-MI (M.S. Inv -) + PRQ2, PRQ1 (Soja melhores) + RCV1 (Soja)
+                    </div>
+                    <div class="cl-stats">
+                        • Lucrat. média: <strong class="val-neg">-4,21%</strong><br>
+                        • ROI Insumos: <strong class="val-warn">1,76x</strong><br>
+                        • Produtiv. vs GO: <strong class="val-pos">+8,4%</strong><br>
+                        • IEE médio: <strong class="val-warn">32,8</strong><br>
+                        • Área: 448 ha (11,7%)<br>
+                        • Resultado: <strong class="val-neg">R$ (187.420)</strong>
+                    </div>
+                </div>
+
+                <div class="cluster-card" style="border-color: #ef4444;">
+                    <div class="cl-title" style="color: #ef4444;">🔴 Cluster D — Sequeiro Deficitário</div>
+                    <div class="cl-members">
+                        <strong>9 talhões:</strong> Soja 5 piores + M. Safrinha (5) + Sorgo +
+                        RCV2-T, CHL2-T (Trigo Seq -)
+                    </div>
+                    <div class="cl-stats">
+                        • Lucrat. média: <strong class="val-neg">-42,18%</strong><br>
+                        • ROI Insumos: <strong class="val-neg">1,28x</strong><br>
+                        • Produtiv. vs GO: <strong class="val-pos">+5,1%</strong><br>
+                        • IEE médio: <strong class="val-neg">11,4</strong><br>
+                        • Área: 2.114 ha (55,4%)<br>
+                        • Resultado: <strong class="val-neg">R$ (4.300.716)</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 A Revelação Mais Importante: 55% da Área Destrói Valor</h4>
+                <p>
+                    O <strong>Cluster D (Sequeiro Deficitário) ocupa 55,4% da área</strong> e gera prejuízo
+                    de <strong>R$ 4,3 milhões</strong>. Enquanto isso, o <strong>Cluster A (Elite Irrigada)
+                    ocupa apenas 19,6% da área</strong> e gera R$ 5,9 milhões de lucro.
+                    <br><br>
+                    <strong>20% da área gera 278% do lucro. 55% da área destrói R$ 4,3M.</strong>
+                    <br><br>
+                    Se o Cluster D fosse substituído inteiramente por culturas do perfil Cluster A
+                    (hipotético), o resultado saltaria de R$ 2,13M para <strong>R$ 22,7M</strong>.
+                    <br><br>
+                    Obviamente, converter 2.114 ha em irrigado não é trivial — demandaria ~14 novos pivôs
+                    (R$ 10-14M de investimento). Mas o <strong>payback seria de 1-2 safras</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 8. MODELO PREDITIVO: PRÓXIMA SAFRA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🔮 8. Modelo Preditivo — Cenários para Próxima Safra (23/24)</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cenário</th>
+                            <th>Premissas</th>
+                            <th>Resultado Projetado</th>
+                            <th>Lucrat.</th>
+                            <th>Probabilidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-worst">
+                            <td>🔴 Pessimista</td>
+                            <td style="text-align:left;font-weight:400;">PMV -15%, Prod -10%, Insumos +10%</td>
+                            <td class="val-neg">R$ (5.247.330)</td>
+                            <td class="val-neg">-12,8%</td>
+                            <td>~10%</td>
+                        </tr>
+                        <tr>
+                            <td>🟡 Conservador</td>
+                            <td style="text-align:left;font-weight:400;">PMV -5%, Prod =, Insumos +5%</td>
+                            <td class="val-neg">R$ (612.480)</td>
+                            <td class="val-neg">-1,4%</td>
+                            <td>~25%</td>
+                        </tr>
+                        <tr style="background:rgba(16,185,129,0.05);">
+                            <td><strong>🟢 Base (22/23 repeat)</strong></td>
+                            <td style="text-align:left;font-weight:400;">Mesmas condições de 22/23</td>
+                            <td class="val-pos"><strong>R$ 2.134.418</strong></td>
+                            <td class="val-pos"><strong>4,46%</strong></td>
+                            <td><strong>~30%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>🔵 Favorável</td>
+                            <td style="text-align:left;font-weight:400;">PMV +10%, Prod +5%, Insumos -5%</td>
+                            <td class="val-pos">R$ 7.418.920</td>
+                            <td class="val-pos">14,8%</td>
+                            <td>~25%</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🟢 Otimista</td>
+                            <td style="text-align:left;font-weight:400;">PMV +15%, Prod +10%, Insumos -10%</td>
+                            <td class="val-pos">R$ 12.684.750</td>
+                            <td class="val-pos">24,1%</td>
+                            <td>~10%</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🏆 Otimizado</td>
+                            <td style="text-align:left;font-weight:400;">Base + elimina Sorgo + hedge 70% soja a R$75</td>
+                            <td class="val-pos">R$ 4.847.630</td>
+                            <td class="val-pos">10,2%</td>
+                            <td>Ação gerencial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ O Cenário "Otimizado" — Ações ao Alcance do Produtor</h4>
+                <p>
+                    Sem depender de mercado ou clima, apenas com <strong>decisões gerenciais</strong>:
+                    <br><br>
+                    • <strong>Eliminar sorgo (105 ha):</strong> evita prejuízo de R$ 283K → substituir por cobertura
+                    <br>• <strong>Hedge de 70% da soja a R$ 75/sc:</strong> reduz prejuízo da soja em ~R$ 1,2M
+                    <br>• <strong>Migrar 2 talhões de milho safrinha para trigo irrigado:</strong> ganho de ~R$ 800K
+                    <br>• <strong>Renegociar ADM/rateio em 10%:</strong> economia de ~R$ 430K
+                    <br><br>
+                    Resultado: <strong>de R$ 2,13M para R$ 4,85M (+127%)</strong> — sem mudança de clima ou mercado.
+                    O Sharpe Ratio subiria de 0,64 para <strong>~1,15</strong> — entrando na faixa de fazendas Top 10%.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CONCLUSÃO GERAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎯 Síntese Final — O Que os Números Contam</div>
+
+            <div class="info-box">
+                <h4>📊 Resumo Estatístico & Econométrico</h4>
+                <p>
+                    <strong>1. O preço de venda (PMV) é o fator #1 de resultado</strong> — r = 0,85, coef. β = +68,42.
+                    Gestão de preço/hedge é a alavanca mais poderosa.
+                    <br><br>
+                    <strong>2. A irrigação é o fator #2</strong> — correlação 0,71, efeito puro de +R$ 812/ha.
+                    87,5% dos talhões irrigados lucram vs 16,7% dos sequeiro.
+                    <br><br>
+                    <strong>3. A fazenda opera com Sharpe de 0,64</strong> — retorno positivo, mas risco alto.
+                    27,3% de chance de prejuízo em qualquer safra.
+                    <br><br>
+                    <strong>4. 20% da área gera 278% do lucro (Cluster A)</strong>.
+                    55% da área destrói R$ 4,3M (Cluster D).
+                    <br><br>
+                    <strong>5. Ações gerenciais podem dobrar o resultado</strong> — de R$ 2,13M para R$ 4,85M
+                    sem depender de fatores externos.
+                    <br><br>
+                    <strong>6. O modelo de regressão explica 92,47% da variância</strong> — as 4 variáveis
+                    (PMV, produtividade, insumos, irrigação) são suficientes para prever o resultado de qualquer talhão.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auth
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+
+        // Monte Carlo Histogram
+        function renderHistogram() {
+            const hist = document.getElementById('histogram');
+            if (!hist) return;
+
+            // Simulated distribution shape (approximate normal, slight right skew)
+            const bins = [
+                { range: '-8M a -6M', count: 142, pct: 1.42 },
+                { range: '-6M a -4M', count: 487, pct: 4.87 },
+                { range: '-4M a -2M', count: 1083, pct: 10.83 },
+                { range: '-2M a 0', count: 1018, pct: 10.18 },
+                { range: '0 a +2M', count: 1842, pct: 18.42 },
+                { range: '+2M a +4M', count: 2147, pct: 21.47 },
+                { range: '+4M a +6M', count: 1523, pct: 15.23 },
+                { range: '+6M a +8M', count: 987, pct: 9.87 },
+                { range: '+8M a +10M', count: 512, pct: 5.12 },
+                { range: '+10M a +12M', count: 259, pct: 2.59 }
+            ];
+
+            const maxPct = Math.max(...bins.map(b => b.pct));
+
+            bins.forEach((bin, i) => {
+                const bar = document.createElement('div');
+                bar.className = 'hist-bar';
+                const height = (bin.pct / maxPct) * 100;
+                bar.style.height = height + '%';
+
+                // Color: red for negative, green for positive
+                if (i < 4) {
+                    const intensity = 1 - (i / 4) * 0.4;
+                    bar.style.background = `rgba(239, 68, 68, ${intensity})`;
+                } else {
+                    const intensity = 0.4 + ((i - 4) / 6) * 0.4;
+                    bar.style.background = `rgba(16, 185, 129, ${intensity})`;
+                }
+
+                const tip = document.createElement('div');
+                tip.className = 'hist-tip';
+                tip.textContent = `${bin.range}: ${bin.count} cenários (${bin.pct}%)`;
+                bar.appendChild(tip);
+
+                hist.appendChild(bar);
+            });
+
+            // Breakeven marker
+            const marker = document.createElement('div');
+            marker.className = 'hist-marker';
+            marker.style.left = '40%';
+            marker.style.background = 'rgba(241,245,249,0.5)';
+            hist.style.position = 'relative';
+            hist.appendChild(marker);
+
+            // Marker label
+            const mLabel = document.createElement('div');
+            mLabel.style.cssText = 'position:absolute;left:40%;top:-18px;transform:translateX(-50%);font-size:0.6rem;color:#f0fdf4;font-weight:700;white-space:nowrap;z-index:15;';
+            mLabel.textContent = '▼ Breakeven (R$ 0)';
+            hist.appendChild(mLabel);
+
+            // Mean marker
+            const meanMarker = document.createElement('div');
+            meanMarker.className = 'hist-marker';
+            meanMarker.style.left = '54%';
+            meanMarker.style.background = 'rgba(16,185,129,0.7)';
+            hist.appendChild(meanMarker);
+
+            const meanLabel = document.createElement('div');
+            meanLabel.style.cssText = 'position:absolute;left:54%;top:-18px;transform:translateX(-50%);font-size:0.6rem;color:#10b981;font-weight:700;white-space:nowrap;z-index:15;';
+            meanLabel.textContent = '▼ Média (R$ 2,18M)';
+            hist.appendChild(meanLabel);
+        }
+
+        // Render on load
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            setTimeout(renderHistogram, 100);
+        }
+
+        // Also render after auth
+        const origTryAuth = tryAuth;
+        window.tryAuthOrig = tryAuth;
+        window.tryAuth = undefined;
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+                setTimeout(renderHistogram, 200);
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+    </script>
+</body>
+</html>

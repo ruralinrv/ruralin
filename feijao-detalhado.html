@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feijão 2ª Safra Detalhado | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 20px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+        .kpi-card .kpi-label {
+            font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value { font-size: 1.5rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.76rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 750px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 12px 14px; text-align: right;
+            font-size: 0.7rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 14px; font-size: 0.84rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(245,158,11,0.04); }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-muted { color: #64748b; }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 70px 1fr 140px;
+            gap: 10px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.74rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 24px; background: rgba(30,41,59,0.6); border-radius: 5px; overflow: hidden;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 5px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 6px; font-size: 0.64rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .chart-bar-item .value { font-size: 0.8rem; color: #e2e8f0; font-weight: 600; }
+
+        .donut-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px; margin-bottom: 30px;
+        }
+        .donut-item {
+            background: rgba(30,41,59,0.4); border-radius: 10px; padding: 14px;
+            text-align: center; border: 1px solid rgba(71,85,105,0.2);
+        }
+        .donut-item .d-pct { font-size: 1.4rem; font-weight: 800; }
+        .donut-item .d-label { font-size: 0.68rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+        .donut-item .d-value { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        .star-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: 0.7rem; font-weight: 700;
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
+            color: #f59e0b; border: 1px solid rgba(245,158,11,0.3);
+            margin-left: 8px;
+        }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .chart-bar-item { grid-template-columns: 55px 1fr 110px; }
+            .donut-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🫘 Feijão 2ª Safra — <span>Fazenda Modelo</span> <span class="star-badge">★ DESTAQUE DA SAFRA</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="analise-culturas.html" class="btn-back">🌱 Culturas</a>
+                    <a href="soja-detalhado.html" class="btn-back">🫘 Soja</a>
+                    <a href="milho-semente-detalhado.html" class="btn-back">🌽 M. Semente</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO GERAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🏆 Resumo Geral — Feijão 2ª Safra (Irrigado)</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Área Total</div>
+                    <div class="kpi-value">680,00 ha</div>
+                    <div class="kpi-sub">17,83% da área cultivada</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nº de Talhões</div>
+                    <div class="kpi-value">6</div>
+                    <div class="kpi-sub">Todos irrigados (pivôs)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Produtividade Média</div>
+                    <div class="kpi-value">61,06 sc/ha</div>
+                    <div class="kpi-sub">Variação: 54,25 a 70,87 sc/ha</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">PMV</div>
+                    <div class="kpi-value">R$ 310,00/sc</div>
+                    <div class="kpi-sub">Preço premium do feijão irrigado</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Total Médio/ha</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 12.699,29</div>
+                    <div class="kpi-sub">Insumos: R$ 5.818,13/ha</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Resultado Total</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 4.236.811</div>
+                    <div class="kpi-sub">Lucratividade: <span class="val-pos">32,91%</span></div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 207,98/sc</div>
+                    <div class="kpi-sub">PMV está <span class="val-pos">49,05%</span> acima do P.E.</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">40,97 sc/ha</div>
+                    <div class="kpi-sub">Produtividade está <span class="val-pos">49,04%</span> acima</div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <h4>🏆 O Feijão Salvou a Safra</h4>
+                <p>
+                    O feijão 2ª safra foi a <strong>cultura mais lucrativa da fazenda</strong> na safra 22/23.
+                    Com apenas 17,83% da área, gerou <strong>198,44% do lucro total</strong> — ou seja,
+                    o feijão sozinho gerou quase o dobro do resultado líquido da fazenda inteira.
+                    <br><br>
+                    O PMV de R$ 310,00/sc está <strong>49,05% acima do ponto de equilíbrio</strong> (R$ 207,98/sc),
+                    garantindo uma margem de segurança excepcional. Todos os 6 talhões foram lucrativos —
+                    a única cultura da safra com 100% de talhões positivos.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MAPEAMENTO DOS TALHÕES -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🗺️ Mapeamento dos Talhões</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>Tipo</th>
+                            <th>Área (ha)</th>
+                            <th>% da Área</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IRR4</td><td>Irrigado (Pivô)</td><td>120,00</td><td>17,65%</td></tr>
+                        <tr><td>IRR5</td><td>Irrigado (Pivô)</td><td>95,00</td><td>13,97%</td></tr>
+                        <tr><td>IRR5-B</td><td>Irrigado (Pivô)</td><td>135,00</td><td>19,85%</td></tr>
+                        <tr><td>IRR6-B</td><td>Irrigado (Pivô)</td><td>135,00</td><td>19,85%</td></tr>
+                        <tr><td>IRR7-B</td><td>Irrigado (Pivô)</td><td>125,00</td><td>18,38%</td></tr>
+                        <tr><td>IRR8-B</td><td>Irrigado (Pivô)</td><td>70,00</td><td>10,29%</td></tr>
+                        <tr class="row-total">
+                            <td colspan="2">TOTAL</td>
+                            <td>680,00</td>
+                            <td>100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Sobre os Talhões</h4>
+                <p>
+                    O feijão é cultivado <strong>exclusivamente sob irrigação</strong> (pivôs centrais),
+                    o que explica a produtividade consistente e previsível. Os pivôs com sufixo "-B"
+                    indicam 2ª ocupação no mesmo pivô (após a cultura de verão — milho semente).
+                    Os talhões IRR4 e IRR5 são de uso exclusivo na 2ª safra.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PRODUTIVIDADE POR TALHÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Produtividade por Talhão (sc/ha)</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">IRR5</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">70,87</div></div>
+                    <div class="value val-pos"><strong>70,87 ★</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR4</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:91.2%;">64,64</div></div>
+                    <div class="value val-pos">64,64</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR5-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:87.4%;">61,92</div></div>
+                    <div class="value">61,92</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">MÉDIA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:86.2%;">61,06</div></div>
+                    <div class="value val-warn"><strong>61,06</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR7-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:83.5%;">59,17</div></div>
+                    <div class="value">59,17</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR8-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:79.7%;">56,50</div></div>
+                    <div class="value">56,50</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR6-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:76.6%;">54,25</div></div>
+                    <div class="value">54,25</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Análise de Produtividade</h4>
+                <p>
+                    <strong>Amplitude: 16,62 sc/ha</strong> (de 54,25 a 70,87) — dispersão moderada.
+                    O IRR5 lidera com 70,87 sc/ha, 16,07% acima da média. Todos os talhões
+                    ficaram <strong>bem acima do ponto de equilíbrio</strong> de 40,97 sc/ha.
+                    <br><br>
+                    Mesmo o pior talhão (IRR6-B, 54,25 sc/ha) supera o P.E. em <strong>32,40%</strong> — margem de segurança excelente.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- CUSTO POR TALHÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💵 Custo Total/ha por Talhão</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">IRR5</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">13.140</div></div>
+                    <div class="value">R$ 13.140 (mais caro)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR5-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:98.8%;">12.978</div></div>
+                    <div class="value">R$ 12.978</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR6-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:98.6%;">12.950</div></div>
+                    <div class="value">R$ 12.950</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR4</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:97.3%;">12.783</div></div>
+                    <div class="value">R$ 12.783</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">MÉDIA</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:96.6%;">12.699</div></div>
+                    <div class="value val-warn"><strong>R$ 12.699</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR8-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:92%;">12.086</div></div>
+                    <div class="value">R$ 12.086</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR7-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:91.7%;">12.054</div></div>
+                    <div class="value val-pos">R$ 12.054 (mais barato)</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Análise de Custos</h4>
+                <p>
+                    O custo total/ha variou de R$ 12.054 (IRR7-B) a R$ 13.140 (IRR5) — amplitude de R$ 1.086/ha.
+                    A variação é relativamente baixa (8,27%), indicando <strong>boa padronização de manejo</strong> entre os talhões.
+                    <br><br>
+                    Curiosamente, o IRR5 é tanto o <strong>mais produtivo quanto o mais caro</strong> — mas o resultado
+                    mostra que o investimento maior em insumos se pagou com folga.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DOS INSUMOS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🧪 Composição dos Insumos/ha — Média Feijão</div>
+
+            <div class="donut-grid">
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#ef4444;">37%</div>
+                    <div class="d-label">Fertilizantes</div>
+                    <div class="d-value">R$ 2.150,38</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#8b5cf6;">18%</div>
+                    <div class="d-label">Fungicida</div>
+                    <div class="d-value">R$ 1.044,25</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#3b82f6;">16%</div>
+                    <div class="d-label">Herbicida</div>
+                    <div class="d-value">R$ 922,38</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#f59e0b;">13%</div>
+                    <div class="d-label">Inseticida</div>
+                    <div class="d-value">R$ 767,41</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#ec4899;">9%</div>
+                    <div class="d-label">Foliares/Outros</div>
+                    <div class="d-value">R$ 542,42</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#10b981;">6%</div>
+                    <div class="d-label">TS</div>
+                    <div class="d-value">R$ 321,42</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#64748b;">1%</div>
+                    <div class="d-label">TM</div>
+                    <div class="d-value">R$ 69,87</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Perfil de Insumos do Feijão</h4>
+                <p>
+                    O feijão tem o <strong>portfólio de insumos mais diversificado</strong> da fazenda:
+                    fertilizantes representam "apenas" 37% (vs 49% na soja e 57% no milho safrinha).
+                    <br><br>
+                    <strong>Fungicida</strong> (18%) e <strong>Herbicida</strong> (16%) são proporcionalmente mais
+                    relevantes que em outras culturas — o feijão demanda controle fitossanitário intensivo.
+                    <strong>Foliares/Outros</strong> (9%) também é o maior entre todas as culturas, refletindo
+                    o manejo nutricional foliar específico do feijão irrigado.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DO CUSTO TOTAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Composição do Custo Total/ha — Feijão</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">Fertilizantes</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">17%</div></div>
+                    <div class="value">R$ 2.150,38 (17%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">ADM</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:70%;">12%</div></div>
+                    <div class="value">R$ 1.505,69 (12%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">TMA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:70.2%;">12%</div></div>
+                    <div class="value">R$ 1.509,32 (12%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Fungicida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:48.6%;">8%</div></div>
+                    <div class="value">R$ 1.044,25 (8%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Herbicida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:42.9%;">7%</div></div>
+                    <div class="value">R$ 922,38 (7%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Energia (Irrigação)</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:40%;">7%</div></div>
+                    <div class="value">R$ 857,40 (7%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Manut. Máq</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:39.9%;">7%</div></div>
+                    <div class="value">R$ 857,78 (7%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Inseticida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:35.7%;">6%</div></div>
+                    <div class="value">R$ 767,41 (6%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Combustível</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:34.4%; background:#64748b;">6%</div></div>
+                    <div class="value">R$ 740,30 (6%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Demais itens</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:56%; background:#475569;">12%</div></div>
+                    <div class="value">R$ 1.344,38 (12%)</div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- TABELA COMPLETA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Tabela Completa — Todos os 6 Talhões</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>Área (ha)</th>
+                            <th>Produt. (sc/ha)</th>
+                            <th>Insumos/ha</th>
+                            <th>Custo Total/ha</th>
+                            <th>Receita/ha</th>
+                            <th>Resultado/ha</th>
+                            <th>Lucrat.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>IRR5 <span class="star-badge">★ Melhor</span></td>
+                            <td>95,00</td>
+                            <td class="val-pos">70,87</td>
+                            <td>R$ 6.259,58</td>
+                            <td>R$ 13.140,44</td>
+                            <td>R$ 21.969,70</td>
+                            <td class="val-pos">R$ 8.829,26</td>
+                            <td class="val-pos">40,19%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR4</td>
+                            <td>120,00</td>
+                            <td>64,64</td>
+                            <td>R$ 5.902,50</td>
+                            <td>R$ 12.783,36</td>
+                            <td>R$ 20.038,40</td>
+                            <td class="val-pos">R$ 7.255,04</td>
+                            <td class="val-pos">36,20%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR7-B</td>
+                            <td>125,00</td>
+                            <td>59,17</td>
+                            <td>R$ 5.173,46</td>
+                            <td>R$ 12.054,32</td>
+                            <td>R$ 18.342,70</td>
+                            <td class="val-pos">R$ 6.288,38</td>
+                            <td class="val-pos">34,28%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR5-B</td>
+                            <td>135,00</td>
+                            <td>61,92</td>
+                            <td>R$ 6.097,56</td>
+                            <td>R$ 12.978,42</td>
+                            <td>R$ 19.195,20</td>
+                            <td class="val-pos">R$ 6.216,78</td>
+                            <td class="val-pos">32,39%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR8-B</td>
+                            <td>70,00</td>
+                            <td>56,50</td>
+                            <td>R$ 5.205,28</td>
+                            <td>R$ 12.086,19</td>
+                            <td>R$ 17.515,00</td>
+                            <td class="val-pos">R$ 5.428,81</td>
+                            <td class="val-pos">31,00%</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>IRR6-B</td>
+                            <td>135,00</td>
+                            <td>54,25</td>
+                            <td>R$ 6.069,42</td>
+                            <td>R$ 12.950,11</td>
+                            <td>R$ 16.817,50</td>
+                            <td class="val-pos">R$ 3.867,39</td>
+                            <td class="val-pos">23,00%</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td colspan="2">MÉDIA / 680 ha</td>
+                            <td>61,06</td>
+                            <td>R$ 5.818,13</td>
+                            <td>R$ 12.699,29</td>
+                            <td>R$ 18.928,60</td>
+                            <td class="val-pos">R$ 6.229,31</td>
+                            <td class="val-pos">32,91%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ 100% dos Talhões Lucrativos!</h4>
+                <p>
+                    <strong>Todos os 6 talhões apresentaram resultado positivo</strong> — a única cultura da safra com esse feito.
+                    <br><br>
+                    <strong>IRR5:</strong> Campeão da safra com R$ 8.829,26/ha de resultado e 40,19% de lucratividade.
+                    É o talhão mais produtivo (70,87 sc/ha) e, embora mais caro (R$ 13.140/ha), o retorno justifica plenamente.
+                    <br><br>
+                    <strong>IRR6-B:</strong> Menor resultado (R$ 3.867,39/ha), mas ainda assim com lucratividade de 23% —
+                    melhor que qualquer talhão de qualquer outra cultura da fazenda (exceto milho semente verão).
+                    <br><br>
+                    <strong>Amplitude de lucratividade:</strong> de 23% a 40,19% — mesmo o "pior" é excelente.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESULTADO VISUAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💰 Resultado/ha por Talhão</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">IRR5</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">R$ 8.829</div></div>
+                    <div class="value val-pos"><strong>R$ 8.829 ★</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR4</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:82.2%;">R$ 7.255</div></div>
+                    <div class="value val-pos">R$ 7.255</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR7-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:71.2%;">R$ 6.288</div></div>
+                    <div class="value val-pos">R$ 6.288</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR5-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:70.4%;">R$ 6.217</div></div>
+                    <div class="value val-pos">R$ 6.217</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR8-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:61.5%;">R$ 5.429</div></div>
+                    <div class="value val-pos">R$ 5.429</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">IRR6-B</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:43.8%;">R$ 3.867</div></div>
+                    <div class="value val-pos">R$ 3.867</div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PONTO DE EQUILÍBRIO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚖️ Ponto de Equilíbrio</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="kpi-card positive">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 207,98/sc</div>
+                    <div class="kpi-sub">PMV supera em +49,05%</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">40,97 sc/ha</div>
+                    <div class="kpi-sub">Produtiv. supera em +49,04%</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Margem de Segurança (Preço)</div>
+                    <div class="kpi-value">R$ 102,02/sc</div>
+                    <div class="kpi-sub">Folga entre PMV e P.E.</div>
+                </div>
+                <div class="kpi-card positive">
+                    <div class="kpi-label">Margem de Segurança (Qtd)</div>
+                    <div class="kpi-value">20,09 sc/ha</div>
+                    <div class="kpi-sub">Folga entre Produtiv. e P.E.</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>P.E. Valor (R$/sc)</th>
+                            <th>P.E. Qtd (sc/ha)</th>
+                            <th>Produtividade</th>
+                            <th>Folga vs P.E. Qtd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IRR5</td>
+                            <td>R$ 185,43</td>
+                            <td>42,39</td>
+                            <td>70,87</td>
+                            <td class="val-pos">+67,17%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR4</td>
+                            <td>R$ 197,77</td>
+                            <td>41,24</td>
+                            <td>64,64</td>
+                            <td class="val-pos">+56,74%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR7-B</td>
+                            <td>R$ 203,72</td>
+                            <td>38,88</td>
+                            <td>59,17</td>
+                            <td class="val-pos">+52,19%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR5-B</td>
+                            <td>R$ 209,43</td>
+                            <td>41,87</td>
+                            <td>61,92</td>
+                            <td class="val-pos">+47,93%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR8-B</td>
+                            <td>R$ 213,90</td>
+                            <td>38,99</td>
+                            <td>56,50</td>
+                            <td class="val-pos">+44,88%</td>
+                        </tr>
+                        <tr>
+                            <td>IRR6-B</td>
+                            <td>R$ 238,71</td>
+                            <td>41,77</td>
+                            <td>54,25</td>
+                            <td class="val-pos">+29,83%</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td>MÉDIA</td>
+                            <td>R$ 207,98</td>
+                            <td>40,97</td>
+                            <td>61,06</td>
+                            <td class="val-pos">+49,04%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Margem de Segurança Excepcional</h4>
+                <p>
+                    A margem de segurança do feijão é a <strong>maior entre todas as culturas</strong>:
+                    o PMV supera o P.E. em valor em quase 50%. Na prática, o preço do feijão poderia cair
+                    de R$ 310 para R$ 208/sc (-32,9%) e a cultura ainda empataria.
+                    <br><br>
+                    Da mesma forma, a produtividade poderia cair de 61,06 para 40,97 sc/ha (-32,9%) e ainda não haveria prejuízo.
+                    <br><br>
+                    <strong>Comparativo com a soja:</strong> a soja tem margem de segurança <em>negativa</em> (-12,15%),
+                    enquanto o feijão tem +49,05%. A diferença é abissal.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPARATIVO FEIJÃO vs SOJA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚔️ Feijão vs Soja — Comparativo Direto</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>🫘 Feijão 2ª</th>
+                            <th>🫘 Soja</th>
+                            <th>Vantagem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Área</td>
+                            <td>680 ha</td>
+                            <td>1.749 ha</td>
+                            <td class="val-muted">Soja 2,57x maior</td>
+                        </tr>
+                        <tr>
+                            <td>Receita/ha</td>
+                            <td class="val-pos">R$ 18.928,60</td>
+                            <td>R$ 9.396,15</td>
+                            <td class="val-pos">Feijão +101,5%</td>
+                        </tr>
+                        <tr>
+                            <td>Custo/ha</td>
+                            <td>R$ 12.699,29</td>
+                            <td>R$ 10.695,15</td>
+                            <td class="val-neg">Feijão 18,7% mais caro</td>
+                        </tr>
+                        <tr>
+                            <td>Resultado/ha</td>
+                            <td class="val-pos">R$ 6.229,31</td>
+                            <td class="val-neg">R$ (1.299,00)</td>
+                            <td class="val-pos">Feijão +R$ 7.528/ha</td>
+                        </tr>
+                        <tr>
+                            <td>Lucratividade</td>
+                            <td class="val-pos">32,91%</td>
+                            <td class="val-neg">-13,82%</td>
+                            <td class="val-pos">Feijão +46,73 pp</td>
+                        </tr>
+                        <tr>
+                            <td>% Lucro Total</td>
+                            <td class="val-pos">198,44%</td>
+                            <td class="val-neg">-106,41%</td>
+                            <td class="val-pos">Feijão +304,85 pp</td>
+                        </tr>
+                        <tr>
+                            <td>Margem vs P.E.</td>
+                            <td class="val-pos">+49,05%</td>
+                            <td class="val-neg">-12,15%</td>
+                            <td class="val-pos">Feijão +61,20 pp</td>
+                        </tr>
+                        <tr>
+                            <td>Talhões Positivos</td>
+                            <td class="val-pos">6/6 (100%)</td>
+                            <td class="val-neg">2/20 (10%)</td>
+                            <td class="val-pos">Feijão 100% vs 10%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Simulação: E se trocasse 500 ha de soja por feijão?</h4>
+                <p>
+                    <strong>Cenário hipotético:</strong> se 500 ha de soja (resultado de -R$ 1.299/ha) fossem
+                    convertidos para feijão 2ª safra (resultado de +R$ 6.229/ha), o impacto seria:
+                    <br><br>
+                    • Resultado adicional: 500 ha × (R$ 6.229 + R$ 1.299) = <strong>+R$ 3.764.000</strong>
+                    <br>
+                    • Resultado total da fazenda: de R$ 2,13 Mi para <strong>R$ 5,90 Mi</strong>
+                    <br>
+                    • Lucratividade total: de 4,47% para <strong>~12,3%</strong>
+                    <br><br>
+                    <em>Obs: Simulação simplificada — a expansão do feijão depende de disponibilidade de irrigação,
+                    rotação de culturas e capacidade operacional de colheita.</em>
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO CONSOLIDADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Resumo Financeiro Consolidado — Feijão 2ª Safra</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Área Total</td><td>680,00 ha</td></tr>
+                        <tr><td>Receita Total</td><td class="val-pos">R$ 12.872.331,50</td></tr>
+                        <tr><td>Custo Total</td><td>R$ 8.635.520,36</td></tr>
+                        <tr><td>Resultado</td><td class="val-pos">R$ 4.236.811,14</td></tr>
+                        <tr><td>Lucratividade</td><td class="val-pos">32,91%</td></tr>
+                        <tr><td>Rentabilidade</td><td class="val-pos">49,06%</td></tr>
+                        <tr><td>Produtividade Média</td><td>61,06 sc/ha</td></tr>
+                        <tr><td>PMV</td><td class="val-pos">R$ 310,00/sc</td></tr>
+                        <tr><td>Custo Total/ha</td><td>R$ 12.699,29</td></tr>
+                        <tr><td>Insumos/ha</td><td>R$ 5.818,13</td></tr>
+                        <tr><td>P.E. em Valor</td><td>R$ 207,98/sc</td></tr>
+                        <tr><td>P.E. em Quantidade</td><td>40,97 sc/ha</td></tr>
+                        <tr><td>% Área da Fazenda</td><td>17,83%</td></tr>
+                        <tr><td>% do Custo Total</td><td>18,91%</td></tr>
+                        <tr><td>% do Faturamento</td><td>26,93%</td></tr>
+                        <tr><td>% do Lucro Total</td><td class="val-pos">198,44%</td></tr>
+                        <tr><td>Talhões Positivos</td><td class="val-pos">6 de 6 (100%)</td></tr>
+                        <tr><td>Melhor Talhão</td><td class="val-pos">IRR5 — R$ 8.829/ha (40,19%)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>🎯 Conclusão — Feijão 2ª Safra</h4>
+                <p>
+                    O feijão 2ª safra é, sem dúvida, a <strong>âncora de rentabilidade da fazenda</strong>.
+                    Com 17,83% da área, gerou mais resultado que todas as outras culturas combinadas.
+                    <br><br>
+                    <strong>Fatores de sucesso:</strong>
+                    <br>• PMV excepcional de R$ 310/sc — preço premium do feijão irrigado
+                    <br>• Irrigação garantindo produtividade estável (61 sc/ha)
+                    <br>• Margem de segurança de 49% sobre o P.E.
+                    <br>• Diversificação de insumos (menor dependência de fertilizantes)
+                    <br><br>
+                    <strong>Para a próxima safra:</strong> maximizar a área de feijão dentro da capacidade de irrigação.
+                    Cada hectare adicional de feijão gera ~R$ 6.229 de resultado — o maior retorno por hectare da fazenda.
+                    <br><br>
+                    <strong>"O feijão não é apenas uma cultura — é a política de seguro da fazenda."</strong>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

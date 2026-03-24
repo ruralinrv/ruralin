@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milho Safrinha Detalhado | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.3rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.8rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.2rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 20px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); transform: translateY(-2px); }
+        .kpi-card .kpi-label {
+            font-size: 0.7rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value { font-size: 1.5rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.76rem; color: #94a3b8; margin-top: 4px; }
+        .kpi-card.positive .kpi-value { color: #10b981; }
+        .kpi-card.negative .kpi-value { color: #ef4444; }
+        .kpi-card.warning .kpi-value { color: #f59e0b; }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 12px 14px; text-align: right;
+            font-size: 0.7rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 11px 14px; font-size: 0.84rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td {
+            background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4;
+            border-top: 2px solid rgba(16,185,129,0.2);
+        }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(239,68,68,0.04); }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-muted { color: #64748b; }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 30px; }
+        .chart-bar-item {
+            display: grid; grid-template-columns: 80px 1fr 150px;
+            gap: 10px; align-items: center;
+        }
+        .chart-bar-item .label { font-size: 0.76rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track {
+            height: 26px; background: rgba(30,41,59,0.6); border-radius: 6px; overflow: hidden;
+        }
+        .chart-bar-item .bar-fill {
+            height: 100%; border-radius: 6px; transition: width 0.8s ease;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 8px; font-size: 0.66rem; font-weight: 700; color: #fff; min-width: 2px;
+        }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .chart-bar-item .value { font-size: 0.82rem; color: #e2e8f0; font-weight: 600; }
+
+        .donut-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px; margin-bottom: 30px;
+        }
+        .donut-item {
+            background: rgba(30,41,59,0.4); border-radius: 10px; padding: 14px;
+            text-align: center; border: 1px solid rgba(71,85,105,0.2);
+        }
+        .donut-item .d-pct { font-size: 1.4rem; font-weight: 800; }
+        .donut-item .d-label { font-size: 0.68rem; color: #94a3b8; margin-top: 3px; font-weight: 600; }
+        .donut-item .d-value { font-size: 0.72rem; color: #64748b; margin-top: 2px; }
+
+        /* Compare cards */
+        .compare-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 16px; margin-bottom: 30px;
+        }
+        .compare-card {
+            background: rgba(15,23,42,0.7); border-radius: 16px;
+            padding: 24px; text-align: center;
+        }
+        .compare-card .cc-label {
+            font-size: 0.72rem; color: #64748b; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 600; margin-bottom: 12px;
+        }
+        .compare-card .cc-value { font-size: 1.6rem; font-weight: 900; margin-bottom: 8px; }
+        .compare-card .cc-sub { font-size: 0.78rem; color: #94a3b8; line-height: 1.5; }
+
+        .insight-box {
+            background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .alert-box {
+            background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .success-box {
+            background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2);
+            border-radius: 12px; padding: 20px; margin-bottom: 25px;
+        }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.85rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        /* Waterfall */
+        .waterfall {
+            display: flex; align-items: flex-end; justify-content: center;
+            gap: 12px; height: 250px; margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        .wf-bar {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: flex-end; flex: 1; max-width: 140px;
+        }
+        .wf-bar .wf-value {
+            font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;
+        }
+        .wf-bar .wf-block {
+            width: 100%; border-radius: 6px 6px 0 0;
+            display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 6px; font-size: 0.62rem; color: rgba(255,255,255,0.7);
+        }
+        .wf-bar .wf-label {
+            font-size: 0.68rem; color: #94a3b8; margin-top: 8px;
+            text-align: center; font-weight: 600;
+        }
+
+        .page-footer {
+            text-align: center; padding: 30px 20px;
+            border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px;
+        }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .chart-bar-item { grid-template-columns: 60px 1fr 110px; }
+            .waterfall { height: 180px; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>🌽 Milho Safrinha — <span>Fazenda Modelo</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="analise-culturas.html" class="btn-back">🌱 Culturas</a>
+                    <a href="milho-semente-detalhado.html" class="btn-back">🌽 M. Semente</a>
+                    <a href="soja-detalhado.html" class="btn-back">🫘 Soja</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO GERAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🌽 Resumo Geral — Milho Safrinha (Sequeiro)</div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Área Total</div>
+                    <div class="kpi-value">252,90 ha</div>
+                    <div class="kpi-sub">6,63% da área cultivada</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Nº de Talhões</div>
+                    <div class="kpi-value">2</div>
+                    <div class="kpi-sub">Sequeiro — após soja</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Produtividade Média</div>
+                    <div class="kpi-value">82,10 sc/ha</div>
+                    <div class="kpi-sub">Variação: 78,42 a 85,78 sc/ha</div>
+                </div>
+                <div class="kpi-card warning">
+                    <div class="kpi-label">PMV</div>
+                    <div class="kpi-value">R$ 49,86/sc</div>
+                    <div class="kpi-sub">Menor PMV entre todas as culturas</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Total Médio/ha</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ 5.736,40</div>
+                    <div class="kpi-sub">Menor custo/ha da fazenda</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">Resultado Total</div>
+                    <div class="kpi-value" style="font-size:1.3rem;">R$ (418.143)</div>
+                    <div class="kpi-sub">Lucrat: <span class="val-neg">-28,81%</span></div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 69,87/sc</div>
+                    <div class="kpi-sub">PMV está <span class="val-neg">28,64%</span> abaixo</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">115,04 sc/ha</div>
+                    <div class="kpi-sub">Produtiv. está <span class="val-neg">28,63%</span> abaixo</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 Diagnóstico — Milho Safrinha</h4>
+                <p>
+                    O milho safrinha apresentou a <strong>pior lucratividade da safra</strong> (-28,81%),
+                    superando até a soja (-13,82%) em termos percentuais. O preço de milho grão (R$ 49,86/sc)
+                    não remunera nem o custo variável em cenários de custo elevado.
+                    <br><br>
+                    O P.E. em valor é R$ 69,87/sc — o PMV está <strong>28,64% abaixo</strong>.
+                    Precisaria de R$ 20,01 a mais por saca para empatar. O P.E. em quantidade é 115,04 sc/ha —
+                    <strong>40,12% acima da produtividade real</strong>. Dupla insuficiência severa.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- OS DOIS TALHÕES -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🗺️ Os Dois Talhões</div>
+
+            <div class="compare-grid">
+                <div class="compare-card" style="border: 2px solid rgba(16,185,129,0.3);">
+                    <div class="cc-label">CHL3-S (Melhor)</div>
+                    <div class="cc-value val-neg">R$ (1.283,42)/ha</div>
+                    <div class="cc-sub">
+                        Área: <strong>121,90 ha</strong> &bull; Sequeiro<br>
+                        Produtividade: <strong class="val-pos">85,78 sc/ha</strong><br>
+                        Custo/ha: R$ 5.561,97 &bull; Receita/ha: R$ 4.278,55<br>
+                        Lucrat: <span class="val-neg">-29,98%</span>
+                    </div>
+                </div>
+                <div class="compare-card" style="border: 2px solid rgba(239,68,68,0.3);">
+                    <div class="cc-label">RCV1-S (Pior)</div>
+                    <div class="cc-value val-neg">R$ (1.907,22)/ha</div>
+                    <div class="cc-sub">
+                        Área: <strong>131,00 ha</strong> &bull; Sequeiro<br>
+                        Produtividade: <strong>78,42 sc/ha</strong><br>
+                        Custo/ha: R$ 5.818,22 &bull; Receita/ha: R$ 3.911,00<br>
+                        Lucrat: <span class="val-neg">-48,76%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela detalhada -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>Área (ha)</th>
+                            <th>Produt. (sc/ha)</th>
+                            <th>Insumos/ha</th>
+                            <th>Custo Total/ha</th>
+                            <th>Receita/ha</th>
+                            <th>Resultado/ha</th>
+                            <th>Lucrat.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-worst">
+                            <td>CHL3-S</td>
+                            <td>121,90</td>
+                            <td>85,78</td>
+                            <td>R$ 2.890,33</td>
+                            <td>R$ 5.561,97</td>
+                            <td>R$ 4.278,55</td>
+                            <td class="val-neg">R$ (1.283,42)</td>
+                            <td class="val-neg">-29,98%</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>RCV1-S</td>
+                            <td>131,00</td>
+                            <td>78,42</td>
+                            <td>R$ 3.146,58</td>
+                            <td>R$ 5.818,22</td>
+                            <td>R$ 3.911,00</td>
+                            <td class="val-neg">R$ (1.907,22)</td>
+                            <td class="val-neg">-48,76%</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td colspan="2">MÉDIA / 252,90 ha</td>
+                            <td>82,10</td>
+                            <td>R$ 3.023,23</td>
+                            <td>R$ 5.736,40</td>
+                            <td>R$ 4.094,74</td>
+                            <td class="val-neg">R$ (1.641,66)</td>
+                            <td class="val-neg">-28,81%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Comparativo dos 2 Talhões</h4>
+                <p>
+                    <strong>CHL3-S</strong> (121,90 ha) teve produtividade 9,39% maior que o RCV1-S (85,78 vs 78,42 sc/ha)
+                    e custo/ha 4,40% menor (R$ 5.562 vs R$ 5.818). O resultado foi menos negativo (-R$ 1.283 vs -R$ 1.907/ha).
+                    <br><br>
+                    <strong>Nenhum dos dois talhões é viável</strong> ao preço atual de R$ 49,86/sc.
+                    Mesmo o CHL3-S (melhor dos dois) precisaria de R$ 64,84/sc (+30,1%) para empatar,
+                    ou produtividade de 111,55 sc/ha (+30,1%) — ambos muito distantes da realidade.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PRODUTIVIDADE -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Produtividade (sc/ha)</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">P.E. Qtd</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">115,04</div></div>
+                    <div class="value val-neg"><strong>115,04 (P.E.)</strong></div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">CHL3-S</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:74.6%;">85,78</div></div>
+                    <div class="value">85,78 sc/ha</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">MÉDIA</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:71.4%;">82,10</div></div>
+                    <div class="value val-warn">82,10 sc/ha</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">RCV1-S</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:68.2%;">78,42</div></div>
+                    <div class="value">78,42 sc/ha</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Gap de Produtividade</h4>
+                <p>
+                    A produtividade média (82,10 sc/ha) está <strong>28,63% abaixo do ponto de equilíbrio</strong>
+                    (115,04 sc/ha). Isso significa que o milho safrinha precisaria produzir <strong>32,94 sc/ha a mais</strong>
+                    para atingir o breakeven — quase 40% de ganho, inviável em condições normais de sequeiro.
+                    <br><br>
+                    Produtividades de 115+ sc/ha em safrinha de sequeiro são raras mesmo em anos excelentes.
+                    O problema principal não é produtividade — é o <strong>preço do milho grão</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DOS INSUMOS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🧪 Composição dos Insumos/ha — Milho Safrinha</div>
+
+            <div class="donut-grid">
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#ef4444;">57%</div>
+                    <div class="d-label">Fertilizantes</div>
+                    <div class="d-value">R$ 1.723,24</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#f59e0b;">14%</div>
+                    <div class="d-label">Inseticida</div>
+                    <div class="d-value">R$ 423,25</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#3b82f6;">12%</div>
+                    <div class="d-label">Herbicida</div>
+                    <div class="d-value">R$ 362,79</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#8b5cf6;">8%</div>
+                    <div class="d-label">Fungicida</div>
+                    <div class="d-value">R$ 241,86</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#10b981;">6%</div>
+                    <div class="d-label">Sementes</div>
+                    <div class="d-value">R$ 181,39</div>
+                </div>
+                <div class="donut-item">
+                    <div class="d-pct" style="color:#64748b;">3%</div>
+                    <div class="d-label">Outros</div>
+                    <div class="d-value">R$ 90,70</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Perfil de Insumos</h4>
+                <p>
+                    O milho safrinha tem o <strong>perfil de insumos mais concentrado em fertilizantes</strong>
+                    da fazenda: 57% dos insumos vão para adubação. Isso é típico do milho, que é mais
+                    responsivo a nitrogênio e potássio. O total de insumos é R$ 3.023,23/ha — o mais baixo
+                    entre as culturas irrigadas, coerente com o padrão sequeiro e menor investimento.
+                    <br><br>
+                    O custo total de insumos representa <strong>52,70% do custo total/ha</strong> — a maior
+                    proporção entre as culturas (vs 40,5% na soja e 45,8% no feijão).
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPOSIÇÃO DO CUSTO TOTAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Composição do Custo Total/ha — Milho Safrinha</div>
+
+            <div class="chart-bar-group">
+                <div class="chart-bar-item">
+                    <div class="label">Fertilizantes</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:100%;">30%</div></div>
+                    <div class="value">R$ 1.723,24 (30%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">ADM</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:58%;">17%</div></div>
+                    <div class="value">R$ 979,27 (17%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">TMA</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:31.5%;">9%</div></div>
+                    <div class="value">R$ 539,17 (9%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Inseticida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:24.6%;">7%</div></div>
+                    <div class="value">R$ 423,25 (7%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Herbicida</div>
+                    <div class="bar-track"><div class="bar-fill bar-blue" style="width:21.1%;">6%</div></div>
+                    <div class="value">R$ 362,79 (6%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Combustível</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:18%; background:#64748b;">5%</div></div>
+                    <div class="value">R$ 310,43 (5%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Manut. Máq</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:17%; background:#64748b;">5%</div></div>
+                    <div class="value">R$ 291,15 (5%)</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">Demais itens</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:36%; background:#475569;">12%</div></div>
+                    <div class="value">R$ 1.107,10 (21%)</div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- PONTO DE EQUILÍBRIO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚖️ Ponto de Equilíbrio</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Valor</div>
+                    <div class="kpi-value">R$ 69,87/sc</div>
+                    <div class="kpi-sub">PMV -28,64% abaixo</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">P.E. em Quantidade</div>
+                    <div class="kpi-value">115,04 sc/ha</div>
+                    <div class="kpi-sub">Produtiv. -28,63% abaixo</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">Gap de Preço</div>
+                    <div class="kpi-value">R$ 20,01/sc</div>
+                    <div class="kpi-sub">Faltam R$ 20,01 para empatar</div>
+                </div>
+                <div class="kpi-card negative">
+                    <div class="kpi-label">Gap de Produtividade</div>
+                    <div class="kpi-value">32,94 sc/ha</div>
+                    <div class="kpi-sub">Faltam 32,94 sc/ha para empatar</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Talhão</th>
+                            <th>P.E. Valor (R$/sc)</th>
+                            <th>P.E. Qtd (sc/ha)</th>
+                            <th>Produtividade</th>
+                            <th>Gap vs P.E. Qtd</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CHL3-S</td>
+                            <td>R$ 64,84</td>
+                            <td>111,55</td>
+                            <td>85,78</td>
+                            <td class="val-neg">-23,10%</td>
+                        </tr>
+                        <tr>
+                            <td>RCV1-S</td>
+                            <td>R$ 74,20</td>
+                            <td>116,71</td>
+                            <td>78,42</td>
+                            <td class="val-neg">-32,82%</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td>MÉDIA</td>
+                            <td>R$ 69,87</td>
+                            <td>115,04</td>
+                            <td>82,10</td>
+                            <td class="val-neg">-28,63%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Simulação: O que precisaria para empatar?</h4>
+                <p>
+                    Para o milho safrinha atingir resultado zero, precisaria de UMA destas condições:
+                    <br><br>
+                    • <strong>Cenário A (só preço):</strong> PMV de R$ 69,87/sc (+40,2% vs atual R$ 49,86)
+                    <br>
+                    • <strong>Cenário B (só produtividade):</strong> 115,04 sc/ha (+40,1% vs atual 82,10)
+                    <br>
+                    • <strong>Cenário C (só custo):</strong> Custo de R$ 4.094/ha (-28,6% vs atual R$ 5.736)
+                    <br>
+                    • <strong>Cenário D (misto):</strong> PMV de R$ 58/sc + produtividade de 98 sc/ha
+                    <br><br>
+                    Os cenários A e B são pouco realistas isoladamente. O cenário D (misto) seria possível
+                    em uma safra com preço melhor e clima favorável.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- WATERFALL - FORMAÇÃO DO RESULTADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 Formação do Resultado — Waterfall</div>
+
+            <div class="waterfall">
+                <div class="wf-bar">
+                    <div class="wf-value val-pos">R$ 4.095</div>
+                    <div class="wf-block bar-green" style="height: 164px;">Receita</div>
+                    <div class="wf-label">Receita/ha</div>
+                </div>
+                <div class="wf-bar">
+                    <div class="wf-value val-neg">- R$ 3.023</div>
+                    <div class="wf-block bar-red" style="height: 121px;">Insumos</div>
+                    <div class="wf-label">Insumos</div>
+                </div>
+                <div class="wf-bar">
+                    <div class="wf-value val-neg">- R$ 979</div>
+                    <div class="wf-block bar-red" style="height: 39px;">ADM</div>
+                    <div class="wf-label">ADM/Rateio</div>
+                </div>
+                <div class="wf-bar">
+                    <div class="wf-value val-neg">- R$ 539</div>
+                    <div class="wf-block bar-amber" style="height: 22px;">TMA</div>
+                    <div class="wf-label">TMA</div>
+                </div>
+                <div class="wf-bar">
+                    <div class="wf-value val-neg">- R$ 1.195</div>
+                    <div class="wf-block bar-amber" style="height: 48px;">Outros</div>
+                    <div class="wf-label">Demais Custos</div>
+                </div>
+                <div class="wf-bar">
+                    <div class="wf-value val-neg">R$ (1.642)</div>
+                    <div class="wf-block" style="height: 66px; background: linear-gradient(135deg, #dc2626, #991b1b);">PREJUÍZO</div>
+                    <div class="wf-label"><strong>Resultado</strong></div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Leitura do Waterfall</h4>
+                <p>
+                    A receita/ha (R$ 4.095) mal cobre os insumos (R$ 3.023) — sobra R$ 1.072 para cobrir
+                    todos os demais custos (R$ 2.713). O resultado é inevitavelmente negativo.
+                    <br><br>
+                    <strong>O milho safrinha não gera margem suficiente para absorver os custos fixos (ADM, TMA, depreciação).</strong>
+                    Mesmo zerando os insumos (hipotético), a receita mal cobriria os custos de rateio.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- COMPARATIVO COM OUTRAS SAFRINHAS -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">⚔️ Milho Safrinha vs Outras "2ª Safras"</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Tipo</th>
+                            <th>Área (ha)</th>
+                            <th>Receita/ha</th>
+                            <th>Custo/ha</th>
+                            <th>Resultado/ha</th>
+                            <th>Lucrat.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Feijão 2ª Safra</td>
+                            <td>Irrigado</td>
+                            <td>680,00</td>
+                            <td class="val-pos">R$ 18.929</td>
+                            <td>R$ 12.699</td>
+                            <td class="val-pos">R$ 6.229</td>
+                            <td class="val-pos">32,91%</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td>Irrigado</td>
+                            <td>286,00</td>
+                            <td>R$ 5.642</td>
+                            <td>R$ 5.148</td>
+                            <td class="val-pos">R$ 494</td>
+                            <td class="val-pos">8,76%</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>🌽 Milho Safrinha</td>
+                            <td>Sequeiro</td>
+                            <td>252,90</td>
+                            <td class="val-neg">R$ 4.095</td>
+                            <td>R$ 5.736</td>
+                            <td class="val-neg">R$ (1.642)</td>
+                            <td class="val-neg">-28,81%</td>
+                        </tr>
+                        <tr>
+                            <td>🌿 Sorgo</td>
+                            <td>Sequeiro</td>
+                            <td>105,24</td>
+                            <td class="val-neg">R$ 2.430</td>
+                            <td>R$ 5.120</td>
+                            <td class="val-neg">R$ (2.690)</td>
+                            <td class="val-neg">-110,69%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 Alternativas para a Área de Safrinha</h4>
+                <p>
+                    Se os 252,90 ha de milho safrinha fossem convertidos para <strong>feijão irrigado</strong>
+                    (hipotético — depende de pivô), o resultado mudaria de -R$ 418 mil para <strong>+R$ 1.575 mil</strong> —
+                    uma diferença de R$ 1.993 mil.
+                    <br><br>
+                    <strong>Se convertidos para trigo irrigado:</strong> resultado de +R$ 125 mil (vs -R$ 418 mil).
+                    <br><br>
+                    O milho safrinha sequeiro é a <strong>opção menos rentável</strong> entre as culturas de 2ª safra.
+                    A principal razão: preço baixo (R$ 49,86/sc) em combinação com custos fixos rateados
+                    que pesam proporcionalmente mais em culturas de menor valor.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- RESUMO CONSOLIDADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📋 Resumo Financeiro Consolidado — Milho Safrinha</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Área Total</td><td>252,90 ha</td></tr>
+                        <tr><td>Receita Total</td><td>R$ 1.451.545,13</td></tr>
+                        <tr><td>Custo Total</td><td>R$ 1.869.688,36</td></tr>
+                        <tr><td>Resultado</td><td class="val-neg">R$ (418.143,23)</td></tr>
+                        <tr><td>Lucratividade</td><td class="val-neg">-28,81%</td></tr>
+                        <tr><td>Rentabilidade</td><td class="val-neg">-22,37%</td></tr>
+                        <tr><td>Produtividade Média</td><td>82,10 sc/ha</td></tr>
+                        <tr><td>PMV</td><td>R$ 49,86/sc</td></tr>
+                        <tr><td>Custo Total/ha</td><td>R$ 5.736,40</td></tr>
+                        <tr><td>Insumos/ha</td><td>R$ 3.023,23</td></tr>
+                        <tr><td>P.E. em Valor</td><td class="val-neg">R$ 69,87/sc</td></tr>
+                        <tr><td>P.E. em Quantidade</td><td class="val-neg">115,04 sc/ha</td></tr>
+                        <tr><td>% Área da Fazenda</td><td>6,63%</td></tr>
+                        <tr><td>% do Custo Total</td><td>4,10%</td></tr>
+                        <tr><td>% do Faturamento</td><td>3,04%</td></tr>
+                        <tr><td>% do Lucro Total</td><td class="val-neg">-19,59%</td></tr>
+                        <tr><td>Talhões Positivos</td><td class="val-neg">0 de 2 (0%)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>🎯 Conclusão — Milho Safrinha</h4>
+                <p>
+                    O milho safrinha apresentou a <strong>pior lucratividade percentual da safra</strong> (-28,81%).
+                    Com 6,63% da área, contribuiu com -19,59% do resultado. Nenhum talhão foi positivo.
+                    <br><br>
+                    <strong>Fatores do prejuízo:</strong>
+                    <br>• PMV muito baixo (R$ 49,86/sc) — menor entre todas as culturas
+                    <br>• Custos fixos rateados pesam mais em culturas de baixo valor/sc
+                    <br>• Sequeiro sem possibilidade de irrigação complementar
+                    <br><br>
+                    <strong>Para a próxima safra:</strong>
+                    <br>• <strong>Reavaliar a continuidade do milho safrinha</strong> nessas áreas
+                    <br>• Considerar substituição por cobertura + palhada (investimento em solo sem custo de colheita)
+                    <br>• Se mantiver, exigir preço mínimo de R$ 60/sc em contratos antecipados
+                    <br>• Avaliar conversão para trigo irrigado ou feijão onde houver pivô disponível
+                    <br><br>
+                    <em>"O milho safrinha a R$ 50/sc não paga a conta. É preciso coragem para mudar o que não funciona."</em>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

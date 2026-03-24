@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores Avançados & Valuation | Fazenda Modelo - Safra 22/23</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a2a 50%, #0d2818 100%);
+            min-height: 100vh; color: #e0e0e0;
+        }
+        .auth-wall { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+        .auth-box {
+            background: rgba(15,23,42,0.85); backdrop-filter: blur(20px);
+            border: 1px solid rgba(16,185,129,0.15); border-radius: 20px;
+            padding: 40px; max-width: 420px; width: 90%; text-align: center;
+        }
+        .auth-box h2 { color: #10b981; margin-bottom: 20px; font-size: 1.2rem; }
+        .auth-box input {
+            width: 100%; padding: 12px 16px; background: rgba(30,41,59,0.8);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 10px;
+            color: #f1f5f9; font-size: 1rem; margin-bottom: 15px; outline: none;
+        }
+        .auth-box input:focus { border-color: #10b981; }
+        .auth-box button {
+            width: 100%; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
+            border: none; border-radius: 10px; color: #fff; font-weight: 700; cursor: pointer;
+        }
+        .auth-box .error { color: #ef4444; font-size: 0.82rem; margin-top: 10px; display: none; }
+        .main-content { display: none; }
+
+        .page-header {
+            background: rgba(15,23,42,0.9); border-bottom: 1px solid rgba(16,185,129,0.15);
+            padding: 25px 30px; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(20px);
+        }
+        .header-top {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 1500px; margin: 0 auto; flex-wrap: wrap; gap: 10px;
+        }
+        .header-top h1 { font-size: 1.15rem; color: #f0fdf4; }
+        .header-top h1 span { color: #10b981; }
+        .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn-back {
+            padding: 8px 16px; background: rgba(71,85,105,0.3);
+            border: 1px solid rgba(71,85,105,0.4); border-radius: 8px;
+            color: #94a3b8; text-decoration: none; font-size: 0.76rem; transition: all 0.3s;
+        }
+        .btn-back:hover { border-color: #10b981; color: #10b981; }
+
+        .container { max-width: 1500px; margin: 0 auto; padding: 30px 20px; }
+
+        .section-title {
+            font-size: 1.1rem; color: #10b981; font-weight: 700;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(16,185,129,0.2);
+        }
+        .section-title.purple { color: #8b5cf6; border-color: rgba(139,92,246,0.2); }
+        .section-title.blue { color: #3b82f6; border-color: rgba(59,130,246,0.2); }
+        .section-title.amber { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+
+        .table-container {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; overflow-x: auto; margin-bottom: 30px;
+        }
+        .table-container table { width: 100%; border-collapse: collapse; min-width: 650px; }
+        .table-container th {
+            background: rgba(16,185,129,0.1); padding: 11px 12px; text-align: right;
+            font-size: 0.66rem; color: #10b981; text-transform: uppercase;
+            letter-spacing: 0.5px; font-weight: 700;
+            border-bottom: 1px solid rgba(16,185,129,0.15); white-space: nowrap;
+        }
+        .table-container th:first-child { text-align: left; }
+        .table-container td {
+            padding: 10px 12px; font-size: 0.8rem;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+            color: #cbd5e1; text-align: right; white-space: nowrap;
+        }
+        .table-container td:first-child { text-align: left; font-weight: 600; color: #e2e8f0; }
+        .table-container tr:hover td { background: rgba(16,185,129,0.03); }
+        .table-container tr:last-child td { border-bottom: none; }
+        .table-container tr.row-total td { background: rgba(16,185,129,0.07); font-weight: 700; color: #f0fdf4; border-top: 2px solid rgba(16,185,129,0.2); }
+        .table-container tr.row-best td { background: rgba(16,185,129,0.04); }
+        .table-container tr.row-worst td { background: rgba(239,68,68,0.04); }
+        .td-left { text-align: left !important; font-weight: 400 !important; color: #94a3b8 !important; }
+        .td-wrap { white-space: normal !important; line-height: 1.4; max-width: 280px; }
+
+        .val-pos { color: #10b981 !important; font-weight: 700; }
+        .val-neg { color: #ef4444 !important; font-weight: 700; }
+        .val-warn { color: #f59e0b !important; font-weight: 700; }
+        .val-blue { color: #3b82f6 !important; font-weight: 700; }
+        .val-purple { color: #8b5cf6 !important; font-weight: 700; }
+
+        .kpi-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px; margin-bottom: 30px;
+        }
+        .kpi-card {
+            background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 14px; padding: 16px; transition: all 0.3s;
+        }
+        .kpi-card:hover { border-color: rgba(16,185,129,0.3); }
+        .kpi-card .kpi-label { font-size: 0.64rem; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 5px; }
+        .kpi-card .kpi-value { font-size: 1.25rem; font-weight: 800; color: #f0fdf4; }
+        .kpi-card .kpi-sub { font-size: 0.7rem; color: #94a3b8; margin-top: 4px; }
+
+        .formula-box {
+            background: rgba(30,41,59,0.6); border: 1px solid rgba(71,85,105,0.3);
+            border-radius: 10px; padding: 14px 20px; margin: 12px 0 20px;
+            font-family: 'Courier New', monospace; font-size: 0.8rem; color: #10b981;
+            overflow-x: auto; white-space: nowrap;
+        }
+
+        .chart-bar-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 30px; }
+        .chart-bar-item { display: grid; grid-template-columns: 120px 1fr 160px; gap: 10px; align-items: center; }
+        .chart-bar-item .label { font-size: 0.72rem; color: #94a3b8; text-align: right; font-weight: 600; }
+        .chart-bar-item .bar-track { height: 22px; background: rgba(30,41,59,0.6); border-radius: 5px; overflow: hidden; position: relative; }
+        .chart-bar-item .bar-fill { height: 100%; border-radius: 5px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 0.6rem; font-weight: 700; color: #fff; min-width: 2px; }
+        .bar-green { background: linear-gradient(90deg, #10b981, #059669); }
+        .bar-blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .bar-amber { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .bar-red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .bar-purple { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .chart-bar-item .value { font-size: 0.76rem; color: #e2e8f0; font-weight: 600; }
+
+        /* DuPont Diagram */
+        .dupont-grid {
+            display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            gap: 8px; align-items: center; margin-bottom: 30px;
+        }
+        .dupont-box {
+            background: rgba(15,23,42,0.7); border-radius: 12px; padding: 14px;
+            text-align: center; border: 2px solid;
+        }
+        .dupont-box .d-label { font-size: 0.62rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .dupont-box .d-value { font-size: 1.15rem; font-weight: 800; margin-top: 4px; }
+        .dupont-op { font-size: 1.5rem; font-weight: 800; text-align: center; }
+
+        /* Ansoff Matrix */
+        .ansoff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px; }
+        .ansoff-card { border-radius: 14px; padding: 20px; border: 2px solid; }
+        .ansoff-card h3 { font-size: 0.88rem; margin-bottom: 10px; }
+        .ansoff-card p { font-size: 0.78rem; color: #cbd5e1; line-height: 1.55; }
+        .ansoff-card p strong { color: #f0fdf4; }
+
+        .insight-box { background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .insight-box h4 { color: #f59e0b; font-size: 0.85rem; margin-bottom: 8px; }
+        .insight-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .insight-box p strong { color: #e2e8f0; }
+
+        .alert-box { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .alert-box h4 { color: #ef4444; font-size: 0.85rem; margin-bottom: 8px; }
+        .alert-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .alert-box p strong { color: #e2e8f0; }
+
+        .success-box { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.2); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .success-box h4 { color: #10b981; font-size: 0.85rem; margin-bottom: 8px; }
+        .success-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .success-box p strong { color: #e2e8f0; }
+
+        .info-box { background: rgba(59,130,246,0.05); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .info-box h4 { color: #3b82f6; font-size: 0.85rem; margin-bottom: 8px; }
+        .info-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .info-box p strong { color: #e2e8f0; }
+
+        .purple-box { background: rgba(139,92,246,0.05); border: 1px solid rgba(139,92,246,0.2); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .purple-box h4 { color: #8b5cf6; font-size: 0.85rem; margin-bottom: 8px; }
+        .purple-box p { color: #94a3b8; font-size: 0.82rem; line-height: 1.65; }
+        .purple-box p strong { color: #e2e8f0; }
+
+        .divider { border: none; border-top: 1px solid rgba(71,85,105,0.2); margin: 40px 0; }
+
+        .page-footer { text-align: center; padding: 30px 20px; border-top: 1px solid rgba(71,85,105,0.2); margin-top: 40px; }
+        .page-footer .name { color: #10b981; font-weight: 700; }
+        .page-footer .title { color: #94a3b8; font-size: 0.78rem; margin-top: 4px; }
+        .page-footer .contact { color: #64748b; font-size: 0.72rem; margin-top: 8px; }
+        .page-footer .contact a { color: #10b981; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .dupont-grid { grid-template-columns: 1fr; }
+            .dupont-op { display: none; }
+            .ansoff-grid { grid-template-columns: 1fr; }
+            .chart-bar-item { grid-template-columns: 80px 1fr 120px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUTH -->
+    <div class="auth-wall" id="authWall">
+        <div class="auth-box">
+            <h2>🔒 Acesso Restrito</h2>
+            <input type="password" id="passInput" placeholder="Digite a senha" autocomplete="off">
+            <button onclick="tryAuth()">Acessar</button>
+            <div class="error" id="authError">⚠️ Senha incorreta</div>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="main-content" id="mainContent">
+        <div class="page-header">
+            <div class="header-top">
+                <h1>📐 Indicadores Avançados, Valuation & Decisão — <span>Safra 22/23</span></h1>
+                <div class="nav-links">
+                    <a href="index.html" class="btn-back">← Menu</a>
+                    <a href="gestao-estrategica.html" class="btn-back">🏗️ Gestão</a>
+                    <a href="analise-avancada.html" class="btn-back">🧠 Econometria</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 1. PONTO DE EQUILÍBRIO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📍 1. Ponto de Equilíbrio (Break-Even) — Por Cultura</div>
+
+            <div class="info-box">
+                <h4>📌 O Que É</h4>
+                <p>
+                    O <strong>Ponto de Equilíbrio (PE)</strong> é o volume mínimo de produção (em sc/ha)
+                    ou o preço mínimo de venda (em R$/sc) para que a cultura cubra <strong>todos os seus custos</strong>
+                    (variáveis + fixos rateados). Abaixo do PE, há prejuízo.
+                </p>
+            </div>
+
+            <div class="formula-box">
+                PE (sc/ha) = Custo Total/ha ÷ PMV (R$/sc) &nbsp;&nbsp;|&nbsp;&nbsp; PE (R$/sc) = Custo Total/ha ÷ Produtividade (sc/ha)
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Custo Total/ha</th>
+                            <th>PMV</th>
+                            <th>Produtiv. Real</th>
+                            <th>PE (sc/ha)</th>
+                            <th>Folga Prod.</th>
+                            <th>PE (R$/sc)</th>
+                            <th>Folga Preço</th>
+                            <th>Margem Segurança</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Feijão 2ª</td>
+                            <td>R$ 12.689</td>
+                            <td>R$ 329,63</td>
+                            <td>57,42 sc/ha</td>
+                            <td>38,50</td>
+                            <td class="val-pos">+18,92 sc</td>
+                            <td>R$ 220,98</td>
+                            <td class="val-pos">+R$ 108,65</td>
+                            <td class="val-pos">32,96%</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🌽 M.S. Verão</td>
+                            <td>R$ 7.663</td>
+                            <td>R$ 129,44</td>
+                            <td>88,20 sc/ha</td>
+                            <td>59,20</td>
+                            <td class="val-pos">+29,00 sc</td>
+                            <td>R$ 86,88</td>
+                            <td class="val-pos">+R$ 42,56</td>
+                            <td class="val-pos">32,88%</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo (geral)</td>
+                            <td>R$ 5.149</td>
+                            <td>R$ 82,72</td>
+                            <td>68,23 sc/ha</td>
+                            <td>62,25</td>
+                            <td class="val-pos">+5,98 sc</td>
+                            <td>R$ 75,47</td>
+                            <td class="val-pos">+R$ 7,25</td>
+                            <td class="val-warn">8,77%</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td>R$ 7.798</td>
+                            <td>R$ 97,34</td>
+                            <td>80,60 sc/ha</td>
+                            <td>80,12</td>
+                            <td class="val-warn">+0,48 sc</td>
+                            <td>R$ 96,75</td>
+                            <td class="val-warn">+R$ 0,59</td>
+                            <td class="val-warn">0,60%</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td>R$ 4.797</td>
+                            <td>R$ 66,86</td>
+                            <td>62,76 sc/ha</td>
+                            <td>71,75</td>
+                            <td class="val-neg">-8,99 sc</td>
+                            <td>R$ 76,43</td>
+                            <td class="val-neg">-R$ 9,57</td>
+                            <td class="val-neg">-14,32%</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td>R$ 5.736</td>
+                            <td>R$ 49,86</td>
+                            <td>82,10 sc/ha</td>
+                            <td>115,04</td>
+                            <td class="val-neg">-32,94 sc</td>
+                            <td>R$ 69,87</td>
+                            <td class="val-neg">-R$ 20,01</td>
+                            <td class="val-neg">-40,12%</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>🌿 Sorgo</td>
+                            <td>R$ 5.120</td>
+                            <td>R$ 43,20</td>
+                            <td>56,25 sc/ha</td>
+                            <td>118,52</td>
+                            <td class="val-neg">-62,27 sc</td>
+                            <td>R$ 91,02</td>
+                            <td class="val-neg">-R$ 47,82</td>
+                            <td class="val-neg">-110,71%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-bar-group">
+                <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 8px; font-weight: 600;">Margem de Segurança (distância do Break-Even)</div>
+                <div class="chart-bar-item">
+                    <div class="label">🫘 Feijão 2ª</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:100%;">+32,96%</div></div>
+                    <div class="value val-pos">Folgado — aguenta PMV -33%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M.S. Verão</div>
+                    <div class="bar-track"><div class="bar-fill bar-green" style="width:99.7%;">+32,88%</div></div>
+                    <div class="value val-pos">Folgado — aguenta PMV -33%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌾 Trigo</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:26.6%;">+8,77%</div></div>
+                    <div class="value val-warn">Apertado — só aguenta PMV -9%</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M.S. Inverno</div>
+                    <div class="bar-track"><div class="bar-fill bar-amber" style="width:1.8%;min-width:24px;">0,6%</div></div>
+                    <div class="value val-warn">Fio da navalha — qualquer variação = prejuízo</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🫘 Soja</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:0;"></div></div>
+                    <div class="value val-neg">ABAIXO do PE — precisa +R$ 9,57/sc OU +9 sc/ha</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌽 M. Safrinha</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:0;"></div></div>
+                    <div class="value val-neg">ABAIXO do PE — precisa +R$ 20/sc OU +33 sc/ha</div>
+                </div>
+                <div class="chart-bar-item">
+                    <div class="label">🌿 Sorgo</div>
+                    <div class="bar-track"><div class="bar-fill bar-red" style="width:0;"></div></div>
+                    <div class="value val-neg">ABAIXO do PE — precisa +R$ 47,82/sc OU +62 sc/ha</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>⚠️ Soja Precisaria Produzir 71,75 sc/ha Para Empatar — Produz 62,76</h4>
+                <p>
+                    A soja opera <strong>14,32% abaixo do ponto de equilíbrio</strong>. Para empatar, precisaria
+                    de produtividade de 71,75 sc/ha (Top 5% de GO) OU preço de R$ 76,43/sc (+14% sobre o realizado).
+                    Nenhum dos dois é realista sem mudança estrutural.
+                    <br><br>
+                    <strong>Milho Semente Inverno</strong> opera com margem de segurança de apenas <strong>0,60%</strong> —
+                    qualquer variação de 1% em preço ou produtividade o empurra para o vermelho. É uma operação
+                    extremamente frágil.
+                    <br><br>
+                    <strong>Feijão e M.S. Verão</strong> têm margem de segurança de ~33% —
+                    aguentam queda de preço de 33% antes de dar prejuízo. São os <strong>"colchões" da fazenda</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 2. EBITDA AGRÍCOLA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">💰 2. EBITDA Agrícola — Geração de Caixa Operacional</div>
+
+            <div class="formula-box">
+                EBITDA = Resultado Operacional + Depreciação + Amortização &nbsp;&nbsp;|&nbsp;&nbsp; EBITDA/ha = EBITDA ÷ Área Total
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Resultado Operacional</div>
+                    <div class="kpi-value val-pos">R$ 2.134.418</div>
+                    <div class="kpi-sub">Lucro líquido da safra</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">(+) Depreciação</div>
+                    <div class="kpi-value">R$ 3.847.200</div>
+                    <div class="kpi-sub">Máquinas + pivôs + benfeitorias</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">(+) Amortização</div>
+                    <div class="kpi-value">R$ 612.000</div>
+                    <div class="kpi-sub">Amortização de intangíveis</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">= EBITDA Fazenda</div>
+                    <div class="kpi-value val-pos" style="font-size:1.4rem;">R$ 6.593.618</div>
+                    <div class="kpi-sub">Geração de caixa operacional</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBITDA / ha</div>
+                    <div class="kpi-value val-pos">R$ 1.729</div>
+                    <div class="kpi-sub">Ref. mercado GO: R$ 1.200-2.000/ha</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Margem EBITDA</div>
+                    <div class="kpi-value val-pos">13,78%</div>
+                    <div class="kpi-sub">EBITDA ÷ Receita Bruta</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>EBITDA/ha</th>
+                            <th>Margem EBITDA</th>
+                            <th>% do EBITDA Total</th>
+                            <th>Ranking</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Feijão 2ª</td>
+                            <td class="val-pos">R$ 5.162</td>
+                            <td class="val-pos">40,69%</td>
+                            <td class="val-pos">34,2%</td>
+                            <td class="val-pos">#1</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🌽 M.S. Verão</td>
+                            <td class="val-pos">R$ 4.749</td>
+                            <td class="val-pos">41,62%</td>
+                            <td class="val-pos">28,1%</td>
+                            <td class="val-pos">#2</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td class="val-pos">R$ 1.494</td>
+                            <td class="val-pos">26,48%</td>
+                            <td>16,4%</td>
+                            <td>#3</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td class="val-warn">R$ 1.051</td>
+                            <td class="val-warn">13,39%</td>
+                            <td>8,3%</td>
+                            <td>#4</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td class="val-warn">R$ 397</td>
+                            <td class="val-warn">9,47%</td>
+                            <td>9,8%</td>
+                            <td>#5</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td class="val-neg">R$ (642)</td>
+                            <td class="val-neg">-15,67%</td>
+                            <td class="val-neg">-5,2%</td>
+                            <td class="val-neg">#6</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>🌿 Sorgo</td>
+                            <td class="val-neg">R$ (1.690)</td>
+                            <td class="val-neg">-69,55%</td>
+                            <td class="val-neg">-2,7%</td>
+                            <td class="val-neg">#7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 EBITDA Revela: Soja Gera Caixa, Mas Pouco</h4>
+                <p>
+                    Quando incluímos a depreciação, a soja volta a gerar caixa positivo (EBITDA R$ 397/ha).
+                    Isso significa que a soja <strong>cobre seus custos operacionais de caixa</strong>, mas
+                    <strong>não cobre a reposição de capital</strong> (depreciação). A longo prazo, a fazenda
+                    está "comendo" seu patrimônio para plantar soja.
+                    <br><br>
+                    <strong>Feijão e M.S. Verão concentram 62,3% do EBITDA total</strong> — são as verdadeiras
+                    máquinas de geração de caixa da operação.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 3. MARGEM DE CONTRIBUIÇÃO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">📊 3. Margem de Contribuição — Variável vs Fixo</div>
+
+            <div class="formula-box">
+                MC = Receita - Custos Variáveis &nbsp;&nbsp;|&nbsp;&nbsp; MC% = MC ÷ Receita &nbsp;&nbsp;|&nbsp;&nbsp; MC/ha = MC ÷ Área
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Receita/ha</th>
+                            <th>C. Variável/ha</th>
+                            <th>MC/ha (R$)</th>
+                            <th>MC (%)</th>
+                            <th>C. Fixo/ha</th>
+                            <th>MC Cobre Fixo?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="row-best">
+                            <td>🫘 Feijão 2ª</td>
+                            <td>R$ 18.930</td>
+                            <td>R$ 8.467</td>
+                            <td class="val-pos">R$ 10.463</td>
+                            <td class="val-pos">55,27%</td>
+                            <td>R$ 6.241</td>
+                            <td class="val-pos">Sim (+R$ 4.222)</td>
+                        </tr>
+                        <tr class="row-best">
+                            <td>🌽 M.S. Verão</td>
+                            <td>R$ 11.412</td>
+                            <td>R$ 4.845</td>
+                            <td class="val-pos">R$ 6.567</td>
+                            <td class="val-pos">57,54%</td>
+                            <td>R$ 3.527</td>
+                            <td class="val-pos">Sim (+R$ 3.040)</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td>R$ 5.643</td>
+                            <td>R$ 2.716</td>
+                            <td class="val-pos">R$ 2.927</td>
+                            <td class="val-pos">51,87%</td>
+                            <td>R$ 2.675</td>
+                            <td class="val-pos">Sim (+R$ 252)</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td>R$ 7.849</td>
+                            <td>R$ 3.845</td>
+                            <td class="val-pos">R$ 4.004</td>
+                            <td class="val-pos">51,01%</td>
+                            <td>R$ 3.737</td>
+                            <td class="val-pos">Sim (+R$ 267)</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Soja</td>
+                            <td>R$ 4.194</td>
+                            <td>R$ 2.489</td>
+                            <td class="val-pos">R$ 1.705</td>
+                            <td class="val-pos">40,65%</td>
+                            <td>R$ 1.902</td>
+                            <td class="val-neg">Não (-R$ 197)</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td>R$ 4.095</td>
+                            <td>R$ 2.715</td>
+                            <td class="val-pos">R$ 1.380</td>
+                            <td class="val-warn">33,70%</td>
+                            <td>R$ 2.528</td>
+                            <td class="val-neg">Não (-R$ 1.148)</td>
+                        </tr>
+                        <tr class="row-worst">
+                            <td>🌿 Sorgo</td>
+                            <td>R$ 2.430</td>
+                            <td>R$ 2.348</td>
+                            <td class="val-warn">R$ 82</td>
+                            <td class="val-neg">3,37%</td>
+                            <td>R$ 2.772</td>
+                            <td class="val-neg">Não (-R$ 2.690)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 MC Positiva ≠ Lucro — O Erro de Muitos Produtores</h4>
+                <p>
+                    A <strong>soja tem MC positiva (R$ 1.705/ha)</strong> — cobre custos variáveis.
+                    Muitos produtores param aqui e dizem "a soja não está dando prejuízo".
+                    <strong>Errado.</strong> A MC não cobre os custos fixos (-R$ 197/ha de deficit).
+                    <br><br>
+                    <strong>Sorgo é ainda pior:</strong> MC de apenas R$ 82/ha. Praticamente não sobra nada
+                    após pagar os insumos e operações. O custo fixo rateado (R$ 2.772/ha) fica 100% descoberto.
+                    <br><br>
+                    <strong>Feijão tem MC de R$ 10.463/ha</strong> — após cobrir custos variáveis, ainda sobram
+                    R$ 4.222/ha para cobrir fixos e gerar lucro. <strong>1 ha de feijão gera a MC equivalente
+                    a 6,1 ha de soja.</strong>
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 4. CUSTO DE OPORTUNIDADE -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title amber">🏦 4. Custo de Oportunidade — O Que o Capital Renderia Fora da Fazenda</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Valor</th>
+                            <th>Observação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Capital investido na safra 22/23</td>
+                            <td>R$ 45.726.018</td>
+                            <td class="td-left">Custo total (insumos + fixos + operações)</td>
+                        </tr>
+                        <tr>
+                            <td>Resultado operacional gerado</td>
+                            <td class="val-pos">R$ 2.134.418</td>
+                            <td class="td-left">Retorno efetivo da safra</td>
+                        </tr>
+                        <tr>
+                            <td>ROC (Retorno sobre Capital)</td>
+                            <td class="val-warn">4,67%</td>
+                            <td class="td-left">Resultado ÷ Capital investido</td>
+                        </tr>
+                        <tr>
+                            <td>CDI acumulado safra 22/23</td>
+                            <td class="val-blue">13,65%</td>
+                            <td class="td-left">Selic média ~13,75% no período</td>
+                        </tr>
+                        <tr>
+                            <td>Rendimento se aplicasse no CDI</td>
+                            <td class="val-blue">R$ 6.241.601</td>
+                            <td class="td-left">R$ 45,7M × 13,65%</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td><strong>Custo de Oportunidade</strong></td>
+                            <td class="val-neg"><strong>R$ (4.107.183)</strong></td>
+                            <td class="td-left"><strong>R$ 2,13M ganho - R$ 6,24M que ganharia no CDI</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Custo de Oportunidade da Terra</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Valor estimado da terra (3.813 ha × R$ 28.000/ha)</td>
+                            <td>R$ 106.764.000</td>
+                        </tr>
+                        <tr>
+                            <td>Aluguel de terra (arrendamento GO) — ~10 sc soja/ha/ano</td>
+                            <td>R$ 2.548.710</td>
+                        </tr>
+                        <tr>
+                            <td>Resultado operacional da fazenda</td>
+                            <td class="val-pos">R$ 2.134.418</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td><strong>Déficit vs Arrendamento</strong></td>
+                            <td class="val-neg"><strong>R$ (414.292)</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert-box">
+                <h4>🔴 A Verdade Que Ninguém Conta: A Safra 22/23 Perdeu Para o CDI E Para o Arrendamento</h4>
+                <p>
+                    <strong>O capital investido na safra rendeu 4,67%</strong> enquanto o CDI rendeu 13,65%.
+                    Ou seja, o produtor teria ganhado <strong>R$ 4,1 milhões A MAIS</strong> se tivesse
+                    simplesmente aplicado o dinheiro no banco e ficado em casa.
+                    <br><br>
+                    Mais grave: se tivesse <strong>arrendado a terra</strong> (10 sc soja/ha), teria recebido
+                    R$ 2,55M sem trabalhar, sem risco climático e sem estresse —
+                    <strong>R$ 414 mil A MAIS</strong> do que o resultado da operação própria.
+                    <br><br>
+                    <strong>Isso NÃO significa que plantar é errado.</strong> Significa que a operação
+                    precisa ser <strong>otimizada para superar o custo de oportunidade</strong>.
+                    No cenário otimizado (R$ 4,85M+), a fazenda já supera o arrendamento.
+                    No cenário com pivôs (R$ 12,57M), supera até o CDI.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 5. ANÁLISE DuPont AGRÍCOLA -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title purple">📐 5. Análise DuPont Agrícola — Decomposição do Retorno</div>
+
+            <div class="info-box">
+                <h4>📌 DuPont Adaptada ao Agro</h4>
+                <p>
+                    A análise DuPont decompõe o <strong>ROA (Retorno sobre Ativos)</strong> em 3 fatores
+                    multiplicativos, revelando ONDE está o problema (ou a virtude) da rentabilidade.
+                </p>
+            </div>
+
+            <div class="formula-box">
+                ROA = Margem Líquida × Giro do Ativo &nbsp;&nbsp;|&nbsp;&nbsp; ROE = ROA × Multiplicador de Alavancagem
+            </div>
+
+            <div class="dupont-grid">
+                <div class="dupont-box" style="border-color: rgba(245,158,11,0.4);">
+                    <div class="d-label">Margem Líquida</div>
+                    <div class="d-value val-warn">4,46%</div>
+                </div>
+                <div class="dupont-op" style="color: #64748b;">×</div>
+                <div class="dupont-box" style="border-color: rgba(59,130,246,0.4);">
+                    <div class="d-label">Giro do Ativo</div>
+                    <div class="d-value val-blue">0,31x</div>
+                </div>
+                <div class="dupont-op" style="color: #64748b;">=</div>
+                <div class="dupont-box" style="border-color: rgba(16,185,129,0.4);">
+                    <div class="d-label">ROA</div>
+                    <div class="d-value val-warn">1,38%</div>
+                </div>
+                <div class="dupont-op" style="color: #64748b;">×</div>
+                <div class="dupont-box" style="border-color: rgba(139,92,246,0.4);">
+                    <div class="d-label">Alavancagem</div>
+                    <div class="d-value val-purple">2,15x</div>
+                </div>
+            </div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="kpi-card">
+                    <div class="kpi-label">ROA (Ret. s/ Ativos)</div>
+                    <div class="kpi-value val-warn">1,38%</div>
+                    <div class="kpi-sub">Ref. agro BR: 3-8%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">ROE (Ret. s/ PL)</div>
+                    <div class="kpi-value val-warn">2,97%</div>
+                    <div class="kpi-sub">Ref. agro BR: 8-15%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Giro do Ativo</div>
+                    <div class="kpi-value">0,31x</div>
+                    <div class="kpi-sub">Receita ÷ Ativo Total</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Multiplicador</div>
+                    <div class="kpi-value">2,15x</div>
+                    <div class="kpi-sub">Ativo ÷ PL (alavancagem)</div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 DuPont Revela: O Gargalo É a Margem, Não o Giro</h4>
+                <p>
+                    <strong>Margem Líquida (4,46%)</strong> é o fator mais fraco da equação — está abaixo
+                    do benchmark agro (8-15%). O giro do ativo (0,31x) é típico de fazendas com alto valor
+                    de terra. A alavancagem (2,15x) indica uso moderado de capital de terceiros.
+                    <br><br>
+                    <strong>Diagnóstico DuPont:</strong> Para elevar o ROE de 2,97% para 10%+, a fazenda precisa:
+                    <br>• Aumentar a margem líquida de 4,46% para 12%+ (via mix otimizado + hedge)
+                    <br>• Manter ou reduzir alavancagem (não aumentar dívida sem propósito)
+                    <br>• O giro do ativo melhora naturalmente com mais receita/ha (irrigação)
+                    <br><br>
+                    <strong>No cenário otimizado:</strong> ROE subiria para ~10,8% — dentro da faixa de referência.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 6. DSCR E GAO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🏦 6. Capacidade de Pagamento (DSCR) & Alavancagem Operacional (GAO)</div>
+
+            <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+                <div class="kpi-card">
+                    <div class="kpi-label">DSCR — Debt Service Coverage Ratio</div>
+                    <div class="kpi-value val-warn">1,18x</div>
+                    <div class="kpi-sub">EBITDA ÷ Serviço da Dívida (principal + juros)<br>Ref. mínimo bancos: 1,20x | Ideal: &gt; 1,50x</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Serviço da Dívida Anual</div>
+                    <div class="kpi-value val-neg">R$ 5.587.200</div>
+                    <div class="kpi-sub">Amortização R$ 3.420K + Juros R$ 2.167K</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">EBITDA / Dívida Total</div>
+                    <div class="kpi-value val-warn">0,38x</div>
+                    <div class="kpi-sub">Ref: &lt; 0,5x = apertado | &gt; 1,0x = confortável</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">GAO — Grau Alav. Operacional</div>
+                    <div class="kpi-value val-neg">3,72x</div>
+                    <div class="kpi-sub">MC Total ÷ Resultado Operacional<br>+1% receita = +3,72% no resultado</div>
+                </div>
+            </div>
+
+            <div class="alert-box">
+                <h4>⚠️ DSCR de 1,18x — Abaixo do Mínimo Bancário</h4>
+                <p>
+                    O DSCR (capacidade de pagamento) de <strong>1,18x está abaixo do mínimo bancário padrão (1,20x)</strong>.
+                    Isso significa que a fazenda gera caixa apenas <strong>18% acima</strong> do necessário para
+                    pagar suas dívidas. Qualquer queda de receita pode comprometer o pagamento.
+                    <br><br>
+                    <strong>No cenário otimizado</strong> (EBITDA de ~R$ 10M), o DSCR subiria para <strong>1,79x</strong> —
+                    confortável e acima do ideal de 1,50x.
+                    <br><br>
+                    <strong>GAO de 3,72x</strong> indica alta alavancagem operacional: custos fixos representam
+                    proporção alta do total. Isso é uma faca de dois gumes:
+                    se a receita sobe 10%, o resultado sobe 37,2%; mas se a receita cai 10%, o resultado cai 37,2%.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 7. CICLO FINANCEIRO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title blue">⏱️ 7. Ciclo Financeiro — Tempo de Retorno do Capital</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cultura</th>
+                            <th>Início Desembolso</th>
+                            <th>Colheita</th>
+                            <th>Recebimento</th>
+                            <th>Ciclo Financeiro</th>
+                            <th>Capital Exposto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🫘 Soja (1ª safra)</td>
+                            <td>Jul/22 (insumos)</td>
+                            <td>Fev/23</td>
+                            <td>Mar-Abr/23</td>
+                            <td class="val-warn">8-9 meses</td>
+                            <td>R$ 7,15M</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Verão</td>
+                            <td>Jul/22</td>
+                            <td>Jan-Fev/23</td>
+                            <td>Mar/23</td>
+                            <td class="val-warn">8 meses</td>
+                            <td>R$ 4,82M</td>
+                        </tr>
+                        <tr>
+                            <td>🫘 Feijão 2ª</td>
+                            <td>Jan/23</td>
+                            <td>Mai-Jun/23</td>
+                            <td>Jun-Jul/23</td>
+                            <td class="val-pos">5-6 meses</td>
+                            <td>R$ 5,27M</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M. Safrinha</td>
+                            <td>Jan/23</td>
+                            <td>Jun-Jul/23</td>
+                            <td>Ago/23</td>
+                            <td class="val-warn">7 meses</td>
+                            <td>R$ 4,16M</td>
+                        </tr>
+                        <tr>
+                            <td>🌽 M.S. Inverno</td>
+                            <td>Mar/23</td>
+                            <td>Ago-Set/23</td>
+                            <td>Out/23</td>
+                            <td class="val-warn">7 meses</td>
+                            <td>R$ 2,98M</td>
+                        </tr>
+                        <tr>
+                            <td>🌾 Trigo</td>
+                            <td>Abr/23</td>
+                            <td>Ago-Set/23</td>
+                            <td>Set-Out/23</td>
+                            <td class="val-pos">5-6 meses</td>
+                            <td>R$ 4,87M</td>
+                        </tr>
+                        <tr>
+                            <td>🌿 Sorgo</td>
+                            <td>Fev/23</td>
+                            <td>Jun/23</td>
+                            <td>Jul/23</td>
+                            <td class="val-pos">5 meses</td>
+                            <td>R$ 0,54M</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td><strong>Ciclo Médio Ponderado</strong></td>
+                            <td colspan="3"></td>
+                            <td class="val-warn"><strong>7,2 meses</strong></td>
+                            <td><strong>R$ 29,79M pico</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                <h4>💡 O Capital Fica Preso 7,2 Meses em Média</h4>
+                <p>
+                    Durante o ciclo, a fazenda tem <strong>R$ 29,79 milhões de capital exposto</strong>
+                    (pico de desembolso antes de recebimento). Esse capital precisa ser financiado
+                    (capital próprio ou custeio bancário), gerando custo financeiro.
+                    <br><br>
+                    <strong>A 13,65% aa (Selic 22/23)</strong>, o custo de carregar R$ 29,79M por 7,2 meses
+                    é de aproximadamente <strong>R$ 2,44M</strong> — mais que o resultado operacional da safra.
+                    <br><br>
+                    <strong>Oportunidade:</strong> Antecipar vendas (forward/barter) reduz o ciclo e o capital exposto.
+                    Feijão e trigo têm ciclos mais curtos (5-6 meses) — mais eficientes no uso do capital.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 8. MATRIZ DE ANSOFF -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title purple">🧭 8. Matriz de Ansoff — Estratégias de Crescimento</div>
+
+            <div class="ansoff-grid">
+                <div class="ansoff-card" style="border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.03);">
+                    <h3 style="color:#10b981;">📍 Penetração de Mercado (Produto Atual × Mercado Atual)</h3>
+                    <p>
+                        <strong>Risco: BAIXO | Prioridade: ALTA</strong>
+                        <br><br>
+                        • Aumentar produtividade via VRT e manejo diferenciado (+5 sc/ha = +R$ 911K)
+                        <br>• Reduzir custos fixos em 15% (renegociação ADM)
+                        <br>• Hedge de 70% da produção (proteger receita existente)
+                        <br>• Compra antecipada de insumos (-8%)
+                        <br><br>
+                        <strong>Impacto: +R$ 2,7M sem mudar nada no mix de culturas</strong>
+                    </p>
+                </div>
+
+                <div class="ansoff-card" style="border-color: rgba(59,130,246,0.3); background: rgba(59,130,246,0.03);">
+                    <h3 style="color:#3b82f6;">🔄 Desenvolvimento de Produto (Produto Novo × Mercado Atual)</h3>
+                    <p>
+                        <strong>Risco: MODERADO | Prioridade: ALTA</strong>
+                        <br><br>
+                        • Converter soja grão → soja semente (+80-125% receita)
+                        <br>• Converter trigo grão → trigo semente (+57% receita)
+                        <br>• Testar culturas especiais: grão-de-bico, gergelim, chia irrigada
+                        <br>• Milho semente waxy/especial — prêmio sobre convencional
+                        <br><br>
+                        <strong>Impacto: +R$ 3-5M com mesma infraestrutura</strong>
+                    </p>
+                </div>
+
+                <div class="ansoff-card" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.03);">
+                    <h3 style="color:#f59e0b;">📈 Desenvolvimento de Mercado (Produto Atual × Mercado Novo)</h3>
+                    <p>
+                        <strong>Risco: MODERADO | Prioridade: MÉDIA</strong>
+                        <br><br>
+                        • Venda direta para indústria (feijão empacotado, moinho de trigo)
+                        <br>• Exportação direta (trader próprio vs cooperativa)
+                        <br>• Certificação ESG/orgânico — acesso a mercados premium
+                        <br>• Crédito de carbono — monetizar sustentabilidade
+                        <br><br>
+                        <strong>Impacto: +R$ 5-15/sc prêmio por canal diferenciado</strong>
+                    </p>
+                </div>
+
+                <div class="ansoff-card" style="border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.03);">
+                    <h3 style="color:#8b5cf6;">🚀 Diversificação (Produto Novo × Mercado Novo)</h3>
+                    <p>
+                        <strong>Risco: ALTO | Prioridade: BAIXA (exploratório)</strong>
+                        <br><br>
+                        • ILP — pecuária integrada nos 105 ha (boi gordo com @ recorde)
+                        <br>• Energia solar nos pivôs (redução de custo + venda de excedente)
+                        <br>• Turismo rural / fazenda demonstrativa
+                        <br>• Participação em usina de etanol de milho
+                        <br><br>
+                        <strong>Impacto: variável — requer análise caso a caso</strong>
+                    </p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- 9. VALUATION SIMPLIFICADO -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🏛️ 9. Valuation Simplificado — Quanto Vale a Operação Agrícola</div>
+
+            <div class="purple-box">
+                <h4>🔬 Metodologias Aplicadas</h4>
+                <p>
+                    Três métodos complementares para estimar o <strong>valor justo da operação agrícola</strong>
+                    (não inclui valor da terra nua — apenas a operação/negócio):
+                    <br>• <strong>Método 1:</strong> Múltiplo de EBITDA (EV/EBITDA)
+                    <br>• <strong>Método 2:</strong> Fluxo de Caixa Descontado (DCF simplificado)
+                    <br>• <strong>Método 3:</strong> Valor patrimonial + goodwill operacional
+                </p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Método</th>
+                            <th>Premissa</th>
+                            <th>Cálculo</th>
+                            <th>Valor Estimado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EV/EBITDA (cenário atual)</td>
+                            <td class="td-left">Múltiplo 5x (padrão agro BR)</td>
+                            <td class="td-left">R$ 6,59M × 5</td>
+                            <td class="val-warn">R$ 32,97M</td>
+                        </tr>
+                        <tr>
+                            <td>EV/EBITDA (cenário otimizado)</td>
+                            <td class="td-left">Múltiplo 6x (prêmio irrigação)</td>
+                            <td class="td-left">R$ 10,2M × 6</td>
+                            <td class="val-pos">R$ 61,20M</td>
+                        </tr>
+                        <tr>
+                            <td>DCF (5 anos, WACC 14%)</td>
+                            <td class="td-left">FCL crescente + terminal value</td>
+                            <td class="td-left">VP dos fluxos + TV</td>
+                            <td class="val-pos">R$ 48,74M</td>
+                        </tr>
+                        <tr>
+                            <td>Patrimonial + Goodwill</td>
+                            <td class="td-left">Ativos a mercado + capacidade técnica</td>
+                            <td class="td-left">Ativo Líquido + goodwill 20%</td>
+                            <td class="val-warn">R$ 38,42M</td>
+                        </tr>
+                        <tr class="row-total">
+                            <td><strong>Média Ponderada (Atual)</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td class="val-warn"><strong>R$ 36,71M</strong></td>
+                        </tr>
+                        <tr class="row-total">
+                            <td><strong>Média Ponderada (Otimizado)</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td class="val-pos"><strong>R$ 52,45M</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ As Decisões Gerenciais Valem R$ 15,74 Milhões</h4>
+                <p>
+                    A diferença entre o valuation atual (<strong>R$ 36,71M</strong>) e o otimizado
+                    (<strong>R$ 52,45M</strong>) é de <strong>R$ 15,74 milhões</strong>.
+                    <br><br>
+                    Esse é o <strong>"valor oculto" da gestão estratégica</strong> — está na fazenda,
+                    aguardando para ser destravado. Não depende de comprar mais terra, de mais capital
+                    ou de sorte no mercado. Depende de <strong>decisões corretas</strong>.
+                    <br><br>
+                    <strong>Se a fazenda fosse vendida hoje</strong> (operação + terra):
+                    <br>• Cenário atual: R$ 36,71M (operação) + R$ 106,76M (terra) = <strong>R$ 143,47M</strong>
+                    <br>• Cenário otimizado: R$ 52,45M + R$ 106,76M = <strong>R$ 159,21M</strong>
+                    <br><br>
+                    As 7 decisões estratégicas agregam <strong>R$ 15,74M ao valor da empresa agrícola</strong>.
+                </p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- DASHBOARD FINAL -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <div class="section-title">🎯 Painel Final — Todos os Indicadores Consolidados</div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Fazenda 22/23</th>
+                            <th>Benchmark Agro</th>
+                            <th>Meta Otimizada</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lucratividade</td>
+                            <td class="val-warn">4,46%</td>
+                            <td>8-15%</td>
+                            <td class="val-pos">21,14%</td>
+                            <td class="val-warn">⚠️ Abaixo</td>
+                        </tr>
+                        <tr>
+                            <td>EBITDA/ha</td>
+                            <td class="val-pos">R$ 1.729</td>
+                            <td>R$ 1.200-2.000</td>
+                            <td class="val-pos">R$ 2.674</td>
+                            <td class="val-pos">✅ Na faixa</td>
+                        </tr>
+                        <tr>
+                            <td>Margem EBITDA</td>
+                            <td class="val-warn">13,78%</td>
+                            <td>15-25%</td>
+                            <td class="val-pos">28,3%</td>
+                            <td class="val-warn">⚠️ Abaixo</td>
+                        </tr>
+                        <tr>
+                            <td>ROA</td>
+                            <td class="val-neg">1,38%</td>
+                            <td>3-8%</td>
+                            <td class="val-pos">5,12%</td>
+                            <td class="val-neg">❌ Baixo</td>
+                        </tr>
+                        <tr>
+                            <td>ROE</td>
+                            <td class="val-neg">2,97%</td>
+                            <td>8-15%</td>
+                            <td class="val-pos">10,8%</td>
+                            <td class="val-neg">❌ Baixo</td>
+                        </tr>
+                        <tr>
+                            <td>ROC (Ret. s/ Capital)</td>
+                            <td class="val-neg">4,67%</td>
+                            <td>&gt; CDI (13,65%)</td>
+                            <td class="val-pos">27,5%</td>
+                            <td class="val-neg">❌ Abaixo CDI</td>
+                        </tr>
+                        <tr>
+                            <td>DSCR</td>
+                            <td class="val-warn">1,18x</td>
+                            <td>&gt; 1,50x</td>
+                            <td class="val-pos">1,79x</td>
+                            <td class="val-warn">⚠️ Apertado</td>
+                        </tr>
+                        <tr>
+                            <td>GAO</td>
+                            <td class="val-neg">3,72x</td>
+                            <td>1,5-2,5x</td>
+                            <td class="val-warn">2,4x</td>
+                            <td class="val-neg">❌ Alto risco</td>
+                        </tr>
+                        <tr>
+                            <td>Sharpe Ratio</td>
+                            <td class="val-warn">0,64</td>
+                            <td>&gt; 1,0</td>
+                            <td class="val-pos">1,48</td>
+                            <td class="val-warn">⚠️ Abaixo</td>
+                        </tr>
+                        <tr>
+                            <td>Margem de Segurança (média)</td>
+                            <td class="val-warn">-12,85%</td>
+                            <td>&gt; 15%</td>
+                            <td class="val-pos">18,4%</td>
+                            <td class="val-neg">❌ Negativa</td>
+                        </tr>
+                        <tr>
+                            <td>Ciclo Financeiro</td>
+                            <td class="val-warn">7,2 meses</td>
+                            <td>5-6 meses</td>
+                            <td class="val-pos">5,8 meses</td>
+                            <td class="val-warn">⚠️ Longo</td>
+                        </tr>
+                        <tr>
+                            <td>Valuation (operação)</td>
+                            <td class="val-warn">R$ 36,71M</td>
+                            <td>—</td>
+                            <td class="val-pos">R$ 52,45M</td>
+                            <td class="val-warn">⬆️ +R$ 15,74M potencial</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="success-box">
+                <h4>✅ Diagnóstico Final: 4 Indicadores OK, 4 em Alerta, 4 Críticos</h4>
+                <p>
+                    A fazenda está <strong>saudável em geração de caixa bruta</strong> (EBITDA/ha na faixa)
+                    e em <strong>produtividade</strong> (acima da média em tudo).
+                    <br><br>
+                    Mas está <strong>crítica em eficiência de capital</strong> (ROA 1,38%, ROE 2,97%, ROC abaixo do CDI)
+                    e em <strong>gestão de risco</strong> (GAO 3,72x, Sharpe 0,64, DSCR apertado).
+                    <br><br>
+                    <strong>A fazenda é boa em produzir. Precisa ser boa em rentabilizar.</strong>
+                    A distância entre os dois é gestão — e esse relatório é o mapa.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="page-footer">
+            <div class="name">Dr. Sidney Souza</div>
+            <div class="title">
+                Economista Agrícola — Estrategista Econômico do Produtor<br>
+                Especialista em economia da fazenda e gestão de risco no agro
+            </div>
+            <div class="contact" style="margin-top: 10px;">
+                📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> &bull;
+                📱 (64) 9 9226-6886 &bull;
+                📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const P = atob('UnVyYWxpbjIwMjY=');
+        function tryAuth() {
+            const input = document.getElementById('passInput');
+            if (input.value === P) {
+                document.getElementById('authWall').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                sessionStorage.setItem('ruralin_auth', 'true');
+            } else {
+                document.getElementById('authError').style.display = 'block';
+                input.value = '';
+                setTimeout(() => document.getElementById('authError').style.display = 'none', 2500);
+            }
+        }
+        document.getElementById('passInput').addEventListener('keypress', e => { if (e.key === 'Enter') tryAuth(); });
+        if (sessionStorage.getItem('ruralin_auth') === 'true') {
+            document.getElementById('authWall').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
