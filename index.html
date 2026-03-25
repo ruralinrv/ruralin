@@ -25,9 +25,7 @@
             border: 1px solid rgba(16,185,129,0.15); border-radius: 24px;
             padding: 50px 40px; max-width: 460px; width: 100%; text-align: center;
         }
-        .auth-logo {
-            font-size: 3rem; margin-bottom: 10px;
-        }
+        .auth-logo { font-size: 3rem; margin-bottom: 10px; }
         .auth-box h1 {
             font-size: 1.4rem; color: #10b981; margin-bottom: 6px;
             letter-spacing: -0.5px;
@@ -84,107 +82,15 @@
             display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;
             margin-top: 25px;
         }
-        .hero-stat {
-            text-align: center;
-        }
-        .hero-stat .hs-value {
-            font-size: 1.5rem; font-weight: 800; color: #10b981;
-        }
+        .hero-stat { text-align: center; }
+        .hero-stat .hs-value { font-size: 1.5rem; font-weight: 800; color: #10b981; }
         .hero-stat .hs-label {
             font-size: 0.68rem; color: #64748b; text-transform: uppercase;
             letter-spacing: 0.5px; margin-top: 2px;
         }
 
         /* ─── CONTAINER ─── */
-        .container {
-            max-width: 1300px; margin: 0 auto; padding: 40px 20px;
-        }
-
-        /* ─── SECTION HEADERS ─── */
-        .sec-header {
-            text-align: center; margin-bottom: 30px;
-        }
-        .sec-header h2 {
-            font-size: 1.3rem; color: #f0fdf4; font-weight: 700; margin-bottom: 6px;
-        }
-        .sec-header p {
-            font-size: 0.84rem; color: #64748b; max-width: 600px; margin: 0 auto;
-        }
-
-        /* ─── CARD GRID ─── */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 50px;
-        }
-
-        .nav-card {
-            background: rgba(15,23,42,0.7);
-            border: 1px solid rgba(71,85,105,0.25);
-            border-radius: 16px;
-            padding: 24px;
-            text-decoration: none;
-            color: #e0e0e0;
-            transition: all 0.35s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-card::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--accent), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .nav-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-        .nav-card:hover::before { opacity: 1; }
-
-        .nav-card .card-icon {
-            font-size: 2rem; margin-bottom: 10px; display: block;
-        }
-        .nav-card .card-title {
-            font-size: 0.95rem; font-weight: 700; color: #f0fdf4;
-            margin-bottom: 6px;
-        }
-        .nav-card .card-desc {
-            font-size: 0.76rem; color: #94a3b8; line-height: 1.5;
-            margin-bottom: 12px;
-        }
-        .nav-card .card-tags {
-            display: flex; flex-wrap: wrap; gap: 4px;
-        }
-        .nav-card .tag {
-            padding: 2px 8px; border-radius: 6px; font-size: 0.58rem;
-            font-weight: 700; letter-spacing: 0.3px;
-        }
-        .tag-green { background: rgba(16,185,129,0.15); color: #10b981; }
-        .tag-blue { background: rgba(59,130,246,0.15); color: #3b82f6; }
-        .tag-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
-        .tag-purple { background: rgba(139,92,246,0.15); color: #8b5cf6; }
-        .tag-red { background: rgba(239,68,68,0.15); color: #ef4444; }
-        .tag-teal { background: rgba(20,184,166,0.15); color: #14b8a6; }
-
-        .card-number {
-            position: absolute; top: 14px; right: 16px;
-            font-size: 0.6rem; font-weight: 800; color: #334155;
-            background: rgba(51,65,85,0.3); padding: 2px 8px; border-radius: 10px;
-        }
-
-        /* Category dividers */
-        .cat-divider {
-            display: flex; align-items: center; gap: 12px; margin: 40px 0 20px;
-        }
-        .cat-divider .cat-line {
-            flex: 1; height: 1px; background: rgba(71,85,105,0.2);
-        }
-        .cat-divider .cat-label {
-            font-size: 0.7rem; color: #64748b; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
-        }
+        .container { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
 
         /* ─── QUICK STATS ─── */
         .quick-stats {
@@ -202,6 +108,64 @@
         .qs-warn { color: #f59e0b; }
         .qs-blue { color: #3b82f6; }
 
+        /* Category dividers */
+        .cat-divider {
+            display: flex; align-items: center; gap: 12px; margin: 40px 0 20px;
+        }
+        .cat-divider .cat-line { flex: 1; height: 1px; background: rgba(71,85,105,0.2); }
+        .cat-divider .cat-label {
+            font-size: 0.7rem; color: #64748b; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
+        }
+
+        /* ─── CARD GRID ─── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px; margin-bottom: 50px;
+        }
+
+        .nav-card {
+            background: rgba(15,23,42,0.7);
+            border: 1px solid rgba(71,85,105,0.25);
+            border-radius: 16px; padding: 24px;
+            text-decoration: none; color: #e0e0e0;
+            transition: all 0.35s ease;
+            position: relative; overflow: hidden;
+        }
+        .nav-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .nav-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .nav-card:hover::before { opacity: 1; }
+        .nav-card .card-icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+        .nav-card .card-title { font-size: 0.95rem; font-weight: 700; color: #f0fdf4; margin-bottom: 6px; }
+        .nav-card .card-desc { font-size: 0.76rem; color: #94a3b8; line-height: 1.5; margin-bottom: 12px; }
+        .nav-card .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+        .nav-card .tag {
+            padding: 2px 8px; border-radius: 6px; font-size: 0.58rem;
+            font-weight: 700; letter-spacing: 0.3px;
+        }
+        .tag-green { background: rgba(16,185,129,0.15); color: #10b981; }
+        .tag-blue { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .tag-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .tag-purple { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+        .tag-red { background: rgba(239,68,68,0.15); color: #ef4444; }
+        .tag-teal { background: rgba(20,184,166,0.15); color: #14b8a6; }
+
+        .card-number {
+            position: absolute; top: 14px; right: 16px;
+            font-size: 0.6rem; font-weight: 800; color: #334155;
+            background: rgba(51,65,85,0.3); padding: 2px 8px; border-radius: 10px;
+        }
+
         /* ─── FOOTER ─── */
         .page-footer {
             text-align: center; padding: 40px 20px;
@@ -215,6 +179,21 @@
             margin-top: 20px; font-size: 0.66rem; color: #334155;
             max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.5;
         }
+
+        /* ─── MAP TABLE ─── */
+        .map-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        .map-table th {
+            text-align: left; padding: 8px 12px; font-size: 0.66rem; color: #10b981;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(16,185,129,0.15);
+        }
+        .map-table td {
+            padding: 6px 12px; font-size: 0.76rem; color: #cbd5e1;
+            border-bottom: 1px solid rgba(71,85,105,0.1);
+        }
+        .map-table td:first-child { color: #64748b; }
+        .map-table td:nth-child(2) { font-weight: 600; }
+        .map-table .fname { color: #64748b; font-family: monospace; font-size: 0.7rem; }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 1.5rem; }
@@ -252,7 +231,7 @@
 
         <!-- HERO -->
         <div class="hero">
-            <div class="hero-badge">📊 Relatório Completo — 19 Módulos</div>
+            <div class="hero-badge">📊 Relatório Completo — 21 Módulos</div>
             <h1>Relatório Econômico-Estratégico<br><span>Fazenda Modelo — Safra 22/23</span></h1>
             <div class="hero-sub">
                 Análise econômica de <strong>28 talhões</strong>, <strong>7 culturas</strong>,
@@ -349,45 +328,45 @@
                     </div>
                 </a>
 
-                <a href="receitas.html" class="nav-card" style="--accent: #10b981;">
+                <a href="dre-ebitda.html" class="nav-card" style="--accent: #10b981;">
                     <div class="card-number">02</div>
-                    <div class="card-icon">💰</div>
-                    <div class="card-title">Receitas por Cultura</div>
+                    <div class="card-icon">📈</div>
+                    <div class="card-title">DRE & EBITDA</div>
                     <div class="card-desc">
-                        Detalhamento das receitas: produtividade, preço médio de venda,
-                        receita/ha e participação de cada cultura.
+                        Demonstrativo de Resultado completo. Receita, custos, resultado operacional,
+                        EBITDA e margens por cultura.
                     </div>
                     <div class="card-tags">
-                        <span class="tag tag-green">RECEITA R$ 47,86M</span>
-                        <span class="tag tag-blue">7 CULTURAS</span>
+                        <span class="tag tag-green">DRE COMPLETA</span>
+                        <span class="tag tag-blue">EBITDA</span>
                     </div>
                 </a>
 
-                <a href="custos.html" class="nav-card" style="--accent: #f59e0b;">
+                <a href="historico-financeiro.html" class="nav-card" style="--accent: #3b82f6;">
                     <div class="card-number">03</div>
                     <div class="card-icon">📊</div>
-                    <div class="card-title">Estrutura de Custos</div>
+                    <div class="card-title">Histórico Financeiro</div>
                     <div class="card-desc">
-                        Anatomia completa: insumos, operações, custos fixos, TMA,
-                        depreciação. Custo/ha e custo/sc por cultura.
+                        Evolução dos indicadores financeiros ao longo das safras.
+                        Tendências, comparativos e projeções.
                     </div>
                     <div class="card-tags">
-                        <span class="tag tag-amber">CUSTO R$ 45,73M</span>
-                        <span class="tag tag-red">FIXO 35,5%</span>
+                        <span class="tag tag-blue">SÉRIE HISTÓRICA</span>
+                        <span class="tag tag-purple">TENDÊNCIAS</span>
                     </div>
                 </a>
 
-                <a href="resultado.html" class="nav-card" style="--accent: #10b981;">
+                <a href="investimentos.html" class="nav-card" style="--accent: #8b5cf6;">
                     <div class="card-number">04</div>
-                    <div class="card-icon">📈</div>
-                    <div class="card-title">Resultado & Lucratividade</div>
+                    <div class="card-icon">🏗️</div>
+                    <div class="card-title">Investimentos</div>
                     <div class="card-desc">
-                        DRE completa por cultura. Resultado/ha, lucratividade %,
-                        ranking de performance e contribuição ao total.
+                        Análise de investimentos realizados e projetados: irrigação,
+                        máquinas, infraestrutura e retorno esperado.
                     </div>
                     <div class="card-tags">
-                        <span class="tag tag-green">RESULTADO R$ 2,13M</span>
-                        <span class="tag tag-amber">LUCRAT. 4,46%</span>
+                        <span class="tag tag-purple">CAPEX</span>
+                        <span class="tag tag-green">ROI</span>
                     </div>
                 </a>
             </div>
@@ -417,7 +396,7 @@
                     </div>
                 </a>
 
-                <a href="soja.html" class="nav-card" style="--accent: #f59e0b;">
+                <a href="soja-detalhado.html" class="nav-card" style="--accent: #f59e0b;">
                     <div class="card-number">06</div>
                     <div class="card-icon">🫘</div>
                     <div class="card-title">Soja — 8 Talhões</div>
@@ -431,7 +410,7 @@
                     </div>
                 </a>
 
-                <a href="milho-semente.html" class="nav-card" style="--accent: #10b981;">
+                <a href="milho-semente-detalhado.html" class="nav-card" style="--accent: #10b981;">
                     <div class="card-number">07</div>
                     <div class="card-icon">🌽</div>
                     <div class="card-title">Milho Semente — Verão & Inverno</div>
@@ -445,7 +424,7 @@
                     </div>
                 </a>
 
-                <a href="feijao.html" class="nav-card" style="--accent: #10b981;">
+                <a href="feijao-detalhado.html" class="nav-card" style="--accent: #10b981;">
                     <div class="card-number">08</div>
                     <div class="card-icon">🫘</div>
                     <div class="card-title">Feijão 2ª Safra Irrigado</div>
@@ -459,7 +438,7 @@
                     </div>
                 </a>
 
-                <a href="trigo.html" class="nav-card" style="--accent: #8b5cf6;">
+                <a href="trigo-detalhado.html" class="nav-card" style="--accent: #8b5cf6;">
                     <div class="card-number">09</div>
                     <div class="card-icon">🌾</div>
                     <div class="card-title">Trigo — Irrigado vs Sequeiro</div>
@@ -474,17 +453,31 @@
                     </div>
                 </a>
 
-                <a href="milho-safrinha.html" class="nav-card" style="--accent: #ef4444;">
+                <a href="milho-safrinha-detalhado.html" class="nav-card" style="--accent: #ef4444;">
                     <div class="card-number">10</div>
                     <div class="card-icon">🌽</div>
-                    <div class="card-title">Milho Safrinha & Sorgo</div>
+                    <div class="card-title">Milho Safrinha</div>
                     <div class="card-desc">
-                        Safrinha (-28,81%) e Sorgo (-110,69%): as culturas
-                        que destroem valor. Análise e alternativas.
+                        Safrinha (-28,81%): cultura que destrói valor.
+                        Análise detalhada e alternativas viáveis.
                     </div>
                     <div class="card-tags">
                         <span class="tag tag-red">SAFRINHA -28,81%</span>
-                        <span class="tag tag-red">SORGO -110,69%</span>
+                        <span class="tag tag-amber">ALTERNATIVAS</span>
+                    </div>
+                </a>
+
+                <a href="sorgo-detalhado.html" class="nav-card" style="--accent: #ef4444;">
+                    <div class="card-number">11</div>
+                    <div class="card-icon">🌿</div>
+                    <div class="card-title">Sorgo</div>
+                    <div class="card-desc">
+                        A cultura mais deficitária: -110,69% de lucratividade.
+                        Por que continuar? Análise e recomendações.
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag tag-red">PREJUÍZO -110,69%</span>
+                        <span class="tag tag-red">DESCONTINUAR?</span>
                     </div>
                 </a>
             </div>
@@ -494,36 +487,23 @@
             <!-- ═══════════════════════════════ -->
             <div class="cat-divider">
                 <div class="cat-line"></div>
-                <div class="cat-label">💳 Módulo 3 — Custos, Endividamento & Irrigação</div>
+                <div class="cat-label">💳 Módulo 3 — Custos, Endividamento & Estrutura</div>
                 <div class="cat-line"></div>
             </div>
 
             <div class="card-grid">
-                <a href="insumos.html" class="nav-card" style="--accent: #f59e0b;">
-                    <div class="card-number">11</div>
-                    <div class="card-icon">🧪</div>
-                    <div class="card-title">Insumos — Detalhamento</div>
-                    <div class="card-desc">
-                        Fertilizantes, defensivos, sementes: custo/ha por categoria
-                        e por cultura. Onde está o gasto.
-                    </div>
-                    <div class="card-tags">
-                        <span class="tag tag-amber">R$ 18,24M TOTAL</span>
-                        <span class="tag tag-blue">POR CULTURA</span>
-                    </div>
-                </a>
-
-                <a href="custos-fixos.html" class="nav-card" style="--accent: #ef4444;">
+                <a href="custos-rateio.html" class="nav-card" style="--accent: #f59e0b;">
                     <div class="card-number">12</div>
                     <div class="card-icon">🏢</div>
-                    <div class="card-title">Custos Fixos & Rateio</div>
+                    <div class="card-title">Custos, Rateio & Estrutura</div>
                     <div class="card-desc">
-                        ADM, depreciação, TMA, irrigação: como os custos fixos
-                        são rateados e por que inflam o custo/sc.
+                        Estrutura completa de custos: insumos, operações, ADM,
+                        depreciação, TMA e rateio por cultura. Custo/ha e custo/sc.
                     </div>
                     <div class="card-tags">
-                        <span class="tag tag-red">35,5% DO CUSTO</span>
-                        <span class="tag tag-amber">RATEIO CRÍTICO</span>
+                        <span class="tag tag-amber">CUSTO R$ 45,73M</span>
+                        <span class="tag tag-red">FIXO 35,5%</span>
+                        <span class="tag tag-blue">RATEIO ABC</span>
                     </div>
                 </a>
 
@@ -540,20 +520,6 @@
                         <span class="tag tag-amber">ALAV. 2,15x</span>
                     </div>
                 </a>
-
-                <a href="irrigacao.html" class="nav-card" style="--accent: #3b82f6;">
-                    <div class="card-number">14</div>
-                    <div class="card-icon">💧</div>
-                    <div class="card-title">Irrigação vs Sequeiro</div>
-                    <div class="card-desc">
-                        O divisor de águas da fazenda: 87,5% dos irrigados lucram
-                        vs 16,7% dos sequeiro. Impacto por hectare.
-                    </div>
-                    <div class="card-tags">
-                        <span class="tag tag-green">IRR +R$ 3.171/ha</span>
-                        <span class="tag tag-red">SEQ -R$ 674/ha</span>
-                    </div>
-                </a>
             </div>
 
             <!-- ═══════════════════════════════ -->
@@ -567,7 +533,7 @@
 
             <div class="card-grid">
                 <a href="benchmarking.html" class="nav-card" style="--accent: #3b82f6;">
-                    <div class="card-number">15</div>
+                    <div class="card-number">14</div>
                     <div class="card-icon">📊</div>
                     <div class="card-title">Benchmarking & Indicadores Cruzados</div>
                     <div class="card-desc">
@@ -582,7 +548,7 @@
                 </a>
 
                 <a href="analise-avancada.html" class="nav-card" style="--accent: #8b5cf6;">
-                    <div class="card-number">16</div>
+                    <div class="card-number">15</div>
                     <div class="card-icon">🧠</div>
                     <div class="card-title">Estatística, Econometria & Monte Carlo</div>
                     <div class="card-desc">
@@ -597,7 +563,7 @@
                 </a>
 
                 <a href="indicadores-avancados.html" class="nav-card" style="--accent: #8b5cf6;">
-                    <div class="card-number">17</div>
+                    <div class="card-number">16</div>
                     <div class="card-icon">📐</div>
                     <div class="card-title">Indicadores Avançados & Valuation</div>
                     <div class="card-desc">
@@ -624,7 +590,7 @@
 
             <div class="card-grid">
                 <a href="gestao-estrategica.html" class="nav-card" style="--accent: #10b981; border-width: 2px;">
-                    <div class="card-number">18</div>
+                    <div class="card-number">17</div>
                     <div class="card-icon">🏗️</div>
                     <div class="card-title">Gestão Estratégica & Mercado Global</div>
                     <div class="card-desc">
@@ -653,142 +619,135 @@
             </div>
 
             <div style="background: rgba(15,23,42,0.7); border: 1px solid rgba(71,85,105,0.2); border-radius: 14px; padding: 24px; margin-bottom: 30px; overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; min-width: 700px;">
+                <table class="map-table">
                     <thead>
                         <tr>
-                            <th style="text-align:left; padding: 8px 12px; font-size: 0.66rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(16,185,129,0.15);">#</th>
-                            <th style="text-align:left; padding: 8px 12px; font-size: 0.66rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(16,185,129,0.15);">Página</th>
-                            <th style="text-align:left; padding: 8px 12px; font-size: 0.66rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(16,185,129,0.15);">Arquivo</th>
-                            <th style="text-align:left; padding: 8px 12px; font-size: 0.66rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(16,185,129,0.15);">Conteúdo Principal</th>
-                            <th style="text-align:left; padding: 8px 12px; font-size: 0.66rem; color: #10b981; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(16,185,129,0.15);">Ferramentas</th>
+                            <th>#</th>
+                            <th>Página</th>
+                            <th>Arquivo</th>
+                            <th>Conteúdo Principal</th>
+                            <th>Ferramentas</th>
                         </tr>
                     </thead>
-                    <tbody style="font-size: 0.76rem; color: #cbd5e1;">
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">01</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">📋 Resumo Executivo</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">resumo-executivo.html</td>
-                            <td style="padding: 6px 12px;">KPIs globais, visão geral da safra</td>
-                            <td style="padding: 6px 12px;">DRE, KPIs</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">02</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">💰 Receitas</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">receitas.html</td>
-                            <td style="padding: 6px 12px;">Receita por cultura, PMV, produtividade</td>
-                            <td style="padding: 6px 12px;">Análise de receita</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">03</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">📊 Custos</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">custos.html</td>
-                            <td style="padding: 6px 12px;">Estrutura de custos, custo/ha, custo/sc</td>
-                            <td style="padding: 6px 12px;">Custeio ABC</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">04</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">📈 Resultado</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">resultado.html</td>
-                            <td style="padding: 6px 12px;">DRE por cultura, ranking, contribuição</td>
-                            <td style="padding: 6px 12px;">DRE, Margem</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">05</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🌱 Painel de Culturas</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">analise-culturas.html</td>
-                            <td style="padding: 6px 12px;">Comparativo visual 7 culturas</td>
-                            <td style="padding: 6px 12px;">Ranking, Radar</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">06</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🫘 Soja</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">soja.html</td>
-                            <td style="padding: 6px 12px;">8 talhões, diagnóstico do prejuízo</td>
-                            <td style="padding: 6px 12px;">Análise talhão</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">07</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🌽 Milho Semente</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">milho-semente.html</td>
-                            <td style="padding: 6px 12px;">Verão vs Inverno, valor agregado</td>
-                            <td style="padding: 6px 12px;">Análise premium</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">08</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🫘 Feijão</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">feijao.html</td>
-                            <td style="padding: 6px 12px;">A estrela da fazenda, 4 talhões irrigados</td>
-                            <td style="padding: 6px 12px;">Best practice</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">09</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🌾 Trigo</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">trigo.html</td>
-                            <td style="padding: 6px 12px;">Irrigado vs Sequeiro, 7 talhões</td>
-                            <td style="padding: 6px 12px;">Análise irrigação</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">10</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🌽 Safrinha & Sorgo</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">milho-safrinha.html</td>
-                            <td style="padding: 6px 12px;">Culturas deficitárias, alternativas</td>
-                            <td style="padding: 6px 12px;">Diagnóstico</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">11</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🧪 Insumos</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">insumos.html</td>
-                            <td style="padding: 6px 12px;">Fertilizantes, defensivos, sementes</td>
-                            <td style="padding: 6px 12px;">Custeio detalhado</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">12</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🏢 Custos Fixos</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">custos-fixos.html</td>
-                            <td style="padding: 6px 12px;">ADM, rateio, depreciação, TMA</td>
-                            <td style="padding: 6px 12px;">Rateio ABC</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">13</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🏦 Endividamento</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">endividamento.html</td>
-                            <td style="padding: 6px 12px;">Passivo, alavancagem, capacidade pgto</td>
-                            <td style="padding: 6px 12px;">DSCR, Dív/EBITDA</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">14</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">💧 Irrigação</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">irrigacao.html</td>
-                            <td style="padding: 6px 12px;">Irrigado vs sequeiro cross-culture</td>
-                            <td style="padding: 6px 12px;">Análise comparativa</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">15</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">📊 Benchmarking</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">benchmarking.html</td>
-                            <td style="padding: 6px 12px;">vs CONAB, vs GO, vs Top 20%, scatter plot</td>
-                            <td style="padding: 6px 12px;">Benchmark, ROI, IEE</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">16</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🧠 Econometria</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">analise-avancada.html</td>
-                            <td style="padding: 6px 12px;">Correlação, regressão, Monte Carlo, cluster</td>
-                            <td style="padding: 6px 12px;">OLS, VaR, Sharpe, K-means</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(71,85,105,0.1);">
-                            <td style="padding: 6px 12px; color: #64748b;">17</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">📐 Indicadores Avançados</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">indicadores-avancados.html</td>
-                            <td style="padding: 6px 12px;">Break-Even, EBITDA, DuPont, Valuation</td>
-                            <td style="padding: 6px 12px;">MC, COT, GAO, DCF</td>
+                    <tbody>
+                        <tr>
+                            <td>01</td>
+                            <td>📋 Resumo Executivo</td>
+                            <td class="fname">resumo-executivo.html</td>
+                            <td>KPIs globais, visão geral da safra</td>
+                            <td>DRE, KPIs</td>
                         </tr>
                         <tr>
-                            <td style="padding: 6px 12px; color: #64748b;">18</td>
-                            <td style="padding: 6px 12px; font-weight: 600;">🏗️ Gestão Estratégica</td>
-                            <td style="padding: 6px 12px; color: #64748b; font-family: monospace; font-size: 0.7rem;">gestao-estrategica.html</td>
-                            <td style="padding: 6px 12px;">SWOT, BCG, GUT, BSC, PDCA, Risco, Cenários</td>
-                            <td style="padding: 6px 12px;">7 ferramentas + USDA</td>
+                            <td>02</td>
+                            <td>📈 DRE & EBITDA</td>
+                            <td class="fname">dre-ebitda.html</td>
+                            <td>Demonstrativo de resultado, EBITDA</td>
+                            <td>DRE, Margem</td>
+                        </tr>
+                        <tr>
+                            <td>03</td>
+                            <td>📊 Histórico Financeiro</td>
+                            <td class="fname">historico-financeiro.html</td>
+                            <td>Série histórica e evolução</td>
+                            <td>Tendências</td>
+                        </tr>
+                        <tr>
+                            <td>04</td>
+                            <td>🏗️ Investimentos</td>
+                            <td class="fname">investimentos.html</td>
+                            <td>CAPEX, ROI de investimentos</td>
+                            <td>Análise de projeto</td>
+                        </tr>
+                        <tr>
+                            <td>05</td>
+                            <td>🌱 Painel de Culturas</td>
+                            <td class="fname">analise-culturas.html</td>
+                            <td>Comparativo visual 7 culturas</td>
+                            <td>Ranking, Radar</td>
+                        </tr>
+                        <tr>
+                            <td>06</td>
+                            <td>🫘 Soja</td>
+                            <td class="fname">soja-detalhado.html</td>
+                            <td>8 talhões, diagnóstico do prejuízo</td>
+                            <td>Análise talhão</td>
+                        </tr>
+                        <tr>
+                            <td>07</td>
+                            <td>🌽 Milho Semente</td>
+                            <td class="fname">milho-semente-detalhado.html</td>
+                            <td>Verão vs Inverno, valor agregado</td>
+                            <td>Análise premium</td>
+                        </tr>
+                        <tr>
+                            <td>08</td>
+                            <td>🫘 Feijão</td>
+                            <td class="fname">feijao-detalhado.html</td>
+                            <td>A estrela da fazenda, 4 talhões irrigados</td>
+                            <td>Best practice</td>
+                        </tr>
+                        <tr>
+                            <td>09</td>
+                            <td>🌾 Trigo</td>
+                            <td class="fname">trigo-detalhado.html</td>
+                            <td>Irrigado vs Sequeiro, 7 talhões</td>
+                            <td>Análise irrigação</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>🌽 Milho Safrinha</td>
+                            <td class="fname">milho-safrinha-detalhado.html</td>
+                            <td>Cultura deficitária, alternativas</td>
+                            <td>Diagnóstico</td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td>🌿 Sorgo</td>
+                            <td class="fname">sorgo-detalhado.html</td>
+                            <td>Cultura mais deficitária, recomendações</td>
+                            <td>Análise de descontinuidade</td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td>🏢 Custos & Rateio</td>
+                            <td class="fname">custos-rateio.html</td>
+                            <td>Estrutura de custos, rateio ABC</td>
+                            <td>Custeio ABC</td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td>🏦 Endividamento</td>
+                            <td class="fname">endividamento.html</td>
+                            <td>Passivo, alavancagem, capacidade pgto</td>
+                            <td>DSCR, Dív/EBITDA</td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td>📊 Benchmarking</td>
+                            <td class="fname">benchmarking.html</td>
+                            <td>vs CONAB, vs GO, vs Top 20%</td>
+                            <td>Benchmark, ROI, IEE</td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td>🧠 Econometria</td>
+                            <td class="fname">analise-avancada.html</td>
+                            <td>Correlação, regressão, Monte Carlo, cluster</td>
+                            <td>OLS, VaR, Sharpe, K-means</td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td>📐 Indicadores Avançados</td>
+                            <td class="fname">indicadores-avancados.html</td>
+                            <td>Break-Even, EBITDA, DuPont, Valuation</td>
+                            <td>MC, COT, GAO, DCF</td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td>🏗️ Gestão Estratégica</td>
+                            <td class="fname">gestao-estrategica.html</td>
+                            <td>SWOT, BCG, GUT, BSC, PDCA, Risco, Cenários</td>
+                            <td>7 ferramentas + USDA</td>
                         </tr>
                     </tbody>
                 </table>
@@ -840,18 +799,15 @@
             }
         }
 
-        // Enter key
         document.getElementById('passInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') tryAuth();
         });
 
-        // Auto-login if session valid
         if (sessionStorage.getItem('ruralin_auth') === 'true') {
             document.getElementById('authWall').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         }
 
-        // Focus input on load
         window.addEventListener('load', function() {
             const input = document.getElementById('passInput');
             if (input && input.offsetParent !== null) input.focus();
