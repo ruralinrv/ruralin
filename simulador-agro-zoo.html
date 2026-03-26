@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores Agronômicos & Zootécnicos | Rural In</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #060d1a;
+            --bg-card: #0b1426;
+            --bg-card2: #101d33;
+            --bg-input: #081020;
+            --border: #162040;
+            --border-hi: #1e3058;
+            --gold: #d4a843;
+            --gold-dim: rgba(212,168,67,.15);
+            --green: #22c55e;
+            --green-dim: rgba(34,197,94,.12);
+            --red: #ef4444;
+            --red-dim: rgba(239,68,68,.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59,130,246,.12);
+            --cyan: #06b6d4;
+            --cyan-dim: rgba(6,182,212,.12);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234,179,8,.12);
+            --orange: #f97316;
+            --orange-dim: rgba(249,115,22,.12);
+            --purple: #a855f7;
+            --purple-dim: rgba(168,85,247,.12);
+            --lime: #84cc16;
+            --teal: #14b8a6;
+            --txt: #e4eaf4;
+            --txt2: #8696b4;
+            --txt3: #506080;
+            --txt4: #3a4e6e;
+        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+        .container{max-width:1500px;margin:0 auto;padding:16px}
+
+        /* ===== HEADER ===== */
+        .hdr{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--border);margin-bottom:20px;flex-wrap:wrap;gap:10px}
+        .hdr h1{font-size:1.15rem;font-weight:400;color:var(--txt2)}
+        .hdr h1 b{color:var(--green);font-size:1.35rem}
+        .hdr-r{text-align:right;font-size:.68rem;color:var(--txt3);text-transform:uppercase;letter-spacing:1.5px;line-height:1.8}
+        .hdr-r .br{color:var(--gold);font-weight:700}
+
+        /* ===== MODULE TABS ===== */
+        .tabs{display:flex;gap:3px;margin-bottom:22px;background:var(--bg-card);border-radius:12px;padding:3px;border:1px solid var(--border);overflow-x:auto}
+        .tab{padding:11px 22px;border-radius:10px;background:0;color:var(--txt3);border:0;cursor:pointer;font-size:.82rem;font-weight:600;white-space:nowrap;transition:.3s}
+        .tab:hover{color:var(--txt2)}
+        .tab.on{background:var(--green-dim);color:var(--green)}
+        .mod{display:none}.mod.on{display:block}
+
+        /* ===== KPI TOP BAR ===== */
+        .kpi-bar{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:22px 28px;margin-bottom:18px;display:flex;align-items:center;gap:36px;flex-wrap:wrap}
+        .kpi-hero .lb{font-size:.65rem;color:var(--txt3);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+        .kpi-hero .vl{font-size:2.6rem;font-weight:800;line-height:1.1}
+        .kpi-row{display:flex;gap:28px;flex-wrap:wrap;flex:1}
+        .kpi-i{min-width:90px}
+        .kpi-i .lb{font-size:.62rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:2px}
+        .kpi-i .vl{font-size:1.1rem;font-weight:700}
+        .kpi-i .sub{font-size:.68rem;color:var(--txt3)}
+        .c-gold{color:var(--gold)}.c-green{color:var(--green)}.c-red{color:var(--red)}.c-blue{color:var(--blue)}.c-cyan{color:var(--cyan)}.c-yellow{color:var(--yellow)}.c-orange{color:var(--orange)}.c-purple{color:var(--purple)}.c-lime{color:var(--lime)}.c-teal{color:var(--teal)}
+
+        /* ===== GRID ===== */
+        .g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+        .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px}
+        .g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-bottom:18px}
+        @media(max-width:1000px){.g3{grid-template-columns:1fr 1fr}}
+        @media(max-width:768px){.g2,.g3{grid-template-columns:1fr}.kpi-bar{flex-direction:column;gap:16px}}
+
+        /* ===== CARDS ===== */
+        .card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:.3s}
+        .card:hover{border-color:var(--border-hi)}
+        .card-h{font-size:.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+        .card-h .ico{font-size:1rem}
+
+        /* ===== PARAM ROWS ===== */
+        .pr{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(22,32,64,.5);gap:8px;flex-wrap:wrap}
+        .pr:last-child{border-bottom:0}
+        .pr .pl{font-size:.84rem;color:var(--txt2);flex:1;min-width:140px}
+        .pr .pl small{color:var(--txt3);font-size:.7rem;font-style:italic}
+        .pr input[type=range]{width:130px;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:var(--border);outline:0}
+        .pr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;border:2px solid var(--bg-card)}
+        .pr .pv{font-size:.95rem;font-weight:700;min-width:70px;text-align:right}
+        .inp{background:var(--bg-input);border:1px solid var(--border);border-radius:8px;padding:7px 11px;color:var(--txt);font-size:.9rem;font-weight:600;width:110px;text-align:right;outline:0;transition:.3s}
+        .inp:focus{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-dim)}
+        select.inp{width:auto;min-width:130px;text-align:left;cursor:pointer}
+
+        /* ===== INDICATOR CARDS ===== */
+        .ind-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:18px;transition:.3s}
+        .ind-card:hover{border-color:var(--border-hi);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+        .ind-h{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+        .ind-name{font-size:.68rem;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+        .ind-badge{font-size:.58rem;padding:3px 8px;border-radius:6px;font-weight:700}
+        .b-good{background:var(--green-dim);color:var(--green)}
+        .b-warn{background:var(--yellow-dim);color:var(--yellow)}
+        .b-bad{background:var(--red-dim);color:var(--red)}
+        .b-info{background:var(--blue-dim);color:var(--blue)}
+        .ind-val{font-size:1.9rem;font-weight:800;line-height:1.1;margin-bottom:3px}
+        .ind-sub{font-size:.72rem;color:var(--txt3)}
+        .ind-bar{height:4px;border-radius:2px;background:var(--border);margin-top:10px;overflow:hidden}
+        .ind-bar-fill{height:100%;border-radius:2px;transition:width .6s ease}
+        .ind-ref{display:flex;justify-content:space-between;font-size:.62rem;color:var(--txt4);margin-top:4px}
+
+        /* ===== CHART ===== */
+        .chart-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:18px}
+        .chart-h{font-size:.7rem;color:var(--txt3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:14px}
+        .chart-box{position:relative;height:320px}
+        @media(max-width:768px){.chart-box{height:260px}}
+
+        /* ===== ALERT ===== */
+        .alert{border-radius:12px;padding:16px 18px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start}
+        .alert .ai{font-size:1.3rem;flex-shrink:0}
+        .alert .at{font-size:.88rem;font-weight:700;margin-bottom:3px}
+        .alert .ap{font-size:.8rem;line-height:1.5;color:var(--txt2)}
+        .al-ok{background:var(--green-dim);border:1px solid rgba(34,197,94,.25)}.al-ok .at{color:var(--green)}
+        .al-warn{background:var(--yellow-dim);border:1px solid rgba(234,179,8,.25)}.al-warn .at{color:var(--yellow)}
+        .al-bad{background:var(--red-dim);border:1px solid rgba(239,68,68,.25)}.al-bad .at{color:var(--red)}
+        .al-info{background:var(--blue-dim);border:1px solid rgba(59,130,246,.25)}.al-info .at{color:var(--blue)}
+
+        /* ===== FORMULA ===== */
+        .formula{background:var(--bg-input);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-top:12px;font-family:'Courier New',monospace;font-size:.73rem;color:var(--txt2);line-height:1.8}
+        .formula .fh{color:var(--gold);font-weight:600}
+        .formula .fg{color:var(--green);font-weight:700}
+        .formula .fc{color:var(--cyan)}
+
+        /* ===== REC ===== */
+        .rec{display:flex;gap:10px;padding:12px;background:var(--bg-input);border-radius:10px;border-left:3px solid var(--green);margin-bottom:8px;transition:.3s}
+        .rec:hover{background:var(--bg-card2)}
+        .rec.urgent{border-left-color:var(--red)}
+        .rec.warn{border-left-color:var(--yellow)}
+        .rec .ri{font-size:1.1rem;flex-shrink:0}
+        .rec .rt{font-size:.82rem;color:var(--txt2);line-height:1.5}
+        .rec .rt strong{color:var(--txt)}
+
+        /* ===== SECTION DIVIDER ===== */
+        .divider{text-align:center;padding:10px;font-size:.7rem;color:var(--txt4);text-transform:uppercase;letter-spacing:2px;border-top:1px solid var(--border);margin:8px 0 18px}
+
+        /* ===== FOOTER ===== */
+        .footer{text-align:center;padding:28px;border-top:1px solid var(--border);margin-top:28px}
+        .footer p{font-size:.7rem;color:var(--txt4);line-height:1.8}
+        .footer .br{color:var(--green);font-weight:700}
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .fade-in{animation:fadeIn .4s ease}
+
+        /* ===== GAUGE MINI ===== */
+        .gauge-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+        .gauge{text-align:center}
+        .gauge canvas{display:block;margin:0 auto 4px}
+        .gauge .gl{font-size:.6rem;color:var(--txt3);text-transform:uppercase}
+        .gauge .gv{font-size:.85rem;font-weight:700}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- HEADER -->
+    <div class="hdr">
+        <h1>Indicadores <b>Agronômicos & Zootécnicos</b></h1>
+        <div class="hdr-r">Simulador de Produção<br><span class="br">Rural In · Dashboard</span></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab on" onclick="switchMod('lavoura',this)">🌱 Lavoura (Grãos)</button>
+        <button class="tab" onclick="switchMod('corte',this)">🐂 Pecuária de Corte</button>
+        <button class="tab" onclick="switchMod('leite',this)">🥛 Pecuária de Leite</button>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MÓDULO LAVOURA -->
+    <!-- ============================================================ -->
+    <div class="mod on" id="mod-lavoura">
+        <div class="kpi-bar" id="lav-kpi-bar"></div>
+
+        <div id="lav-alerts"></div>
+
+        <div class="g2">
+            <!-- PARÂMETROS PRODUTIVOS -->
+            <div class="card">
+                <div class="card-h"><span class="ico">🌾</span> Parâmetros Produtivos</div>
+                <div class="pr">
+                    <div class="pl">Cultura</div>
+                    <select class="inp" id="lCultura" onchange="calcLav()">
+                        <option value="soja">Soja</option>
+                        <option value="milho">Milho Verão</option>
+                        <option value="milhoSaf">Milho Safrinha</option>
+                        <option value="algodao">Algodão</option>
+                        <option value="sorgo">Sorgo</option>
+                        <option value="trigo">Trigo</option>
+                        <option value="feijao">Feijão</option>
+                    </select>
+                </div>
+                <div class="pr">
+                    <div class="pl">Área plantada <small>(ha)</small></div>
+                    <input class="inp" id="lArea" value="500" onchange="calcLav()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Produtividade esperada <small id="lProdUnit">(sc/ha)</small></div>
+                    <input type="range" id="lProd" min="10" max="200" value="62" step="1" oninput="calcLav()">
+                    <span class="pv c-green" id="lProdV">62</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Stand final plantas <small>(mil pl/ha)</small></div>
+                    <input type="range" id="lStand" min="50" max="400" value="260" step="5" oninput="calcLav()">
+                    <span class="pv c-cyan" id="lStandV">260</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Pop. semeadura <small>(mil sem/ha)</small></div>
+                    <input type="range" id="lPopSem" min="50" max="450" value="300" step="5" oninput="calcLav()">
+                    <span class="pv c-blue" id="lPopSemV">300</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Espaçamento <small>(cm)</small></div>
+                    <input type="range" id="lEspac" min="20" max="100" value="50" step="5" oninput="calcLav()">
+                    <span class="pv c-gold" id="lEspacV">50</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Nº de grãos/vagem(espiga) <small></small></div>
+                    <input type="range" id="lGraosVagem" min="1" max="8" value="2.5" step="0.1" oninput="calcLav()">
+                    <span class="pv c-lime" id="lGraosVagemV">2.5</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Peso de 1000 grãos <small>(g)</small></div>
+                    <input type="range" id="lPeso1000" min="50" max="500" value="170" step="5" oninput="calcLav()">
+                    <span class="pv c-orange" id="lPeso1000V">170</span>
+                </div>
+            </div>
+
+            <!-- PARÂMETROS CUSTOS & MANEJO -->
+            <div class="card">
+                <div class="card-h"><span class="ico">💰</span> Custos & Eficiência</div>
+                <div class="pr">
+                    <div class="pl">Custo operacional total <small>(R$/ha)</small></div>
+                    <input class="inp" id="lCOT" value="4200" onchange="calcLav()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo insumos <small>(R$/ha)</small></div>
+                    <input class="inp" id="lInsumos" value="2600" onchange="calcLav()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo operações <small>(R$/ha)</small></div>
+                    <input class="inp" id="lOperacoes" value="900" onchange="calcLav()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Preço venda <small id="lPrecoUnit">(R$/sc)</small></div>
+                    <input class="inp" id="lPreco" value="115" onchange="calcLav()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Adubação total <small>(kg/ha NPK)</small></div>
+                    <input type="range" id="lAdub" min="100" max="1200" value="450" step="10" oninput="calcLav()">
+                    <span class="pv c-teal" id="lAdubV">450</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Nº de aplicações defensivos</div>
+                    <input type="range" id="lAplic" min="0" max="20" value="8" step="1" oninput="calcLav()">
+                    <span class="pv c-purple" id="lAplicV">8</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Eficiência de colheita <small>(%)</small></div>
+                    <input type="range" id="lEfCol" min="80" max="100" value="97" step="0.5" oninput="calcLav()">
+                    <span class="pv c-green" id="lEfColV">97%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Perdas pós-colheita <small>(%)</small></div>
+                    <input type="range" id="lPerdasPC" min="0" max="15" value="2" step="0.5" oninput="calcLav()">
+                    <span class="pv c-red" id="lPerdasPCV">2%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- INDICADORES LAVOURA -->
+        <div class="divider">📊 Indicadores Agronômicos Calculados</div>
+        <div class="g4" id="lav-indicators"></div>
+
+        <!-- GRÁFICOS -->
+        <div class="g2">
+            <div class="chart-card">
+                <div class="chart-h">Composição do Custo de Produção (R$/ha)</div>
+                <div class="chart-box"><canvas id="lavCustoChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-h">Sensibilidade da Receita × Produtividade</div>
+                <div class="chart-box"><canvas id="lavSensChart"></canvas></div>
+            </div>
+        </div>
+
+        <!-- RECOMENDAÇÕES -->
+        <div class="card" style="margin-bottom:18px">
+            <div class="card-h"><span class="ico">🧭</span> Diagnóstico & Recomendações</div>
+            <div id="lav-recs"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MÓDULO PECUÁRIA DE CORTE -->
+    <!-- ============================================================ -->
+    <div class="mod" id="mod-corte">
+        <div class="kpi-bar" id="cor-kpi-bar"></div>
+        <div id="cor-alerts"></div>
+
+        <div class="g2">
+            <div class="card">
+                <div class="card-h"><span class="ico">🐂</span> Parâmetros do Rebanho</div>
+                <div class="pr">
+                    <div class="pl">Sistema de produção</div>
+                    <select class="inp" id="cSistema" onchange="calcCorte()">
+                        <option value="cria">Cria</option>
+                        <option value="recria">Recria</option>
+                        <option value="engorda" selected>Engorda / Confinamento</option>
+                        <option value="cicloCompleto">Ciclo Completo</option>
+                    </select>
+                </div>
+                <div class="pr">
+                    <div class="pl">Área de pastagem <small>(ha)</small></div>
+                    <input class="inp" id="cArea" value="500" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Nº de cabeças</div>
+                    <input class="inp" id="cCab" value="800" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Peso médio entrada <small>(kg)</small></div>
+                    <input type="range" id="cPesoEnt" min="100" max="500" value="360" step="5" oninput="calcCorte()">
+                    <span class="pv c-cyan" id="cPesoEntV">360</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Peso médio saída <small>(kg)</small></div>
+                    <input type="range" id="cPesoSai" min="200" max="650" value="540" step="5" oninput="calcCorte()">
+                    <span class="pv c-green" id="cPesoSaiV">540</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Rendimento de carcaça <small>(%)</small></div>
+                    <input type="range" id="cRendCarc" min="46" max="60" value="54" step="0.5" oninput="calcCorte()">
+                    <span class="pv c-gold" id="cRendCarcV">54%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">GMD — Ganho médio diário <small>(kg/dia)</small></div>
+                    <input type="range" id="cGMD" min="0.2" max="2.5" value="1.20" step="0.05" oninput="calcCorte()">
+                    <span class="pv c-green" id="cGMDV">1.20</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Dias de confinamento / ciclo</div>
+                    <input type="range" id="cDias" min="30" max="365" value="120" step="5" oninput="calcCorte()">
+                    <span class="pv c-blue" id="cDiasV">120</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Taxa de mortalidade <small>(%)</small></div>
+                    <input type="range" id="cMort" min="0" max="10" value="1.5" step="0.1" oninput="calcCorte()">
+                    <span class="pv c-red" id="cMortV">1.5%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h"><span class="ico">💰</span> Custos & Mercado</div>
+                <div class="pr">
+                    <div class="pl">Custo da diária (R$/cab/dia)</div>
+                    <input class="inp" id="cCustoDia" value="18.50" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo do boi magro (R$/cab)</div>
+                    <input class="inp" id="cCustoBoiMagro" value="2800" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Preço da @ do boi gordo (R$)</div>
+                    <input class="inp" id="cPrecoArroba" value="310" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo pastagem/mantença <small>(R$/ha/ano)</small></div>
+                    <input class="inp" id="cCustoPast" value="1200" onchange="calcCorte()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Taxa de lotação <small>(UA/ha)</small></div>
+                    <input type="range" id="cLotacao" min="0.5" max="8" value="2.5" step="0.1" oninput="calcCorte()">
+                    <span class="pv c-teal" id="cLotacaoV">2.5</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Taxa de natalidade <small>(%) — Cria</small></div>
+                    <input type="range" id="cNatal" min="40" max="98" value="82" step="1" oninput="calcCorte()">
+                    <span class="pv c-lime" id="cNatalV">82%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Taxa de desmama <small>(%)</small></div>
+                    <input type="range" id="cDesmama" min="40" max="98" value="78" step="1" oninput="calcCorte()">
+                    <span class="pv c-purple" id="cDesmamaV">78%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">IEP — Interv. entre partos <small>(meses)</small></div>
+                    <input type="range" id="cIEP" min="11" max="24" value="14" step="0.5" oninput="calcCorte()">
+                    <span class="pv c-orange" id="cIEPV">14</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider">📊 Indicadores Zootécnicos — Corte</div>
+        <div class="g4" id="cor-indicators"></div>
+
+        <div class="g2">
+            <div class="chart-card">
+                <div class="chart-h">Composição do Custo por @</div>
+                <div class="chart-box"><canvas id="corCustoChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-h">GMD vs Dias — Projeção de Peso</div>
+                <div class="chart-box"><canvas id="corGMDChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+            <div class="card-h"><span class="ico">🧭</span> Diagnóstico & Recomendações — Corte</div>
+            <div id="cor-recs"></div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MÓDULO PECUÁRIA DE LEITE -->
+    <!-- ============================================================ -->
+    <div class="mod" id="mod-leite">
+        <div class="kpi-bar" id="lei-kpi-bar"></div>
+        <div id="lei-alerts"></div>
+
+        <div class="g2">
+            <div class="card">
+                <div class="card-h"><span class="ico">🐄</span> Parâmetros do Rebanho Leiteiro</div>
+                <div class="pr">
+                    <div class="pl">Nº de vacas em lactação</div>
+                    <input class="inp" id="mVacasLact" value="120" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Nº total de vacas (rebanho)</div>
+                    <input class="inp" id="mVacasTotal" value="160" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Produção média <small>(L/vaca/dia)</small></div>
+                    <input type="range" id="mProdVaca" min="3" max="60" value="25" step="0.5" oninput="calcLeite()">
+                    <span class="pv c-green" id="mProdVacaV">25.0</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Dias em lactação (DEL)</div>
+                    <input type="range" id="mDEL" min="200" max="365" value="305" step="5" oninput="calcLeite()">
+                    <span class="pv c-cyan" id="mDELV">305</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Gordura do leite <small>(%)</small></div>
+                    <input type="range" id="mGordura" min="2" max="6" value="3.8" step="0.1" oninput="calcLeite()">
+                    <span class="pv c-gold" id="mGorduraV">3.8%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Proteína do leite <small>(%)</small></div>
+                    <input type="range" id="mProteina" min="2" max="5" value="3.3" step="0.1" oninput="calcLeite()">
+                    <span class="pv c-orange" id="mProteinaV">3.3%</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">CCS <small>(×1000 cél/mL)</small></div>
+                    <input type="range" id="mCCS" min="50" max="1000" value="250" step="10" oninput="calcLeite()">
+                    <span class="pv c-red" id="mCCSV">250</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">CBT <small>(×1000 UFC/mL)</small></div>
+                    <input type="range" id="mCBT" min="5" max="500" value="80" step="5" oninput="calcLeite()">
+                    <span class="pv c-red" id="mCBTV">80</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Intervalo entre partos <small>(meses)</small></div>
+                    <input type="range" id="mIEP" min="11" max="20" value="13" step="0.5" oninput="calcLeite()">
+                    <span class="pv c-purple" id="mIEPV">13</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-h"><span class="ico">💰</span> Custos & Mercado do Leite</div>
+                <div class="pr">
+                    <div class="pl">Preço do leite <small>(R$/L)</small></div>
+                    <input class="inp" id="mPrecoLeite" value="2.85" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo ração concentrado <small>(R$/kg)</small></div>
+                    <input class="inp" id="mCustoRacao" value="2.20" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Consumo concentrado <small>(kg/vaca/dia)</small></div>
+                    <input type="range" id="mConsRacao" min="1" max="20" value="8" step="0.5" oninput="calcLeite()">
+                    <span class="pv c-orange" id="mConsRacaoV">8.0</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo volumoso <small>(R$/vaca/dia)</small></div>
+                    <input class="inp" id="mCustoVol" value="6.50" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo fixo mensal <small>(R$ total)</small></div>
+                    <input class="inp" id="mCustoFixo" value="25000" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Custo sanidade <small>(R$/vaca/mês)</small></div>
+                    <input class="inp" id="mCustoSanid" value="35" onchange="calcLeite()">
+                </div>
+                <div class="pr">
+                    <div class="pl">Relação volumoso:concentrado</div>
+                    <input type="range" id="mRelVC" min="30" max="80" value="60" step="5" oninput="calcLeite()">
+                    <span class="pv c-teal" id="mRelVCV">60:40</span>
+                </div>
+                <div class="pr">
+                    <div class="pl">Área pastagem/forrageira <small>(ha)</small></div>
+                    <input class="inp" id="mAreaPast" value="80" onchange="calcLeite()">
+                </div>
+            </div>
+        </div>
+
+        <div class="divider">📊 Indicadores Zootécnicos — Leite</div>
+        <div class="g4" id="lei-indicators"></div>
+
+        <div class="g2">
+            <div class="chart-card">
+                <div class="chart-h">Composição do Custo por Litro</div>
+                <div class="chart-box"><canvas id="leiCustoChart"></canvas></div>
+            </div>
+            <div class="chart-card">
+                <div class="chart-h">Produção × Preço — Sensibilidade Receita</div>
+                <div class="chart-box"><canvas id="leiSensChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+            <div class="card-h"><span class="ico">🧭</span> Diagnóstico & Recomendações — Leite</div>
+            <div id="lei-recs"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>Simulador de indicadores agronômicos e zootécnicos para apoio à gestão rural.<br>
+        Valores de referência regionais — ajuste conforme sua realidade.<br>
+        <span class="br">Rural In</span> — Inteligência para o campo · 2026</p>
+    </div>
+</div>
+
+<script>
+// =================================================================
+// GLOBALS
+// =================================================================
+let lavCharts={}, corCharts={}, leiCharts={};
+const fmt=v=>'R$ '+Number(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtN=v=>Number(v).toLocaleString('pt-BR',{maximumFractionDigits:0});
+const fmtD=(v,d=1)=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+
+function switchMod(m,btn){
+    document.querySelectorAll('.mod').forEach(e=>e.classList.remove('on'));
+    document.querySelectorAll('.tab').forEach(e=>e.classList.remove('on'));
+    document.getElementById('mod-'+m).classList.add('on');
+    btn.classList.add('on');
+    if(m==='lavoura')calcLav();
+    if(m==='corte')calcCorte();
+    if(m==='leite')calcLeite();
+}
+
+function badge(val,good,warn){
+    if(val>=good)return{cl:'b-good',tx:'ÓTIMO'};
+    if(val>=warn)return{cl:'b-warn',tx:'ATENÇÃO'};
+    return{cl:'b-bad',tx:'CRÍTICO'};
+}
+function badgeInv(val,good,warn){
+    if(val<=good)return{cl:'b-good',tx:'ÓTIMO'};
+    if(val<=warn)return{cl:'b-warn',tx:'ATENÇÃO'};
+    return{cl:'b-bad',tx:'CRÍTICO'};
+}
+
+function renderIndicators(containerId,list){
+    const el=document.getElementById(containerId);
+    el.innerHTML=list.map(i=>{
+        const barHtml=i.bar!==undefined?`<div class="ind-bar"><div class="ind-bar-fill" style="width:${Math.min(100,Math.max(0,i.bar))}%;background:${i.barColor||'var(--green)'}"></div></div>
+        ${i.ref?`<div class="ind-ref"><span>${i.ref[0]}</span><span>${i.ref[1]}</span></div>`:''}`:'' ;
+        return`<div class="ind-card fade-in">
+            <div class="ind-h"><div class="ind-name">${i.name}</div><span class="ind-badge ${i.badge.cl}">${i.badge.tx}</span></div>
+            <div class="ind-val" style="color:${i.color||'var(--txt)'}">${i.value}</div>
+            <div class="ind-sub">${i.sub||''}</div>
+            ${barHtml}
+        </div>`;
+    }).join('');
+}
+
+function renderAlerts(containerId,list){
+    document.getElementById(containerId).innerHTML=list.map(a=>`<div class="alert ${a.cl}"><div class="ai">${a.icon}</div><div><div class="at">${a.title}</div><div class="ap">${a.text}</div></div></div>`).join('');
+}
+
+function renderRecs(containerId,list){
+    document.getElementById(containerId).innerHTML=list.map(r=>`<div class="rec ${r.cl||''}"><div class="ri">${r.icon}</div><div class="rt">${r.text}</div></div>`).join('');
+}
+
+// =================================================================
+// LAVOURA
+// =================================================================
+function calcLav(){
+    const cultura=document.getElementById('lCultura').value;
+    const area=parseFloat(document.getElementById('lArea').value)||0;
+    const prod=parseFloat(document.getElementById('lProd').value)||0;
+    const stand=parseFloat(document.getElementById('lStand').value)||0;
+    const popSem=parseFloat(document.getElementById('lPopSem').value)||0;
+    const espac=parseFloat(document.getElementById('lEspac').value)||0;
+    const graosVag=parseFloat(document.getElementById('lGraosVagem').value)||0;
+    const peso1000=parseFloat(document.getElementById('lPeso1000').value)||0;
+    const cot=parseFloat(document.getElementById('lCOT').value)||0;
+    const insumos=parseFloat(document.getElementById('lInsumos').value)||0;
+    const operacoes=parseFloat(document.getElementById('lOperacoes').value)||0;
+    const preco=parseFloat(document.getElementById('lPreco').value)||0;
+    const adub=parseFloat(document.getElementById('lAdub').value)||0;
+    const aplic=parseInt(document.getElementById('lAplic').value)||0;
+    const efCol=parseFloat(document.getElementById('lEfCol').value)||0;
+    const perdasPC=parseFloat(document.getElementById('lPerdasPC').value)||0;
+
+    // Update displays
+    document.getElementById('lProdV').textContent=prod;
+    document.getElementById('lStandV').textContent=fmtN(stand);
+    document.getElementById('lPopSemV').textContent=fmtN(popSem);
+    document.getElementById('lEspacV').textContent=espac;
+    document.getElementById('lGraosVagemV').textContent=fmtD(graosVag);
+    document.getElementById('lPeso1000V').textContent=peso1000;
+    document.getElementById('lAdubV').textContent=adub;
+    document.getElementById('lAplicV').textContent=aplic;
+    document.getElementById('lEfColV').textContent=fmtD(efCol,1)+'%';
+    document.getElementById('lPerdasPCV').textContent=fmtD(perdasPC,1)+'%';
+
+    // CÁLCULOS
+    const producaoTotal=area*prod;
+    const producaoEfetiva=producaoTotal*(efCol/100)*(1-perdasPC/100);
+    const receitaTotal=producaoEfetiva*preco;
+    const custoTotal=area*cot;
+    const resultado=receitaTotal-custoTotal;
+    const margemHa=area>0?resultado/area:0;
+    const custoSaca=producaoEfetiva>0?custoTotal/producaoEfetiva:0;
+    const pontoEquilibrio=preco>0?cot/preco:0;
+    const relacaoTroca=preco>0?custoSaca/preco:0;
+    const margemPct=receitaTotal>0?((receitaTotal-custoTotal)/receitaTotal)*100:0;
+    const receitaHa=area>0?receitaTotal/area:0;
+    const sobrevivencia=popSem>0?(stand/popSem)*100:0;
+    const plantsMetro=espac>0?stand*1000/(10000/(espac/100)):0;
+    const eficNutricional=adub>0?prod/adub*1000:0;
+    const custoPorAplic=aplic>0?insumos/aplic:0;
+    const indEficiencia=cot>0?(receitaHa/cot):0;
+    const prodTeor=(stand*1000*graosVag*peso1000)/(1000*1000*60);
+
+    // KPI BAR
+    document.getElementById('lav-kpi-bar').innerHTML=`
+        <div class="kpi-hero"><div class="lb">PRODUÇÃO TOTAL</div><div class="vl c-green">${fmtN(producaoEfetiva)} sc</div></div>
+        <div class="kpi-row">
+            <div class="kpi-i"><div class="lb">Produtividade</div><div class="vl c-green">${prod} sc/ha</div></div>
+            <div class="kpi-i"><div class="lb">Custo/Saca</div><div class="vl c-orange">${fmt(custoSaca)}</div></div>
+            <div class="kpi-i"><div class="lb">Preço Venda</div><div class="vl c-blue">${fmt(preco)}</div></div>
+            <div class="kpi-i"><div class="lb">Margem Líquida</div><div class="vl ${margemPct>=0?'c-green':'c-red'}">${fmtD(margemPct)}%</div></div>
+            <div class="kpi-i"><div class="lb">Resultado</div><div class="vl ${resultado>=0?'c-gold':'c-red'}">${fmt(resultado)}</div></div>
+            <div class="kpi-i"><div class="lb">Ponto Equilíbrio</div><div class="vl c-yellow">${fmtD(pontoEquilibrio)} sc/ha</div></div>
+        </div>`;
+
+    // INDICADORES
+    const indicators=[
+        {name:'Produtividade',value:prod+' sc/ha',color:'var(--green)',badge:badge(prod,55,40),sub:`Prod. teórica: ${fmtD(prodTeor)} sc/ha`,bar:prod/80*100,barColor:'var(--green)',ref:['0','80 sc/ha']},
+        {name:'Custo Operacional / ha',value:fmt(cot),color:'var(--orange)',badge:badgeInv(cot,4500,6000),sub:`Insumos: ${fmt(insumos)} | Oper: ${fmt(operacoes)}`,bar:cot/8000*100,barColor:'var(--orange)',ref:['R$0','R$8.000']},
+        {name:'Custo por Saca Produzida',value:fmt(custoSaca),color:'var(--yellow)',badge:badgeInv(custoSaca,preco*0.7,preco*0.9),sub:`Preço: ${fmt(preco)} | Margem: ${fmt(preco-custoSaca)}/sc`},
+        {name:'Ponto de Equilíbrio',value:fmtD(pontoEquilibrio)+' sc/ha',color:'var(--yellow)',badge:{cl:prod>pontoEquilibrio?'b-good':'b-bad',tx:prod>pontoEquilibrio?'ACIMA':'ABAIXO'},sub:`Necessário para cobrir ${fmt(cot)}/ha`},
+        {name:'Receita por Hectare',value:fmt(receitaHa),color:'var(--blue)',badge:badge(receitaHa,5000,3500),sub:`Total: ${fmt(receitaTotal)}`},
+        {name:'Margem Bruta / ha',value:fmt(margemHa),color:margemHa>=0?'var(--green)':'var(--red)',badge:badge(margemHa,1500,500),sub:`${fmtD(margemPct)}% da receita`},
+        {name:'Sobrevivência de Stand',value:fmtD(sobrevivencia)+'%',color:'var(--cyan)',badge:badge(sobrevivencia,90,80),sub:`${fmtN(stand)}k pl/ha de ${fmtN(popSem)}k sem/ha`,bar:sobrevivencia,barColor:'var(--cyan)',ref:['0%','100%']},
+        {name:'Eficiência de Colheita',value:fmtD(efCol)+'%',color:'var(--green)',badge:badge(efCol,97,93),sub:`Perdas pós-colheita: ${fmtD(perdasPC)}%`,bar:efCol,barColor:'var(--green)',ref:['80%','100%']},
+        {name:'Efic. Nutricional',value:fmtD(eficNutricional)+' sc/ton NPK',color:'var(--teal)',badge:badge(eficNutricional,120,80),sub:`${adub} kg/ha de NPK aplicados`},
+        {name:'Nº Aplicações Defensivos',value:aplic,color:'var(--purple)',badge:badgeInv(aplic,6,10),sub:`Custo médio/aplic: ${fmt(custoPorAplic)}/ha`},
+        {name:'Índice de Eficiência (Receita/Custo)',value:fmtD(indEficiencia,2)+'x',color:indEficiencia>=1.3?'var(--green)':'var(--red)',badge:badge(indEficiencia,1.3,1.0),sub:indEficiencia>=1?'Receita cobre custos':'Receita NÃO cobre custos'},
+        {name:'Plantas por Metro Linear',value:fmtD(plantsMetro,1)+' pl/m',color:'var(--blue)',badge:badge(plantsMetro,10,6),sub:`Espaçamento: ${espac}cm`},
+    ];
+    renderIndicators('lav-indicators',indicators);
+
+    // ALERTAS
+    let alerts=[];
+    if(custoSaca>preco)alerts.push({cl:'al-bad',icon:'🚨',title:'Custo acima do preço de venda!',text:`Seu custo/sc de ${fmt(custoSaca)} está ACIMA do preço de ${fmt(preco)}. Cada saca vendida gera prejuízo de ${fmt(custoSaca-preco)}.`});
+    if(margemPct>0&&margemPct<10)alerts.push({cl:'al-warn',icon:'⚡',title:'Margem muito apertada',text:`Margem de apenas ${fmtD(margemPct)}%. Qualquer oscilação de custo ou preço pode inverter o resultado.`});
+    if(sobrevivencia<85)alerts.push({cl:'al-warn',icon:'🌱',title:'Baixa sobrevivência de stand',text:`Apenas ${fmtD(sobrevivencia)}% das sementes geraram plantas. Verifique vigor, tratamento de sementes, profundidade e compactação do solo.`});
+    if(margemPct>20)alerts.push({cl:'al-ok',icon:'✅',title:'Boa margem operacional',text:`Margem de ${fmtD(margemPct)}% — operação saudável. Mantenha o controle de custos e avalie travar preço para proteger margem.`});
+    if(alerts.length===0)alerts.push({cl:'al-info',icon:'📋',title:'Análise concluída',text:'Ajuste os parâmetros para simular diferentes cenários.'});
+    renderAlerts('lav-alerts',alerts);
+
+    // RECOMENDAÇÕES
+    let recs=[];
+    if(prod<pontoEquilibrio)recs.push({icon:'🎯',text:`<strong>Produtividade abaixo do ponto de equilíbrio!</strong> Necessário ${fmtD(pontoEquilibrio)} sc/ha para cobrir custos. Foco em manejo para atingir ao menos este patamar.`,cl:'urgent'});
+    if(sobrevivencia<88)recs.push({icon:'🌱',text:`<strong>Melhore o stand.</strong> Sobrevivência de ${fmtD(sobrevivencia)}% indica perdas na implantação. Avalie: qualidade da semente (TSG>85%), velocidade de plantio, regulagem da plantadeira e umidade do solo.`,cl:'warn'});
+    if(adub>600)recs.push({icon:'🧪',text:`<strong>Adubação elevada (${adub} kg/ha).</strong> Valide com análise de solo se o investimento está retornando em produtividade. Considere adubação de precisão (taxa variável).`,cl:'warn'});
+    if(efCol<95)recs.push({icon:'⚙️',text:`<strong>Eficiência de colheita abaixo de 95%.</strong> Perdas de ${fmtD(100-efCol)}% representam ${fmtN((producaoTotal-producaoTotal*efCol/100))} sacas. Revise: velocidade da colhedora, regulagem de peneiras, umidade de colheita (ideal 13-15%).`,cl:'warn'});
+    recs.push({icon:'📊',text:`<strong>Monitore o custo por saca.</strong> Atual: ${fmt(custoSaca)}. Para cada R$1 de redução no custo/sc, você economiza ${fmt(producaoEfetiva*1)} no total da safra.`});
+    recs.push({icon:'💡',text:`<strong>Diversifique épocas e cultivares.</strong> Escalonar o plantio reduz risco climático e melhora a logística de colheita.`});
+    renderRecs('lav-recs',recs);
+
+    // GRÁFICOS
+    drawLavCusto(insumos,operacoes,cot-insumos-operacoes);
+    drawLavSens(area,preco,cot,efCol,perdasPC);
+}
+
+function drawLavCusto(insumos,operacoes,outros){
+    const ctx=document.getElementById('lavCustoChart').getContext('2d');
+    if(lavCharts.custo)lavCharts.custo.destroy();
+    lavCharts.custo=new Chart(ctx,{
+        type:'doughnut',
+        data:{
+            labels:['Insumos','Operações','Outros (terra, admin, etc.)'],
+            datasets:[{data:[insumos,operacoes,Math.max(0,outros)],backgroundColor:['#f97316','#3b82f6','#a855f7'],borderWidth:0,hoverOffset:8}]
+        },
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8696b4',font:{size:11}},position:'bottom'},tooltip:{callbacks:{label:i=>'R$ '+i.parsed.toLocaleString('pt-BR')+'/ha'}}}}
+    });
+}
+
+function drawLavSens(area,preco,cot,efCol,perdasPC){
+    const ctx=document.getElementById('lavSensChart').getContext('2d');
+    if(lavCharts.sens)lavCharts.sens.destroy();
+    const labels=[],receitas=[],custos=[];
+    for(let p=20;p<=120;p+=5){
+        const prodEf=area*p*(efCol/100)*(1-perdasPC/100);
+        labels.push(p+' sc/ha');
+        receitas.push(prodEf*preco/1000);
+        custos.push(area*cot/1000);
+    }
+    lavCharts.sens=new Chart(ctx,{
+        type:'line',
+        data:{
+            labels,
+            datasets:[
+                {label:'Receita (R$ mil)',data:receitas,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,pointRadius:0},
+                {label:'Custo Total (R$ mil)',data:custos,borderColor:'#ef4444',borderDash:[5,5],pointRadius:0,fill:false}
+            ]
+        },
+        options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{x:{ticks:{color:'#506080',font:{size:10},maxTicksLimit:12},grid:{color:'rgba(22,32,64,.4)'}},y:{ticks:{color:'#506080',callback:v=>v.toFixed(0)+'k'},grid:{color:'rgba(22,32,64,.4)'}}},plugins:{legend:{labels:{color:'#8696b4'}},tooltip:{backgroundColor:'#0b1426',borderColor:'#162040',borderWidth:1}}}
+    });
+}
+
+// =================================================================
+// PECUÁRIA DE CORTE
+// =================================================================
+function calcCorte(){
+    const sistema=document.getElementById('cSistema').value;
+    const area=parseFloat(document.getElementById('cArea').value)||0;
+    const cab=parseFloat(document.getElementById('cCab').value)||0;
+    const pesoEnt=parseFloat(document.getElementById('cPesoEnt').value)||0;
+    const pesoSai=parseFloat(document.getElementById('cPesoSai').value)||0;
+    const rendCarc=parseFloat(document.getElementById('cRendCarc').value)||0;
+    const gmd=parseFloat(document.getElementById('cGMD').value)||0;
+    const dias=parseInt(document.getElementById('cDias').value)||0;
+    const mort=parseFloat(document.getElementById('cMort').value)||0;
+    const custoDia=parseFloat(document.getElementById('cCustoDia').value)||0;
+    const custoBoiMagro=parseFloat(document.getElementById('cCustoBoiMagro').value)||0;
+    const precoArr=parseFloat(document.getElementById('cPrecoArroba').value)||0;
+    const custoPast=parseFloat(document.getElementById('cCustoPast').value)||0;
+    const lotacao=parseFloat(document.getElementById('cLotacao').value)||0;
+    const natal=parseFloat(document.getElementById('cNatal').value)||0;
+    const desmama=parseFloat(document.getElementById('cDesmama').value)||0;
+    const iep=parseFloat(document.getElementById('cIEP').value)||0;
+
+    // Displays
+    document.getElementById('cPesoEntV').textContent=pesoEnt;
+    document.getElementById('cPesoSaiV').textContent=pesoSai;
+    document.getElementById('cRendCarcV').textContent=fmtD(rendCarc)+'%';
+    document.getElementById('cGMDV').textContent=fmtD(gmd,2);
+    document.getElementById('cDiasV').textContent=dias;
+    document.getElementById('cMortV').textContent=fmtD(mort)+'%';
+    document.getElementById('cLotacaoV').textContent=fmtD(lotacao);
+    document.getElementById('cNatalV').textContent=natal+'%';
+    document.getElementById('cDesmamaV').textContent=desmama+'%';
+    document.getElementById('cIEPV').textContent=fmtD(iep);
+
+    // CÁLCULOS
+    const cabEfetivas=cab*(1-mort/100);
+    const ganhoTotal=(pesoSai-pesoEnt);
+    const ganhoPrevGMD=gmd*dias;
+    const arrobasEnt=pesoEnt*(rendCarc/100)/15;
+    const arrobasSai=pesoSai*(rendCarc/100)/15;
+    const arrobasGanho=arrobasSai-arrobasEnt;
+    const receitaBruta=cabEfetivas*arrobasSai*precoArr;
+    const custoAlimentacao=cab*custoDia*dias;
+    const custoCompra=cab*custoBoiMagro;
+    const custoPastTotal=area*custoPast*(dias/365);
+    const custoTotalOp=custoAlimentacao+custoPastTotal;
+    const custoTotalFull=custoCompra+custoTotalOp;
+    const resultado=receitaBruta-custoTotalFull;
+    const margemPct=receitaBruta>0?((receitaBruta-custoTotalFull)/receitaBruta)*100:0;
+    const custoArroba=arrobasGanho>0&&cabEfetivas>0?custoTotalOp/(cabEfetivas*arrobasGanho):0;
+    const lucroCab=cabEfetivas>0?resultado/cabEfetivas:0;
+    const prodArrobasHa=area>0?(cabEfetivas*arrobasGanho)/area:0;
+    const lotacaoReal=area>0?cab/area:0;
+    const caEficiencia=custoDia>0&&gmd>0?custoDia/gmd:0;
+    const diasNecCalc=gmd>0?ganhoTotal/gmd:0;
+
+    // KPI BAR
+    document.getElementById('cor-kpi-bar').innerHTML=`
+        <div class="kpi-hero"><div class="lb">${sistema.toUpperCase()}</div><div class="vl c-green">${fmtN(cabEfetivas*arrobasGanho)} @</div></div>
+        <div class="kpi-row">
+            <div class="kpi-i"><div class="lb">Cabeças</div><div class="vl c-cyan">${fmtN(cab)}</div></div>
+            <div class="kpi-i"><div class="lb">GMD</div><div class="vl c-green">${fmtD(gmd,2)} kg/d</div></div>
+            <div class="kpi-i"><div class="lb">@/Cab Ganho</div><div class="vl c-gold">${fmtD(arrobasGanho)}@</div></div>
+            <div class="kpi-i"><div class="lb">Custo/@</div><div class="vl c-orange">${fmt(custoArroba)}</div></div>
+            <div class="kpi-i"><div class="lb">Preço/@</div><div class="vl c-blue">${fmt(precoArr)}</div></div>
+            <div class="kpi-i"><div class="lb">Resultado</div><div class="vl ${resultado>=0?'c-gold':'c-red'}">${fmt(resultado)}</div></div>
+        </div>`;
+
+    // INDICADORES
+    const indicators=[
+        {name:'GMD — Ganho Médio Diário',value:fmtD(gmd,2)+' kg/dia',color:'var(--green)',badge:badge(gmd,1.0,0.6),sub:`Ganho total: ${fmtD(ganhoPrevGMD)} kg em ${dias} dias`,bar:gmd/2.5*100,barColor:'var(--green)',ref:['0','2.5 kg/d']},
+        {name:'Rendimento de Carcaça',value:fmtD(rendCarc)+'%',color:'var(--gold)',badge:badge(rendCarc,53,50),sub:`Peso carcaça: ${fmtD(pesoSai*rendCarc/100)} kg`,bar:rendCarc/60*100,barColor:'var(--gold)',ref:['46%','60%']},
+        {name:'@ Produzidas / ha',value:fmtD(prodArrobasHa)+' @/ha',color:'var(--cyan)',badge:badge(prodArrobasHa,15,8),sub:`Total: ${fmtN(cabEfetivas*arrobasGanho)} @ em ${area} ha`},
+        {name:'Custo por @ Produzida',value:fmt(custoArroba),color:'var(--orange)',badge:badgeInv(custoArroba,precoArr*0.7,precoArr*0.9),sub:`Preço: ${fmt(precoArr)} | Margem: ${fmt(precoArr-custoArroba)}/@`},
+        {name:'Taxa de Lotação',value:fmtD(lotacaoReal,1)+' cab/ha',color:'var(--teal)',badge:badge(lotacaoReal,2.0,1.0),sub:`Meta: ${fmtD(lotacao)} UA/ha`,bar:lotacaoReal/5*100,barColor:'var(--teal)',ref:['0','5 cab/ha']},
+        {name:'Custo Alimentação / kg Ganho',value:fmt(caEficiencia)+'/kg',color:'var(--yellow)',badge:badgeInv(caEficiencia,18,25),sub:`Conversão alimentar — eficiência do gasto`},
+        {name:'Taxa de Mortalidade',value:fmtD(mort)+'%',color:'var(--red)',badge:badgeInv(mort,1.5,3),sub:`Perdas: ${fmtN(cab-cabEfetivas)} cabeças`,bar:mort/10*100,barColor:'var(--red)',ref:['0%','10%']},
+        {name:'Lucro por Cabeça',value:fmt(lucroCab),color:lucroCab>=0?'var(--green)':'var(--red)',badge:badge(lucroCab,200,50),sub:`Total: ${fmt(resultado)}`},
+        {name:'Margem Operacional',value:fmtD(margemPct)+'%',color:margemPct>=0?'var(--green)':'var(--red)',badge:badge(margemPct,15,5),sub:`Receita: ${fmt(receitaBruta)}`},
+        {name:'Taxa de Natalidade (Cria)',value:natal+'%',color:'var(--lime)',badge:badge(natal,85,70),sub:`Referência: >85% excelente`,bar:natal,barColor:'var(--lime)',ref:['40%','98%']},
+        {name:'Taxa de Desmama',value:desmama+'%',color:'var(--purple)',badge:badge(desmama,80,65),sub:`IEP: ${fmtD(iep)} meses`,bar:desmama,barColor:'var(--purple)',ref:['40%','98%']},
+        {name:'Dias Necessários (via GMD)',value:fmtD(diasNecCalc,0)+' dias',color:'var(--blue)',badge:badgeInv(diasNecCalc,120,180),sub:`Para ganhar ${fmtD(ganhoTotal)} kg a ${fmtD(gmd,2)} kg/d`},
+    ];
+    renderIndicators('cor-indicators',indicators);
+
+    // ALERTAS
+    let alerts=[];
+    if(custoArroba>precoArr)alerts.push({cl:'al-bad',icon:'🚨',title:'Custo/@ acima do preço de venda!',text:`Custo ${fmt(custoArroba)}/@ vs Preço ${fmt(precoArr)}/@. Operação no prejuízo.`});
+    if(gmd<0.5)alerts.push({cl:'al-warn',icon:'📉',title:'GMD muito baixo',text:`GMD de ${fmtD(gmd,2)} kg/dia indica problemas nutricionais ou sanitários. Revise dieta e manejo.`});
+    if(mort>3)alerts.push({cl:'al-bad',icon:'💀',title:'Mortalidade elevada',text:`${fmtD(mort)}% de mortalidade. Investigue: sanidade, manejo de cocho, água, adaptação.`});
+    if(resultado>0&&margemPct>10)alerts.push({cl:'al-ok',icon:'✅',title:'Operação lucrativa',text:`Margem de ${fmtD(margemPct)}% com lucro de ${fmt(lucroCab)}/cab.`});
+    if(alerts.length===0)alerts.push({cl:'al-info',icon:'📋',title:'Análise concluída',text:'Ajuste os parâmetros para simular cenários.'});
+    renderAlerts('cor-alerts',alerts);
+
+    // RECS
+    let recs=[];
+    if(gmd<0.8)recs.push({icon:'🥩',text:`<strong>Melhore o GMD.</strong> Com ${fmtD(gmd,2)} kg/dia, o ciclo está longo. Ajuste: proteína da dieta, volumoso de qualidade, aditivos (monensina, virginiamicina).`,cl:'urgent'});
+    if(custoDia>20)recs.push({icon:'💰',text:`<strong>Custo diário elevado (${fmt(custoDia)}/cab/dia).</strong> Avalie: fontes de energia mais baratas, negociação de insumos, produção própria de silagem.`,cl:'warn'});
+    recs.push({icon:'📐',text:`<strong>Monitore conversão alimentar.</strong> Custo de ${fmt(caEficiencia)}/kg de ganho. Benchmark engorda confinamento: R$12-18/kg.`});
+    recs.push({icon:'🧬',text:`<strong>Genética + Manejo + Nutrição</strong> = o tripé da pecuária rentável. Boi bem manejado e bem nutrido paga o investimento.`});
+    renderRecs('cor-recs',recs);
+
+    // GRÁFICOS
+    drawCorCusto(custoBoiMagro,custoAlimentacao/cab,custoPastTotal/cab);
+    drawCorGMD(pesoEnt,gmd,dias);
+}
+
+function drawCorCusto(compra,alim,past){
+    const ctx=document.getElementById('corCustoChart').getContext('2d');
+    if(corCharts.custo)corCharts.custo.destroy();
+    corCharts.custo=new Chart(ctx,{
+        type:'doughnut',
+        data:{labels:['Compra Boi Magro','Alimentação/cab','Pastagem/cab'],datasets:[{data:[compra,alim,Math.max(0,past)],backgroundColor:['#3b82f6','#f97316','#22c55e'],borderWidth:0,hoverOffset:8}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8696b4',font:{size:11}},position:'bottom'},tooltip:{callbacks:{label:i=>'R$ '+i.parsed.toLocaleString('pt-BR',{maximumFractionDigits:2})+'/cab'}}}}
+    });
+}
+
+function drawCorGMD(pesoEnt,gmd,dias){
+    const ctx=document.getElementById('corGMDChart').getContext('2d');
+    if(corCharts.gmd)corCharts.gmd.destroy();
+    const labels=[],data1=[],data2=[],data3=[];
+    for(let d=0;d<=dias;d+=Math.max(1,Math.floor(dias/30))){
+        labels.push('Dia '+d);
+        data1.push(pesoEnt+gmd*d);
+        data2.push(pesoEnt+gmd*1.2*d);
+        data3.push(pesoEnt+gmd*0.7*d);
+    }
+    corCharts.gmd=new Chart(ctx,{
+        type:'line',
+        data:{labels,datasets:[
+            {label:`GMD ${fmtD(gmd,2)}kg (atual)`,data:data1,borderColor:'#22c55e',borderWidth:2.5,tension:.3,pointRadius:0,fill:false},
+            {label:`GMD +20% (${fmtD(gmd*1.2,2)}kg)`,data:data2,borderColor:'#3b82f6',borderDash:[5,5],borderWidth:1.5,tension:.3,pointRadius:0,fill:false},
+            {label:`GMD -30% (${fmtD(gmd*0.7,2)}kg)`,data:data3,borderColor:'#ef4444',borderDash:[3,3],borderWidth:1.5,tension:.3,pointRadius:0,fill:false},
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{x:{ticks:{color:'#506080',maxTicksLimit:12},grid:{color:'rgba(22,32,64,.4)'}},y:{title:{display:true,text:'Peso (kg)',color:'#506080'},ticks:{color:'#506080'},grid:{color:'rgba(22,32,64,.4)'}}},plugins:{legend:{labels:{color:'#8696b4'}},tooltip:{backgroundColor:'#0b1426'}}}
+    });
+}
+
+// =================================================================
+// PECUÁRIA DE LEITE
+// =================================================================
+function calcLeite(){
+    const vacasLact=parseFloat(document.getElementById('mVacasLact').value)||0;
+    const vacasTotal=parseFloat(document.getElementById('mVacasTotal').value)||0;
+    const prodVaca=parseFloat(document.getElementById('mProdVaca').value)||0;
+    const del=parseInt(document.getElementById('mDEL').value)||0;
+    const gordura=parseFloat(document.getElementById('mGordura').value)||0;
+    const proteina=parseFloat(document.getElementById('mProteina').value)||0;
+    const ccs=parseFloat(document.getElementById('mCCS').value)||0;
+    const cbt=parseFloat(document.getElementById('mCBT').value)||0;
+    const iep=parseFloat(document.getElementById('mIEP').value)||0;
+    const precoLeite=parseFloat(document.getElementById('mPrecoLeite').value)||0;
+    const custoRacao=parseFloat(document.getElementById('mCustoRacao').value)||0;
+    const consRacao=parseFloat(document.getElementById('mConsRacao').value)||0;
+    const custoVol=parseFloat(document.getElementById('mCustoVol').value)||0;
+    const custoFixo=parseFloat(document.getElementById('mCustoFixo').value)||0;
+    const custoSanid=parseFloat(document.getElementById('mCustoSanid').value)||0;
+    const relVC=parseFloat(document.getElementById('mRelVC').value)||0;
+    const areaPast=parseFloat(document.getElementById('mAreaPast').value)||0;
+
+    // Displays
+    document.getElementById('mProdVacaV').textContent=fmtD(prodVaca);
+    document.getElementById('mDELV').textContent=del;
+    document.getElementById('mGorduraV').textContent=fmtD(gordura)+'%';
+    document.getElementById('mProteinaV').textContent=fmtD(proteina)+'%';
+    document.getElementById('mCCSV').textContent=fmtN(ccs);
+    document.getElementById('mCBTV').textContent=fmtN(cbt);
+    document.getElementById('mIEPV').textContent=fmtD(iep);
+    document.getElementById('mConsRacaoV').textContent=fmtD(consRacao);
+    document.getElementById('mRelVCV').textContent=relVC+':'+(100-relVC);
+
+    // CÁLCULOS
+    const prodDiaTotal=vacasLact*prodVaca;
+    const prodMesTotal=prodDiaTotal*30;
+    const prodAnoTotal=prodDiaTotal*365;
+    const prodLactacao=prodVaca*del;
+    const taxaLact=vacasTotal>0?(vacasLact/vacasTotal)*100:0;
+    const custoConcentradoDia=consRacao*custoRacao;
+    const custoAlimDia=custoConcentradoDia+custoVol;
+    const custoAlimMes=custoAlimDia*30*vacasLact;
+    const custoSanidMes=custoSanid*vacasTotal;
+    const custoTotalMes=custoAlimMes+custoFixo+custoSanidMes;
+    const receitaMes=prodMesTotal*precoLeite;
+    const resultadoMes=receitaMes-custoTotalMes;
+    const custoLitro=prodMesTotal>0?custoTotalMes/prodMesTotal:0;
+    const margemLitro=precoLeite-custoLitro;
+    const margemPct=receitaMes>0?((receitaMes-custoTotalMes)/receitaMes)*100:0;
+    const prodHaDia=areaPast>0?prodDiaTotal/areaPast:0;
+    const racao_leite=prodVaca>0?consRacao/prodVaca:0;
+    const eficAlim=custoAlimDia>0?prodVaca*precoLeite/custoAlimDia:0;
+    const leiteSolidos=prodVaca*(gordura+proteina)/100;
+    // IOFC = Income Over Feed Cost
+    const iofc=prodVaca*precoLeite-custoAlimDia;
+
+    // KPI BAR
+    document.getElementById('lei-kpi-bar').innerHTML=`
+        <div class="kpi-hero"><div class="lb">PRODUÇÃO DIÁRIA</div><div class="vl c-green">${fmtN(prodDiaTotal)} L/dia</div></div>
+        <div class="kpi-row">
+            <div class="kpi-i"><div class="lb">L/Vaca/Dia</div><div class="vl c-green">${fmtD(prodVaca)}</div></div>
+            <div class="kpi-i"><div class="lb">Vacas Lactação</div><div class="vl c-cyan">${vacasLact} / ${vacasTotal}</div></div>
+            <div class="kpi-i"><div class="lb">Custo/Litro</div><div class="vl c-orange">${fmt(custoLitro)}</div></div>
+            <div class="kpi-i"><div class="lb">Preço/Litro</div><div class="vl c-blue">${fmt(precoLeite)}</div></div>
+            <div class="kpi-i"><div class="lb">Margem/Litro</div><div class="vl ${margemLitro>=0?'c-green':'c-red'}">${fmt(margemLitro)}</div></div>
+            <div class="kpi-i"><div class="lb">Result. Mensal</div><div class="vl ${resultadoMes>=0?'c-gold':'c-red'}">${fmt(resultadoMes)}</div></div>
+        </div>`;
+
+    // INDICADORES
+    const indicators=[
+        {name:'Produção por Lactação',value:fmtN(prodLactacao)+' L',color:'var(--green)',badge:badge(prodLactacao,8000,5000),sub:`${del} DEL × ${fmtD(prodVaca)} L/dia`,bar:prodLactacao/15000*100,barColor:'var(--green)',ref:['0','15.000 L']},
+        {name:'Taxa de Vacas em Lactação',value:fmtD(taxaLact)+'%',color:'var(--cyan)',badge:badge(taxaLact,83,70),sub:`${vacasLact} de ${vacasTotal} vacas`,bar:taxaLact,barColor:'var(--cyan)',ref:['0%','100%']},
+        {name:'CCS — Contagem Células Somáticas',value:fmtN(ccs)+' mil/mL',color:ccs<250?'var(--green)':'var(--red)',badge:badgeInv(ccs,200,400),sub:ccs<200?'Excelente qualidade':ccs<400?'Atenção - risco mastite':'Mastite provável — agir já!',bar:ccs/1000*100,barColor:ccs<200?'var(--green)':ccs<400?'var(--yellow)':'var(--red)',ref:['0','1.000']},
+        {name:'CBT — Contagem Bacteriana',value:fmtN(cbt)+' mil/mL',color:cbt<100?'var(--green)':'var(--red)',badge:badgeInv(cbt,100,300),sub:cbt<100?'Dentro do padrão':'Revisar higiene de ordenha',bar:cbt/500*100,barColor:cbt<100?'var(--green)':'var(--red)',ref:['0','500']},
+        {name:'Gordura do Leite',value:fmtD(gordura)+'%',color:'var(--gold)',badge:badge(gordura,3.5,3.0),sub:`Proteína: ${fmtD(proteina)}%`,bar:gordura/6*100,barColor:'var(--gold)',ref:['2%','6%']},
+        {name:'Sólidos Totais / Vaca / Dia',value:fmtD(leiteSolidos,2)+' kg',color:'var(--teal)',badge:badge(leiteSolidos,1.8,1.2),sub:`Gordura + Proteína em ${fmtD(prodVaca)} L/dia`},
+        {name:'IOFC (Receita - Custo Alimentação)',value:fmt(iofc)+'/vaca/dia',color:iofc>=0?'var(--green)':'var(--red)',badge:badge(iofc,15,5),sub:`Receita: ${fmt(prodVaca*precoLeite)} - Alim: ${fmt(custoAlimDia)}`},
+        {name:'Custo por Litro',value:fmt(custoLitro),color:'var(--orange)',badge:badgeInv(custoLitro,precoLeite*0.75,precoLeite*0.9),sub:`Preço venda: ${fmt(precoLeite)}`},
+        {name:'Margem Operacional',value:fmtD(margemPct)+'%',color:margemPct>=0?'var(--green)':'var(--red)',badge:badge(margemPct,20,8),sub:`Mensal: ${fmt(resultadoMes)}`},
+        {name:'Relação Concentrado:Leite',value:fmtD(racao_leite,2)+' kg/L',color:'var(--purple)',badge:badgeInv(racao_leite,0.4,0.5),sub:`Ideal: < 0,40 kg conc/L leite`,bar:racao_leite/1*100,barColor:'var(--purple)',ref:['0','1.0']},
+        {name:'IEP — Intervalo Entre Partos',value:fmtD(iep)+' meses',color:'var(--orange)',badge:badgeInv(iep,13,15),sub:`Ideal: 12-13 meses`,bar:(iep-10)/14*100,barColor:iep<=13?'var(--green)':iep<=15?'var(--yellow)':'var(--red)',ref:['10m','24m']},
+        {name:'Produção / ha / dia',value:fmtD(prodHaDia)+' L/ha/dia',color:'var(--lime)',badge:badge(prodHaDia,30,15),sub:`${fmtN(prodDiaTotal)} L em ${areaPast} ha`},
+    ];
+    renderIndicators('lei-indicators',indicators);
+
+    // ALERTAS
+    let alerts=[];
+    if(ccs>400)alerts.push({cl:'al-bad',icon:'🚨',title:'CCS elevada — Provável mastite no rebanho',text:`CCS de ${fmtN(ccs)} mil/mL indica infecção mamária. Perda estimada de 10-25% na produção. Faça CMT, identifique vacas problema, trate e descarte leite contaminado.`});
+    if(custoLitro>precoLeite)alerts.push({cl:'al-bad',icon:'💸',title:'Custo acima do preço!',text:`Custo de ${fmt(custoLitro)}/L vs Preço ${fmt(precoLeite)}/L. Cada litro gera prejuízo de ${fmt(custoLitro-precoLeite)}.`});
+    if(taxaLact<70)alerts.push({cl:'al-warn',icon:'⚡',title:'Baixa taxa de vacas em lactação',text:`Apenas ${fmtD(taxaLact)}% do rebanho em lactação. Meta: >83%. Melhore reprodução (IATF, detecção de cio).`});
+    if(resultadoMes>0&&margemPct>15)alerts.push({cl:'al-ok',icon:'✅',title:'Operação leiteira lucrativa',text:`Margem de ${fmtD(margemPct)}% — resultado de ${fmt(resultadoMes)}/mês.`});
+    if(alerts.length===0)alerts.push({cl:'al-info',icon:'📋',title:'Análise concluída',text:'Ajuste parâmetros para simular cenários.'});
+    renderAlerts('lei-alerts',alerts);
+
+    // RECS
+    let recs=[];
+    if(ccs>300)recs.push({icon:'🧫',text:`<strong>Controle de mastite urgente.</strong> CCS ${fmtN(ccs)}: faça cultura e antibiograma, pré e pós-dipping, troque teteiras a cada 2.500 ordenhas, descarte vacas crônicas.`,cl:'urgent'});
+    if(taxaLact<75)recs.push({icon:'🐄',text:`<strong>Aumente vacas em lactação.</strong> Taxa de ${fmtD(taxaLact)}% é baixa. Implante protocolo IATF, reduza período seco para 60 dias, melhore ECC ao parto (3,0-3,5).`,cl:'warn'});
+    if(racao_leite>0.45)recs.push({icon:'🌾',text:`<strong>Relação concentrado:leite alta (${fmtD(racao_leite,2)}).</strong> Está gastando muito concentrado por litro. Melhore qualidade do volumoso (silagem de milho >30% MS, >7% PB).`,cl:'warn'});
+    recs.push({icon:'📊',text:`<strong>Monitore IOFC diariamente.</strong> Atual: ${fmt(iofc)}/vaca/dia. É o principal indicador de eficiência alimentar na pecuária leiteira.`});
+    recs.push({icon:'💡',text:`<strong>Foque nos 3 pilares:</strong> Conforto (sombra, água, cama), Nutrição (volumoso de qualidade) e Saúde (mastite, casco). Vaca confortável produz mais.`});
+    recs.push({icon:'🎯',text:`<strong>Bonificação por qualidade.</strong> Gordura ${fmtD(gordura)}%, Proteína ${fmtD(proteina)}%, CCS ${fmtN(ccs)}. Negocie bonificação — laticínios pagam até R$0,15/L a mais para leite premium.`});
+    renderRecs('lei-recs',recs);
+
+    // GRÁFICOS
+    drawLeiCusto(custoAlimMes,custoFixo,custoSanidMes);
+    drawLeiSens(vacasLact,del,precoLeite,custoTotalMes,prodMesTotal);
+}
+
+function drawLeiCusto(alim,fixo,sanid){
+    const ctx=document.getElementById('leiCustoChart').getContext('2d');
+    if(leiCharts.custo)leiCharts.custo.destroy();
+    leiCharts.custo=new Chart(ctx,{
+        type:'doughnut',
+        data:{labels:['Alimentação','Custo Fixo','Sanidade'],datasets:[{data:[alim,fixo,sanid],backgroundColor:['#f97316','#3b82f6','#ef4444'],borderWidth:0,hoverOffset:8}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#8696b4',font:{size:11}},position:'bottom'},tooltip:{callbacks:{label:i=>'R$ '+i.parsed.toLocaleString('pt-BR',{maximumFractionDigits:2})+'/mês'}}}}
+    });
+}
+
+function drawLeiSens(vacasLact,del,precoLeite,custoMes,prodMes){
+    const ctx=document.getElementById('leiSensChart').getContext('2d');
+    if(leiCharts.sens)leiCharts.sens.destroy();
+    const labels=[],recs=[],custos=[];
+    for(let p=5;p<=50;p+=2.5){
+        labels.push(fmtD(p)+' L/v/d');
+        recs.push(vacasLact*p*30*precoLeite/1000);
+        custos.push(custoMes/1000);
+    }
+    leiCharts.sens=new Chart(ctx,{
+        type:'line',
+        data:{labels,datasets:[
+            {label:'Receita (R$ mil/mês)',data:recs,borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',fill:true,tension:.3,pointRadius:0},
+            {label:'Custo (R$ mil/mês)',data:custos,borderColor:'#ef4444',borderDash:[5,5],pointRadius:0,fill:false}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{x:{ticks:{color:'#506080',font:{size:10},maxTicksLimit:10},grid:{color:'rgba(22,32,64,.4)'}},y:{ticks:{color:'#506080',callback:v=>v.toFixed(0)+'k'},grid:{color:'rgba(22,32,64,.4)'}}},plugins:{legend:{labels:{color:'#8696b4'}},tooltip:{backgroundColor:'#0b1426'}}}
+    });
+}
+
+// =================================================================
+// INIT
+// =================================================================
+document.addEventListener('DOMContentLoaded',()=>{
+    calcLav();
+    calcCorte();
+    calcLeite();
+});
+</script>
+</body>
+</html>
