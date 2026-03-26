@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador WACC Dinâmico | Indicadores Financeiros</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-card: #0f1629;
+            --bg-card-alt: #141c32;
+            --bg-input: #0c1220;
+            --border: #1a2744;
+            --border-light: #243352;
+            --accent-gold: #d4a843;
+            --accent-gold-dim: rgba(212,168,67,0.3);
+            --green: #22c55e;
+            --green-dim: rgba(34,197,94,0.15);
+            --red: #ef4444;
+            --red-dim: rgba(239,68,68,0.15);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59,130,246,0.15);
+            --cyan: #06b6d4;
+            --cyan-dim: rgba(6,182,212,0.15);
+            --yellow: #eab308;
+            --yellow-dim: rgba(234,179,8,0.15);
+            --orange: #f97316;
+            --purple: #a855f7;
+            --purple-dim: rgba(168,85,247,0.15);
+            --text-primary: #e8edf5;
+            --text-secondary: #8896b0;
+            --text-muted: #556480;
+            --text-label: #6b7fa0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'SF Pro Display', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .header-left h1 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .header-left h1 span {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .header-right {
+            text-align: right;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            line-height: 1.8;
+        }
+
+        .header-right .brand {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        /* Tabs de módulos */
+        .module-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 24px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .module-tab {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 0.82rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .module-tab:hover { color: var(--text-secondary); }
+
+        .module-tab.active {
+            background: var(--accent-gold-dim);
+            color: var(--accent-gold);
+        }
+
+        .module-content { display: none; }
+        .module-content.active { display: block; }
+
+        /* KPI Dashboard Top */
+        .kpi-top {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px 30px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .kpi-hero {
+            flex-shrink: 0;
+        }
+
+        .kpi-hero .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .kpi-hero .value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            line-height: 1.1;
+        }
+
+        .kpi-hero .value.green { color: var(--green); }
+        .kpi-hero .value.red { color: var(--red); }
+
+        .kpi-secondary {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .kpi-item {
+            min-width: 100px;
+        }
+
+        .kpi-item .label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .kpi-item .value {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .kpi-item .sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .kpi-item .value.gold { color: var(--accent-gold); }
+        .kpi-item .value.green { color: var(--green); }
+        .kpi-item .value.red { color: var(--red); }
+        .kpi-item .value.blue { color: var(--blue); }
+        .kpi-item .value.cyan { color: var(--cyan); }
+        .kpi-item .value.yellow { color: var(--yellow); }
+        .kpi-item .value.purple { color: var(--purple); }
+
+        /* Estrutura de Capital Slider */
+        .capital-structure {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slider-row label {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            min-width: 180px;
+        }
+
+        .slider-row input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .slider-equity {
+            background: linear-gradient(to right, var(--green), var(--green) var(--equity-pct, 25%), var(--border) var(--equity-pct, 25%));
+        }
+
+        .slider-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--text-primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+            border: 3px solid var(--bg-card);
+        }
+
+        .slider-badges {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .slider-badge {
+            padding: 5px 14px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1px solid var(--border);
+            background: var(--bg-input);
+        }
+
+        .slider-badge.ev { color: var(--green); border-color: rgba(34,197,94,0.3); }
+        .slider-badge.dv { color: var(--cyan); border-color: rgba(6,182,212,0.3); }
+        .slider-badge.de { color: var(--yellow); border-color: rgba(234,179,8,0.3); }
+
+        .equity-pct-display {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--green);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        /* Grid 2 colunas */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2 { grid-template-columns: 1fr; }
+            .kpi-top { flex-direction: column; gap: 20px; }
+        }
+
+        /* Cards de Parâmetros */
+        .param-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .param-card .card-header {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .param-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(26,39,68,0.5);
+        }
+
+        .param-row:last-child { border-bottom: none; }
+
+        .param-row .param-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .param-row .param-label .symbol {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .param-row input[type="range"] {
+            width: 140px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            outline: none;
+        }
+
+        .param-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            cursor: pointer;
+            border: 2px solid var(--bg-card);
+        }
+
+        .param-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            min-width: 65px;
+            text-align: right;
+        }
+
+        .param-value.gold { color: var(--accent-gold); }
+        .param-value.green { color: var(--green); }
+        .param-value.red { color: var(--red); }
+        .param-value.blue { color: var(--blue); }
+        .param-value.cyan { color: var(--cyan); }
+        .param-value.yellow { color: var(--yellow); }
+
+        /* Formula box */
+        .formula-box {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 14px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .formula-box .formula-highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .formula-box .formula-result {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .formula-box .formula-var {
+            color: var(--cyan);
+        }
+
+        .formula-label {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-family: 'Segoe UI', sans-serif;
+            margin-bottom: 4px;
+        }
+
+        /* Chart container */
+        .chart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card .chart-header {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        /* Indicadores Grid */
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .indicator-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .indicator-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .indicator-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .indicator-name {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .indicator-badge {
+            font-size: 0.6rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+
+        .badge-good { background: var(--green-dim); color: var(--green); }
+        .badge-warning { background: var(--yellow-dim); color: var(--yellow); }
+        .badge-danger { background: var(--red-dim); color: var(--red); }
+        .badge-info { background: var(--blue-dim); color: var(--blue); }
+
+        .indicator-value {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 4px;
+        }
+
+        .indicator-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .indicator-bar {
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .indicator-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* Spread / Distress section */
+        .spread-info {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: var(--bg-input);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .spread-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            padding: 3px 0;
+        }
+
+        .spread-row .label { color: var(--text-muted); }
+        .spread-row .val { font-weight: 600; }
+        .spread-row .val.gold { color: var(--accent-gold); }
+        .spread-row .val.red { color: var(--red); }
+        .spread-row .val.green { color: var(--green); }
+
+        /* DRE Table */
+        .dre-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dre-table th {
+            text-align: left;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dre-table td {
+            padding: 8px 12px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid rgba(26,39,68,0.3);
+        }
+
+        .dre-table .row-label { color: var(--text-secondary); }
+        .dre-table .row-value { text-align: right; font-weight: 600; color: var(--text-primary); }
+        .dre-table .row-pct { text-align: right; font-weight: 500; color: var(--text-muted); font-size: 0.8rem; }
+
+        .dre-table .row-highlight td {
+            background: rgba(212,168,67,0.05);
+            font-weight: 700;
+        }
+
+        .dre-table .row-highlight .row-value { color: var(--accent-gold); }
+        .dre-table .row-total td { border-top: 2px solid var(--border); font-weight: 700; }
+        .dre-table .positive { color: var(--green) !important; }
+        .dre-table .negative { color: var(--red) !important; }
+
+        /* Input inline */
+        .inline-input {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: var(--text-primary);
+            font-size: 0.88rem;
+            font-weight: 600;
+            width: 120px;
+            text-align: right;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .inline-input:focus {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 2px var(--accent-gold-dim);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        .footer p {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        .footer .brand { color: var(--accent-gold); font-weight: 600; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 12px; }
+            .kpi-hero .value { font-size: 2rem; }
+            .param-row { flex-wrap: wrap; gap: 8px; }
+            .param-row input[type="range"] { width: 100px; }
+            .slider-row { flex-wrap: wrap; }
+            .chart-container { height: 280px; }
+            .module-tabs { gap: 2px; padding: 3px; }
+            .module-tab { padding: 8px 12px; font-size: 0.75rem; }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in { animation: fadeIn 0.4s ease forwards; }
+
+        /* Optimal point pulse */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 0 0 var(--accent-gold-dim); }
+            50% { box-shadow: 0 0 15px 5px var(--accent-gold-dim); }
+        }
+
+        .pulse-gold { animation: pulse-gold 2s infinite; }
+
+        /* Gauge */
+        .gauge-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 12px;
+        }
+
+        .mini-gauge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 4px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            position: relative;
+        }
+
+        /* Nav pills for sub-sections */
+        .sub-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .sub-pill {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sub-pill:hover { color: var(--text-secondary); border-color: var(--border-light); }
+        .sub-pill.active { background: var(--accent-gold-dim); color: var(--accent-gold); border-color: var(--accent-gold); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="header-left">
+                <h1>Simulador <span>WACC</span> & Indicadores</h1>
+            </div>
+            <div class="header-right">
+                Inteligência Financeira<br>
+                <span class="brand">Rural In · Dashboard</span>
+            </div>
+        </div>
+
+        <!-- MODULE TABS -->
+        <div class="module-tabs">
+            <button class="module-tab active" onclick="switchModule('wacc')">📐 WACC & Estrutura de Capital</button>
+            <button class="module-tab" onclick="switchModule('dre')">📊 DRE & EBITDA</button>
+            <button class="module-tab" onclick="switchModule('indicadores')">🎯 ROI · ROIC · EVA</button>
+            <button class="module-tab" onclick="switchModule('valuation')">💎 Valuation (DCF)</button>
+        </div>
+
+        <!-- ========== MÓDULO 1: WACC ========== -->
+        <div class="module-content active" id="module-wacc">
+            <!-- KPI Top -->
+            <div class="kpi-top" id="waccKpiTop">
+                <div class="kpi-hero">
+                    <div class="label">WACC</div>
+                    <div class="value" id="waccValue">15,7%</div>
+                </div>
+                <div class="kpi-secondary">
+                    <div class="kpi-item">
+                        <div class="label">β<sub>L</sub> (HAMADA)</div>
+                        <div class="value gold" id="betaLevValue">2,83</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">Ke (CAPM)</div>
+                        <div class="value green" id="keValue">27,0%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">Kd EFETIVO</div>
+                        <div class="value cyan" id="kdEffValue">31,2%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">D/E ATUAL</div>
+                        <div class="value red" id="deValue">3,00x</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">WACC ÓTIMO</div>
+                        <div class="value gold" id="waccOtimoValue">15,7%</div>
+                        <div class="sub" id="waccOtimoSub">E/V = 94%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Estrutura de Capital -->
+            <div class="capital-structure">
+                <div class="section-label">Estrutura de Capital — Participação do Equity (E/V)</div>
+                <div class="slider-row">
+                    <label>Participação do equity (E/V)</label>
+                    <input type="range" id="equitySlider" min="1" max="99" value="25"
+                           class="slider-equity" oninput="onEquityChange()">
+                    <span class="equity-pct-display" id="equityPctDisplay">25%</span>
+                </div>
+                <div class="slider-badges">
+                    <span class="slider-badge ev" id="badgeEV">E/V = 25%</span>
+                    <span class="slider-badge dv" id="badgeDV">D/V = 75%</span>
+                    <span class="slider-badge de" id="badgeDE">D/E = 3,00</span>
+                </div>
+            </div>
+
+            <!-- CAPM + Kd Grid -->
+            <div class="grid-2">
+                <!-- Custo do Equity -->
+                <div class="param-card">
+                    <div class="card-header">Custo do Equity — CAPM + Hamada</div>
+
+                    <div class="param-row">
+                        <div class="param-label">Taxa livre de risco (Rf) <span class="symbol">Rf</span></div>
+                        <input type="range" id="rfSlider" min="0" max="20" value="10" step="0.5" oninput="recalcAll()">
+                        <span class="param-value gold" id="rfDisplay">10,0%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Prêmio de risco (ERP) <span class="symbol">ERP</span></div>
+                        <input type="range" id="erpSlider" min="0" max="15" value="6" step="0.5" oninput="recalcAll()">
+                        <span class="param-value gold" id="erpDisplay">6,0%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Beta desalavancado (β<sub>u</sub>) <span class="symbol">βu</span></div>
+                        <input type="range" id="betaUSlider" min="0.1" max="3" value="0.95" step="0.05" oninput="recalcAll()">
+                        <span class="param-value gold" id="betaUDisplay">0,95</span>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Equação de Hamada:</div>
+                        <span class="formula-var">β<sub>L</sub></span> = <span class="formula-var">β<sub>U</sub></span> × [1 + (1-T) × D/E]<br>
+                        <span class="formula-highlight" id="hamadaFormula">β<sub>L</sub> = 0,95 × (1 + (1-0,34) × 3,00) = 2,83</span><br><br>
+                        <span class="formula-var">Ke</span> = <span class="formula-var">Rf</span> + <span class="formula-var">β<sub>L</sub></span> × <span class="formula-var">ERP</span><br>
+                        <span class="formula-result" id="keFormula">Ke = 10,0% + 2,83 × 6,0% = 27,0%</span>
+                    </div>
+                </div>
+
+                <!-- Custo da Dívida -->
+                <div class="param-card">
+                    <div class="card-header">Custo da Dívida + Distress Financeiro</div>
+
+                    <div class="param-row">
+                        <div class="param-label">Kd base (sem alavancagem) <span class="symbol">Kd<sub>base</sub></span></div>
+                        <input type="range" id="kdBaseSlider" min="0" max="30" value="18" step="0.5" oninput="recalcAll()">
+                        <span class="param-value cyan" id="kdBaseDisplay">18,0%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Alíquota IR + CSLL (T) <span class="symbol">T</span></div>
+                        <input type="range" id="taxSlider" min="0" max="50" value="34" step="1" oninput="recalcAll()">
+                        <span class="param-value cyan" id="taxDisplay">34%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Coef. distress financeiro (α) <span class="symbol">α</span></div>
+                        <input type="range" id="alphaSlider" min="0" max="0.5" value="0.08" step="0.01" oninput="recalcAll()">
+                        <span class="param-value cyan" id="alphaDisplay">0,08</span>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Custo efetivo da dívida com distress:</div>
+                        <span class="formula-var">Kd<sub>eff</sub></span> = <span class="formula-var">Kd<sub>base</sub></span> + α × (D/V)² × e<sup><span class="formula-var">2,5×D/V</span></sup><br>
+                        <span class="formula-highlight" id="kdEffFormula">Spread distress: +XX,X% → Kd efetivo: XX,X%</span><br><br>
+                        <span class="formula-var">WACC</span> = (<span class="formula-var">E/V</span>)×<span class="formula-var">Ke</span> + (<span class="formula-var">D/V</span>)×<span class="formula-var">Kd<sub>eff</sub></span>×(1-<span class="formula-var">T</span>)<br>
+                        <span class="formula-result" id="waccFormula">WACC = ...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico Curva U do WACC -->
+            <div class="chart-card">
+                <div class="chart-header">Curva U do WACC — Estrutura Ótima de Capital (Hamada + Distress Financeiro)</div>
+                <div class="chart-container">
+                    <canvas id="waccChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== MÓDULO 2: DRE & EBITDA ========== -->
+        <div class="module-content" id="module-dre">
+            <div class="kpi-top">
+                <div class="kpi-hero">
+                    <div class="label">EBITDA</div>
+                    <div class="value green" id="ebitdaHero">R$ 0</div>
+                </div>
+                <div class="kpi-secondary">
+                    <div class="kpi-item">
+                        <div class="label">Receita Líquida</div>
+                        <div class="value blue" id="recLiqHero">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">Margem EBITDA</div>
+                        <div class="value green" id="mEbitdaHero">0%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">Lucro Líquido</div>
+                        <div class="value gold" id="lucroLiqHero">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">Margem Líquida</div>
+                        <div class="value gold" id="mLiquidaHero">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="param-card">
+                    <div class="card-header">Demonstração de Resultados (DRE Simplificada)</div>
+                    <table class="dre-table" id="dreTable">
+                        <thead>
+                            <tr><th>Conta</th><th style="text-align:right">Valor (R$ mil)</th><th style="text-align:right">%RL</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-label">Receita Bruta</td>
+                                <td class="row-value"><input class="inline-input" id="dreRecBruta" value="10000" onchange="calcDRE()"></td>
+                                <td class="row-pct">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) Deduções</td>
+                                <td class="row-value"><input class="inline-input" id="dreDeducoes" value="1500" onchange="calcDRE()"></td>
+                                <td class="row-pct" id="dreDeducoesPct">-</td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td class="row-label"><strong>= Receita Líquida</strong></td>
+                                <td class="row-value" id="dreRecLiq">8.500</td>
+                                <td class="row-pct">100%</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) CMV / CPV</td>
+                                <td class="row-value"><input class="inline-input" id="dreCMV" value="4500" onchange="calcDRE()"></td>
+                                <td class="row-pct" id="dreCMVPct">-</td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td class="row-label"><strong>= Lucro Bruto</strong></td>
+                                <td class="row-value" id="dreLucroBruto">4.000</td>
+                                <td class="row-pct" id="dreLucroBrutoPct">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) Despesas Operacionais (SG&A)</td>
+                                <td class="row-value"><input class="inline-input" id="dreSGA" value="1800" onchange="calcDRE()"></td>
+                                <td class="row-pct" id="dreSGAPct">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(+) Depreciação & Amortização</td>
+                                <td class="row-value"><input class="inline-input" id="dreDA" value="600" onchange="calcDRE()"></td>
+                                <td class="row-pct" id="dreDAPct">-</td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td class="row-label"><strong>= EBITDA</strong></td>
+                                <td class="row-value" id="dreEbitda" style="color:var(--green)">2.800</td>
+                                <td class="row-pct" id="dreEbitdaPct" style="color:var(--green)">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) D&A (na DRE)</td>
+                                <td class="row-value" id="dreDANeg">-600</td>
+                                <td class="row-pct" id="dreDANegPct">-</td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td class="row-label"><strong>= EBIT (Lucro Operacional)</strong></td>
+                                <td class="row-value" id="dreEbit">2.200</td>
+                                <td class="row-pct" id="dreEbitPct">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) Despesas Financeiras</td>
+                                <td class="row-value"><input class="inline-input" id="dreFinanc" value="800" onchange="calcDRE()"></td>
+                                <td class="row-pct" id="dreFinancPct">-</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">(-) IR + CSLL</td>
+                                <td class="row-value" id="dreIR">-476</td>
+                                <td class="row-pct" id="dreIRPct">-</td>
+                            </tr>
+                            <tr class="row-total">
+                                <td class="row-label"><strong>= Lucro Líquido</strong></td>
+                                <td class="row-value" id="dreLucroLiq" style="color:var(--accent-gold)">924</td>
+                                <td class="row-pct" id="dreLucroLiqPct" style="color:var(--accent-gold)">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="param-card">
+                    <div class="card-header">Balanço Simplificado & Capital Investido</div>
+                    <table class="dre-table">
+                        <thead>
+                            <tr><th>Item</th><th style="text-align:right">Valor (R$ mil)</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-label">Patrimônio Líquido (Equity)</td>
+                                <td class="row-value"><input class="inline-input" id="balEquity" value="3000" onchange="calcDRE()"></td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">Dívida Líquida (Debt)</td>
+                                <td class="row-value"><input class="inline-input" id="balDebt" value="5000" onchange="calcDRE()"></td>
+                            </tr>
+                            <tr class="row-highlight">
+                                <td class="row-label"><strong>Capital Investido (CI)</strong></td>
+                                <td class="row-value" id="balCI">8.000</td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">Ativo Total</td>
+                                <td class="row-value"><input class="inline-input" id="balAtivo" value="12000" onchange="calcDRE()"></td>
+                            </tr>
+                            <tr>
+                                <td class="row-label">Investimento Total (para ROI)</td>
+                                <td class="row-value"><input class="inline-input" id="balInvestimento" value="8000" onchange="calcDRE()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 20px;">
+                        <div class="card-header">Múltiplos</div>
+                        <div class="spread-info">
+                            <div class="spread-row">
+                                <span class="label">EV/EBITDA</span>
+                                <span class="val gold" id="evEbitda">-</span>
+                            </div>
+                            <div class="spread-row">
+                                <span class="label">Dívida Líq. / EBITDA</span>
+                                <span class="val" id="divEbitda">-</span>
+                            </div>
+                            <div class="spread-row">
+                                <span class="label">P/L (estimado)</span>
+                                <span class="val" id="plEstimado">-</span>
+                            </div>
+                            <div class="spread-row">
+                                <span class="label">Margem Bruta</span>
+                                <span class="val green" id="mBruta">-</span>
+                            </div>
+                            <div class="spread-row">
+                                <span class="label">Margem EBIT</span>
+                                <span class="val" id="mEbit">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico DRE -->
+            <div class="chart-card">
+                <div class="chart-header">Composição de Resultados (Waterfall)</div>
+                <div class="chart-container">
+                    <canvas id="dreChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== MÓDULO 3: ROI, ROIC, EVA ========== -->
+        <div class="module-content" id="module-indicadores">
+            <div class="kpi-top">
+                <div class="kpi-hero">
+                    <div class="label">ROIC</div>
+                    <div class="value" id="roicHero" style="color:var(--green)">0%</div>
+                </div>
+                <div class="kpi-secondary">
+                    <div class="kpi-item">
+                        <div class="label">ROI</div>
+                        <div class="value blue" id="roiHero">0%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">ROE</div>
+                        <div class="value purple" id="roeHero">0%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">ROA</div>
+                        <div class="value cyan" id="roaHero">0%</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">EVA</div>
+                        <div class="value gold" id="evaHero">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">ROIC - WACC</div>
+                        <div class="value" id="spreadHero">0%</div>
+                        <div class="sub" id="spreadSub">Spread de valor</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="indicators-grid" id="indicatorsGrid">
+                <!-- Renderizado por JS -->
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">ROIC vs WACC — Criação ou Destruição de Valor</div>
+                <div class="chart-container">
+                    <canvas id="roicChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== MÓDULO 4: VALUATION DCF ========== -->
+        <div class="module-content" id="module-valuation">
+            <div class="kpi-top">
+                <div class="kpi-hero">
+                    <div class="label">VALOR DA FIRMA (DCF)</div>
+                    <div class="value gold" id="dcfHero">R$ 0</div>
+                </div>
+                <div class="kpi-secondary">
+                    <div class="kpi-item">
+                        <div class="label">Valor do Equity</div>
+                        <div class="value green" id="dcfEquity">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">VP Fluxos Projetados</div>
+                        <div class="value blue" id="dcfVPFluxos">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">VP Perpetuidade</div>
+                        <div class="value cyan" id="dcfVPPerp">R$ 0</div>
+                    </div>
+                    <div class="kpi-item">
+                        <div class="label">WACC usado</div>
+                        <div class="value gold" id="dcfWacc">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="param-card">
+                    <div class="card-header">Parâmetros do DCF</div>
+                    <div class="param-row">
+                        <div class="param-label">FCF Ano 1 (R$ mil)</div>
+                        <input class="inline-input" id="dcfFCF1" value="1500" onchange="calcDCF()" style="width:100px;">
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Crescimento Fase 1 (a.a.)</div>
+                        <input type="range" id="dcfGrowth1" min="0" max="30" value="8" step="0.5" oninput="calcDCF()">
+                        <span class="param-value green" id="dcfGrowth1Display">8,0%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Anos Fase 1</div>
+                        <input type="range" id="dcfYears" min="3" max="15" value="5" step="1" oninput="calcDCF()">
+                        <span class="param-value gold" id="dcfYearsDisplay">5</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Crescimento Perpet. (g)</div>
+                        <input type="range" id="dcfGPerp" min="0" max="10" value="3" step="0.5" oninput="calcDCF()">
+                        <span class="param-value cyan" id="dcfGPerpDisplay">3,0%</span>
+                    </div>
+                    <div class="param-row">
+                        <div class="param-label">Dívida Líquida (R$ mil)</div>
+                        <input class="inline-input" id="dcfDivLiq" value="5000" onchange="calcDCF()" style="width:100px;">
+                    </div>
+                </div>
+
+                <div class="param-card">
+                    <div class="card-header">Fluxos de Caixa Projetados</div>
+                    <table class="dre-table" id="dcfTable">
+                        <thead>
+                            <tr><th>Ano</th><th style="text-align:right">FCF (R$ mil)</th><th style="text-align:right">Fator VP</th><th style="text-align:right">VP (R$ mil)</th></tr>
+                        </thead>
+                        <tbody id="dcfBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">Fluxo de Caixa Descontado — Projeção</div>
+                <div class="chart-container">
+                    <canvas id="dcfChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>
+                Simulador financeiro para apoio à decisão. Valores ilustrativos — consulte um profissional para análises reais.<br>
+                <span class="brand">Rural In</span> — Inteligência para o campo e para os negócios · 2026
+            </p>
+        </div>
+    </div>
+
+    <script>
+    // ===================================================================
+    // GLOBALS & STATE
+    // ===================================================================
+    let waccChartInstance = null;
+    let dreChartInstance = null;
+    let roicChartInstance = null;
+    let dcfChartInstance = null;
+
+    // ===================================================================
+    // MODULE SWITCHING
+    // ===================================================================
+    function switchModule(mod) {
+        document.querySelectorAll('.module-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.module-tab').forEach(el => el.classList.remove('active'));
+        document.getElementById('module-' + mod).classList.add('active');
+        event.target.classList.add('active');
+        
+        if (mod === 'dre') calcDRE();
+        if (mod === 'indicadores') calcIndicadores();
+        if (mod === 'valuation') calcDCF();
+    }
+
+    // ===================================================================
+    // WACC MODULE
+    // ===================================================================
+    function getWaccParams() {
+        const EV = parseInt(document.getElementById('equitySlider').value) / 100;
+        const DV = 1 - EV;
+        const DE = DV / EV;
+        const Rf = parseFloat(document.getElementById('rfSlider').value) / 100;
+        const ERP = parseFloat(document.getElementById('erpSlider').value) / 100;
+        const betaU = parseFloat(document.getElementById('betaUSlider').value);
+        const kdBase = parseFloat(document.getElementById('kdBaseSlider').value) / 100;
+        const T = parseFloat(document.getElementById('taxSlider').value) / 100;
+        const alpha = parseFloat(document.getElementById('alphaSlider').value);
+        return { EV, DV, DE, Rf, ERP, betaU, kdBase, T, alpha };
+    }
+
+    function calcWacc(EV, DV, DE, Rf, ERP, betaU, kdBase, T, alpha) {
+        // Hamada
+        const betaL = betaU * (1 + (1 - T) * DE);
+        // CAPM
+        const Ke = Rf + betaL * ERP;
+        // Distress
+        const distressSpread = alpha * Math.pow(DV, 2) * Math.exp(2.5 * DV);
+        const kdEff = kdBase + distressSpread;
+        // WACC
+        const wacc = EV * Ke + DV * kdEff * (1 - T);
+        return { betaL, Ke, kdEff, distressSpread, wacc };
+    }
+
+    function onEquityChange() {
+        recalcAll();
+    }
+
+    function recalcAll() {
+        const p = getWaccParams();
+        const r = calcWacc(p.EV, p.DV, p.DE, p.Rf, p.ERP, p.betaU, p.kdBase, p.T, p.alpha);
+
+        // Update displays
+        document.getElementById('equityPctDisplay').textContent = (p.EV * 100).toFixed(0) + '%';
+        document.getElementById('equitySlider').style.setProperty('--equity-pct', (p.EV * 100) + '%');
+        
+        document.getElementById('badgeEV').textContent = 'E/V = ' + (p.EV * 100).toFixed(0) + '%';
+        document.getElementById('badgeDV').textContent = 'D/V = ' + (p.DV * 100).toFixed(0) + '%';
+        document.getElementById('badgeDE').textContent = 'D/E = ' + p.DE.toFixed(2);
+
+        document.getElementById('rfDisplay').textContent = (p.Rf * 100).toFixed(1) + '%';
+        document.getElementById('erpDisplay').textContent = (p.ERP * 100).toFixed(1) + '%';
+        document.getElementById('betaUDisplay').textContent = p.betaU.toFixed(2);
+        document.getElementById('kdBaseDisplay').textContent = (p.kdBase * 100).toFixed(1) + '%';
+        document.getElementById('taxDisplay').textContent = (p.T * 100).toFixed(0) + '%';
+        document.getElementById('alphaDisplay').textContent = p.alpha.toFixed(2);
+
+        // KPI top
+        document.getElementById('waccValue').textContent = (r.wacc * 100).toFixed(1) + '%';
+        document.getElementById('betaLevValue').textContent = r.betaL.toFixed(2);
+        document.getElementById('keValue').textContent = (r.Ke * 100).toFixed(1) + '%';
+        document.getElementById('kdEffValue').textContent = (r.kdEff * 100).toFixed(1) + '%';
+        document.getElementById('deValue').textContent = p.DE.toFixed(2) + 'x';
+
+        // Formulas
+        document.getElementById('hamadaFormula').innerHTML = 
+            `β<sub>L</sub> = ${p.betaU.toFixed(2)} × (1 + (1-${(p.T*100).toFixed(0)}%) × ${p.DE.toFixed(2)}) = <strong>${r.betaL.toFixed(2)}</strong>`;
+        document.getElementById('keFormula').innerHTML = 
+            `Ke = ${(p.Rf*100).toFixed(1)}% + ${r.betaL.toFixed(2)} × ${(p.ERP*100).toFixed(1)}% = <strong>${(r.Ke*100).toFixed(1)}%</strong>`;
+        document.getElementById('kdEffFormula').innerHTML = 
+            `Spread distress: +${(r.distressSpread*100).toFixed(1)}% → Kd efetivo: <strong>${(r.kdEff*100).toFixed(1)}%</strong>`;
+        document.getElementById('waccFormula').innerHTML = 
+            `WACC = ${(p.EV*100).toFixed(0)}%×${(r.Ke*100).toFixed(1)}% + ${(p.DV*100).toFixed(0)}%×${(r.kdEff*100).toFixed(1)}%×(1-${(p.T*100).toFixed(0)}%) = <strong>${(r.wacc*100).toFixed(1)}%</strong>`;
+
+        // Curva U
+        drawWaccCurve(p);
+    }
+
+    function drawWaccCurve(params) {
+        const ctx = document.getElementById('waccChart').getContext('2d');
+        
+        const points = [];
+        const kePoints = [];
+        const kdEffPoints = [];
+        const dePoints = [];
+        let minWacc = Infinity;
+        let minEV = 0;
+
+        for (let ev = 1; ev <= 99; ev++) {
+            const EV = ev / 100;
+            const DV = 1 - EV;
+            const DE = DV / EV;
+            const r = calcWacc(EV, DV, DE, params.Rf, params.ERP, params.betaU, params.kdBase, params.T, params.alpha);
+            
+            points.push({ x: ev, y: r.wacc * 100 });
+            kePoints.push({ x: ev, y: r.Ke * 100 });
+            kdEffPoints.push({ x: ev, y: r.kdEff * 100 * (1 - params.T) });
+            dePoints.push({ x: ev, y: DE });
+
+            if (r.wacc < minWacc) {
+                minWacc = r.wacc;
+                minEV = ev;
+            }
+        }
+
+        // Update optimal
+        document.getElementById('waccOtimoValue').textContent = (minWacc * 100).toFixed(1) + '%';
+        document.getElementById('waccOtimoSub').textContent = 'E/V = ' + minEV + '%';
+
+        const currentEV = parseInt(document.getElementById('equitySlider').value);
+        const currentR = calcWacc(
+            currentEV/100, 1-currentEV/100, (1-currentEV/100)/(currentEV/100),
+            params.Rf, params.ERP, params.betaU, params.kdBase, params.T, params.alpha
+        );
+
+        if (waccChartInstance) waccChartInstance.destroy();
+
+        waccChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'WACC (custo médio)',
+                        data: points,
+                        borderColor: '#d4a843',
+                        backgroundColor: 'rgba(212,168,67,0.1)',
+                        borderWidth: 2.5,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                    },
+                    {
+                        label: 'Ke (custo equity)',
+                        data: kePoints,
+                        borderColor: '#22c55e',
+                        borderWidth: 1.5,
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        pointRadius: 0,
+                        fill: false,
+                    },
+                    {
+                        label: 'Kd efetivo × (1-T)',
+                        data: kdEffPoints,
+                        borderColor: '#06b6d4',
+                        borderWidth: 1.5,
+                        borderDash: [3, 3],
+                        tension: 0.4,
+                        pointRadius: 0,
+                        fill: false,
+                    },
+                    {
+                        label: 'Ponto Ótimo',
+                        data: [{ x: minEV, y: minWacc * 100 }],
+                        borderColor: '#d4a843',
+                        backgroundColor: '#d4a843',
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        pointStyle: 'star',
+                        showLine: false,
+                    },
+                    {
+                        label: 'Posição Atual',
+                        data: [{ x: currentEV, y: currentR.wacc * 100 }],
+                        borderColor: '#ef4444',
+                        backgroundColor: '#ef4444',
+                        pointRadius: 7,
+                        pointHoverRadius: 9,
+                        pointStyle: 'circle',
+                        showLine: false,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: { display: true, text: 'E/V (equity / valor total) %', color: '#556480', font: { size: 11 } },
+                        min: 0, max: 100,
+                        ticks: { color: '#556480', stepSize: 10 },
+                        grid: { color: 'rgba(26,39,68,0.5)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'Taxa (%)', color: '#556480', font: { size: 11 } },
+                        min: 0,
+                        ticks: { color: '#556480', callback: v => v.toFixed(0) + '%' },
+                        grid: { color: 'rgba(26,39,68,0.5)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: '#8896b0', font: { size: 11 }, usePointStyle: true, pointStyle: 'line' }
+                    },
+                    tooltip: {
+                        backgroundColor: '#0f1629',
+                        borderColor: '#1a2744',
+                        borderWidth: 1,
+                        titleColor: '#e8edf5',
+                        bodyColor: '#8896b0',
+                        callbacks: {
+                            title: items => 'E/V = ' + items[0].parsed.x + '%',
+                            label: item => item.dataset.label + ': ' + item.parsed.y.toFixed(2) + '%'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===================================================================
+    // DRE & EBITDA MODULE
+    // ===================================================================
+    function calcDRE() {
+        const recBruta = parseFloat(document.getElementById('dreRecBruta').value) || 0;
+        const deducoes = parseFloat(document.getElementById('dreDeducoes').value) || 0;
+        const cmv = parseFloat(document.getElementById('dreCMV').value) || 0;
+        const sga = parseFloat(document.getElementById('dreSGA').value) || 0;
+        const da = parseFloat(document.getElementById('dreDA').value) || 0;
+        const financ = parseFloat(document.getElementById('dreFinanc').value) || 0;
+        const T = parseFloat(document.getElementById('taxSlider')?.value || 34) / 100;
+
+        const recLiq = recBruta - deducoes;
+        const lucroBruto = recLiq - cmv;
+        const ebitda = lucroBruto - sga + da;
+        const ebit = ebitda - da;
+        const ebt = ebit - financ;
+        const ir = Math.max(0, ebt * T);
+        const lucroLiq = ebt - ir;
+
+        // Pct of recLiq
+        const pct = v => recLiq > 0 ? ((v / recLiq) * 100).toFixed(1) + '%' : '-';
+        const fmt = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+
+        document.getElementById('dreRecLiq').textContent = fmt(recLiq);
+        document.getElementById('dreLucroBruto').textContent = fmt(lucroBruto);
+        document.getElementById('dreEbitda').textContent = fmt(ebitda);
+        document.getElementById('dreDANeg').textContent = fmt(-da);
+        document.getElementById('dreEbit').textContent = fmt(ebit);
+        document.getElementById('dreIR').textContent = fmt(-ir);
+        document.getElementById('dreLucroLiq').textContent = fmt(lucroLiq);
+
+        document.getElementById('dreDeducoesPct').textContent = pct(-deducoes);
+        document.getElementById('dreCMVPct').textContent = pct(-cmv);
+        document.getElementById('dreLucroBrutoPct').textContent = pct(lucroBruto);
+        document.getElementById('dreSGAPct').textContent = pct(-sga);
+        document.getElementById('dreDAPct').textContent = pct(da);
+        document.getElementById('dreEbitdaPct').textContent = pct(ebitda);
+        document.getElementById('dreDANegPct').textContent = pct(-da);
+        document.getElementById('dreEbitPct').textContent = pct(ebit);
+        document.getElementById('dreFinancPct').textContent = pct(-financ);
+        document.getElementById('dreIRPct').textContent = pct(-ir);
+        document.getElementById('dreLucroLiqPct').textContent = pct(lucroLiq);
+
+        // Color
+        document.getElementById('dreLucroLiq').style.color = lucroLiq >= 0 ? 'var(--accent-gold)' : 'var(--red)';
+        document.getElementById('dreEbitda').style.color = ebitda >= 0 ? 'var(--green)' : 'var(--red)';
+
+        // Hero KPIs
+        document.getElementById('ebitdaHero').textContent = 'R$ ' + fmt(ebitda) + ' mil';
+        document.getElementById('recLiqHero').textContent = 'R$ ' + fmt(recLiq) + ' mil';
+        document.getElementById('mEbitdaHero').textContent = recLiq > 0 ? ((ebitda / recLiq) * 100).toFixed(1) + '%' : '-';
+        document.getElementById('lucroLiqHero').textContent = 'R$ ' + fmt(lucroLiq) + ' mil';
+        document.getElementById('mLiquidaHero').textContent = recLiq > 0 ? ((lucroLiq / recLiq) * 100).toFixed(1) + '%' : '-';
+
+        // Balanço / Múltiplos
+        const equity = parseFloat(document.getElementById('balEquity').value) || 0;
+        const debt = parseFloat(document.getElementById('balDebt').value) || 0;
+        const ativo = parseFloat(document.getElementById('balAtivo').value) || 0;
+        const ci = equity + debt;
+        document.getElementById('balCI').textContent = fmt(ci);
+
+        const ev = equity + debt;
+        document.getElementById('evEbitda').textContent = ebitda > 0 ? (ev / ebitda).toFixed(1) + 'x' : '-';
+        document.getElementById('divEbitda').textContent = ebitda > 0 ? (debt / ebitda).toFixed(1) + 'x' : '-';
+        const divEbitdaVal = ebitda > 0 ? debt / ebitda : 0;
+        document.getElementById('divEbitda').className = 'val ' + (divEbitdaVal > 3 ? 'red' : divEbitdaVal > 2 ? 'gold' : 'green');
+        document.getElementById('plEstimado').textContent = lucroLiq > 0 ? (equity / lucroLiq).toFixed(1) + 'x' : '-';
+        document.getElementById('mBruta').textContent = recLiq > 0 ? ((lucroBruto / recLiq) * 100).toFixed(1) + '%' : '-';
+        document.getElementById('mEbit').textContent = recLiq > 0 ? ((ebit / recLiq) * 100).toFixed(1) + '%' : '-';
+
+        // Store for other modules
+        window._dreData = { recBruta, deducoes, recLiq, cmv, lucroBruto, sga, da, ebitda, ebit, financ, ir, lucroLiq, equity, debt, ci, ativo, T };
+
+        drawDREChart({ recLiq, cmv, lucroBruto, sga, da, ebitda, ebit, financ, ir, lucroLiq });
+    }
+
+    function drawDREChart(d) {
+        const ctx = document.getElementById('dreChart').getContext('2d');
+        if (dreChartInstance) dreChartInstance.destroy();
+
+        dreChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Rec. Líq.', '(-) CMV', 'L. Bruto', '(-) SG&A', '(+) D&A', 'EBITDA', '(-) D&A', 'EBIT', '(-) Financ.', '(-) IR', 'L. Líquido'],
+                datasets: [{
+                    data: [d.recLiq, -d.cmv, d.lucroBruto, -d.sga, d.da, d.ebitda, -d.da, d.ebit, -d.financ, -d.ir, d.lucroLiq],
+                    backgroundColor: [
+                        '#3b82f6', '#ef4444', '#22c55e', '#ef4444', '#06b6d4', '#22c55e',
+                        '#ef4444', '#d4a843', '#ef4444', '#ef4444', d.lucroLiq >= 0 ? '#d4a843' : '#ef4444'
+                    ],
+                    borderRadius: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f1629',
+                        borderColor: '#1a2744',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: item => 'R$ ' + item.parsed.y.toLocaleString('pt-BR') + ' mil'
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#556480', font: { size: 10 } }, grid: { display: false } },
+                    y: {
+                        ticks: { color: '#556480', callback: v => (v/1000).toFixed(0) + 'k' },
+                        grid: { color: 'rgba(26,39,68,0.5)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===================================================================
+    // INDICADORES MODULE (ROI, ROIC, EVA)
+    // ===================================================================
+    function calcIndicadores() {
+        // Make sure DRE is calculated
+        if (!window._dreData) calcDRE();
+        const d = window._dreData;
+        const p = getWaccParams();
+        const waccR = calcWacc(p.EV, p.DV, p.DE, p.Rf, p.ERP, p.betaU, p.kdBase, p.T, p.alpha);
+        const wacc = waccR.wacc;
+
+        const investimento = parseFloat(document.getElementById('balInvestimento').value) || d.ci;
+
+        // NOPAT = EBIT × (1 - T)
+        const nopat = d.ebit * (1 - d.T);
+
+        // ROIC = NOPAT / Capital Investido
+        const roic = d.ci > 0 ? nopat / d.ci : 0;
+
+        // ROI = Lucro Líquido / Investimento
+        const roi = investimento > 0 ? d.lucroLiq / investimento : 0;
+
+        // ROE = Lucro Líquido / PL
+        const roe = d.equity > 0 ? d.lucroLiq / d.equity : 0;
+
+        // ROA = Lucro Líquido / Ativo Total
+        const roa = d.ativo > 0 ? d.lucroLiq / d.ativo : 0;
+
+        // EVA = (ROIC - WACC) × Capital Investido
+        const eva = (roic - wacc) * d.ci;
+
+        // Spread
+        const spread = roic - wacc;
+
+        // Heroes
+        document.getElementById('roicHero').textContent = (roic * 100).toFixed(1) + '%';
+        document.getElementById('roicHero').style.color = roic > wacc ? 'var(--green)' : 'var(--red)';
+        document.getElementById('roiHero').textContent = (roi * 100).toFixed(1) + '%';
+        document.getElementById('roeHero').textContent = (roe * 100).toFixed(1) + '%';
+        document.getElementById('roaHero').textContent = (roa * 100).toFixed(1) + '%';
+        document.getElementById('evaHero').textContent = 'R$ ' + eva.toLocaleString('pt-BR', { maximumFractionDigits: 0 }) + ' mil';
+        document.getElementById('evaHero').style.color = eva >= 0 ? 'var(--accent-gold)' : 'var(--red)';
+        document.getElementById('spreadHero').textContent = (spread * 100).toFixed(1) + '%';
+        document.getElementById('spreadHero').style.color = spread >= 0 ? 'var(--green)' : 'var(--red)';
+        document.getElementById('spreadSub').textContent = spread >= 0 ? 'Criando valor ✅' : 'Destruindo valor ❌';
+
+        // Cards
+        const grid = document.getElementById('indicatorsGrid');
+        const indicators = [
+            {
+                name: 'ROIC', value: (roic*100).toFixed(1) + '%', color: roic > wacc ? 'var(--green)' : 'var(--red)',
+                badge: roic > wacc ? 'CRIA VALOR' : 'DESTRÓI VALOR', badgeClass: roic > wacc ? 'badge-good' : 'badge-danger',
+                sub: `NOPAT: R$ ${nopat.toLocaleString('pt-BR',{maximumFractionDigits:0})} / CI: R$ ${d.ci.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+                bar: Math.min(100, Math.abs(roic) * 200), barColor: roic > wacc ? 'var(--green)' : 'var(--red)'
+            },
+            {
+                name: 'WACC', value: (wacc*100).toFixed(1) + '%', color: 'var(--accent-gold)',
+                badge: 'CUSTO CAPITAL', badgeClass: 'badge-info',
+                sub: `Ke: ${(waccR.Ke*100).toFixed(1)}% | Kd eff: ${(waccR.kdEff*100).toFixed(1)}%`,
+                bar: Math.min(100, wacc * 200), barColor: 'var(--accent-gold)'
+            },
+            {
+                name: 'EVA (Economic Value Added)', value: 'R$ ' + eva.toLocaleString('pt-BR',{maximumFractionDigits:0}), color: eva >= 0 ? 'var(--green)' : 'var(--red)',
+                badge: eva >= 0 ? 'POSITIVO' : 'NEGATIVO', badgeClass: eva >= 0 ? 'badge-good' : 'badge-danger',
+                sub: `(ROIC - WACC) × CI = (${(spread*100).toFixed(1)}%) × ${d.ci.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+                bar: 0, barColor: ''
+            },
+            {
+                name: 'ROI (Return on Investment)', value: (roi*100).toFixed(1) + '%', color: 'var(--blue)',
+                badge: roi > 0.1 ? 'BOM' : roi > 0 ? 'REGULAR' : 'RUIM', badgeClass: roi > 0.1 ? 'badge-good' : roi > 0 ? 'badge-warning' : 'badge-danger',
+                sub: `Lucro Líq / Investimento = ${d.lucroLiq.toLocaleString('pt-BR',{maximumFractionDigits:0})} / ${investimento.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+                bar: Math.min(100, Math.abs(roi) * 200), barColor: 'var(--blue)'
+            },
+            {
+                name: 'ROE (Return on Equity)', value: (roe*100).toFixed(1) + '%', color: 'var(--purple)',
+                badge: roe > 0.15 ? 'EXCELENTE' : roe > 0.08 ? 'BOM' : 'BAIXO', badgeClass: roe > 0.15 ? 'badge-good' : roe > 0.08 ? 'badge-warning' : 'badge-danger',
+                sub: `Lucro Líq / PL = ${d.lucroLiq.toLocaleString('pt-BR',{maximumFractionDigits:0})} / ${d.equity.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+                bar: Math.min(100, Math.abs(roe) * 150), barColor: 'var(--purple)'
+            },
+            {
+                name: 'ROA (Return on Assets)', value: (roa*100).toFixed(1) + '%', color: 'var(--cyan)',
+                badge: roa > 0.08 ? 'BOM' : roa > 0 ? 'REGULAR' : 'RUIM', badgeClass: roa > 0.08 ? 'badge-good' : roa > 0 ? 'badge-warning' : 'badge-danger',
+                sub: `Lucro Líq / Ativo Total = ${d.lucroLiq.toLocaleString('pt-BR',{maximumFractionDigits:0})} / ${d.ativo.toLocaleString('pt-BR',{maximumFractionDigits:0})}`,
+                bar: Math.min(100, Math.abs(roa) * 300), barColor: 'var(--cyan)'
+            },
+        ];
+
+        grid.innerHTML = indicators.map(ind => `
+            <div class="indicator-card">
+                <div class="indicator-header">
+                    <div class="indicator-name">${ind.name}</div>
+                    <span class="indicator-badge ${ind.badgeClass}">${ind.badge}</span>
+                </div>
+                <div class="indicator-value" style="color:${ind.color}">${ind.value}</div>
+                <div class="indicator-sub">${ind.sub}</div>
+                ${ind.bar > 0 ? `<div class="indicator-bar"><div class="indicator-bar-fill" style="width:${ind.bar}%; background:${ind.barColor}"></div></div>` : ''}
+            </div>
+        `).join('');
+
+        drawRoicChart(roic, wacc, roe, roa, roi);
+    }
+
+    function drawRoicChart(roic, wacc, roe, roa, roi) {
+        const ctx = document.getElementById('roicChart').getContext('2d');
+        if (roicChartInstance) roicChartInstance.destroy();
+
+        roicChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['ROIC', 'WACC', 'ROE', 'ROA', 'ROI'],
+                datasets: [{
+                    label: 'Taxa (%)',
+                    data: [roic*100, wacc*100, roe*100, roa*100, roi*100],
+                    backgroundColor: [
+                        roic > wacc ? 'rgba(34,197,94,0.7)' : 'rgba(239,68,68,0.7)',
+                        'rgba(212,168,67,0.7)',
+                        'rgba(168,85,247,0.7)',
+                        'rgba(6,182,212,0.7)',
+                        'rgba(59,130,246,0.7)',
+                    ],
+                    borderColor: [
+                        roic > wacc ? '#22c55e' : '#ef4444',
+                        '#d4a843', '#a855f7', '#06b6d4', '#3b82f6'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f1629',
+                        callbacks: { label: item => item.parsed.y.toFixed(1) + '%' }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#8896b0', font: { size: 12, weight: 'bold' } }, grid: { display: false } },
+                    y: {
+                        ticks: { color: '#556480', callback: v => v.toFixed(0) + '%' },
+                        grid: { color: 'rgba(26,39,68,0.5)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===================================================================
+    // VALUATION DCF MODULE
+    // ===================================================================
+    function calcDCF() {
+        const p = getWaccParams();
+        const waccR = calcWacc(p.EV, p.DV, p.DE, p.Rf, p.ERP, p.betaU, p.kdBase, p.T, p.alpha);
+        const wacc = waccR.wacc;
+
+        const fcf1 = parseFloat(document.getElementById('dcfFCF1').value) || 0;
+        const g1 = parseFloat(document.getElementById('dcfGrowth1').value) / 100;
+        const years = parseInt(document.getElementById('dcfYears').value) || 5;
+        const gPerp = parseFloat(document.getElementById('dcfGPerp').value) / 100;
+        const divLiq = parseFloat(document.getElementById('dcfDivLiq').value) || 0;
+
+        document.getElementById('dcfGrowth1Display').textContent = (g1 * 100).toFixed(1) + '%';
+        document.getElementById('dcfYearsDisplay').textContent = years;
+        document.getElementById('dcfGPerpDisplay').textContent = (gPerp * 100).toFixed(1) + '%';
+        document.getElementById('dcfWacc').textContent = (wacc * 100).toFixed(1) + '%';
+
+        const fmt = v => v.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+
+        let vpFluxos = 0;
+        let lastFCF = 0;
+        const fcfData = [];
+        const vpData = [];
+        const labels = [];
+        let tbody = '';
+
+        for (let y = 1; y <= years; y++) {
+            const fcf = fcf1 * Math.pow(1 + g1, y - 1);
+            const fatorVP = 1 / Math.pow(1 + wacc, y);
+            const vp = fcf * fatorVP;
+            vpFluxos += vp;
+            lastFCF = fcf;
+
+            labels.push('Ano ' + y);
+            fcfData.push(fcf);
+            vpData.push(vp);
+
+            tbody += `<tr>
+                <td class="row-label">Ano ${y}</td>
+                <td class="row-value">${fmt(fcf)}</td>
+                <td class="row-value" style="color:var(--text-muted)">${fatorVP.toFixed(4)}</td>
+                <td class="row-value" style="color:var(--green)">${fmt(vp)}</td>
+            </tr>`;
+        }
+
+        // Perpetuidade (Gordon Growth)
+        const fcfPerp = lastFCF * (1 + gPerp);
+        const terminalValue = wacc > gPerp ? fcfPerp / (wacc - gPerp) : 0;
+        const vpPerp = terminalValue / Math.pow(1 + wacc, years);
+
+        tbody += `<tr class="row-highlight">
+            <td class="row-label"><strong>Perpetuidade</strong></td>
+            <td class="row-value">${fmt(terminalValue)}</td>
+            <td class="row-value" style="color:var(--text-muted)">${(1/Math.pow(1+wacc,years)).toFixed(4)}</td>
+            <td class="row-value" style="color:var(--cyan)">${fmt(vpPerp)}</td>
+        </tr>`;
+
+        const firmValue = vpFluxos + vpPerp;
+        const equityValue = firmValue - divLiq;
+
+        tbody += `<tr class="row-total">
+            <td class="row-label"><strong>Valor da Firma</strong></td>
+            <td class="row-value" colspan="2"></td>
+            <td class="row-value" style="color:var(--accent-gold); font-size:1rem;">${fmt(firmValue)}</td>
+        </tr>`;
+        tbody += `<tr>
+            <td class="row-label"><strong>(-) Dívida Líquida</strong></td>
+            <td class="row-value" colspan="2"></td>
+            <td class="row-value" style="color:var(--red)">-${fmt(divLiq)}</td>
+        </tr>`;
+        tbody += `<tr class="row-highlight">
+            <td class="row-label"><strong>= Valor do Equity</strong></td>
+            <td class="row-value" colspan="2"></td>
+            <td class="row-value" style="color:var(--green); font-size:1.1rem;">${fmt(equityValue)}</td>
+        </tr>`;
+
+        document.getElementById('dcfBody').innerHTML = tbody;
+
+        // Heroes
+        document.getElementById('dcfHero').textContent = 'R$ ' + fmt(firmValue) + ' mil';
+        document.getElementById('dcfEquity').textContent = 'R$ ' + fmt(equityValue) + ' mil';
+        document.getElementById('dcfEquity').style.color = equityValue > 0 ? 'var(--green)' : 'var(--red)';
+        document.getElementById('dcfVPFluxos').textContent = 'R$ ' + fmt(vpFluxos) + ' mil';
+        document.getElementById('dcfVPPerp').textContent = 'R$ ' + fmt(vpPerp) + ' mil';
+
+        // Chart
+        labels.push('Perpetuid.');
+        fcfData.push(terminalValue);
+        vpData.push(vpPerp);
+
+        drawDCFChart(labels, fcfData, vpData);
+    }
+
+    function drawDCFChart(labels, fcfData, vpData) {
+        const ctx = document.getElementById('dcfChart').getContext('2d');
+        if (dcfChartInstance) dcfChartInstance.destroy();
+
+        dcfChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'FCF Nominal',
+                        data: fcfData,
+                        backgroundColor: 'rgba(59,130,246,0.5)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 1.5,
+                        borderRadius: 4,
+                    },
+                    {
+                        label: 'Valor Presente',
+                        data: vpData,
+                        backgroundColor: 'rgba(34,197,94,0.5)',
+                        borderColor: '#22c55e',
+                        borderWidth: 1.5,
+                        borderRadius: 4,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: '#8896b0', usePointStyle: true }
+                    },
+                    tooltip: {
+                        backgroundColor: '#0f1629',
+                        callbacks: {
+                            label: item => item.dataset.label + ': R$ ' + item.parsed.y.toLocaleString('pt-BR', {maximumFractionDigits:0}) + ' mil'
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#556480' }, grid: { display: false } },
+                    y: {
+                        ticks: { color: '#556480', callback: v => (v/1000).toFixed(0) + 'k' },
+                        grid: { color: 'rgba(26,39,68,0.5)' }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===================================================================
+    // INIT
+    // ===================================================================
+    document.addEventListener('DOMContentLoaded', () => {
+        recalcAll();
+        calcDRE();
+    });
+    </script>
+</body>
+</html>
