@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Risco x Retorno | Rural In</title>
+    <style>
+        :root {
+            --bg-dark: #0a1628;
+            --bg-card: #101d33;
+            --bg-card-alt: #152240;
+            --green-primary: #22c55e;
+            --green-dark: #16a34a;
+            --green-light: #4ade80;
+            --yellow: #eab308;
+            --orange: #f97316;
+            --red: #ef4444;
+            --red-light: #fca5a5;
+            --blue: #3b82f6;
+            --blue-light: #60a5fa;
+            --cyan: #06b6d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e3a5f;
+            --border-light: #2d4a6f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .header h1 span {
+            color: var(--green-primary);
+        }
+
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--green-dark), var(--cyan));
+            color: #fff;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tabs de Cultura */
+        .culture-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .culture-tab {
+            padding: 12px 28px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .culture-tab:hover {
+            border-color: var(--green-primary);
+            color: var(--text-primary);
+        }
+
+        .culture-tab.active {
+            border-color: var(--green-primary);
+            background: linear-gradient(135deg, rgba(34,197,94,0.15), rgba(6,182,212,0.1));
+            color: var(--green-primary);
+            box-shadow: 0 0 20px rgba(34,197,94,0.15);
+        }
+
+        .culture-tab .emoji {
+            font-size: 1.3rem;
+        }
+
+        /* Grid Principal */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--border-light);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .card-title .icon.green { background: rgba(34,197,94,0.15); }
+        .card-title .icon.blue { background: rgba(59,130,246,0.15); }
+        .card-title .icon.orange { background: rgba(249,115,22,0.15); }
+        .card-title .icon.red { background: rgba(239,68,68,0.15); }
+        .card-title .icon.cyan { background: rgba(6,182,212,0.15); }
+
+        /* Form groups */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--green-primary);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .unit-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* Slider de Comercialização */
+        .slider-section {
+            margin-top: 14px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slider-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--green-primary);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: var(--bg-dark);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--green-primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(34,197,94,0.4);
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 15px rgba(34,197,94,0.6);
+        }
+
+        /* Checklist de Insumos */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .check-item:hover {
+            border-color: var(--border-light);
+        }
+
+        .check-item .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .check-item .left span {
+            font-size: 0.9rem;
+        }
+
+        .check-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: var(--border);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+
+        .check-item input:checked + .toggle {
+            background: rgba(34,197,94,0.3);
+        }
+
+        .check-item input:checked + .toggle::after {
+            transform: translateX(20px);
+            background: var(--green-primary);
+        }
+
+        .check-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+
+        .status-travado {
+            background: rgba(34,197,94,0.15);
+            color: var(--green-primary);
+        }
+
+        .status-descoberto {
+            background: rgba(239,68,68,0.15);
+            color: var(--red);
+        }
+
+        /* Resultados KPIs */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-2px);
+        }
+
+        .kpi-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .kpi-sub {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .kpi-value.green { color: var(--green-primary); }
+        .kpi-value.red { color: var(--red); }
+        .kpi-value.yellow { color: var(--yellow); }
+        .kpi-value.blue { color: var(--blue); }
+        .kpi-value.cyan { color: var(--cyan); }
+        .kpi-value.orange { color: var(--orange); }
+
+        /* Matriz Risco x Retorno */
+        .matrix-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .matrix-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .matrix-subtitle {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr;
+            grid-template-rows: 1fr 1fr 30px;
+            gap: 4px;
+            height: 340px;
+            position: relative;
+        }
+
+        .matrix-ylabel {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            grid-row: 1 / 3;
+        }
+
+        .matrix-xlabel {
+            grid-column: 2 / 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .matrix-cell {
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .matrix-cell:hover {
+            transform: scale(1.02);
+        }
+
+        .cell-q1 {
+            background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(34,197,94,0.08));
+            border: 1px solid rgba(34,197,94,0.3);
+        }
+
+        .cell-q2 {
+            background: linear-gradient(135deg, rgba(234,179,8,0.2), rgba(234,179,8,0.08));
+            border: 1px solid rgba(234,179,8,0.3);
+        }
+
+        .cell-q3 {
+            background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(6,182,212,0.05));
+            border: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .cell-q4 {
+            background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.08));
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        .cell-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .cell-q1 .cell-label { color: var(--green-primary); }
+        .cell-q2 .cell-label { color: var(--yellow); }
+        .cell-q3 .cell-label { color: var(--cyan); }
+        .cell-q4 .cell-label { color: var(--red); }
+
+        .cell-desc {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .matrix-pointer {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--green-primary);
+            box-shadow: 0 0 15px rgba(34,197,94,0.6), 0 0 30px rgba(34,197,94,0.3);
+            z-index: 10;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        .pointer-label {
+            position: absolute;
+            background: var(--bg-card);
+            border: 1px solid var(--green-primary);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--green-primary);
+            white-space: nowrap;
+            z-index: 11;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            pointer-events: none;
+        }
+
+        /* Barra de Exposição */
+        .exposure-bar-container {
+            margin: 20px 0;
+        }
+
+        .exposure-bar-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .exposure-bar-labels span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .exposure-bar {
+            height: 14px;
+            border-radius: 7px;
+            background: linear-gradient(to right, var(--green-primary), var(--yellow), var(--orange), var(--red));
+            position: relative;
+            overflow: visible;
+        }
+
+        .exposure-marker {
+            position: absolute;
+            top: -6px;
+            width: 4px;
+            height: 26px;
+            background: #fff;
+            border-radius: 2px;
+            transition: left 0.5s ease;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .exposure-marker-label {
+            position: absolute;
+            top: -26px;
+            transform: translateX(-50%);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #fff;
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-light);
+            white-space: nowrap;
+            transition: left 0.5s ease;
+        }
+
+        /* Alerta / Diagnóstico */
+        .alert-box {
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            transition: all 0.3s;
+        }
+
+        .alert-box .alert-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-box .alert-content h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .alert-box .alert-content p {
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .alert-danger {
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+        .alert-danger h4 { color: var(--red); }
+        .alert-danger p { color: var(--red-light); }
+
+        .alert-warning {
+            background: rgba(234,179,8,0.1);
+            border: 1px solid rgba(234,179,8,0.3);
+        }
+        .alert-warning h4 { color: var(--yellow); }
+        .alert-warning p { color: #fde68a; }
+
+        .alert-success {
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.3);
+        }
+        .alert-success h4 { color: var(--green-primary); }
+        .alert-success p { color: var(--green-light); }
+
+        .alert-info {
+            background: rgba(59,130,246,0.1);
+            border: 1px solid rgba(59,130,246,0.3);
+        }
+        .alert-info h4 { color: var(--blue); }
+        .alert-info p { color: var(--blue-light); }
+
+        /* Recomendações */
+        .recommendations {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .rec-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rec-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .rec-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border-left: 3px solid var(--green-primary);
+            transition: all 0.3s;
+        }
+
+        .rec-item:hover {
+            background: var(--bg-card-alt);
+        }
+
+        .rec-item .rec-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .rec-item .rec-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .rec-item .rec-text strong {
+            color: var(--text-primary);
+        }
+
+        .rec-item.urgent {
+            border-left-color: var(--red);
+        }
+
+        .rec-item.warning {
+            border-left-color: var(--yellow);
+        }
+
+        /* Sensibilidade */
+        .sensitivity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .sensitivity-table th {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .sensitivity-table td {
+            padding: 10px 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(30,58,95,0.5);
+        }
+
+        .sensitivity-table tr:hover td {
+            background: rgba(34,197,94,0.05);
+        }
+
+        .sensitivity-table .positive { color: var(--green-primary); }
+        .sensitivity-table .negative { color: var(--red); }
+        .sensitivity-table .neutral { color: var(--yellow); }
+        .sensitivity-table .scenario-label { 
+            color: var(--text-secondary); 
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .sensitivity-table .highlight-row td {
+            background: rgba(34,197,94,0.08);
+        }
+
+        /* Botão calcular */
+        .btn-calcular {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--green-dark), var(--green-primary));
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .btn-calcular:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34,197,94,0.35);
+        }
+
+        .btn-calcular:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--bg-card-alt), var(--bg-card));
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--green-primary);
+            box-shadow: 0 8px 25px rgba(34,197,94,0.15);
+        }
+
+        /* Full width sections */
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Seção de Resultados */
+        #resultados-section {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        #resultados-section.visible {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progresso de Comercialização Visual */
+        .comercializacao-visual {
+            display: flex;
+            gap: 3px;
+            margin-top: 10px;
+            height: 30px;
+        }
+
+        .comercializacao-visual .bar-segment {
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #fff;
+            transition: all 0.5s;
+            min-width: 2px;
+        }
+
+        .bar-travado { background: var(--green-primary); }
+        .bar-parcial { background: var(--yellow); }
+        .bar-descoberto { background: var(--red); opacity: 0.7; }
+
+        /* Footer disclaimer */
+        .footer-disclaimer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-disclaimer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer-disclaimer .brand {
+            color: var(--green-primary);
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            .header h1 { font-size: 1.3rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .kpi-grid { grid-template-columns: 1fr 1fr; }
+            .culture-tab { padding: 10px 18px; font-size: 0.85rem; }
+            .matrix-grid { height: 280px; }
+        }
+
+        /* Animação de pulso para alertas críticos */
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+            50% { box-shadow: 0 0 20px 5px rgba(239,68,68,0.15); }
+        }
+
+        .alert-danger.pulse {
+            animation: pulse-red 2s infinite;
+        }
+
+        /* Tooltip */
+        .info-tip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-muted);
+            font-size: 0.6rem;
+            font-weight: 700;
+            cursor: help;
+            position: relative;
+        }
+
+        .info-tip:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card-alt);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 400;
+            white-space: nowrap;
+            z-index: 100;
+            max-width: 250px;
+            white-space: normal;
+        }
+
+        /* Seção Hedge Visual */
+        .hedge-status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .hedge-item {
+            padding: 12px;
+            border-radius: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .hedge-item .hedge-pct {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .hedge-item .hedge-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Análise de <span>Risco x Retorno</span></h1>
+            <p class="subtitle">Entenda sua exposição ao mercado e proteja sua margem de lucro</p>
+            <span class="badge">🛡️ GESTÃO DE RISCO AGRO</span>
+        </div>
+
+        <!-- Seleção de Cultura -->
+        <div class="culture-tabs" id="cultureTabs">
+            <div class="culture-tab active" data-culture="soja" onclick="selectCulture('soja')">
+                <span class="emoji">🌱</span> Soja
+            </div>
+            <div class="culture-tab" data-culture="milho" onclick="selectCulture('milho')">
+                <span class="emoji">🌽</span> Milho
+            </div>
+            <div class="culture-tab" data-culture="boi" onclick="selectCulture('boi')">
+                <span class="emoji">🐂</span> Boi Gordo
+            </div>
+            <div class="culture-tab" data-culture="algodao" onclick="selectCulture('algodao')">
+                <span class="emoji">🏵️</span> Algodão
+            </div>
+        </div>
+
+        <!-- Formulário Principal -->
+        <div class="main-grid">
+            <!-- Card Parâmetros Produtivos -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon green">🌾</div>
+                    Parâmetros da Produção
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Área / Qtd <span class="info-tip" data-tip="Hectares para grãos ou cabeças para boi">?</span></label>
+                        <input type="number" id="area" placeholder="0" value="500">
+                        <span class="unit-hint" id="areaUnit">hectares</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Produtividade Esperada <span class="info-tip" data-tip="sc/ha para grãos ou @ para boi">?</span></label>
+                        <input type="number" id="produtividade" placeholder="0" value="60" step="0.1">
+                        <span class="unit-hint" id="prodUnit">sacas/ha</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Custo Total (R$/unid.) <span class="info-tip" data-tip="Custo por saca, arroba ou unidade">?</span></label>
+                        <input type="number" id="custoUnitario" placeholder="0.00" value="95.00" step="0.01">
+                        <span class="unit-hint" id="custoUnit">R$/saca</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço Atual Mercado <span class="info-tip" data-tip="Cotação atual de referência">?</span></label>
+                        <input type="number" id="precoAtual" placeholder="0.00" value="115.00" step="0.01">
+                        <span class="unit-hint" id="precoUnit">R$/saca</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Preço Meta (venda desejada)</label>
+                        <input type="number" id="precoMeta" placeholder="0.00" value="125.00" step="0.01">
+                        <span class="unit-hint" id="metaUnit">R$/saca</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Safra / Período</label>
+                        <select id="safra">
+                            <option value="2025/26" selected>Safra 2025/26</option>
+                            <option value="2026/27">Safra 2026/27</option>
+                            <option value="safrinha2026">Safrinha 2026</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Comercialização e Hedge -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon blue">📈</div>
+                    Comercialização & Hedge
+                </div>
+
+                <div class="slider-section">
+                    <div class="slider-header">
+                        <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">
+                            % da Produção Comercializada
+                        </label>
+                        <span class="slider-value" id="comercPctLabel">0%</span>
+                    </div>
+                    <input type="range" id="comercPct" min="0" max="100" value="0" oninput="updateSliderLabel()">
+                    <div class="comercializacao-visual" id="comercVisual">
+                        <div class="bar-segment bar-descoberto" style="width:100%">100% ABERTO</div>
+                    </div>
+                </div>
+
+                <div class="slider-section" style="margin-top: 18px;">
+                    <div class="slider-header">
+                        <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">
+                            Preço Médio Travado (R$)
+                        </label>
+                        <span class="slider-value" id="precoTravadoLabel">R$ 0,00</span>
+                    </div>
+                    <input type="number" id="precoTravado" placeholder="0.00" value="0" step="0.01" 
+                           style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:10px; background:var(--bg-dark); color:var(--text-primary); font-size:0.95rem; font-weight:600;">
+                </div>
+
+                <div style="margin-top: 18px;">
+                    <label style="font-size:0.78rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom: 8px;">
+                        Modalidade de Venda
+                    </label>
+                    <select id="modalidade" style="width:100%; padding:10px 14px; border:1px solid var(--border); border-radius:10px; background:var(--bg-dark); color:var(--text-primary); font-size:0.95rem; font-weight:600;">
+                        <option value="nenhuma">Nenhuma venda realizada</option>
+                        <option value="fixo">Preço Fixo (Contrato a Termo)</option>
+                        <option value="media">Preço Médio</option>
+                        <option value="bolsa">Hedge em Bolsa (B3/CBOT)</option>
+                        <option value="put">Opção de Venda (Put)</option>
+                        <option value="call">Venda de Call Spread</option>
+                        <option value="ndf">NDF (Non-Deliverable Forward)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Card Insumos / Custos Travados -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon orange">🧪</div>
+                    Status dos Insumos & Custos
+                    <span class="info-tip" data-tip="Insumos comprados sem venda travada = exposição ao risco">?</span>
+                </div>
+                <div class="checklist" id="insumosChecklist">
+                    <div class="check-item">
+                        <div class="left">
+                            <label>
+                                <input type="checkbox" id="chkSementes" onchange="updateInsumoStatus(this)">
+                                <div class="toggle"></div>
+                            </label>
+                            <span>Sementes</span>
+                        </div>
+                        <span class="check-status status-descoberto" id="statusSementes">DESCOBERTO</span>
+                    </div>
+                    <div class="check-item">
+                        <div class="left">
+                            <label>
+                                <input type="checkbox" id="chkFertilizantes" onchange="updateInsumoStatus(this)">
+                                <div class="toggle"></div>
+                            </label>
+                            <span>Fertilizantes</span>
+                        </div>
+                        <span class="check-status status-descoberto" id="statusFertilizantes">DESCOBERTO</span>
+                    </div>
+                    <div class="check-item">
+                        <div class="left">
+                            <label>
+                                <input type="checkbox" id="chkDefensivos" onchange="updateInsumoStatus(this)">
+                                <div class="toggle"></div>
+                            </label>
+                            <span>Defensivos / Químicos</span>
+                        </div>
+                        <span class="check-status status-descoberto" id="statusDefensivos">DESCOBERTO</span>
+                    </div>
+                    <div class="check-item">
+                        <div class="left">
+                            <label>
+                                <input type="checkbox" id="chkMaquinario" onchange="updateInsumoStatus(this)">
+                                <div class="toggle"></div>
+                            </label>
+                            <span>Máquinas / Operações</span>
+                        </div>
+                        <span class="check-status status-descoberto" id="statusMaquinario">DESCOBERTO</span>
+                    </div>
+                    <div class="check-item">
+                        <div class="left">
+                            <label>
+                                <input type="checkbox" id="chkFrete" onchange="updateInsumoStatus(this)">
+                                <div class="toggle"></div>
+                            </label>
+                            <span>Frete / Logística</span>
+                        </div>
+                        <span class="check-status status-descoberto" id="statusFrete">DESCOBERTO</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 16px; padding: 12px; background: var(--bg-dark); border-radius: 10px; border: 1px solid var(--border);">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:0.78rem; color:var(--text-muted);">Custo já comprometido (sem hedge na ponta vendedora):</span>
+                        <span id="custoDescobertoLabel" style="font-size:1rem; font-weight:700; color:var(--red);">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Parâmetros Adicionais -->
+            <div class="card">
+                <div class="card-title">
+                    <div class="icon cyan">⚙️</div>
+                    Cenários de Preço
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cenário Pessimista (R$)</label>
+                        <input type="number" id="cenarioPessimista" placeholder="0.00" value="85.00" step="0.01">
+                        <span class="unit-hint">Queda de mercado</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Cenário Otimista (R$)</label>
+                        <input type="number" id="cenarioOtimista" placeholder="0.00" value="140.00" step="0.01">
+                        <span class="unit-hint">Alta de mercado</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Variação Câmbio (%) <span class="info-tip" data-tip="Impacto do dólar no preço. Positivo = valorização do USD">?</span></label>
+                        <input type="number" id="varCambio" placeholder="0" value="0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label>Risco Climático</label>
+                        <select id="riscoClimatico">
+                            <option value="baixo">Baixo (produtividade normal)</option>
+                            <option value="medio" selected>Médio (possível quebra 10-20%)</option>
+                            <option value="alto">Alto (quebra > 20%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-calcular" onclick="calcular()">
+                    🔍 ANALISAR RISCO x RETORNO
+                </button>
+                <button class="btn-calcular btn-secondary" onclick="resetForm()" style="margin-top:8px;">
+                    🔄 Limpar / Resetar
+                </button>
+            </div>
+        </div>
+
+        <!-- ============ SEÇÃO DE RESULTADOS ============ -->
+        <div id="resultados-section">
+            <!-- KPIs Principais -->
+            <div class="kpi-grid" id="kpiGrid">
+                <!-- Preenchido dinamicamente -->
+            </div>
+
+            <!-- Alerta Principal -->
+            <div id="alertaPrincipal"></div>
+
+            <!-- Barra de Exposição -->
+            <div class="matrix-container">
+                <div class="matrix-title">📏 Nível de Exposição ao Mercado</div>
+                <div class="matrix-subtitle">Quanto maior a barra para a direita, maior seu risco de preço</div>
+                <div class="exposure-bar-container">
+                    <div class="exposure-bar-labels">
+                        <span>0% — PROTEGIDO</span>
+                        <span>100% — TOTALMENTE EXPOSTO</span>
+                    </div>
+                    <div class="exposure-bar">
+                        <div class="exposure-marker" id="exposureMarker" style="left: 100%;"></div>
+                        <div class="exposure-marker-label" id="exposureMarkerLabel" style="left: 100%;">100%</div>
+                    </div>
+                </div>
+                
+                <div class="hedge-status-grid" id="hedgeStatusGrid">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Matriz Risco x Retorno -->
+            <div class="matrix-container" style="position:relative;">
+                <div class="matrix-title">🎯 Matriz Risco x Retorno</div>
+                <div class="matrix-subtitle">Visualize sua posição entre exposição de risco e margem de lucro</div>
+                <div class="matrix-grid" id="matrixGrid">
+                    <div class="matrix-ylabel">Margem de Lucro (%)</div>
+                    <div class="matrix-cell cell-q1">
+                        <div class="cell-label">✅ Maior Retorno<br>Menor Risco</div>
+                        <div class="cell-desc">Margem alta + protegido. Cenário ideal.</div>
+                    </div>
+                    <div class="matrix-cell cell-q2">
+                        <div class="cell-label">⚡ Maior Retorno<br>Maior Risco</div>
+                        <div class="cell-desc">Margem boa mas sem proteção. Atenção!</div>
+                    </div>
+                    <div class="matrix-cell cell-q3">
+                        <div class="cell-label">🔷 Menor Retorno<br>Menor Risco</div>
+                        <div class="cell-desc">Margem apertada mas protegido.</div>
+                    </div>
+                    <div class="matrix-cell cell-q4">
+                        <div class="cell-label">🚨 Menor Retorno<br>Maior Risco</div>
+                        <div class="cell-desc">Prejuízo possível + sem proteção. PERIGO!</div>
+                    </div>
+                    <div class="matrix-xlabel">Exposição de Risco (%)</div>
+                </div>
+                <div class="matrix-pointer" id="matrixPointer"></div>
+                <div class="pointer-label" id="pointerLabel">SUA POSIÇÃO</div>
+            </div>
+
+            <!-- Tabela de Sensibilidade -->
+            <div class="matrix-container">
+                <div class="matrix-title">📉 Sensibilidade da Margem de Lucro</div>
+                <div class="matrix-subtitle">Impacto de variação de preço sobre sua margem considerando nível atual de comercialização</div>
+                <table class="sensitivity-table" id="sensitivityTable">
+                    <thead>
+                        <tr>
+                            <th>Cenário</th>
+                            <th>Preço (R$)</th>
+                            <th>Receita Total</th>
+                            <th>Custo Total</th>
+                            <th>Resultado</th>
+                            <th>Margem</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sensitivityBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recomendações -->
+            <div class="recommendations" id="recomendacoes">
+                <div class="rec-title">🧭 Recomendações & Plano de Ação</div>
+                <div class="rec-list" id="recList">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-disclaimer">
+            <p>
+                🛡️ Ferramenta de <span class="brand">análise de risco</span> para apoio à decisão do produtor rural.<br>
+                Valores simulados para fins educacionais. Consulte um assessor de comercialização para operações reais.<br>
+                <span class="brand">Rural In</span> — Inteligência para o campo · <span id="currentYear">2026</span>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ==================== CONFIGURAÇÕES POR CULTURA ====================
+        const culturas = {
+            soja: {
+                nome: 'Soja',
+                emoji: '🌱',
+                unidadeProd: 'sacas/ha',
+                unidadePreco: 'R$/saca',
+                unidadeArea: 'hectares',
+                prodDefault: 60,
+                custoDefault: 95,
+                precoDefault: 115,
+                metaDefault: 125,
+                pessimistaDefault: 85,
+                otimistaDefault: 140,
+                multiplicador: 1, // sacas/ha * ha = sacas
+            },
+            milho: {
+                nome: 'Milho',
+                emoji: '🌽',
+                unidadeProd: 'sacas/ha',
+                unidadePreco: 'R$/saca',
+                unidadeArea: 'hectares',
+                prodDefault: 100,
+                custoDefault: 42,
+                precoDefault: 55,
+                metaDefault: 62,
+                pessimistaDefault: 38,
+                otimistaDefault: 70,
+                multiplicador: 1,
+            },
+            boi: {
+                nome: 'Boi Gordo',
+                emoji: '🐂',
+                unidadeProd: '@ por cabeça',
+                unidadePreco: 'R$/@',
+                unidadeArea: 'cabeças',
+                prodDefault: 20,
+                custoDefault: 250,
+                precoDefault: 310,
+                metaDefault: 330,
+                pessimistaDefault: 240,
+                otimistaDefault: 360,
+                multiplicador: 1,
+            },
+            algodao: {
+                nome: 'Algodão',
+                emoji: '🏵️',
+                unidadeProd: '@/ha',
+                unidadePreco: 'R$/@',
+                unidadeArea: 'hectares',
+                prodDefault: 300,
+                custoDefault: 105,
+                precoDefault: 130,
+                metaDefault: 145,
+                pessimistaDefault: 95,
+                otimistaDefault: 165,
+                multiplicador: 1,
+            },
+        };
+
+        let culturaAtual = 'soja';
+
+        // ==================== SELEÇÃO DE CULTURA ====================
+        function selectCulture(cultura) {
+            culturaAtual = cultura;
+            const tabs = document.querySelectorAll('.culture-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-culture="${cultura}"]`).classList.add('active');
+
+            const cfg = culturas[cultura];
+            document.getElementById('area').value = cultura === 'soja' ? 500 : cultura === 'milho' ? 300 : cultura === 'boi' ? 100 : 200;
+            document.getElementById('produtividade').value = cfg.prodDefault;
+            document.getElementById('custoUnitario').value = cfg.custoDefault;
+            document.getElementById('precoAtual').value = cfg.precoDefault;
+            document.getElementById('precoMeta').value = cfg.metaDefault;
+            document.getElementById('cenarioPessimista').value = cfg.pessimistaDefault;
+            document.getElementById('cenarioOtimista').value = cfg.otimistaDefault;
+
+            document.getElementById('areaUnit').textContent = cfg.unidadeArea;
+            document.getElementById('prodUnit').textContent = cfg.unidadeProd;
+            document.getElementById('custoUnit').textContent = cfg.unidadePreco;
+            document.getElementById('precoUnit').textContent = cfg.unidadePreco;
+            document.getElementById('metaUnit').textContent = cfg.unidadePreco;
+
+            // Ajustar checklist para boi
+            const checklistLabels = {
+                soja: ['Sementes', 'Fertilizantes', 'Defensivos / Químicos', 'Máquinas / Operações', 'Frete / Logística'],
+                milho: ['Sementes', 'Fertilizantes', 'Defensivos / Químicos', 'Máquinas / Operações', 'Frete / Logística'],
+                boi: ['Ração / Confinamento', 'Suplementação', 'Sanitário / Vacinas', 'Mão de Obra', 'Frete / Logística'],
+                algodao: ['Sementes', 'Fertilizantes', 'Defensivos / Químicos', 'Máquinas / Colheita', 'Frete / Beneficiamento'],
+            };
+
+            const items = document.querySelectorAll('.check-item span');
+            const labels = checklistLabels[cultura];
+            items.forEach((el, i) => {
+                if (labels[i]) el.textContent = labels[i];
+            });
+
+            // Reset sliders
+            document.getElementById('comercPct').value = 0;
+            document.getElementById('precoTravado').value = 0;
+            updateSliderLabel();
+
+            // Esconder resultados
+            document.getElementById('resultados-section').classList.remove('visible');
+        }
+
+        // ==================== UPDATE UI ====================
+        function updateSliderLabel() {
+            const val = document.getElementById('comercPct').value;
+            document.getElementById('comercPctLabel').textContent = val + '%';
+            
+            const travado = parseInt(val);
+            const descoberto = 100 - travado;
+            
+            const visual = document.getElementById('comercVisual');
+            let html = '';
+            if (travado > 0) {
+                html += `<div class="bar-segment bar-travado" style="width:${travado}%">${travado > 10 ? travado + '% TRAVADO' : ''}</div>`;
+            }
+            if (descoberto > 0) {
+                html += `<div class="bar-segment bar-descoberto" style="width:${descoberto}%">${descoberto > 10 ? descoberto + '% ABERTO' : ''}</div>`;
+            }
+            visual.innerHTML = html;
+        }
+
+        function updateInsumoStatus(checkbox) {
+            const id = checkbox.id.replace('chk', 'status');
+            const statusEl = document.getElementById(id);
+            if (checkbox.checked) {
+                statusEl.textContent = 'COMPRADO';
+                statusEl.className = 'check-status status-travado';
+            } else {
+                statusEl.textContent = 'DESCOBERTO';
+                statusEl.className = 'check-status status-descoberto';
+            }
+            updateCustoDescoberto();
+        }
+
+        function updateCustoDescoberto() {
+            const checks = document.querySelectorAll('.check-item input[type="checkbox"]');
+            let comprados = 0;
+            checks.forEach(c => { if (c.checked) comprados++; });
+            const comercPct = parseInt(document.getElementById('comercPct').value);
+            // Se comprou insumo mas não vendeu, está descoberto
+            const pctComprado = Math.round((comprados / checks.length) * 100);
+            const descoberto = Math.max(0, pctComprado - comercPct);
+            const label = document.getElementById('custoDescobertoLabel');
+            label.textContent = pctComprado + '% comprado';
+            if (comercPct < pctComprado) {
+                label.style.color = 'var(--red)';
+            } else {
+                label.style.color = 'var(--green-primary)';
+            }
+        }
+
+        // ==================== CÁLCULO PRINCIPAL ====================
+        function calcular() {
+            const cfg = culturas[culturaAtual];
+            
+            // Inputs
+            const area = parseFloat(document.getElementById('area').value) || 0;
+            const produtividade = parseFloat(document.getElementById('produtividade').value) || 0;
+            const custoUnit = parseFloat(document.getElementById('custoUnitario').value) || 0;
+            const precoAtual = parseFloat(document.getElementById('precoAtual').value) || 0;
+            const precoMeta = parseFloat(document.getElementById('precoMeta').value) || 0;
+            const comercPct = parseInt(document.getElementById('comercPct').value) || 0;
+            const precoTravado = parseFloat(document.getElementById('precoTravado').value) || 0;
+            const cenarioPess = parseFloat(document.getElementById('cenarioPessimista').value) || 0;
+            const cenarioOtim = parseFloat(document.getElementById('cenarioOtimista').value) || 0;
+            const riscoClimatico = document.getElementById('riscoClimatico').value;
+            const modalidade = document.getElementById('modalidade').value;
+            
+            // Insumos comprados
+            const checks = document.querySelectorAll('.check-item input[type="checkbox"]');
+            let insumosComprados = 0;
+            checks.forEach(c => { if (c.checked) insumosComprados++; });
+            const pctInsumosComprados = Math.round((insumosComprados / checks.length) * 100);
+            
+            // Produção total
+            const producaoTotal = area * produtividade;
+            const qtdComercializada = producaoTotal * (comercPct / 100);
+            const qtdAberta = producaoTotal - qtdComercializada;
+            
+            // Custos
+            const custoTotal = producaoTotal * custoUnit;
+            
+            // Receita com preço atual (parte aberta + parte travada)
+            const receitaTravada = qtdComercializada * (precoTravado > 0 ? precoTravado : precoAtual);
+            const receitaAberta = qtdAberta * precoAtual;
+            const receitaTotal = receitaTravada + receitaAberta;
+            
+            // Margem
+            const resultado = receitaTotal - custoTotal;
+            const margemPct = custoTotal > 0 ? ((receitaTotal - custoTotal) / custoTotal) * 100 : 0;
+            const margemMeta = custoTotal > 0 ? (((producaoTotal * precoMeta) - custoTotal) / custoTotal) * 100 : 0;
+            
+            // Ponto de equilíbrio
+            const pontoEquilibrio = custoUnit;
+            const gapMeta = precoAtual - precoMeta;
+            
+            // Exposição ao risco (0 = totalmente protegido, 100 = totalmente exposto)
+            const exposicao = 100 - comercPct;
+            
+            // Ajuste risco climático
+            let fatorClima = 1;
+            if (riscoClimatico === 'medio') fatorClima = 0.85;
+            if (riscoClimatico === 'alto') fatorClima = 0.70;
+            
+            const producaoAjustada = producaoTotal * fatorClima;
+            
+            // ============ RENDERIZAR RESULTADOS ============
+            const section = document.getElementById('resultados-section');
+            section.classList.add('visible');
+            
+            // Scroll suave
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            // KPIs
+            renderKPIs({
+                producaoTotal, custoTotal, receitaTotal, resultado, margemPct,
+                pontoEquilibrio, exposicao, comercPct, qtdComercializada,
+                precoAtual, precoMeta, gapMeta, margemMeta, area, produtividade, cfg
+            });
+            
+            // Alerta
+            renderAlerta({
+                exposicao, margemPct, comercPct, pctInsumosComprados, 
+                precoAtual, custoUnit, modalidade, cfg
+            });
+            
+            // Barra de Exposição
+            renderExposicao(exposicao, comercPct, pctInsumosComprados);
+            
+            // Matriz
+            renderMatriz(exposicao, margemPct);
+            
+            // Sensibilidade
+            renderSensibilidade({
+                producaoTotal, producaoAjustada, custoTotal, comercPct, 
+                precoTravado, qtdComercializada, qtdAberta,
+                cenarioPess, precoAtual, cenarioOtim, precoMeta, cfg, fatorClima
+            });
+            
+            // Recomendações
+            renderRecomendacoes({
+                exposicao, margemPct, comercPct, pctInsumosComprados,
+                precoAtual, custoUnit, precoMeta, modalidade, cfg, resultado, fatorClima
+            });
+        }
+
+        // ==================== RENDER FUNCTIONS ====================
+        
+        function formatMoney(val) {
+            return 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        
+        function formatNumber(val) {
+            return val.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+        }
+
+        function renderKPIs(d) {
+            const grid = document.getElementById('kpiGrid');
+            const margemColor = d.margemPct > 15 ? 'green' : d.margemPct > 0 ? 'yellow' : 'red';
+            const expoColor = d.exposicao > 70 ? 'red' : d.exposicao > 40 ? 'orange' : 'green';
+            const gapColor = d.gapMeta >= 0 ? 'green' : 'red';
+            
+            grid.innerHTML = `
+                <div class="kpi-card">
+                    <div class="kpi-label">Produção Total</div>
+                    <div class="kpi-value cyan">${formatNumber(d.producaoTotal)}</div>
+                    <div class="kpi-sub">${d.area} ${d.cfg.unidadeArea} × ${d.produtividade} ${d.cfg.unidadeProd.split('/')[0]}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Total</div>
+                    <div class="kpi-value orange">${formatMoney(d.custoTotal)}</div>
+                    <div class="kpi-sub">${formatMoney(d.pontoEquilibrio)} / unid.</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Receita Projetada</div>
+                    <div class="kpi-value blue">${formatMoney(d.receitaTotal)}</div>
+                    <div class="kpi-sub">${d.comercPct}% travado + ${100 - d.comercPct}% ao mercado</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Resultado Líquido</div>
+                    <div class="kpi-value ${d.resultado >= 0 ? 'green' : 'red'}">${formatMoney(d.resultado)}</div>
+                    <div class="kpi-sub">${d.resultado >= 0 ? 'LUCRO' : 'PREJUÍZO'}</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Margem Atual</div>
+                    <div class="kpi-value ${margemColor}">${d.margemPct.toFixed(1)}%</div>
+                    <div class="kpi-sub">Meta: ${d.margemMeta.toFixed(1)}%</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Exposição Risco</div>
+                    <div class="kpi-value ${expoColor}">${d.exposicao.toFixed(0)}%</div>
+                    <div class="kpi-sub">${formatNumber(d.producaoTotal - d.qtdComercializada)} unid. abertas</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Ponto de Equilíbrio</div>
+                    <div class="kpi-value yellow">${formatMoney(d.pontoEquilibrio)}</div>
+                    <div class="kpi-sub">Preço mínimo p/ cobrir custos</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Gap vs Meta</div>
+                    <div class="kpi-value ${gapColor}">${formatMoney(d.gapMeta)}</div>
+                    <div class="kpi-sub">${d.gapMeta >= 0 ? 'Acima da meta ✅' : 'Abaixo da meta ⚠️'}</div>
+                </div>
+            `;
+        }
+
+        function renderAlerta(d) {
+            const container = document.getElementById('alertaPrincipal');
+            let alertas = [];
+            
+            // Exposição alta sem hedge
+            if (d.exposicao > 70 && d.modalidade === 'nenhuma') {
+                alertas.push({
+                    type: 'danger pulse',
+                    icon: '🚨',
+                    title: 'ALERTA CRÍTICO: Totalmente Exposto ao Mercado',
+                    text: `Você está com ${d.exposicao.toFixed(0)}% da produção sem nenhuma proteção. Uma queda de preço pode comprometer toda sua margem. Considere travar pelo menos 30-40% da produção.`
+                });
+            }
+            
+            // Insumos comprados sem venda
+            if (d.pctInsumosComprados > d.comercPct && d.pctInsumosComprados > 0) {
+                alertas.push({
+                    type: 'danger',
+                    icon: '⚠️',
+                    title: 'Desbalanço: Insumos Comprados sem Venda Travada',
+                    text: `Você já comprou ${d.pctInsumosComprados}% dos insumos mas travou apenas ${d.comercPct}% da venda. Isso significa que o custo está fixado mas a receita está flutuando — posição DESCOBERTA. É como comprar seguro do carro e não fazer do imóvel.`
+                });
+            }
+            
+            // Margem apertada
+            if (d.margemPct > 0 && d.margemPct < 10) {
+                alertas.push({
+                    type: 'warning',
+                    icon: '⚡',
+                    title: 'Margem Apertada — Atenção Redobrada',
+                    text: `Sua margem de ${d.margemPct.toFixed(1)}% é baixa e qualquer oscilação pode jogá-la para negativo. Com ${d.cfg.nome}, qualquer variação de ${formatMoney(d.custoUnit * 0.05)} no preço impacta diretamente o resultado.`
+                });
+            }
+            
+            // Preço abaixo do custo
+            if (d.precoAtual < d.custoUnit) {
+                alertas.push({
+                    type: 'danger pulse',
+                    icon: '💀',
+                    title: 'PREÇO ABAIXO DO CUSTO — Operação no Prejuízo',
+                    text: `O preço atual (${formatMoney(d.precoAtual)}) está ABAIXO do seu custo (${formatMoney(d.custoUnit)}). Cada unidade vendida gera prejuízo. Avalie: travar perdas em bolsa, renegociar custos ou postergar vendas se possível.`
+                });
+            }
+            
+            // Tudo OK
+            if (d.exposicao <= 40 && d.margemPct > 15) {
+                alertas.push({
+                    type: 'success',
+                    icon: '✅',
+                    title: 'Boa Gestão — Posição Controlada',
+                    text: `Margem de ${d.margemPct.toFixed(1)}% com ${d.comercPct}% da produção protegida. Você está no quadrante ideal. Continue monitorando oportunidades para travar o restante em momentos de alta.`
+                });
+            }
+            
+            // Sem alertas
+            if (alertas.length === 0) {
+                alertas.push({
+                    type: 'info',
+                    icon: '📋',
+                    title: 'Análise Concluída',
+                    text: 'Verifique os indicadores abaixo para entender seu nível de exposição e margem projetada.'
+                });
+            }
+            
+            container.innerHTML = alertas.map(a => `
+                <div class="alert-box alert-${a.type}">
+                    <div class="alert-icon">${a.icon}</div>
+                    <div class="alert-content">
+                        <h4>${a.title}</h4>
+                        <p>${a.text}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderExposicao(exposicao, comercPct, pctInsumosComprados) {
+            // Barra marker
+            const marker = document.getElementById('exposureMarker');
+            const markerLabel = document.getElementById('exposureMarkerLabel');
+            
+            setTimeout(() => {
+                marker.style.left = exposicao + '%';
+                markerLabel.style.left = exposicao + '%';
+                markerLabel.textContent = exposicao.toFixed(0) + '% exposto';
+            }, 100);
+            
+            // Hedge status grid
+            const grid = document.getElementById('hedgeStatusGrid');
+            const descobertoInsumo = Math.max(0, pctInsumosComprados - comercPct);
+            grid.innerHTML = `
+                <div class="hedge-item">
+                    <div class="hedge-pct" style="color:var(--green-primary)">${comercPct}%</div>
+                    <div class="hedge-label">Produção Travada</div>
+                </div>
+                <div class="hedge-item">
+                    <div class="hedge-pct" style="color:var(--red)">${exposicao}%</div>
+                    <div class="hedge-label">Produção Aberta</div>
+                </div>
+                <div class="hedge-item">
+                    <div class="hedge-pct" style="color:${descobertoInsumo > 0 ? 'var(--orange)' : 'var(--green-primary)'}">${pctInsumosComprados}%</div>
+                    <div class="hedge-label">Insumos Comprados</div>
+                </div>
+                <div class="hedge-item">
+                    <div class="hedge-pct" style="color:${descobertoInsumo > 0 ? 'var(--red)' : 'var(--green-primary)'}">${descobertoInsumo}%</div>
+                    <div class="hedge-label">${descobertoInsumo > 0 ? 'Gap Descoberto ⚠️' : 'Balanceado ✅'}</div>
+                </div>
+            `;
+        }
+
+        function renderMatriz(exposicao, margemPct) {
+            const grid = document.getElementById('matrixGrid');
+            const pointer = document.getElementById('matrixPointer');
+            const label = document.getElementById('pointerLabel');
+            
+            const gridRect = grid.getBoundingClientRect();
+            
+            // Calcular posição do pointer
+            // X: exposição (0=esquerda/baixo risco, 100=direita/alto risco)
+            // Y: margem (0=baixo/menor retorno, alta=topo/maior retorno)
+            // Grid starts at col 2 (after ylabel) and rows 1-2
+            
+            setTimeout(() => {
+                const gridRect = grid.getBoundingClientRect();
+                const gridWidth = gridRect.width - 40; // menos ylabel
+                const gridHeight = gridRect.height - 30; // menos xlabel
+                
+                const xPct = Math.max(0, Math.min(100, exposicao)) / 100;
+                const yPct = Math.max(0, Math.min(100, Math.min(margemPct, 50))) / 50; // Normaliza margem 0-50%
+                
+                const xPos = 40 + (xPct * gridWidth);
+                const yPos = gridHeight * (1 - yPct);
+                
+                pointer.style.left = (xPos + gridRect.left - grid.closest('.matrix-container').getBoundingClientRect().left - 10) + 'px';
+                pointer.style.top = (yPos + gridRect.top - grid.closest('.matrix-container').getBoundingClientRect().top - 10) + 'px';
+                
+                label.style.left = (xPos + gridRect.left - grid.closest('.matrix-container').getBoundingClientRect().left - 40) + 'px';
+                label.style.top = (yPos + gridRect.top - grid.closest('.matrix-container').getBoundingClientRect().top - 35) + 'px';
+                label.textContent = `VOCÊ: ${margemPct.toFixed(1)}% margem | ${exposicao.toFixed(0)}% exposto`;
+            }, 300);
+        }
+
+        function renderSensibilidade(d) {
+            const tbody = document.getElementById('sensitivityBody');
+            
+            const cenarios = [
+                { nome: '📉 Pessimista (queda forte)', preco: d.cenarioPess },
+                { nome: '⚠️ Queda moderada (-10%)', preco: d.precoAtual * 0.9 },
+                { nome: '📌 Preço Atual', preco: d.precoAtual, highlight: true },
+                { nome: '📈 Alta moderada (+10%)', preco: d.precoAtual * 1.1 },
+                { nome: '🚀 Otimista (alta forte)', preco: d.cenarioOtim },
+                { nome: '🎯 Preço Meta', preco: d.precoMeta },
+                { nome: '🌪️ Quebra Safra + Preço Atual', preco: d.precoAtual, quebra: true },
+            ];
+            
+            tbody.innerHTML = cenarios.map(c => {
+                const prodUsada = c.quebra ? (d.producaoTotal * d.fatorClima) : d.producaoTotal;
+                const qtdTravada = prodUsada * (d.comercPct / 100);
+                const qtdAberta = prodUsada - qtdTravada;
+                const precoTravEfetivo = d.precoTravado > 0 ? d.precoTravado : c.preco;
+                
+                const receita = (qtdTravada * precoTravEfetivo) + (qtdAberta * c.preco);
+                const custo = c.quebra ? (d.custoTotal * d.fatorClima * 1.05) : d.custoTotal; // Quebra pode reduzir custo variável mas aumenta fixo/ha
+                const resultado = receita - custo;
+                const margem = custo > 0 ? ((receita - custo) / custo) * 100 : 0;
+                
+                const resClass = resultado >= 0 ? 'positive' : 'negative';
+                const mrgClass = margem > 10 ? 'positive' : margem > 0 ? 'neutral' : 'negative';
+                
+                return `
+                    <tr class="${c.highlight ? 'highlight-row' : ''}">
+                        <td class="scenario-label">${c.nome}${c.quebra ? ' 🌪️' : ''}</td>
+                        <td>${formatMoney(c.preco)}</td>
+                        <td>${formatMoney(receita)}</td>
+                        <td>${formatMoney(custo)}</td>
+                        <td class="${resClass}">${formatMoney(resultado)}</td>
+                        <td class="${mrgClass}">${margem.toFixed(1)}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderRecomendacoes(d) {
+            const list = document.getElementById('recList');
+            let recs = [];
+            
+            // Regras de recomendação baseadas na análise
+            if (d.comercPct === 0) {
+                recs.push({
+                    icon: '🎯',
+                    text: `<strong>Inicie a comercialização imediatamente.</strong> Com 0% travado, qualquer queda de preço impacta 100% da sua receita. Comece travando pelo menos 20-30% da produção para garantir a cobertura dos custos operacionais.`,
+                    class: 'urgent'
+                });
+            }
+            
+            if (d.comercPct > 0 && d.comercPct < 40) {
+                recs.push({
+                    icon: '📊',
+                    text: `<strong>Avance na comercialização.</strong> Com apenas ${d.comercPct}% travado, considere atingir pelo menos 40-50% em momentos de alta. O ideal é ter o custo operacional coberto pela venda antecipada.`,
+                    class: 'warning'
+                });
+            }
+            
+            if (d.pctInsumosComprados > d.comercPct && d.pctInsumosComprados > 0) {
+                recs.push({
+                    icon: '⚖️',
+                    text: `<strong>Equilibre suas posições!</strong> Você tem ${d.pctInsumosComprados}% dos insumos comprados, mas só ${d.comercPct}% da venda travada. Está "comprado" no custo e "vendido" na receita — posição clássica de RISCO. Trave a venda na mesma proporção dos insumos adquiridos.`,
+                    class: 'urgent'
+                });
+            }
+            
+            if (d.precoAtual > d.precoMeta) {
+                recs.push({
+                    icon: '🏆',
+                    text: `<strong>Preço atual ACIMA da meta!</strong> O mercado está pagando ${formatMoney(d.precoAtual)} vs sua meta de ${formatMoney(d.precoMeta)}. Considere travar parcelas adicionais agora. "Lucro bom é lucro no bolso."`,
+                    class: ''
+                });
+            }
+            
+            if (d.precoAtual < d.custoUnit) {
+                recs.push({
+                    icon: '🛑',
+                    text: `<strong>Preço abaixo do custo.</strong> Avalie comprar PUT na B3 para proteger um preço mínimo, ou trave perdas com NDF. Não venda à mercado se puder segurar — mas também não espere milagre. Gerencie o prejuízo.`,
+                    class: 'urgent'
+                });
+            }
+            
+            if (d.modalidade === 'nenhuma' && d.exposicao > 50) {
+                recs.push({
+                    icon: '🔧',
+                    text: `<strong>Explore ferramentas de hedge.</strong> Considere: <strong>Contrato a termo</strong> (preço fixo, simples), <strong>PUT em bolsa</strong> (piso de preço com upside), <strong>NDF</strong> (trava sem entrega física). Cada uma tem seu momento ideal.`,
+                    class: 'warning'
+                });
+            }
+            
+            if (d.fatorClima < 1) {
+                recs.push({
+                    icon: '🌧️',
+                    text: `<strong>Risco climático ativo.</strong> Com possibilidade de quebra de safra, NÃO venda mais que a produção esperada ajustada. Risco de "washout" (não entregar o contratado) pode gerar multas e perdas financeiras.`,
+                    class: 'warning'
+                });
+            }
+            
+            if (d.margemPct > 20 && d.exposicao < 40) {
+                recs.push({
+                    icon: '✅',
+                    text: `<strong>Posição saudável.</strong> Margem robusta com proteção adequada. Mantenha o monitoramento e aproveite repiques de alta para travar parcelas remanescentes. Considere diversificar entre modalidades (fixo + bolsa + put).`,
+                    class: ''
+                });
+            }
+            
+            // Sempre adicionar uma rec de processo
+            recs.push({
+                icon: '📅',
+                text: `<strong>Estabeleça uma rotina de comercialização.</strong> Defina gatilhos de preço (ex: a cada R$5 acima do custo, trava 10%). Revise semanalmente. Comercialização não é evento, é PROCESSO. A média de preço protege mais que tentar acertar o pico.`,
+                class: ''
+            });
+            
+            recs.push({
+                icon: '💡',
+                text: `<strong>Diversifique as ferramentas.</strong> Não concentre tudo em uma modalidade. Use mix: 30% a termo (segurança), 20% em bolsa/put (proteção com upside), 50% gradual ao longo da safra. O equilíbrio reduz arrependimento.`,
+                class: ''
+            });
+            
+            list.innerHTML = recs.map(r => `
+                <div class="rec-item ${r.class}">
+                    <div class="rec-icon">${r.icon}</div>
+                    <div class="rec-text">${r.text}</div>
+                </div>
+            `).join('');
+        }
+
+        // ==================== RESET ====================
+        function resetForm() {
+            selectCulture(culturaAtual);
+            // Uncheck all
+            document.querySelectorAll('.check-item input[type="checkbox"]').forEach(c => {
+                c.checked = false;
+                updateInsumoStatus(c);
+            });
+            document.getElementById('resultados-section').classList.remove('visible');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSliderLabel();
+            document.getElementById('precoTravado').addEventListener('input', function() {
+                document.getElementById('precoTravadoLabel').textContent = formatMoney(parseFloat(this.value) || 0);
+            });
+        });
+    </script>
+</body>
+</html>
