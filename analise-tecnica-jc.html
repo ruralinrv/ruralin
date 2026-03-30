@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Técnico | Rural In — Joel Cruvinel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap');
+
+        :root {
+            --primary: #1B5E20;
+            --primary-light: #2E7D32;
+            --primary-dark: #0D3B0F;
+            --accent: #F9A825;
+            --accent-light: #FDD835;
+            --danger: #C62828;
+            --danger-light: #EF5350;
+            --warning: #E65100;
+            --success: #2E7D32;
+            --bg-light: #F5F7F0;
+            --bg-white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-medium: #4A4A4A;
+            --text-light: #717171;
+            --border: #E0E0E0;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* ═══ HEADER ═══ */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            color: white; padding: 40px 0; position: relative; overflow: hidden;
+        }
+        .header::before {
+            content: ''; position: absolute; top: -50%; right: -10%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .header-content {
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; z-index: 1; flex-wrap: wrap; gap: 20px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 16px; }
+        .logo-placeholder {
+            width: 60px; height: 60px; background: rgba(255,255,255,0.15);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 11px; letter-spacing: 1px;
+            border: 2px solid rgba(255,255,255,0.3); text-align: center; line-height: 1.2;
+        }
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            font-size: 12px; opacity: 0.85; font-weight: 400;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .header-badge {
+            background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+            padding: 12px 24px; border-radius: 12px; text-align: right;
+            backdrop-filter: blur(10px);
+        }
+        .header-badge .doc-type {
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 3px; opacity: 0.8; font-weight: 500;
+        }
+        .header-badge .doc-title { font-size: 16px; font-weight: 700; margin-top: 2px; }
+
+        /* ═══ HERO ═══ */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white; padding: 50px 0; position: relative;
+        }
+        .hero-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 40px; align-items: center;
+        }
+        .hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 16px;
+        }
+        .hero h2 .highlight { color: var(--accent); }
+        .hero p { font-size: 16px; opacity: 0.8; line-height: 1.6; }
+        .hero-data { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .hero-card {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px; padding: 20px;
+        }
+        .hero-card label {
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 2px; opacity: 0.6; display: block; margin-bottom: 6px;
+        }
+        .hero-card .value { font-size: 20px; font-weight: 700; }
+        .hero-card .value.accent { color: var(--accent); }
+        .hero-card .value.small-text { font-size: 16px; }
+
+        .matopiba-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg, #E65100, var(--accent));
+            color: white; padding: 8px 18px; border-radius: 24px;
+            font-size: 12px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 16px;
+        }
+
+        /* ═══ SECTIONS ═══ */
+        .section { padding: 50px 0; }
+        .section-header { margin-bottom: 36px; }
+        .section-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; background: var(--primary);
+            color: white; border-radius: 10px;
+            font-size: 14px; font-weight: 700; margin-bottom: 12px;
+        }
+        .section-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px; font-weight: 800;
+            color: var(--primary-dark); margin-bottom: 8px;
+        }
+        .section-header p { font-size: 15px; color: var(--text-light); }
+
+        /* ═══ CARDS ═══ */
+        .card {
+            background: var(--bg-white); border-radius: 16px; padding: 32px;
+            box-shadow: var(--shadow); margin-bottom: 24px; border: 1px solid var(--border);
+        }
+        .card-accent { border-left: 4px solid var(--primary); }
+        .card-danger { border-left: 4px solid var(--danger); }
+        .card-warning { border-left: 4px solid var(--warning); }
+        .card-success { border-left: 4px solid var(--success); }
+        .card h4 {
+            font-size: 18px; font-weight: 700; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .card h4 .emoji { font-size: 24px; }
+
+        /* ═══ TABLES ═══ */
+        .table-wrapper {
+            overflow-x: auto; margin: 20px 0;
+            border-radius: 12px; box-shadow: var(--shadow);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        thead th {
+            background: var(--primary-dark); color: white;
+            padding: 14px 16px; text-align: left; font-weight: 600;
+            font-size: 12px; text-transform: uppercase;
+            letter-spacing: 1px; white-space: nowrap;
+        }
+        tbody td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; }
+        tbody tr:nth-child(even) { background: #FAFBF7; }
+        tbody tr:hover { background: #F0F4E8; }
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .text-bold { font-weight: 700; }
+        .text-danger { color: var(--danger); font-weight: 700; }
+        .text-success { color: var(--success); font-weight: 700; }
+        .text-warning { color: var(--warning); font-weight: 700; }
+
+        /* ═══ SCENARIOS ═══ */
+        .scenarios-duo {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 30px; margin: 30px 0;
+        }
+        .scenario-big {
+            background: var(--bg-white); border-radius: 20px; overflow: hidden;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .scenario-big:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .scenario-big.winner {
+            border: 3px solid var(--success);
+            box-shadow: 0 8px 40px rgba(46,125,50,0.18);
+        }
+        .scenario-big-header { padding: 28px 28px 20px; color: white; }
+        .scenario-big-header.bg-red { background: linear-gradient(135deg, #B71C1C, #D32F2F); }
+        .scenario-big-header.bg-green { background: linear-gradient(135deg, #1B5E20, #2E7D32); }
+        .scenario-big-header .letter {
+            font-size: 48px; font-weight: 900; opacity: 0.2; float: right; margin-top: -8px;
+        }
+        .scenario-big-header .name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .scenario-big-header .desc { font-size: 13px; opacity: 0.8; }
+        .scenario-big-body { padding: 28px; }
+        .scenario-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px;
+        }
+        .scenario-row:last-child { border-bottom: none; }
+        .scenario-row label { color: var(--text-light); font-weight: 500; }
+        .scenario-row .val { font-weight: 700; font-size: 15px; }
+        .scenario-big-margin {
+            margin: 20px 0 0; padding: 24px; border-radius: 14px; text-align: center;
+        }
+        .margin-positive { background: #E8F5E9; }
+        .margin-negative { background: #FFEBEE; }
+        .margin-neutral { background: #FFF8E1; }
+        .scenario-big-margin .margin-label {
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--text-light);
+        }
+        .scenario-big-margin .margin-value { font-size: 36px; font-weight: 900; margin-top: 4px; }
+        .scenario-big-margin .margin-ha { font-size: 16px; font-weight: 600; margin-top: 2px; }
+        .winner-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--success); color: white;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .loser-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--danger); color: white;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* ═══ CHART ═══ */
+        .chart-container {
+            background: var(--bg-white); border-radius: 16px; padding: 32px;
+            box-shadow: var(--shadow); margin: 24px 0; border: 1px solid var(--border);
+        }
+        .chart-title { font-size: 16px; font-weight: 700; margin-bottom: 24px; }
+        .bar-chart { display: flex; flex-direction: column; gap: 20px; }
+        .bar-row { display: flex; align-items: center; gap: 16px; }
+        .bar-label { min-width: 240px; font-size: 14px; font-weight: 600; text-align: right; }
+        .bar-track {
+            flex: 1; height: 44px; background: #f0f0f0;
+            border-radius: 10px; overflow: hidden; position: relative;
+        }
+        .bar-fill {
+            height: 100%; border-radius: 10px;
+            display: flex; align-items: center; justify-content: flex-end;
+            padding-right: 16px; font-size: 14px; font-weight: 700;
+            color: white; transition: width 0.5s ease; min-width: 150px;
+        }
+        .bar-fill.green { background: linear-gradient(90deg, #2E7D32, #43A047); }
+        .bar-fill.red { background: linear-gradient(90deg, #C62828, #E53935); }
+        .bar-fill.yellow { background: linear-gradient(90deg, #F9A825, #FDD835); color: #333; }
+
+        /* ═══ RISK ═══ */
+        .risk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin: 24px 0; }
+        .risk-card {
+            background: var(--bg-white); border-radius: 14px; padding: 24px;
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+        .risk-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .risk-icon {
+            width: 44px; height: 44px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 22px;
+        }
+        .risk-icon.bearish { background: #FFEBEE; }
+        .risk-icon.bullish { background: #E8F5E9; }
+        .risk-icon.neutral { background: #FFF8E1; }
+        .risk-title { font-size: 16px; font-weight: 700; }
+        .risk-tag {
+            display: inline-block; padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .tag-bearish { background: #FFEBEE; color: var(--danger); }
+        .tag-bullish { background: #E8F5E9; color: var(--success); }
+        .tag-neutral { background: #FFF8E1; color: var(--warning); }
+        .risk-list { list-style: none; margin-top: 12px; }
+        .risk-list li {
+            font-size: 13px; padding: 6px 0; color: var(--text-medium);
+            display: flex; align-items: flex-start; gap: 8px; line-height: 1.5;
+        }
+        .risk-list li::before {
+            content: ''; width: 6px; height: 6px; min-width: 6px;
+            border-radius: 50%; margin-top: 7px;
+        }
+        .risk-list.bearish li::before { background: var(--danger); }
+        .risk-list.bullish li::before { background: var(--success); }
+        .risk-list.neutral li::before { background: var(--warning); }
+
+        /* ═══ COMPARISON ═══ */
+        .comparison-highlight {
+            display: grid; grid-template-columns: 1fr auto 1fr;
+            gap: 24px; align-items: center; margin: 30px 0;
+        }
+        .comp-box {
+            background: var(--bg-white); border-radius: 16px; padding: 30px;
+            text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+        .comp-box.loser { opacity: 0.7; }
+        .comp-box.winner-box {
+            border: 2px solid var(--success);
+            box-shadow: 0 8px 40px rgba(46,125,50,0.15);
+        }
+        .comp-box .comp-label {
+            font-size: 12px; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--text-light); margin-bottom: 8px;
+        }
+        .comp-box .comp-value { font-size: 32px; font-weight: 800; }
+        .comp-box .comp-detail { font-size: 13px; color: var(--text-light); margin-top: 4px; }
+        .comp-vs { font-size: 24px; font-weight: 800; color: var(--text-light); }
+
+        /* ═══ KPI ═══ */
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+        .kpi-card {
+            background: var(--bg-white); border-radius: 14px; padding: 20px;
+            text-align: center; box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+        .kpi-card .kpi-icon { font-size: 28px; margin-bottom: 8px; }
+        .kpi-card .kpi-value { font-size: 22px; font-weight: 800; }
+        .kpi-card .kpi-label {
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-light); margin-top: 4px;
+        }
+
+        /* ═══ GAUGE ═══ */
+        .gauge-row { display: flex; gap: 20px; margin: 24px 0; flex-wrap: wrap; }
+        .gauge-item {
+            flex: 1; min-width: 240px; background: var(--bg-white);
+            border-radius: 14px; padding: 24px; box-shadow: var(--shadow);
+            text-align: center; border: 1px solid var(--border);
+        }
+        .gauge-item .gauge-label {
+            font-size: 12px; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--text-light); margin-bottom: 12px;
+        }
+        .gauge-meter {
+            width: 100%; height: 10px; background: #f0f0f0;
+            border-radius: 5px; overflow: hidden; margin-bottom: 10px;
+        }
+        .gauge-fill { height: 100%; border-radius: 5px; }
+        .gauge-fill.low { background: linear-gradient(90deg, #E53935, #EF5350); }
+        .gauge-fill.high { background: linear-gradient(90deg, #2E7D32, #43A047); }
+        .gauge-value { font-size: 20px; font-weight: 800; }
+
+        /* ═══ IMPACT ═══ */
+        .impact-box {
+            background: linear-gradient(135deg, #1B5E20, #2E7D32);
+            color: white; border-radius: 20px; padding: 40px;
+            text-align: center; margin: 30px 0;
+        }
+        .impact-box .impact-label {
+            font-size: 13px; text-transform: uppercase;
+            letter-spacing: 3px; opacity: 0.7; margin-bottom: 8px;
+        }
+        .impact-box .impact-value {
+            font-family: 'Playfair Display', serif; font-size: 52px; font-weight: 800;
+        }
+        .impact-box .impact-desc {
+            font-size: 16px; opacity: 0.85; margin-top: 8px;
+            max-width: 700px; margin-left: auto; margin-right: auto;
+        }
+
+        /* ═══ ROADMAP ═══ */
+        .roadmap { position: relative; padding: 20px 0; }
+        .roadmap::before {
+            content: ''; position: absolute; left: 24px;
+            top: 0; bottom: 0; width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+        .roadmap-item { position: relative; padding-left: 64px; margin-bottom: 32px; }
+        .roadmap-dot {
+            position: absolute; left: 14px; top: 4px;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--primary); border: 4px solid var(--bg-light); z-index: 1;
+        }
+        .roadmap-dot.active { background: var(--accent); box-shadow: 0 0 0 4px rgba(249,168,37,0.2); }
+        .roadmap-item h5 {
+            font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 4px;
+        }
+        .roadmap-item .period {
+            font-size: 12px; color: var(--text-light); font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+        }
+        .roadmap-item p { font-size: 13px; color: var(--text-medium); line-height: 1.6; }
+
+        /* ═══ CALLOUT ═══ */
+        .callout {
+            padding: 24px 28px; border-radius: 14px;
+            margin: 24px 0; font-size: 15px; line-height: 1.7;
+        }
+        .callout-success { background: #E8F5E9; border: 1px solid #A5D6A7; color: #1B5E20; }
+        .callout-danger { background: #FFEBEE; border: 1px solid #EF9A9A; color: #B71C1C; }
+        .callout-warning { background: #FFF8E1; border: 1px solid #FFE082; color: #E65100; }
+        .callout-info { background: #E3F2FD; border: 1px solid #90CAF9; color: #0D47A1; }
+        .callout strong { font-weight: 700; }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 40px 0;
+        }
+
+        .tag {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 11px; font-weight: 600;
+        }
+        .tag-green { background: #E8F5E9; color: #1B5E20; }
+        .tag-red { background: #FFEBEE; color: #B71C1C; }
+        .tag-yellow { background: #FFF8E1; color: #E65100; }
+
+        /* ═══ FOOTER ═══ */
+        .footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white; padding: 50px 0 30px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 40px; margin-bottom: 40px;
+        }
+        .footer h4 {
+            font-size: 14px; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 16px; opacity: 0.6;
+        }
+        .footer .author-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px; font-weight: 800; margin-bottom: 6px;
+        }
+        .footer .author-role {
+            font-size: 14px; color: var(--accent); font-weight: 600; margin-bottom: 16px;
+        }
+        .footer .author-desc {
+            font-size: 13px; opacity: 0.7; line-height: 1.6; margin-bottom: 4px;
+        }
+        .footer-contact { margin-top: 20px; }
+        .footer-contact a {
+            color: white; text-decoration: none; display: flex;
+            align-items: center; gap: 10px; font-size: 14px;
+            margin-bottom: 10px; opacity: 0.8; transition: opacity 0.2s;
+        }
+        .footer-contact a:hover { opacity: 1; }
+        .footer-disclaimer {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 24px; font-size: 11px; opacity: 0.4;
+            line-height: 1.7; text-align: center;
+        }
+
+        /* ═══ RESPONSIVE ═══ */
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; text-align: center; }
+            .header-badge { text-align: center; }
+            .hero-grid { grid-template-columns: 1fr; text-align: center; }
+            .hero h2 { font-size: 26px; }
+            .hero-data { grid-template-columns: 1fr 1fr; }
+            .scenarios-duo { grid-template-columns: 1fr; }
+            .risk-grid { grid-template-columns: 1fr; }
+            .comparison-highlight { grid-template-columns: 1fr; text-align: center; }
+            .comp-vs { transform: rotate(90deg); }
+            .kpi-row { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .bar-label { min-width: 110px; font-size: 12px; }
+            .section-header h3 { font-size: 22px; }
+            .gauge-row { flex-direction: column; }
+            .impact-box .impact-value { font-size: 36px; }
+            .roadmap::before { left: 16px; }
+            .roadmap-item { padding-left: 50px; }
+            .roadmap-dot { left: 6px; }
+        }
+        @media (max-width: 480px) {
+            .hero-data { grid-template-columns: 1fr; }
+            .kpi-row { grid-template-columns: 1fr; }
+            .hero h2 { font-size: 22px; }
+            .logo-text h1 { font-size: 22px; }
+            .scenario-big-margin .margin-value { font-size: 28px; }
+        }
+        @media print {
+            body { background: white; }
+            .header, .scenario-big-header, thead th, .bar-fill, .gauge-fill,
+            .roadmap-dot, .impact-box {
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+            }
+            .section { padding: 30px 0; }
+            .card, .scenario-big, .chart-container { box-shadow: none; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══════════════════ HEADER ═══════════════════ -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <img src="https://ruralin.ai/wp-content/uploads/2025/03/logo-white.webp" alt="Rural In" style="height:60px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="logo-placeholder" style="display:none;">RURAL<br>IN</div>
+                    <div class="logo-text">
+                        <h1>Rural In</h1>
+                        <span>Inteligência Econômica para o Agro</span>
+                    </div>
+                </div>
+                <div class="header-badge">
+                    <div class="doc-type">Relatório Técnico</div>
+                    <div class="doc-title">Análise de Cenários — Safra 26/27</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════════════ HERO ═══════════════════ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div>
+                    <div class="matopiba-badge">🌾 MATOPIBA — Fronteira Agrícola mais dinâmica do Brasil</div>
+                    <h2>3.000 hectares.<br>Uma decisão de<br><span class="highlight">R$ 8,5 milhões.</span></h2>
+                    <p>No Tocantins, onde a safrinha de milho acaba de ser declarada <strong>"comprometida em todo o estado"</strong> (Aprosoja-TO, 15/03/2026), os números revelam uma alternativa que entrega <strong>13x mais resultado</strong> com metade do risco e do capital.</p>
+                </div>
+                <div class="hero-data">
+                    <div class="hero-card">
+                        <label>Produtor</label>
+                        <div class="value">Joel Cruvinel</div>
+                    </div>
+                    <div class="hero-card">
+                        <label>Propriedade</label>
+                        <div class="value small-text">Faz. Reta das Cotias II</div>
+                    </div>
+                    <div class="hero-card">
+                        <label>Localidade</label>
+                        <div class="value small-text">Aparecida do Rio Negro - TO</div>
+                    </div>
+                    <div class="hero-card">
+                        <label>Área Estática</label>
+                        <div class="value accent">3.000 ha</div>
+                    </div>
+                    <div class="hero-card">
+                        <label>Cenários Analisados</label>
+                        <div class="value small-text">A vs B</div>
+                    </div>
+                    <div class="hero-card">
+                        <label>Data da Análise</label>
+                        <div class="value small-text">30/03/2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 1: CONTEXTO TOCANTINS ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h3>O Contexto do Tocantins Agora</h3>
+                <p>O que está acontecendo no estado neste momento e como isso impacta a decisão para a Reta das Cotias II</p>
+            </div>
+
+            <div class="callout callout-danger">
+                <strong>🚨 ALERTA — G1 Tocantins / TV Anhanguera (15/03/2026):</strong><br>
+                "A safra de milho safrinha é considerada <strong>comprometida em todo o estado</strong>. A janela ideal se encerrou em 28/02, mas muitos agricultores ainda não finalizaram a colheita da soja. O solo encharcado impede a entrada de máquinas. <strong>Pelo menos 15 pontes desabaram</strong> em rodovias estaduais e estradas vicinais."
+            </div>
+
+            <div class="callout callout-warning">
+                <strong>📊 Margens apertadas na soja — Aprosoja-TO (08/03/2026):</strong><br>
+                "É uma safra satisfatória, porém de <strong>pouca rentabilidade</strong>. Temos aumento de produção ao longo dos últimos anos, mas a infraestrutura logística e a capacidade estática não acompanharam esse crescimento." — <em>Thiago Facco, VP Aprosoja-TO</em>. "Os caminhões ficam em filas, as tradings acabam repassando esse custo ao produtor."
+            </div>
+
+            <div class="callout callout-info">
+                <strong>🌾 Tocantins em números — Conab / Safra 25/26:</strong><br>
+                Produção de soja projetada em <strong>6,015 milhões de toneladas</strong> (+12,4% vs safra anterior) · Área de 1,6 mi ha · Maior produtor de grãos da região Norte · Integrante do MATOPIBA · Acesso à Ferrovia Norte-Sul · Aparecida do Rio Negro: soja e milho como atividades econômicas principais.
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════ SEÇÃO 2: PREMISSAS ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h3>Premissas da Análise</h3>
+                <p>Base de dados para os 3.000 hectares da Fazenda Reta das Cotias II</p>
+            </div>
+
+            <div class="card card-accent">
+                <h4><span class="emoji">📊</span> Produtividade, Preços e Custos de Referência</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cultura</th>
+                                <th class="text-center">Produtividade</th>
+                                <th class="text-center">Preço/sc</th>
+                                <th class="text-center">Receita/ha</th>
+                                <th class="text-center">COT/ha</th>
+                                <th class="text-center">Resultado/ha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold">🫘 Soja verão</td>
+                                <td class="text-center">65 sc/ha</td>
+                                <td class="text-center">R$ 110,00</td>
+                                <td class="text-center">R$ 7.150,00</td>
+                                <td class="text-center">R$ 6.500,00</td>
+                                <td class="text-center text-warning">R$ 650,00</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">🌽 Milho safrinha</td>
+                                <td class="text-center">110 sc/ha</td>
+                                <td class="text-center">R$ 48,00</td>
+                                <td class="text-center">R$ 5.280,00</td>
+                                <td class="text-center">R$ 5.900,00</td>
+                                <td class="text-center text-danger">- R$ 620,00</td>
+                            </tr>
+                            <tr style="background: #E8F5E9;">
+                                <td class="text-bold">🌽 Milho verão</td>
+                                <td class="text-center">170 sc/ha</td>
+                                <td class="text-center">R$ 58,00</td>
+                                <td class="text-center">R$ 9.860,00</td>
+                                <td class="text-center">R$ 6.200,00</td>
+                                <td class="text-center text-success">R$ 3.660,00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="callout callout-danger">
+                <strong>⚠️ O número que muda tudo:</strong> O milho safrinha a R$ 5.900/ha de custo gera receita de apenas R$ 5.280/ha. São <strong>R$ 620 de prejuízo por hectare</strong>. Em 2.000 ha de safrinha, isso significa <strong>R$ 1.240.000 de prejuízo direto</strong> — dinheiro que a soja gerou e a safrinha destruiu. E no Tocantins, onde a Aprosoja acabou de declarar a safrinha comprometida, <strong>esse risco é ainda mais grave</strong>.
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════ SEÇÃO 3: CENÁRIOS ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h3>Os Dois Cenários</h3>
+                <p>O sistema tradicional vs a alternativa de máxima rentabilidade para 3.000 ha</p>
+            </div>
+
+            <div class="scenarios-duo">
+                <!-- CENÁRIO A -->
+                <div class="scenario-big">
+                    <div class="scenario-big-header bg-red">
+                        <span class="letter">A</span>
+                        <div class="name">Soja 3.000 ha + Milho Safrinha 2.000 ha</div>
+                        <div class="desc">Sistema tradicional — duas safras · 5.000 ha operados</div>
+                    </div>
+                    <div class="scenario-big-body">
+                        <div style="text-align:center; margin-bottom: 16px;">
+                            <span class="loser-badge">⚠️ Risco crítico — Safrinha comprometida no TO</span>
+                        </div>
+
+                        <h4 style="font-size:14px; color:var(--text-light); margin-bottom:10px; border-bottom:2px solid #f0f0f0; padding-bottom:8px;">SOJA VERÃO (3.000 ha)</h4>
+                        <div class="scenario-row"><label>Receita soja (3.000 × 65 × R$ 110)</label><span class="val">R$ 21.450.000</span></div>
+                        <div class="scenario-row"><label>Custo soja (3.000 × R$ 6.500)</label><span class="val">R$ 19.500.000</span></div>
+                        <div class="scenario-row"><label>Margem soja</label><span class="val text-warning">R$ 1.950.000</span></div>
+
+                        <h4 style="font-size:14px; color:var(--text-light); margin-bottom:10px; margin-top:18px; border-bottom:2px solid #f0f0f0; padding-bottom:8px;">MILHO SAFRINHA (2.000 ha)</h4>
+                        <div class="scenario-row"><label>Receita milho 2ª (2.000 × 110 × R$ 48)</label><span class="val">R$ 10.560.000</span></div>
+                        <div class="scenario-row"><label>Custo milho 2ª (2.000 × R$ 5.900)</label><span class="val">R$ 11.800.000</span></div>
+                        <div class="scenario-row"><label>Margem safrinha</label><span class="val text-danger">- R$ 1.240.000</span></div>
+
+                        <h4 style="font-size:14px; color:var(--primary-dark); margin-bottom:10px; margin-top:18px; border-bottom:2px solid var(--primary); padding-bottom:8px;">CONSOLIDADO ANO</h4>
+                        <div class="scenario-row"><label>Receita total</label><span class="val">R$ 32.010.000</span></div>
+                        <div class="scenario-row"><label>Custo total</label><span class="val">R$ 31.300.000</span></div>
+                        <div class="scenario-row"><label>Capital exposto</label><span class="val text-danger">R$ 31,3 mi</span></div>
+                        <div class="scenario-row"><label>Risco climático</label><span class="tag tag-red">Crítico</span></div>
+
+                        <div class="scenario-big-margin margin-neutral">
+                            <div class="margin-label">Margem Bruta (cenário otimista)</div>
+                            <div class="margin-value text-warning">R$ 710.000</div>
+                            <div class="margin-ha">R$ 237/ha · Margem 2,2%</div>
+                        </div>
+                        <div class="scenario-big-margin margin-negative" style="margin-top:10px;">
+                            <div class="margin-label">Com quebra 30% na safrinha (77 sc/ha)</div>
+                            <div class="margin-value text-danger">- R$ 1.724.000</div>
+                            <div class="margin-ha">PREJUÍZO de R$ 575/ha no ano inteiro</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CENÁRIO B -->
+                <div class="scenario-big winner">
+                    <div class="scenario-big-header bg-green">
+                        <span class="letter">B</span>
+                        <div class="name">Milho Verão 3.000 ha + Cobertura</div>
+                        <div class="desc">Alternativa de alta rentabilidade — uma safra + solo</div>
+                    </div>
+                    <div class="scenario-big-body">
+                        <div style="text-align:center; margin-bottom: 16px;">
+                            <span class="winner-badge">🏆 Melhor cenário</span>
+                        </div>
+
+                        <h4 style="font-size:14px; color:var(--text-light); margin-bottom:10px; border-bottom:2px solid #f0f0f0; padding-bottom:8px;">MILHO VERÃO (3.000 ha)</h4>
+                        <div class="scenario-row"><label>Receita milho (3.000 × 170 × R$ 58)</label><span class="val text-success">R$ 29.580.000</span></div>
+                        <div class="scenario-row"><label>Custo milho (3.000 × R$ 6.200)</label><span class="val">R$ 18.600.000</span></div>
+                        <div class="scenario-row"><label>Margem milho</label><span class="val text-success">R$ 10.980.000</span></div>
+
+                        <h4 style="font-size:14px; color:var(--text-light); margin-bottom:10px; margin-top:18px; border-bottom:2px solid #f0f0f0; padding-bottom:8px;">COBERTURA (3.000 ha)</h4>
+                        <div class="scenario-row"><label>Custo mix cobertura (3.000 × R$ 600)</label><span class="val">R$ 1.800.000</span></div>
+                        <div class="scenario-row"><label>Benefício</label><span class="val text-success">Solo preparado p/ soja 27/28</span></div>
+
+                        <h4 style="font-size:14px; color:var(--primary-dark); margin-bottom:10px; margin-top:18px; border-bottom:2px solid var(--primary); padding-bottom:8px;">CONSOLIDADO ANO</h4>
+                        <div class="scenario-row"><label>Receita total</label><span class="val text-success">R$ 29.580.000</span></div>
+                        <div class="scenario-row"><label>Custo total (milho + cobertura)</label><span class="val">R$ 20.400.000</span></div>
+                        <div class="scenario-row"><label>Capital exposto</label><span class="val text-success">R$ 20,4 mi</span></div>
+                        <div class="scenario-row"><label>Risco climático</label><span class="tag tag-green">Baixo</span></div>
+
+                        <div class="scenario-big-margin margin-positive">
+                            <div class="margin-label">Margem Bruta Total</div>
+                            <div class="margin-value text-success">R$ 9.180.000</div>
+                            <div class="margin-ha">R$ 3.060/ha · Margem 31,0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 4: IMPACTO ═══════════════════ -->
+    <section class="section" style="background: var(--bg-white); padding: 50px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h3>O Impacto da Decisão</h3>
+                <p>A dimensão financeira de escolher o caminho certo nos 3.000 hectares</p>
+            </div>
+
+            <div class="impact-box">
+                <div class="impact-label">Diferença entre Cenário B e Cenário A</div>
+                <div class="impact-value">+ R$ 8.470.000</div>
+                <div class="impact-desc">O milho verão entrega <strong>quase 13 vezes mais margem</strong>, com <strong>R$ 10,9 milhões a menos de capital investido</strong> e risco climático muito inferior.</div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 Comparativo — Margem Bruta Total</div>
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label" style="color:var(--warning);">A — Soja + Safrinha (otimista)</div>
+                        <div class="bar-track">
+                            <div class="bar-fill yellow" style="width: 8%;">R$ 710.000</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <div class="bar-label" style="color:var(--danger);">A — Pessimista (quebra 30%)</div>
+                        <div class="bar-track">
+                            <div class="bar-fill red" style="width: 10%;">- R$ 1.724.000</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <div class="bar-label" style="color:var(--success); font-weight:800;">B — Milho Verão 3.000 ha ✦</div>
+                        <div class="bar-track">
+                            <div class="bar-fill green" style="width: 100%;">R$ 9.180.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">📊 Comparativo — Capital Investido (Exposição)</div>
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <div class="bar-label">A — Capital investido</div>
+                        <div class="bar-track">
+                            <div class="bar-fill red" style="width: 100%;">R$ 31,3 mi</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <div class="bar-label" style="font-weight:800;">B — Capital investido</div>
+                        <div class="bar-track">
+                            <div class="bar-fill green" style="width: 65%;">R$ 20,4 mi</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="margin-top:16px; font-size:14px; color:var(--text-medium); text-align:center;">
+                    <strong>Cen. A:</strong> R$ 31,3 mi → R$ 710 mil (2,2%) ·
+                    <strong>Cen. B:</strong> R$ 20,4 mi → R$ 9,18 mi (31%) ·
+                    <strong>Eficiência 19,7x superior</strong>
+                </p>
+            </div>
+
+            <div class="comparison-highlight">
+                <div class="comp-box loser">
+                    <div class="comp-label">Cenário A — Tradicional</div>
+                    <div class="comp-value text-danger">R$ 710 mil</div>
+                    <div class="comp-detail">2 safras · 5.000 ha operados · R$ 31,3 mi investidos</div>
+                </div>
+                <div class="comp-vs">VS</div>
+                <div class="comp-box winner-box">
+                    <div class="comp-label">Cenário B — Milho Verão</div>
+                    <div class="comp-value text-success">R$ 9,18 mi</div>
+                    <div class="comp-detail">1 safra + cobertura · 3.000 ha · R$ 20,4 mi investidos</div>
+                </div>
+            </div>
+
+            <div class="callout callout-success">
+                <strong>Traduzindo:</strong> Com o Cenário B, Joel opera <strong>2.000 ha a menos</strong>, investe <strong>R$ 10,9 milhões a menos</strong>, corre <strong>menos risco</strong> e coloca <strong>R$ 8,47 milhões a mais</strong> no resultado. O capital "economizado" pode render ~R$ 1,4 mi na Selic no período ou ser reinvestido em armazenagem e maquinário.
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 5: KPIs ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h3>Indicadores Decisivos</h3>
+                <p>Os números que definem a escolha para a Reta das Cotias II</p>
+            </div>
+
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-icon">💰</div>
+                    <div class="kpi-value text-success">+ R$ 8,47 mi</div>
+                    <div class="kpi-label">Cenário B vs Cenário A</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📊</div>
+                    <div class="kpi-value text-success">12,9x</div>
+                    <div class="kpi-label">Mais margem que o tradicional</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-value text-success">117 sc/ha</div>
+                    <div class="kpi-label">Equilíbrio milho verão</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🛡️</div>
+                    <div class="kpi-value text-success">53 sc/ha</div>
+                    <div class="kpi-label">Margem de segurança</div>
+                </div>
+            </div>
+            <div class="kpi-row">
+                <div class="kpi-card">
+                    <div class="kpi-icon">⚠️</div>
+                    <div class="kpi-value text-danger">- R$ 1,24 mi</div>
+                    <div class="kpi-label">Prejuízo safrinha 2.000 ha</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">💳</div>
+                    <div class="kpi-value text-danger">R$ 31,3 mi</div>
+                    <div class="kpi-label">Capital exposto Cen. A</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">💳</div>
+                    <div class="kpi-value text-success">R$ 20,4 mi</div>
+                    <div class="kpi-label">Capital exposto Cen. B</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📉</div>
+                    <div class="kpi-value text-danger">123 sc/ha</div>
+                    <div class="kpi-label">Equilíbrio safrinha (inviável)</div>
+                </div>
+            </div>
+
+            <div class="gauge-row" style="margin-top: 30px;">
+                <div class="gauge-item">
+                    <div class="gauge-label">Risco — Cenário A</div>
+                    <div class="gauge-meter"><div class="gauge-fill low" style="width: 92%;"></div></div>
+                    <div class="gauge-value text-danger">Crítico</div>
+                    <div style="font-size:11px; color:var(--text-light); margin-top:4px;">Safrinha comprometida no TO · Prejuízo certo na 2ª safra · 15 pontes caíram</div>
+                </div>
+                <div class="gauge-item">
+                    <div class="gauge-label">Risco — Cenário B</div>
+                    <div class="gauge-meter"><div class="gauge-fill high" style="width: 20%;"></div></div>
+                    <div class="gauge-value text-success">Baixo</div>
+                    <div style="font-size:11px; color:var(--text-light); margin-top:4px;">Janela ideal · Margem de 31% · Uma safra · Solo beneficiado</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════ SEÇÃO 6: FUNDAMENTOS ═══════════════════ -->
+    <section class="section" style="background: var(--bg-white); padding: 50px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h3>Fundamentos de Mercado</h3>
+                <p>Por que o milho verão é a oportunidade estrutural do ciclo — Posição: 30/03/2026</p>
+            </div>
+
+            <div class="risk-grid">
+                <div class="risk-card">
+                    <div class="risk-header">
+                        <div class="risk-icon bearish">🫘</div>
+                        <div>
+                            <div class="risk-title">Soja — Viés Baixista</div>
+                            <span class="risk-tag tag-bearish">Pressão sobre preço</span>
+                        </div>
+                    </div>
+                    <ul class="risk-list bearish">
+                        <li>EUA expandindo área para 34,4 mi ha — produção ~121 mi t (USDA)</li>
+                        <li>Tocantins em produção recorde: 6,015 mi t (+12,4%) — mais oferta interna</li>
+                        <li>Estoques de passagem globais confortáveis — sem aperto de oferta</li>
+                        <li>R$ 110/sc embute prêmio geopolítico (Irã) — sem conflito, cai para R$ 95-105</li>
+                        <li>Demanda chinesa estagnada e frete do TO pressionado por gargalos logísticos</li>
+                        <li>Aprosoja-TO: "safra de pouca rentabilidade" (março/2026)</li>
+                    </ul>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-header">
+                        <div class="risk-icon bullish">🌽</div>
+                        <div>
+                            <div class="risk-title">Milho — Viés Altista</div>
+                            <span class="risk-tag tag-bullish">Oportunidade estrutural</span>
+                        </div>
+                    </div>
+                    <ul class="risk-list bullish">
+                        <li><strong>Safrinha comprometida em TODO o Tocantins</strong> (Aprosoja-TO, 15/03/2026)</li>
+                        <li>EUA reduzindo 2 mi ha de milho → produção caindo ~30 mi t (USDA)</li>
+                        <li>Safrinha brasileira com +30% fora da janela ideal — quebra nacional iminente</li>
+                        <li>El Niño previsto a partir de maio — risco para safrinha, favorável para milho verão</li>
+                        <li>Milho CBOT 2027 opera a US$ 4,90, com potencial de US$ 5,00+</li>
+                        <li>Demanda aquecida: etanol de milho + ração + exportação</li>
+                        <li>Nitrogenados caros desincentivam milho globalmente → menos oferta futura</li>
+                        <li>R$ 58/sc pode ser piso — potencial de R$ 62-68 com aperto de oferta</li>
+                    </ul>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-header">
+                        <div class="risk-icon neutral">🌍</div>
+                        <div>
+                            <div class="risk-title">Geopolítica & Macro</div>
+                            <span class="risk-tag tag-neutral">Monitorar</span>
+                        </div>
+                    </div>
+                    <ul class="risk-list neutral">
+                        <li><strong>Guerra Irã:</strong> encarece nitrogenados e fosfatados — custo da safrinha piora</li>
+                        <li><strong>Câmbio:</strong> real forte pressiona preço interno da soja</li>
+                        <li><strong>Selic elevada:</strong> custo de oportunidade de R$ 31,3 mi (Cen. A) é brutal</li>
+                        <li><strong>Migração de área:</strong> milho → soja (EUA) reduz oferta futura de milho</li>
+                        <li><strong>Ferrovia Norte-Sul:</strong> vantagem logística do TO para escoar milho</li>
+                    </ul>
+                </div>
+
+                <div class="risk-card">
+                    <div class="risk-header">
+                        <div class="risk-icon bullish">🎯</div>
+                        <div>
+                            <div class="risk-title">Captura de Oportunidade</div>
+                            <span class="risk-tag tag-bullish">Janela aberta</span>
+                        </div>
+                    </div>
+                    <ul class="risk-list bullish">
+                        <li><strong>Timing:</strong> Safrinha comprometida no TO — quem posicionar milho verão 26/27 captura escassez regional</li>
+                        <li><strong>MATOPIBA:</strong> Fronteira em expansão, demanda local crescente (etanol, ração, agroindústria — Fazendão processa 300 mil t/ano de milho no TO)</li>
+                        <li><strong>Escala:</strong> 3.000 ha = ~510.000 sc = poder de negociação expressivo</li>
+                        <li><strong>Logística:</strong> Ferrovia Norte-Sul para escoamento competitivo</li>
+                        <li><strong>Solo:</strong> Cobertura pós-milho prepara terreno para soja 27/28 — ciclo virtuoso</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout callout-info">
+                <strong>📌 Síntese para o Tocantins:</strong> O estado acabou de confirmar que a <strong>safrinha inteira está comprometida</strong> — 15 pontes caíram, solo encharcado, janela estourada. Isso reforça a tese altista para milho no ciclo 26/27. O mundo planta mais soja e menos milho. O TO, maior produtor do Norte, tem <strong>condições ideais para milho verão na janela correta</strong>. Todos os fundamentos apontam na mesma direção.
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 7: TABELA CONSOLIDADA ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h3>Detalhamento Completo</h3>
+                <p>Tabela comparativa consolidada — Cenário A vs Cenário B</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th class="text-center">A — Otimista</th>
+                            <th class="text-center">A — Pessimista</th>
+                            <th class="text-center">B — Milho Verão 🏆</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-bold">Receita soja (3.000 ha)</td>
+                            <td class="text-center">R$ 21.450.000</td>
+                            <td class="text-center">R$ 21.450.000</td>
+                            <td class="text-center">—</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Receita milho safrinha (2.000 ha)</td>
+                            <td class="text-center">R$ 10.560.000</td>
+                            <td class="text-center">R$ 7.392.000</td>
+                            <td class="text-center">—</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Receita milho verão (3.000 ha)</td>
+                            <td class="text-center">—</td>
+                            <td class="text-center">—</td>
+                            <td class="text-center text-success">R$ 29.580.000</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Receita total</td>
+                            <td class="text-center text-bold">R$ 32.010.000</td>
+                            <td class="text-center text-bold">R$ 28.842.000</td>
+                            <td class="text-center text-bold">R$ 29.580.000</td>
+                        </tr>
+                        <tr style="background: #FFF8E1;">
+                            <td class="text-bold">Custo soja</td>
+                            <td class="text-center">R$ 19.500.000</td>
+                            <td class="text-center">R$ 19.500.000</td>
+                            <td class="text-center">—</td>
+                        </tr>
+                        <tr style="background: #FFF8E1;">
+                            <td class="text-bold">Custo milho safrinha</td>
+                            <td class="text-center">R$ 11.800.000</td>
+                            <td class="text-center">R$ 11.800.000</td>
+                            <td class="text-center">—</td>
+                        </tr>
+                        <tr style="background: #FFF8E1;">
+                            <td class="text-bold">Custo milho verão + cobertura</td>
+                            <td class="text-center">—</td>
+                            <td class="text-center">—</td>
+                            <td class="text-center">R$ 20.400.000</td>
+                        </tr>
+                        <tr style="background: #FFF8E1;">
+                            <td class="text-bold">Custo total</td>
+                            <td class="text-center text-bold">R$ 31.300.000</td>
+                            <td class="text-center text-bold">R$ 31.300.000</td>
+                            <td class="text-center text-bold">R$ 20.400.000</td>
+                        </tr>
+                        <tr style="background: #E8F5E9;">
+                            <td class="text-bold" style="font-size:16px;">MARGEM BRUTA</td>
+                            <td class="text-center text-warning" style="font-size:18px; font-weight:800;">R$ 710.000</td>
+                            <td class="text-center text-danger" style="font-size:18px; font-weight:800;">- R$ 2.458.000</td>
+                            <td class="text-center text-success" style="font-size:18px; font-weight:800;">R$ 9.180.000</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">Margem/ha (área total)</td>
+                            <td class="text-center text-warning">R$ 237</td>
+                            <td class="text-center text-danger">- R$ 819</td>
+                            <td class="text-center text-success">R$ 3.060</td>
+                        </tr>
+                        <tr>
+                            <td class="text-bold">% Margem sobre receita</td>
+                            <td class="text-center">2,2%</td>
+                            <td class="text-center text-danger">-8,5%</td>
+                            <td class="text-center text-success">31,0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════ SEÇÃO 8: SENSIBILIDADE ═══════════════════ -->
+    <section class="section" style="background: var(--bg-white); padding: 50px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h3>Sensibilidade do Cenário B</h3>
+                <p>O colchão de segurança — mesmo nos piores cenários, milho verão vence</p>
+            </div>
+
+            <div class="card card-success">
+                <h4><span class="emoji">📈</span> Variação de Preço do Milho (3.000 ha × 170 sc/ha)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cenário</th>
+                                <th class="text-center">Preço/sc</th>
+                                <th class="text-center">Receita total</th>
+                                <th class="text-center">Margem bruta</th>
+                                <th class="text-center">Margem/ha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>😟 Pessimista</td>
+                                <td class="text-center">R$ 52,00</td>
+                                <td class="text-center">R$ 26.520.000</td>
+                                <td class="text-center text-warning">R$ 6.120.000</td>
+                                <td class="text-center">R$ 2.040</td>
+                            </tr>
+                            <tr>
+                                <td>😐 Conservador</td>
+                                <td class="text-center">R$ 55,00</td>
+                                <td class="text-center">R$ 28.050.000</td>
+                                <td class="text-center text-success">R$ 7.650.000</td>
+                                <td class="text-center">R$ 2.550</td>
+                            </tr>
+                            <tr style="background: #E8F5E9;">
+                                <td class="text-bold">✅ Base</td>
+                                <td class="text-center text-bold">R$ 58,00</td>
+                                <td class="text-center text-bold">R$ 29.580.000</td>
+                                <td class="text-center text-success text-bold">R$ 9.180.000</td>
+                                <td class="text-center text-bold">R$ 3.060</td>
+                            </tr>
+                            <tr>
+                                <td>📈 Provável</td>
+                                <td class="text-center">R$ 62,00</td>
+                                <td class="text-center">R$ 31.620.000</td>
+                                <td class="text-center text-success">R$ 11.220.000</td>
+                                <td class="text-center">R$ 3.740</td>
+                            </tr>
+                            <tr>
+                                <td>🚀 Otimista</td>
+                                <td class="text-center">R$ 68,00</td>
+                                <td class="text-center">R$ 34.680.000</td>
+                                <td class="text-center text-success">R$ 14.280.000</td>
+                                <td class="text-center">R$ 4.760</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card card-accent" style="margin-top: 16px;">
+                <h4><span class="emoji">🌱</span> Variação de Produtividade (preço fixo R$ 58/sc)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cenário</th>
+                                <th class="text-center">Produtividade</th>
+                                <th class="text-center">Receita total</th>
+                                <th class="text-center">Margem bruta</th>
+                                <th class="text-center">Margem/ha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>😟 Frustração severa</td>
+                                <td class="text-center">130 sc/ha</td>
+                                <td class="text-center">R$ 22.620.000</td>
+                                <td class="text-center text-warning">R$ 2.220.000</td>
+                                <td class="text-center">R$ 740</td>
+                            </tr>
+                            <tr>
+                                <td>😐 Moderado</td>
+                                <td class="text-center">150 sc/ha</td>
+                                <td class="text-center">R$ 26.100.000</td>
+                                <td class="text-center text-success">R$ 5.700.000</td>
+                                <td class="text-center">R$ 1.900</td>
+                            </tr>
+                            <tr style="background: #E8F5E9;">
+                                <td class="text-bold">✅ Base</td>
+                                <td class="text-center text-bold">170 sc/ha</td>
+                                <td class="text-center text-bold">R$ 29.580.000</td>
+                                <td class="text-center text-success text-bold">R$ 9.180.000</td>
+                                <td class="text-center text-bold">R$ 3.060</td>
+                            </tr>
+                            <tr>
+                                <td>📈 Favorável</td>
+                                <td class="text-center">185 sc/ha</td>
+                                <td class="text-center">R$ 32.190.000</td>
+                                <td class="text-center text-success">R$ 11.790.000</td>
+                                <td class="text-center">R$ 3.930</td>
+                            </tr>
+                            <tr>
+                                <td>🚀 Excelente</td>
+                                <td class="text-center">200 sc/ha</td>
+                                <td class="text-center">R$ 34.800.000</td>
+                                <td class="text-center text-success">R$ 14.400.000</td>
+                                <td class="text-center">R$ 4.800</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="callout callout-success">
+                <strong>💡 O colchão é enorme:</strong> Mesmo no <strong>pior cenário</strong> (frustração severa: 130 sc/ha a R$ 58), o milho verão entrega <strong>R$ 2.220.000 de margem</strong> — mais de <strong>3x o Cenário A otimista</strong> (R$ 710 mil). No otimista (200 sc × R$ 68), a margem chega a <strong>R$ 14,4 milhões</strong>. A relação risco/retorno é incomparável.
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 9: MATRIZ DE RISCOS ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <h3>Matriz de Riscos Detalhada</h3>
+                <p>O que pode dar errado — e o que protege — em cada cenário</p>
+            </div>
+
+            <div class="card card-danger">
+                <h4><span class="emoji">🔴</span> Riscos do Cenário A (Soja 3.000 ha + Milho Safrinha 2.000 ha)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Risco</th>
+                                <th class="text-center">Prob.</th>
+                                <th class="text-center">Impacto</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold">Safrinha com prejuízo garantido</td>
+                                <td class="text-center"><span class="tag tag-red">Certa</span></td>
+                                <td class="text-center"><span class="tag tag-red">R$ -1,24 mi</span></td>
+                                <td>110 sc × R$ 48 = R$ 5.280 vs custo R$ 5.900/ha. Prejuízo de R$ 620/ha × 2.000 ha. Ocorre mesmo sem quebra.</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Quebra na safrinha por chuvas/janela</td>
+                                <td class="text-center"><span class="tag tag-red">Muito alta</span></td>
+                                <td class="text-center"><span class="tag tag-red">R$ -2,46 mi</span></td>
+                                <td>Aprosoja-TO declarou safrinha comprometida em TODO o estado. Quebra de 30% transforma ano inteiro em prejuízo pesado.</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Queda no preço da soja</td>
+                                <td class="text-center"><span class="tag tag-yellow">Média</span></td>
+                                <td class="text-center"><span class="tag tag-red">Severo</span></td>
+                                <td>Soja a R$ 100 eliminaria R$ 3 mi de receita. Resultado: prejuízo no ano inteiro.</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Capital exposto de R$ 31,3 mi</td>
+                                <td class="text-center"><span class="tag tag-red">Certa</span></td>
+                                <td class="text-center"><span class="tag tag-red">Alto</span></td>
+                                <td>Custo de oportunidade Selic (~13%) = ~R$ 4 mi/ano. Margem de R$ 710 mil não cobre nem os juros.</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Gargalos logísticos no TO</td>
+                                <td class="text-center"><span class="tag tag-red">Alta</span></td>
+                                <td class="text-center"><span class="tag tag-yellow">Moderado</span></td>
+                                <td>15 pontes caíram. Estradas precárias. Filas em tradings. Frete elevado comprime margem já apertada.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card card-success" style="margin-top: 16px;">
+                <h4><span class="emoji">🟢</span> Riscos do Cenário B (Milho Verão 3.000 ha + Cobertura)</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Risco</th>
+                                <th class="text-center">Prob.</th>
+                                <th class="text-center">Impacto</th>
+                                <th>Mitigação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold">Queda no preço do milho</td>
+                                <td class="text-center"><span class="tag tag-green">Baixa</span></td>
+                                <td class="text-center"><span class="tag tag-yellow">Moderado</span></td>
+                                <td>Fundamento altista forte. Mesmo a R$ 52/sc, margem de R$ 6,12 mi. <strong>Travar 30-40% agora.</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Frustração de produtividade</td>
+                                <td class="text-center"><span class="tag tag-green">Baixa</span></td>
+                                <td class="text-center"><span class="tag tag-yellow">Moderado</span></td>
+                                <td>Milho verão na janela ideal. Mesmo 130 sc/ha = R$ 2,22 mi. <strong>Contratar seguro agrícola.</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Alta nos nitrogenados (guerra)</td>
+                                <td class="text-center"><span class="tag tag-yellow">Média</span></td>
+                                <td class="text-center"><span class="tag tag-yellow">Moderado</span></td>
+                                <td><strong>Antecipar compra de insumos.</strong> 3.000 ha = poder de negociação com indústria. Inoculantes com Azospirillum.</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold">Comercialização do volume (510 mil sc)</td>
+                                <td class="text-center"><span class="tag tag-yellow">Média</span></td>
+                                <td class="text-center"><span class="tag tag-green">Baixo</span></td>
+                                <td>Escala dá poder de negociação. Ferrovia Norte-Sul. Fazendão processa 300 mil t de milho/ano no TO. <strong>Escalonar vendas.</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ═══════════════════ SEÇÃO 10: ROADMAP ═══════════════════ -->
+    <section class="section" style="background: var(--bg-white); padding: 50px 0;">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">10</div>
+                <h3>Roadmap Estratégico — Safra 26/27</h3>
+                <p>Passo a passo para capturar a oportunidade nos 3.000 ha da Reta das Cotias II</p>
+            </div>
+
+            <div class="roadmap">
+                <div class="roadmap-item">
+                    <div class="roadmap-dot active"></div>
+                    <div class="period">Abril — Maio 2026</div>
+                    <h5>📋 Planejamento e Aquisição de Insumos</h5>
+                    <p>Definir híbridos de milho verão para 170+ sc/ha. <strong>Antecipar 100% dos fertilizantes</strong> — em 3.000 ha, o volume justifica negociação direta com indústria (ureia, MAP, KCl). Orçar seguro agrícola para área total. Alinhar capacidade de armazenagem — Fazendão e tradings com operação no TO.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot active"></div>
+                    <div class="period">Maio — Julho 2026</div>
+                    <h5>📈 Primeira Trava de Comercialização</h5>
+                    <p><strong>Travar 30-40% da produção</strong> (~153.000-204.000 sc) nos R$ 58+/sc. Com 510.000 sc de produção estimada, Joel tem poder de negociação excepcional. Avaliar contratos B3, a termo com tradings e exportação via Ferrovia Norte-Sul. Se CBOT romper US$ 5,00, travar mais 10-15%.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="period">Set — Out 2026 (após vazio sanitário 30/09)</div>
+                    <h5>🚜 Preparo de Solo e Plantio</h5>
+                    <p>Plantio na janela ideal — a partir de 01/10, conforme Adapec-TO. <strong>3.000 ha exigem planejamento escalonado</strong> em talhões para distribuir risco climático. Definir população, adubação de base e tratamento de sementes. Regime de chuvas do TO permite plantio concentrado em outubro.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="period">Novembro — Dezembro 2026</div>
+                    <h5>🌱 Desenvolvimento Vegetativo e 2ª Trava</h5>
+                    <p>Adubação de cobertura parcelada. MIP intensivo. <strong>Segunda janela de comercialização:</strong> se safrinha 25/26 confirmar quebra total no TO (já sinalizada), preços de milho disparam. Travar mais 20-30% do saldo.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="period">Janeiro — Fevereiro 2027</div>
+                    <h5>🌽 Enchimento de Grãos — Fase Crítica</h5>
+                    <p>Monitorar clima intensivamente. Se produtividade confirmar 170+ sc/ha, <strong>travar últimos 20-30%</strong>. Preço potencialmente acima de R$ 62 com deficit global confirmado.</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="period">Março — Abril 2027</div>
+                    <h5>🏆 Colheita e Comercialização</h5>
+                    <p><strong>Colheita dos 3.000 ha.</strong> Produção estimada: 510.000 sc (30.600 t). Entrega dos contratos. Comercialização escalonada do saldo. Imediatamente: <strong>semeadura do mix de cobertura</strong> (crotalária + braquiária + milheto).</p>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-dot"></div>
+                    <div class="period">Maio — Setembro 2027</div>
+                    <h5>🌿 Cobertura e Preparação para Soja 27/28</h5>
+                    <p>Mix em desenvolvimento — fixação de N, melhoria de estrutura, palhada. <strong>Solo preparado para soja 27/28</strong> com ganho potencial de 3-5 sc/ha no ciclo seguinte = <strong>+R$ 330.000 a R$ 550.000 adicionais</strong>. Ciclo virtuoso: milho verão → cobertura → soja renovada.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ SEÇÃO 11: CONCLUSÃO ═══════════════════ -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">11</div>
+                <h3>Conclusão e Recomendação Final</h3>
+                <p>O veredito dos números para a Fazenda Reta das Cotias II</p>
+            </div>
+
+            <div class="card card-success" style="border-left-width: 6px;">
+                <h4 style="font-size: 20px;"><span class="emoji">🏆</span> Recomendação: Cenário B — Milho Verão 3.000 ha + Mix de Cobertura</h4>
+                <div class="table-wrapper" style="margin-top: 20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ação</th>
+                                <th>Detalhamento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-bold text-success">✅ Milho verão nos 3.000 ha</td>
+                                <td>Safra cheia na janela ideal — MATOPIBA com acesso à Ferrovia Norte-Sul</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-success">✅ Mix cobertura pós-colheita</td>
+                                <td>Crotalária + braquiária + milheto — R$ 1,8 mi que preparam 3.000 ha para soja 27/28</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-success">✅ Travar 30-40% agora</td>
+                                <td>~170.000 sc nos R$ 58+/sc — escalonar o restante conforme mercado subir</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-success">✅ Antecipar insumos em volume</td>
+                                <td>3.000 ha = poder de compra para negociar direto com indústria de fertilizantes</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-success">✅ Seguro agrícola</td>
+                                <td>Contratar para 3.000 ha — custo pequeno vs margem de R$ 9,18 mi</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-success">✅ Capital liberado na Selic</td>
+                                <td>R$ 10,9 mi "economizados" vs Cen. A → rendimento de ~R$ 1,4 mi ou reinvestimento</td>
+                            </tr>
+                            <tr>
+                                <td class="text-bold text-danger">❌ Evitar milho safrinha</td>
+                                <td>Custo R$ 5.900 vs receita R$ 5.280 = prejuízo de R$ 1,24 mi em 2.000 ha. Safrinha comprometida no TO.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="impact-box" style="margin-top: 30px;">
+                <div class="impact-label">Resultado Esperado — Cenário B</div>
+                <div class="impact-value">R$ 9.180.000</div>
+                <div class="impact-desc">Margem de 31% · R$ 3.060/ha · R$ 10,9 mi menos de capital investido · Risco baixo<br>Solo preparado para soja 27/28 com ganho potencial de R$ 330-550 mil no próximo ciclo</div>
+            </div>
+
+            <div class="callout callout-warning" style="margin-top: 24px;">
+                <strong>⚠️ Ressalva:</strong> Este relatório é uma ferramenta de apoio à decisão, baseada em dados públicos, projeções de mercado e custos de referência. Os cenários são estimativas sujeitas a variações de mercado, clima e câmbio. A decisão final deve considerar a realidade individual da Fazenda Reta das Cotias II, capacidade financeira, acesso a crédito, disponibilidade de armazenagem e perfil de risco do produtor. Recomenda-se acompanhamento contínuo e revisão periódica.
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════ FOOTER ═══════════════════ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Análise e Construção</h4>
+                    <div class="author-name">Dr. Sidney Souza</div>
+                    <div class="author-role">Economista Agrícola — Estrategista Econômico do Produtor</div>
+                    <p class="author-desc">Especialista em economia da fazenda e gestão de risco no agro</p>
+                    <p class="author-desc">Transformamos dados da fazenda em decisões econômicas</p>
+                    <p class="author-desc">Ajudamos produtores a entender se o mercado sustenta seu negócio</p>
+                </div>
+                <div>
+                    <h4>Contato</h4>
+                    <div class="footer-contact">
+                        <a href="mailto:sidneyagro@gmail.com"><span>✉️</span> sidneyagro@gmail.com</a>
+                        <a href="https://wa.me/5564992266886"><span>📱</span> (64) 9 9226-6886</a>
+                        <a href="https://instagram.com/ruralin.ai" target="_blank"><span>📷</span> @ruralin.ai</a>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <img src="https://ruralin.ai/wp-content/uploads/2025/03/logo-white.webp" alt="Rural In" style="height:36px; opacity:0.5;" onerror="this.style.display='none';">
+                    </div>
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                Este relatório tem caráter informativo e educacional. Não constitui recomendação de investimento ou garantia de resultados.
+                Dados de mercado referentes a 30/03/2026. Fontes: USDA, Conab, Aprosoja-TO, Imea, StoneX, Seagro-TO, G1 Tocantins, Brandalizze Consulting, Grão Direto.
+                <br><br>
+                © 2026 Rural In — Inteligência Econômica para o Agro. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
