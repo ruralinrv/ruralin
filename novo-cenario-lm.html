@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação Safra 26/27 — Faz. Monte Alegre | Leandro Martins</title>
+    <style>
+        :root {
+            --green-dark: #1a5c2e;
+            --green-mid: #2d8a4e;
+            --green-light: #4caf50;
+            --green-pale: #e8f5e9;
+            --gold: #f9a825;
+            --gold-light: #fff8e1;
+            --red: #c62828;
+            --red-light: #ffebee;
+            --blue: #1565c0;
+            --blue-light: #e3f2fd;
+            --orange: #ef6c00;
+            --orange-light: #fff3e0;
+            --purple: #6a1b9a;
+            --purple-light: #f3e5f5;
+            --gray-100: #f5f5f5;
+            --gray-200: #eeeeee;
+            --gray-300: #e0e0e0;
+            --gray-600: #757575;
+            --gray-800: #424242;
+            --gray-900: #212121;
+            --white: #ffffff;
+            --shadow: 0 2px 8px rgba(0,0,0,0.10);
+            --shadow-lg: 0 4px 16px rgba(0,0,0,0.13);
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f0f4f0 0%, #e8ece8 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+            color: var(--white);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .header .subtitle { font-size: 1rem; opacity: 0.9; }
+        .header .farm-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .header .farm-info span {
+            background: rgba(255,255,255,0.15);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        .nav-container {
+            background: var(--white);
+            border-bottom: 2px solid var(--green-light);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+        .nav-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            scrollbar-width: none;
+        }
+        .nav-scroll::-webkit-scrollbar { display: none; }
+        .nav-btn {
+            flex-shrink: 0;
+            padding: 0.5rem 1rem;
+            border: 1.5px solid var(--green-light);
+            border-radius: 20px;
+            background: var(--white);
+            color: var(--green-dark);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: var(--green-dark);
+            color: var(--white);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+        .section {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .section-header {
+            background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+            color: var(--white);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .section-header.blue { background: linear-gradient(135deg, var(--blue), #1976d2); }
+        .section-header.gold { background: linear-gradient(135deg, #f57f17, var(--gold)); }
+        .section-header.red { background: linear-gradient(135deg, var(--red), #d32f2f); }
+        .section-header.purple { background: linear-gradient(135deg, var(--purple), #8e24aa); }
+        .section-header.orange { background: linear-gradient(135deg, var(--orange), #ff9800); }
+        .section-header h2 { font-size: 1.1rem; font-weight: 700; }
+        .section-header .icon { font-size: 1.4rem; }
+        .section-body { padding: 1.5rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th, td {
+            padding: 0.6rem 0.8rem;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        th {
+            background: var(--green-pale);
+            color: var(--green-dark);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        th.blue-bg { background: var(--blue-light); color: var(--blue); }
+        th.gold-bg { background: var(--gold-light); color: #f57f17; }
+        th.red-bg { background: var(--red-light); color: var(--red); }
+        th.purple-bg { background: var(--purple-light); color: var(--purple); }
+        th.orange-bg { background: var(--orange-light); color: var(--orange); }
+        tr:hover { background: var(--gray-100); }
+        tr:nth-child(even) { background: #fafafa; }
+        tr:nth-child(even):hover { background: var(--gray-100); }
+        td.positive { color: var(--green-dark); font-weight: 700; }
+        td.negative { color: var(--red); font-weight: 700; }
+        td.best { background: #c8e6c9; font-weight: 700; }
+        td.worst { background: #ffcdd2; font-weight: 700; }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .metric-card {
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .metric-card.green { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); border-left: 4px solid var(--green-dark); }
+        .metric-card.blue { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-left: 4px solid var(--blue); }
+        .metric-card.gold { background: linear-gradient(135deg, #fff8e1, #ffecb3); border-left: 4px solid var(--gold); }
+        .metric-card.red { background: linear-gradient(135deg, #ffebee, #ffcdd2); border-left: 4px solid var(--red); }
+        .metric-card.purple { background: linear-gradient(135deg, #f3e5f5, #e1bee7); border-left: 4px solid var(--purple); }
+        .metric-card.orange { background: linear-gradient(135deg, #fff3e0, #ffe0b2); border-left: 4px solid var(--orange); }
+        .metric-card .label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
+        .metric-card .value { font-size: 1.6rem; font-weight: 800; margin: 0.3rem 0; }
+        .metric-card .detail { font-size: 0.78rem; opacity: 0.7; }
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .tag.green { background: #c8e6c9; color: var(--green-dark); }
+        .tag.red { background: #ffcdd2; color: var(--red); }
+        .tag.gold { background: #ffecb3; color: #f57f17; }
+        .tag.blue { background: #bbdefb; color: var(--blue); }
+        .tag.orange { background: #ffe0b2; color: var(--orange); }
+        .tag.purple { background: #e1bee7; color: var(--purple); }
+        .bar-chart { margin: 1rem 0; }
+        .bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.6rem;
+            gap: 0.5rem;
+        }
+        .bar-label {
+            width: 160px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            text-align: right;
+        }
+        .bar-track {
+            flex: 1;
+            height: 28px;
+            background: var(--gray-200);
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--white);
+            transition: width 1s ease;
+            min-width: 60px;
+        }
+        .bar-fill.green { background: linear-gradient(90deg, var(--green-light), var(--green-dark)); }
+        .bar-fill.blue { background: linear-gradient(90deg, #42a5f5, var(--blue)); }
+        .bar-fill.gold { background: linear-gradient(90deg, #fdd835, #f9a825); color: var(--gray-900); }
+        .bar-fill.red { background: linear-gradient(90deg, #ef5350, var(--red)); }
+        .bar-fill.purple { background: linear-gradient(90deg, #ab47bc, var(--purple)); }
+        .bar-fill.orange { background: linear-gradient(90deg, #ffa726, var(--orange)); }
+        .alert {
+            padding: 1rem 1.2rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            font-size: 0.85rem;
+            display: flex;
+            gap: 0.7rem;
+            align-items: flex-start;
+        }
+        .alert.success { background: var(--green-pale); border-left: 4px solid var(--green-dark); }
+        .alert.warning { background: var(--gold-light); border-left: 4px solid var(--gold); }
+        .alert.danger { background: var(--red-light); border-left: 4px solid var(--red); }
+        .alert.info { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .alert .alert-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .vs-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        .vs-box {
+            padding: 1.2rem;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+        .vs-box.winner { background: var(--green-pale); border: 2px solid var(--green-dark); }
+        .vs-box.loser { background: var(--gray-100); border: 2px solid var(--gray-300); }
+        .vs-badge { font-size: 1.5rem; font-weight: 900; color: var(--gray-600); }
+        .config-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .config-tab {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            background: var(--white);
+        }
+        .config-tab:hover { border-color: var(--green-light); }
+        .config-tab.active { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
+        .config-panel { display: none; }
+        .config-panel.active { display: block; }
+        .bonus-box {
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border: 2px solid var(--gold);
+            border-radius: var(--radius);
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+        .bonus-box h4 { color: #f57f17; margin-bottom: 0.5rem; }
+        .accordion { margin: 0.5rem 0; }
+        .accordion-header {
+            background: var(--gray-100);
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .accordion-header:hover { background: var(--gray-200); }
+        .accordion-header .arrow { transition: transform 0.3s; }
+        .accordion-header.open .arrow { transform: rotate(180deg); }
+        .accordion-body {
+            display: none;
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 0 0 8px 8px;
+            margin-top: -4px;
+        }
+        .accordion-body.show { display: block; }
+        .note {
+            font-size: 0.78rem;
+            color: var(--gray-600);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.3rem; }
+            .metrics-grid { grid-template-columns: 1fr 1fr; }
+            table { font-size: 0.75rem; }
+            th, td { padding: 0.4rem 0.5rem; }
+            .bar-label { width: 100px; font-size: 0.7rem; }
+            .vs-container { grid-template-columns: 1fr; }
+            .section-body { padding: 1rem; }
+        }
+        @media (max-width: 480px) {
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .nav-container { display: none; }
+            .section { break-inside: avoid; }
+            body { background: white; }
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <h1>📊 Simulação Safra 26/27 — Faz. Monte Alegre</h1>
+    <div class="subtitle">Análise Multicenarial de Sistemas de Produção</div>
+    <div class="farm-info">
+        <span>👤 Leandro Martins</span>
+        <span>📍 Montividiu — GO</span>
+        <span>🌾 548 ha</span>
+        <span>📅 Safra 2026/27</span>
+    </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-container">
+    <div class="nav-scroll">
+        <a href="#premissas" class="nav-btn">📋 Premissas</a>
+        <a href="#talhoes" class="nav-btn">🗺️ Talhões</a>
+        <a href="#bonus" class="nav-btn">💰 Bônus CV</a>
+        <a href="#configs" class="nav-btn">⚙️ Configurações</a>
+        <a href="#cenarios" class="nav-btn">📈 Cenários</a>
+        <a href="#girassol" class="nav-btn">🌻 Girassol</a>
+        <a href="#ilp" class="nav-btn">🐂 Milho+Pasto</a>
+        <a href="#matriz" class="nav-btn">🎯 Matriz Risco</a>
+        <a href="#ranking" class="nav-btn">🏆 Ranking</a>
+        <a href="#recomendacao" class="nav-btn">✅ Recomendação</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- PREMISSAS -->
+    <div class="section" id="premissas">
+        <div class="section-header">
+            <span class="icon">📋</span>
+            <h2>Premissas da Simulação</h2>
+        </div>
+        <div class="section-body">
+            <h3 style="margin-bottom:1rem;">Preços por Saca</h3>
+            <table>
+                <thead>
+                    <tr><th>Produto</th><th>R$/sc</th><th>Observação</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:left;">Soja RR</td><td><strong>R$ 110,00</strong></td><td>Preço base</td></tr>
+                    <tr><td style="text-align:left;">Soja NGMO (CV)</td><td><strong>R$ 130,00</strong></td><td>R$ 110 base + R$ 20 bônus</td></tr>
+                    <tr><td style="text-align:left;">Milho Verão BT</td><td><strong>R$ 58,00</strong></td><td>Transgênico</td></tr>
+                    <tr><td style="text-align:left;">Milho Verão CV</td><td><strong>R$ 61,00</strong></td><td>Convencional — prêmio R$ 3/sc</td></tr>
+                    <tr><td style="text-align:left;">Milho Safrinha BT</td><td><strong>R$ 50,00</strong></td><td>Transgênico</td></tr>
+                    <tr><td style="text-align:left;">Milho Safrinha CV</td><td><strong>R$ 55,00</strong></td><td>Convencional — prêmio R$ 5/sc</td></tr>
+                    <tr><td style="text-align:left;">🌻 Girassol Safrinha</td><td><strong>R$ 120,00</strong></td><td>Benchmark Caramuru GO</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Produtividades (sc/ha)</h3>
+            <table>
+                <thead>
+                    <tr><th>Cultura</th><th class="red-bg">Pessimista</th><th>Base</th><th class="blue-bg">Otimista</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:left;">Soja RR</td><td>65</td><td><strong>70</strong></td><td>75</td></tr>
+                    <tr><td style="text-align:left;">Soja NGMO (CV)</td><td>60</td><td><strong>65</strong></td><td>70</td></tr>
+                    <tr><td style="text-align:left;">Milho Verão (BT/CV)</td><td>130</td><td><strong>150</strong></td><td>170</td></tr>
+                    <tr><td style="text-align:left;">Milho Safrinha (BT/CV)</td><td>100</td><td><strong>125</strong></td><td>150</td></tr>
+                    <tr><td style="text-align:left;">🌻 Girassol Safrinha</td><td>22</td><td><strong>27</strong></td><td>34</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Custos Operacionais Totais — COT (R$/ha)</h3>
+            <table>
+                <thead>
+                    <tr><th>Cultura</th><th>COT/ha</th><th>Nota</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td style="text-align:left;">Soja RR</td><td><strong>R$ 6.600</strong></td><td>Inclui royalties + manejo resistência</td></tr>
+                    <tr><td style="text-align:left;">Soja NGMO (CV)</td><td><strong>R$ 7.000</strong></td><td>Sem royalties, mas maior manejo fitossanitário</td></tr>
+                    <tr><td style="text-align:left;">Milho Verão BT</td><td><strong>R$ 7.000</strong></td><td>Padrão transgênico</td></tr>
+                    <tr><td style="text-align:left;">Milho Verão CV</td><td><strong>R$ 7.000</strong></td><td>Convencional — mesmo custo base</td></tr>
+                    <tr><td style="text-align:left;">Milho BT Verão + Braquiária</td><td><strong>R$ 7.350</strong></td><td>+R$ 350/ha (semente+operação gramínea)</td></tr>
+                    <tr><td style="text-align:left;">Milho Safrinha BT</td><td><strong>R$ 5.900</strong></td><td>Padrão 2ª safra</td></tr>
+                    <tr><td style="text-align:left;">Milho Safrinha CV</td><td><strong>R$ 5.900</strong></td><td>Convencional 2ª safra</td></tr>
+                    <tr><td style="text-align:left;">🌻 Girassol Safrinha</td><td><strong>R$ 1.800</strong></td><td>FAEG/Caramuru benchmark GO</td></tr>
+                    <tr><td style="text-align:left;">Cobertura (manejo)</td><td><strong>R$ 600</strong></td><td>Dessecação + semente</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TALHÕES -->
+    <div class="section" id="talhoes">
+        <div class="section-header blue">
+            <span class="icon">🗺️</span>
+            <h2>Distribuição dos Talhões — Safra Verão</h2>
+        </div>
+        <div class="section-body">
+            <table>
+                <thead>
+                    <tr><th>Talhão</th><th>Cultura</th><th>Área (ha)</th><th>% Fazenda</th><th>Tipo</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>T01</strong></td><td>Soja RR</td><td>68</td><td>12%</td><td><span class="tag orange">Transgênica</span></td></tr>
+                    <tr><td><strong>T02</strong></td><td>Milho CV Verão</td><td>166</td><td>30%</td><td><span class="tag green">Convencional</span></td></tr>
+                    <tr><td><strong>T03</strong></td><td>Soja NGMO</td><td>218</td><td>40%</td><td><span class="tag green">Convencional</span></td></tr>
+                    <tr><td><strong>T04</strong></td><td>Soja RR</td><td>56</td><td>10%</td><td><span class="tag orange">Transgênica</span></td></tr>
+                    <tr><td><strong>T05</strong></td><td>Soja RR</td><td>40</td><td>8%</td><td><span class="tag orange">Transgênica</span></td></tr>
+                </tbody>
+                <tfoot>
+                    <tr style="font-weight:700; background:#e8f5e9;">
+                        <td colspan="2">TOTAL</td><td>548 ha</td><td>100%</td><td></td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="metrics-grid" style="margin-top:1.5rem;">
+                <div class="metric-card orange">
+                    <div class="label">Soja RR</div>
+                    <div class="value">164 ha</div>
+                    <div class="detail">30% — T01+T04+T05</div>
+                </div>
+                <div class="metric-card green">
+                    <div class="label">Soja NGMO</div>
+                    <div class="value">218 ha</div>
+                    <div class="detail">40% — T03</div>
+                </div>
+                <div class="metric-card blue">
+                    <div class="label">Milho CV Verão</div>
+                    <div class="value">166 ha</div>
+                    <div class="detail">30% — T02</div>
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">Safrinha 2027 — Área Disponível: 382 ha</h3>
+            <p class="note" style="margin-bottom:1rem;">548 ha − 166 ha (milho verão) = 382 ha disponíveis para safrinha</p>
+            <table>
+                <thead>
+                    <tr><th>Distribuição</th><th>Cultura</th><th>Área (ha)</th><th>%</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>70%</td><td>Milho CV Safrinha</td><td><strong>267 ha</strong></td><td>70%</td></tr>
+                    <tr><td>30% — Opção A</td><td>Cobertura / Feno</td><td><strong>115 ha</strong></td><td>30%</td></tr>
+                    <tr><td>30% — Opção B</td><td>🌻 Girassol (Caramuru)</td><td><strong>115 ha</strong></td><td>30%</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BÔNUS SOJA CV -->
+    <div class="section" id="bonus">
+        <div class="section-header gold">
+            <span class="icon">💰</span>
+            <h2>Mecânica do Bônus Soja Convencional (NGMO)</h2>
+        </div>
+        <div class="section-body">
+            <div class="bonus-box">
+                <h4>🏷️ Bônus Safra 26/27: R$ 20,00/sc — 100% da produção elegível</h4>
+                <p style="margin-top:0.5rem; font-size:0.9rem;">
+                    <strong>Regra de fixação:</strong> Pode fixar antecipadamente apenas <strong>35 sc/ha</strong>. O restante fixa <strong>após entrega do contrato</strong>.
+                </p>
+            </div>
+
+            <h3 style="margin:1rem 0;">Impacto na Receita por Hectare — Soja CV (218 ha)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cenário</th>
+                        <th>Prod.</th>
+                        <th>Fixação Antecipada (35sc)</th>
+                        <th>Fixação Pós-Entrega</th>
+                        <th>Receita Total/ha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Pessimista</td><td>60 sc</td>
+                        <td>35 × R$ 130 = R$ 4.550</td>
+                        <td>25 × R$ 130 = R$ 3.250</td>
+                        <td><strong>R$ 7.800</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Base</td><td>65 sc</td>
+                        <td>35 × R$ 130 = R$ 4.550</td>
+                        <td>30 × R$ 130 = R$ 3.900</td>
+                        <td><strong>R$ 8.450</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Otimista</td><td>70 sc</td>
+                        <td>35 × R$ 130 = R$ 4.550</td>
+                        <td>35 × R$ 130 = R$ 4.550</td>
+                        <td><strong>R$ 9.100</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Comparativo: Soja CV vs Soja RR por Hectare (Base)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicador</th>
+                        <th class="orange-bg">Soja RR</th>
+                        <th class="blue-bg">Soja NGMO (CV)</th>
+                        <th>Diferença</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;">Preço/sc</td>
+                        <td>R$ 110</td><td>R$ 130</td>
+                        <td class="positive">+R$ 20/sc (+18,2%)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">Produtividade base</td>
+                        <td>70 sc/ha</td><td>65 sc/ha</td>
+                        <td class="negative">−5 sc/ha (−7,1%)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">Receita bruta/ha</td>
+                        <td>R$ 7.700</td><td>R$ 8.450</td>
+                        <td class="positive">+R$ 750/ha</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">COT/ha</td>
+                        <td>R$ 6.600</td><td>R$ 7.000</td>
+                        <td class="negative">+R$ 400/ha</td>
+                    </tr>
+                    <tr style="background:#e8f5e9; font-weight:700;">
+                        <td style="text-align:left;">Margem/ha</td>
+                        <td>R$ 1.100</td><td>R$ 1.450</td>
+                        <td class="positive">+R$ 350/ha (+31,8%)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert success">
+                <span class="alert-icon">✅</span>
+                <div>
+                    Mesmo com 5 sc/ha a menos e R$ 400/ha de custo a mais, a <strong>Soja CV gera R$ 350/ha a mais</strong> que a RR. Nos 218 ha de T03, isso representa <strong>R$ 76.300 adicionais</strong>.
+                </div>
+            </div>
+
+            <div class="alert info">
+                <span class="alert-icon">💡</span>
+                <div>
+                    <strong>Risco da fixação parcial:</strong> A porção pós-entrega (~30 sc/ha) fica exposta à variação de mercado. Se o prêmio NGMO cair, a receita efetiva pode ser menor. Para esta simulação, mantemos o prêmio de R$ 20/sc em 100%.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5 CONFIGURAÇÕES -->
+    <div class="section" id="configs">
+        <div class="section-header">
+            <span class="icon">⚙️</span>
+            <h2>5 Configurações de Sistema</h2>
+        </div>
+        <div class="section-body">
+            <div class="config-tabs">
+                <div class="config-tab active" onclick="showConfig(1)">C1 — Real+Cobertura</div>
+                <div class="config-tab" onclick="showConfig(2)">C2 — Real+Girassol</div>
+                <div class="config-tab" onclick="showConfig(3)">C3 — Real+Pasto</div>
+                <div class="config-tab" onclick="showConfig(4)">C4 — 100% CV</div>
+                <div class="config-tab" onclick="showConfig(5)">C5 — 100% RR/BT</div>
+            </div>
+
+            <div class="config-panel active" id="config1">
+                <h3>C1 — Configuração Real + Cobertura <span class="tag blue">PLANEJADO</span></h3>
+                <table style="margin-top:0.8rem;">
+                    <thead><tr><th>Cultura</th><th>Área</th><th>R$/sc</th><th>COT/ha</th><th>Prod. Base</th></tr></thead>
+                    <tbody>
+                        <tr><td>Soja RR</td><td>164 ha</td><td>R$ 110</td><td>R$ 6.600</td><td>70 sc</td></tr>
+                        <tr><td>Soja NGMO</td><td>218 ha</td><td>R$ 130</td><td>R$ 7.000</td><td>65 sc</td></tr>
+                        <tr><td>Milho CV Verão</td><td>166 ha</td><td>R$ 61</td><td>R$ 7.000</td><td>150 sc</td></tr>
+                        <tr><td>Milho CV Safrinha</td><td>267 ha</td><td>R$ 55</td><td>R$ 5.900</td><td>125 sc</td></tr>
+                        <tr><td>Cobertura</td><td>115 ha</td><td>—</td><td>R$ 600</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="config-panel" id="config2">
+                <h3>C2 — Real + Girassol <span class="tag gold">🌻 GIRASSOL</span></h3>
+                <table style="margin-top:0.8rem;">
+                    <thead><tr><th>Cultura</th><th>Área</th><th>R$/sc</th><th>COT/ha</th><th>Prod. Base</th></tr></thead>
+                    <tbody>
+                        <tr><td>Soja RR</td><td>164 ha</td><td>R$ 110</td><td>R$ 6.600</td><td>70 sc</td></tr>
+                        <tr><td>Soja NGMO</td><td>218 ha</td><td>R$ 130</td><td>R$ 7.000</td><td>65 sc</td></tr>
+                        <tr><td>Milho CV Verão</td><td>166 ha</td><td>R$ 61</td><td>R$ 7.000</td><td>150 sc</td></tr>
+                        <tr><td>Milho CV Safrinha</td><td>267 ha</td><td>R$ 55</td><td>R$ 5.900</td><td>125 sc</td></tr>
+                        <tr><td>🌻 Girassol</td><td>115 ha</td><td>R$ 120</td><td>R$ 1.800</td><td>27 sc</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="config-panel" id="config3">
+                <h3>C3 — Milho BT + Braquiária (ILP) <span class="tag purple">🐂 PASTO</span></h3>
+                <table style="margin-top:0.8rem;">
+                    <thead><tr><th>Cultura</th><th>Área</th><th>R$/sc</th><th>COT/ha</th><th>Prod. Base</th></tr></thead>
+                    <tbody>
+                        <tr><td>Soja RR</td><td>164 ha</td><td>R$ 110</td><td>R$ 6.600</td><td>70 sc</td></tr>
+                        <tr><td>Soja NGMO</td><td>218 ha</td><td>R$ 130</td><td>R$ 7.000</td><td>65 sc</td></tr>
+                        <tr><td>Milho BT+Braquiária</td><td>166 ha</td><td>R$ 58</td><td>R$ 7.350</td><td>150 sc</td></tr>
+                        <tr><td>Milho CV Safrinha</td><td>267 ha</td><td>R$ 55</td><td>R$ 5.900</td><td>125 sc</td></tr>
+                        <tr><td>Cobertura</td><td>115 ha</td><td>—</td><td>R$ 600</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="config-panel" id="config4">
+                <h3>C4 — 100% Convencional <span class="tag green">MÁXIMO CV</span></h3>
+                <table style="margin-top:0.8rem;">
+                    <thead><tr><th>Cultura</th><th>Área</th><th>R$/sc</th><th>COT/ha</th><th>Prod. Base</th></tr></thead>
+                    <tbody>
+                        <tr><td>Soja NGMO</td><td>382 ha</td><td>R$ 130</td><td>R$ 7.000</td><td>65 sc</td></tr>
+                        <tr><td>Milho CV Verão</td><td>166 ha</td><td>R$ 61</td><td>R$ 7.000</td><td>150 sc</td></tr>
+                        <tr><td>Milho CV Safrinha</td><td>267 ha</td><td>R$ 55</td><td>R$ 5.900</td><td>125 sc</td></tr>
+                        <tr><td>Cobertura</td><td>115 ha</td><td>—</td><td>R$ 600</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="config-panel" id="config5">
+                <h3>C5 — 100% Transgênico <span class="tag red">BENCHMARK</span></h3>
+                <table style="margin-top:0.8rem;">
+                    <thead><tr><th>Cultura</th><th>Área</th><th>R$/sc</th><th>COT/ha</th><th>Prod. Base</th></tr></thead>
+                    <tbody>
+                        <tr><td>Soja RR</td><td>382 ha</td><td>R$ 110</td><td>R$ 6.600</td><td>70 sc</td></tr>
+                        <tr><td>Milho BT Verão</td><td>166 ha</td><td>R$ 58</td><td>R$ 7.000</td><td>150 sc</td></tr>
+                        <tr><td>Milho BT Safrinha</td><td>267 ha</td><td>R$ 50</td><td>R$ 5.900</td><td>125 sc</td></tr>
+                        <tr><td>Cobertura</td><td>115 ha</td><td>—</td><td>R$ 600</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENÁRIOS PRODUTIVIDADE BASE -->
+    <div class="section" id="cenarios">
+        <div class="section-header blue">
+            <span class="icon">📈</span>
+            <h2>Resultado por Configuração — Produtividade Base</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- ======= MEMÓRIA DE CÁLCULO (CORRIGIDA) =======
+            C1 BASE:
+              SojaRR:    164×70×110 = 1.263.200 − 164×6.600 = 1.082.400 → 180.800
+              SojaCV:    218×65×130 = 1.842.100 − 218×7.000 = 1.526.000 → 316.100
+              MilhoCVVer:166×150×61 = 1.518.900 − 166×7.000 = 1.162.000 → 356.900
+              MilhoCVSaf:267×125×55 = 1.835.625 − 267×5.900 = 1.575.300 → 260.325
+              Cobertura: 0 − 115×600 = 69.000 → −69.000
+              RECEITA = 6.459.825  CUSTO = 5.414.700  MARGEM = 1.045.125
+
+            C2 BASE: (igual C1, troca cobertura por girassol)
+              Girassol:  115×27×120 = 372.600 − 115×1.800 = 207.000 → 165.600
+              RECEITA = 6.832.425  CUSTO = 5.552.700  MARGEM = 1.279.725
+
+            C3 BASE:
+              SojaRR: 180.800 | SojaCV: 316.100
+              MilhoBT+Braq: 166×150×58 = 1.444.200 − 166×7.350 = 1.220.100 → 224.100
+              MilhoCVSaf: 260.325 | Cob: −69.000
+              RECEITA = 6.385.125  CUSTO = 5.472.700  MARGEM = 912.325
+
+            C4 BASE:
+              SojaCV:    382×65×130 = 3.228.100 − 382×7.000 = 2.674.000 → 554.100
+              MilhoCVVer: 356.900 | MilhoCVSaf: 260.325 | Cob: −69.000
+              RECEITA = 6.842.625  CUSTO = 5.480.300  MARGEM = 1.102.325
+              Nota: Rec = 3.228.100+1.518.900+1.835.625+0 = 6.582.625
+              Custo = 2.674.000+1.162.000+1.575.300+69.000 = 5.480.300
+              MARGEM = 1.102.325
+
+            C5 BASE:
+              SojaRR:    382×70×110 = 2.940.600 − 382×6.600 = 2.521.200 → 419.400
+              MilhoBTVer:166×150×58 = 1.444.200 − 166×7.000 = 1.162.000 → 282.200
+              MilhoBTSaf:267×125×50 = 1.668.750 − 267×5.900 = 1.575.300 → 93.450
+              Cob: −69.000
+              RECEITA = 6.053.550  CUSTO = 5.327.500  MARGEM = 726.050
+            ======= -->
+
+            <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Configuração</th>
+                        <th>Receita Bruta</th>
+                        <th>Custo Total</th>
+                        <th>Margem Líquida</th>
+                        <th>Margem %</th>
+                        <th>R$/ha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;"><strong>C1</strong> Real+Cobertura</td>
+                        <td>R$ 6.459.825</td>
+                        <td>R$ 5.414.700</td>
+                        <td class="positive">R$ 1.045.125</td>
+                        <td>16,2%</td>
+                        <td>R$ 1.907</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C2</strong> Real+🌻Girassol</td>
+                        <td>R$ 6.832.425</td>
+                        <td>R$ 5.552.700</td>
+                        <td class="best">R$ 1.279.725</td>
+                        <td>18,7%</td>
+                        <td>R$ 2.335</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C3</strong> Real+🐂Pasto</td>
+                        <td>R$ 6.385.125</td>
+                        <td>R$ 5.472.700</td>
+                        <td class="positive">R$ 912.325</td>
+                        <td>14,3%</td>
+                        <td>R$ 1.665</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C4</strong> 100% CV</td>
+                        <td>R$ 6.582.625</td>
+                        <td>R$ 5.480.300</td>
+                        <td class="positive">R$ 1.102.325</td>
+                        <td>16,7%</td>
+                        <td>R$ 2.012</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C5</strong> 100% RR/BT</td>
+                        <td>R$ 6.053.550</td>
+                        <td>R$ 5.327.500</td>
+                        <td class="positive">R$ 726.050</td>
+                        <td>12,0%</td>
+                        <td>R$ 1.325</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="bar-chart" style="margin-top:1.5rem;">
+                <h4 style="margin-bottom:0.8rem;">Margem Líquida — Cenário Base</h4>
+                <div class="bar-row">
+                    <span class="bar-label">C2 — Real+Girassol</span>
+                    <div class="bar-track"><div class="bar-fill green" style="width:100%;">R$ 1.279.725</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C4 — 100% CV</span>
+                    <div class="bar-track"><div class="bar-fill green" style="width:86%;">R$ 1.102.325</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C1 — Real+Cobertura</span>
+                    <div class="bar-track"><div class="bar-fill blue" style="width:82%;">R$ 1.045.125</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C3 — Real+Pasto</span>
+                    <div class="bar-track"><div class="bar-fill purple" style="width:71%;">R$ 912.325</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C5 — 100% RR/BT</span>
+                    <div class="bar-track"><div class="bar-fill orange" style="width:57%;">R$ 726.050</div></div>
+                </div>
+            </div>
+
+            <div class="alert warning">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <strong>Atenção — COTs reais comprimem margens.</strong> Com COTs de R$ 6.600-7.000/ha, as margens caem significativamente. A melhor margem percentual é 18,7% (C2). A diversificação e a receita do girassol passam a ter papel ainda mais relevante.
+                </div>
+            </div>
+
+            <div class="alert success">
+                <span class="alert-icon">🏆</span>
+                <div>
+                    <strong>C2 (Real + Girassol) assume a liderança!</strong> Com os COTs reais, o girassol nos 115 ha faz toda a diferença: gera R$ 234.600 a mais que C1 (cobertura). C4 (100% CV) fica em 2º por conta do custo maior da soja CV (R$ 7.000 vs R$ 6.600 da RR).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SENSIBILIDADE POR PRODUTIVIDADE -->
+    <div class="section">
+        <div class="section-header purple">
+            <span class="icon">📊</span>
+            <h2>Sensibilidade por Produtividade — Todas as Configurações</h2>
+        </div>
+        <div class="section-body">
+
+            <!-- ======= CÁLCULOS PESSIMISTA E OTIMISTA =======
+            C1 PESSIMISTA:
+              SojaRR:    164×65×110=1.172.600 − 1.082.400 = 90.200
+              SojaCV:    218×60×130=1.700.400 − 1.526.000 = 174.400
+              MilhoCVVer:166×130×61=1.317.380 − 1.162.000 = 155.380
+              MilhoCVSaf:267×100×55=1.468.500 − 1.575.300 = −106.800
+              Cob: −69.000
+              MARGEM = 244.180
+
+            C1 OTIMISTA:
+              SojaRR:    164×75×110=1.353.000 − 1.082.400 = 270.600
+              SojaCV:    218×70×130=1.983.800 − 1.526.000 = 457.800
+              MilhoCVVer:166×170×61=1.720.420 − 1.162.000 = 558.420
+              MilhoCVSaf:267×150×55=2.202.750 − 1.575.300 = 627.450
+              Cob: −69.000
+              MARGEM = 1.845.270
+
+            C2 PESS: C1 pess sem cob + girassol pess
+              244.180 + 69.000 (remove cob) = 313.180
+              Girassol: 115×22×120=303.600 − 207.000 = 96.600
+              MARGEM = 313.180 + 96.600 = 409.780
+
+            C2 OTIM:
+              1.845.270 + 69.000 = 1.914.270
+              Girassol: 115×34×120=469.200 − 207.000 = 262.200
+              MARGEM = 1.914.270 + 262.200 = 2.176.470
+
+            C3 PESS:
+              SojaRR: 90.200 | SojaCV: 174.400
+              MilhoBT+Braq: 166×130×58=994.840 − 1.220.100 = −225.260
+              MilhoCVSaf: −106.800 | Cob: −69.000
+              MARGEM = −136.460
+
+            C3 OTIM:
+              SojaRR: 270.600 | SojaCV: 457.800
+              MilhoBT+Braq: 166×170×58=1.636.760 − 1.220.100 = 416.660
+              MilhoCVSaf: 627.450 | Cob: −69.000
+              MARGEM = 1.703.510
+
+            C4 PESS:
+              SojaCV: 382×60×130=2.979.600 − 2.674.000 = 305.600
+              MilhoCVVer: 155.380 | MilhoCVSaf: −106.800 | Cob: −69.000
+              MARGEM = 285.180
+
+            C4 OTIM:
+              SojaCV: 382×70×130=3.474.200 − 2.674.000 = 800.200
+              MilhoCVVer: 558.420 | MilhoCVSaf: 627.450 | Cob: −69.000
+              MARGEM = 1.917.070
+
+            C5 PESS:
+              SojaRR: 382×65×110=2.731.300 − 2.521.200 = 210.100
+              MilhoBTVer: 166×130×58=994.840 − 1.162.000 = −167.160
+              MilhoBTSaf: 267×100×50=1.335.000 − 1.575.300 = −240.300
+              Cob: −69.000
+              MARGEM = −266.360
+
+            C5 OTIM:
+              SojaRR: 382×75×110=3.150.500 − 2.521.200 = 629.300
+              MilhoBTVer: 166×170×58=1.636.760 − 1.162.000 = 474.760
+              MilhoBTSaf: 267×150×50=2.002.500 − 1.575.300 = 427.200
+              Cob: −69.000
+              MARGEM = 1.462.260
+            ======= -->
+
+            <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Configuração</th>
+                        <th class="red-bg">Pessimista</th>
+                        <th>Base</th>
+                        <th class="blue-bg">Otimista</th>
+                        <th>Amplitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;"><strong>C1</strong> Real+Cobertura</td>
+                        <td class="positive">R$ 244.180</td>
+                        <td><strong>R$ 1.045.125</strong></td>
+                        <td class="positive">R$ 1.845.270</td>
+                        <td>R$ 1.601.090</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C2</strong> Real+🌻Girassol</td>
+                        <td class="best">R$ 409.780</td>
+                        <td class="best"><strong>R$ 1.279.725</strong></td>
+                        <td class="best">R$ 2.176.470</td>
+                        <td>R$ 1.766.690</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C3</strong> Real+🐂Pasto</td>
+                        <td class="negative">−R$ 136.460</td>
+                        <td><strong>R$ 912.325</strong></td>
+                        <td class="positive">R$ 1.703.510</td>
+                        <td>R$ 1.839.970</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C4</strong> 100% CV</td>
+                        <td class="positive">R$ 285.180</td>
+                        <td><strong>R$ 1.102.325</strong></td>
+                        <td class="positive">R$ 1.917.070</td>
+                        <td>R$ 1.631.890</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C5</strong> 100% RR/BT</td>
+                        <td class="worst">−R$ 266.360</td>
+                        <td><strong>R$ 726.050</strong></td>
+                        <td class="positive">R$ 1.462.260</td>
+                        <td>R$ 1.728.620</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="alert danger">
+                <span class="alert-icon">🚨</span>
+                <div>
+                    <strong>ALERTA — Cenários pessimistas apertados!</strong> Com COTs reais, dois cenários entram no <strong>VERMELHO</strong> na produtividade pessimista:<br>
+                    • <strong>C3 (Pasto):</strong> −R$ 136.460 → milho BT a R$ 58/sc não paga custo de R$ 7.350/ha em 130 sc<br>
+                    • <strong>C5 (100% RR/BT):</strong> −R$ 266.360 → milho BT safrinha a R$ 50/sc e 100 sc não cobre R$ 5.900/ha<br>
+                    As configurações com <strong>mais componente convencional (C2 e C4)</strong> são as mais resilientes.
+                </div>
+            </div>
+
+            <div class="metrics-grid" style="margin-top:1rem;">
+                <div class="metric-card green">
+                    <div class="label">Mais Resiliente (Pior Caso)</div>
+                    <div class="value" style="font-size:1.3rem;">C2 🌻</div>
+                    <div class="detail">R$ 409.780 mesmo no pessimista</div>
+                </div>
+                <div class="metric-card red">
+                    <div class="label">Mais Arriscada (Pior Caso)</div>
+                    <div class="value" style="font-size:1.3rem;">C5 RR/BT</div>
+                    <div class="detail">−R$ 266.360 no pessimista</div>
+                </div>
+                <div class="metric-card blue">
+                    <div class="label">Maior Upside (Otimista)</div>
+                    <div class="value" style="font-size:1.3rem;">C2 🌻</div>
+                    <div class="detail">R$ 2.176.470 no otimista</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GIRASSOL DETALHADO -->
+    <div class="section" id="girassol">
+        <div class="section-header gold">
+            <span class="icon">🌻</span>
+            <h2>Análise Detalhada — Girassol Safrinha (115 ha)</h2>
+        </div>
+        <div class="section-body">
+            <div class="metrics-grid">
+                <div class="metric-card gold">
+                    <div class="label">Área</div>
+                    <div class="value">115 ha</div>
+                    <div class="detail">30% da safrinha</div>
+                </div>
+                <div class="metric-card green">
+                    <div class="label">Custo Total</div>
+                    <div class="value">R$ 207.000</div>
+                    <div class="detail">R$ 1.800/ha</div>
+                </div>
+                <div class="metric-card blue">
+                    <div class="label">Preço Base</div>
+                    <div class="value">R$ 120/sc</div>
+                    <div class="detail">Caramuru — Montividiu/GO</div>
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">Benchmark Girassol em Goiás</h3>
+            <table>
+                <thead><tr><th>Indicador</th><th>Dados</th><th>Fonte</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:left;">Produtividade média GO</td><td>26,7 sc/ha (1.579 kg/ha)</td><td>Conab — Safra 24/25</td></tr>
+                    <tr><td style="text-align:left;">Top produtores</td><td>34-45 sc/ha</td><td>Produtores Panamá/GO</td></tr>
+                    <tr><td style="text-align:left;">Preço médio</td><td>R$ 120/sc</td><td>Caramuru Giratech 2025</td></tr>
+                    <tr><td style="text-align:left;">Custo médio/ha</td><td>R$ 1.600-2.000</td><td>FAEG / Produtores GO</td></tr>
+                    <tr><td style="text-align:left;">Ciclo</td><td>~110 dias</td><td>Curto e adaptado ao Cerrado</td></tr>
+                    <tr><td style="text-align:left;">Necessidade hídrica</td><td>200mm (vs 350mm milho)</td><td>Menor risco hídrico</td></tr>
+                    <tr><td style="text-align:left;">Comprador local</td><td>Caramuru Alimentos</td><td>78 mil ton originadas em 2025</td></tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Cenários de Receita — Girassol (115 ha)</h3>
+            <table>
+                <thead>
+                    <tr><th>Cenário</th><th>Prod.</th><th>Receita</th><th>Custo</th><th>Margem</th><th>R$/ha</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag red">Pessimista</span></td>
+                        <td>22 sc</td><td>R$ 303.600</td><td>R$ 207.000</td>
+                        <td class="positive">R$ 96.600</td><td>R$ 840</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag gold">Base</span></td>
+                        <td>27 sc</td><td>R$ 372.600</td><td>R$ 207.000</td>
+                        <td class="positive">R$ 165.600</td><td>R$ 1.440</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag green">Otimista</span></td>
+                        <td>34 sc</td><td>R$ 469.200</td><td>R$ 207.000</td>
+                        <td class="positive">R$ 262.200</td><td>R$ 2.280</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Girassol vs Cobertura — O que muda nos 115 ha?</h3>
+            <div class="vs-container">
+                <div class="vs-box winner">
+                    <h4>🌻 Girassol</h4>
+                    <div style="font-size:1.5rem; font-weight:800; color:var(--green-dark); margin:0.5rem 0;">+R$ 165.600</div>
+                    <p style="font-size:0.8rem;">Gera receita líquida</p>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="vs-box loser">
+                    <h4>🌿 Cobertura</h4>
+                    <div style="font-size:1.5rem; font-weight:800; color:var(--red); margin:0.5rem 0;">−R$ 69.000</div>
+                    <p style="font-size:0.8rem;">Custo puro (benefício indireto)</p>
+                </div>
+            </div>
+
+            <div class="alert success">
+                <span class="alert-icon">🌻</span>
+                <div>
+                    <strong>Girassol adiciona R$ 234.600</strong> vs cobertura no cenário base (R$ 165.600 de lucro + R$ 69.000 de custo evitado). Com COTs altos nas demais culturas, esse ganho é ainda mais relevante — equivale a <strong>22,4% da margem total de C1</strong>.
+                </div>
+            </div>
+
+            <div class="alert danger">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <strong>Riscos do Girassol:</strong><br>
+                    • <strong>Mofo branco (Sclerotinia):</strong> Risco elevado se safrinha úmida. Contaminação para soja seguinte.<br>
+                    • <strong>Pouca palhada:</strong> Compensar consorciando com ruziziensis (+~R$ 150/ha).<br>
+                    • <strong>Sem herbicida seletivo:</strong> Voluntárias de soja difíceis de controlar.<br>
+                    • <strong>Janela:</strong> Plantar até meados de fevereiro para máxima produtividade.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ILP MILHO + PASTO -->
+    <div class="section" id="ilp">
+        <div class="section-header" style="background: linear-gradient(135deg, #2e7d32, #43a047);">
+            <span class="icon">🐂</span>
+            <h2>Milho BT Verão + Braquiária (ILP) — 166 ha</h2>
+        </div>
+        <div class="section-body">
+            <div class="metrics-grid">
+                <div class="metric-card green">
+                    <div class="label">Área ILP</div>
+                    <div class="value">166 ha</div>
+                    <div class="detail">T02 — milho verão</div>
+                </div>
+                <div class="metric-card orange">
+                    <div class="label">COT Milho BT + Braquiária</div>
+                    <div class="value">R$ 7.350/ha</div>
+                    <div class="detail">R$ 7.000 milho + R$ 350 gramínea</div>
+                </div>
+                <div class="metric-card purple">
+                    <div class="label">Economia Formação Pasto</div>
+                    <div class="value">R$ 4.500/ha</div>
+                    <div class="detail">Vs formação convencional (FAEG)</div>
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">Custo Adicional da Gramínea</h3>
+            <table>
+                <thead><tr><th>Item</th><th>Qtd/ha</th><th>R$/und</th><th>R$/ha</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:left;">Semente Braquiária Brizantha (Marandu) VC 45%</td><td>8 kg</td><td>R$ 25,00</td><td>R$ 200,00</td></tr>
+                    <tr><td style="text-align:left;">Operação plantio (regulagem)</td><td>—</td><td>—</td><td>R$ 80,00</td></tr>
+                    <tr><td style="text-align:left;">Subdose herbicida (controle competição)</td><td>—</td><td>—</td><td>R$ 70,00</td></tr>
+                    <tr style="font-weight:700; background:#e8f5e9;">
+                        <td style="text-align:left;">TOTAL ADICIONAL</td><td></td><td></td><td><strong>R$ 350,00/ha</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin:1.5rem 0 1rem;">Comparativo: Milho CV Verão vs Milho BT + Braquiária (Base)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicador</th>
+                        <th class="blue-bg">Milho CV (C1)</th>
+                        <th class="purple-bg">Milho BT+Braq (C3)</th>
+                        <th>Diferença</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;">Preço/sc</td>
+                        <td>R$ 61</td><td>R$ 58</td>
+                        <td class="negative">−R$ 3/sc</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">COT/ha</td>
+                        <td>R$ 7.000</td><td>R$ 7.350</td>
+                        <td class="negative">+R$ 350/ha</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">Receita base (150sc)</td>
+                        <td>R$ 9.150</td><td>R$ 8.700</td>
+                        <td class="negative">−R$ 450/ha</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">Margem grão/ha</td>
+                        <td>R$ 2.150</td><td>R$ 1.350</td>
+                        <td class="negative">−R$ 800/ha</td>
+                    </tr>
+                    <tr style="background:#e8f5e9;">
+                        <td style="text-align:left;">Margem grão (166 ha)</td>
+                        <td><strong>R$ 356.900</strong></td><td><strong>R$ 224.100</strong></td>
+                        <td class="negative">−R$ 132.800</td>
+                    </tr>
+                    <tr style="background:#fff8e1;">
+                        <td style="text-align:left;">🐂 Valor pasto formado (166 ha)</td>
+                        <td>—</td><td><strong>R$ 747.000</strong></td>
+                        <td class="positive">+R$ 747.000</td>
+                    </tr>
+                    <tr style="background:#c8e6c9; font-weight:700;">
+                        <td style="text-align:left;">VALOR TOTAL GERADO</td>
+                        <td>R$ 356.900</td><td>R$ 971.100</td>
+                        <td class="positive">+R$ 614.200</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert success">
+                <span class="alert-icon">🐂</span>
+                <div>
+                    <strong>ILP gera R$ 614.200 a mais de VALOR</strong> quando se inclui a economia de formação de pasto. Mas atenção: o benefício só se materializa <strong>se houver demanda real por pastagem</strong>.
+                </div>
+            </div>
+
+            <div class="alert danger">
+                <span class="alert-icon">🚨</span>
+                <div>
+                    <strong>Risco C3 no pessimista:</strong> Com 130 sc/ha a R$ 58/sc, o milho BT+braquiária gera apenas R$ 7.540/ha de receita contra R$ 7.350/ha de custo → margem de apenas R$ 190/ha. Se incluir qualquer custo extra, zera. É o cenário com menor colchão de segurança.
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">Benefícios Adicionais do Consórcio (não monetizados)</h3>
+            <table>
+                <thead><tr><th>Benefício</th><th>Impacto</th></tr></thead>
+                <tbody>
+                    <tr><td style="text-align:left;">🌱 Cobertura de solo</td><td>Excelente palhada para SPD na soja seguinte</td></tr>
+                    <tr><td style="text-align:left;">🔄 Descompactação</td><td>Raízes profundas melhoram estrutura do solo</td></tr>
+                    <tr><td style="text-align:left;">🧪 Ciclagem de nutrientes</td><td>Recuperação em camadas profundas</td></tr>
+                    <tr><td style="text-align:left;">🐛 Controle biológico</td><td>Reduz nematoides e plantas daninhas</td></tr>
+                    <tr><td style="text-align:left;">📋 ZARC aprovado (2025)</td><td>Acesso a crédito e seguro agrícola</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MATRIZ DE RISCO -->
+    <div class="section" id="matriz">
+        <div class="section-header red">
+            <span class="icon">🎯</span>
+            <h2>Matriz de Risco — Margem × Produtividade</h2>
+        </div>
+        <div class="section-body">
+            <p style="margin-bottom:1rem; font-size:0.85rem;">Valores em <strong>R$ mil</strong>. Células vermelhas = prejuízo.</p>
+
+            <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Config</th>
+                        <th class="red-bg">Pessimista</th>
+                        <th>%</th>
+                        <th>Base</th>
+                        <th>%</th>
+                        <th class="blue-bg">Otimista</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;"><strong>C1</strong></td>
+                        <td class="positive">R$ 244</td><td>4,3%</td>
+                        <td class="positive"><strong>R$ 1.045</strong></td><td>16,2%</td>
+                        <td class="positive">R$ 1.845</td><td>25,9%</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C2 🌻</strong></td>
+                        <td class="best">R$ 410</td><td class="best">6,7%</td>
+                        <td class="best"><strong>R$ 1.280</strong></td><td class="best">18,7%</td>
+                        <td class="best">R$ 2.176</td><td class="best">28,8%</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C3 🐂</strong></td>
+                        <td class="negative">−R$ 136</td><td>−2,2%</td>
+                        <td class="positive"><strong>R$ 912</strong></td><td>14,3%</td>
+                        <td class="positive">R$ 1.704</td><td>24,3%</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C4</strong></td>
+                        <td class="positive">R$ 285</td><td>4,7%</td>
+                        <td class="positive"><strong>R$ 1.102</strong></td><td>16,7%</td>
+                        <td class="positive">R$ 1.917</td><td>26,0%</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;"><strong>C5</strong></td>
+                        <td class="worst">−R$ 266</td><td>−4,2%</td>
+                        <td class="positive"><strong>R$ 726</strong></td><td>12,0%</td>
+                        <td class="positive">R$ 1.462</td><td>21,2%</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <div class="bar-chart" style="margin-top:1.5rem;">
+                <h4 style="margin-bottom:0.8rem;">Cenário Pessimista — Quem aguenta a pancada?</h4>
+                <div class="bar-row">
+                    <span class="bar-label">C2 — Real+Girassol</span>
+                    <div class="bar-track"><div class="bar-fill green" style="width:100%;">R$ 410 mil ✅</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C4 — 100% CV</span>
+                    <div class="bar-track"><div class="bar-fill green" style="width:70%;">R$ 285 mil ✅</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C1 — Real+Cobertura</span>
+                    <div class="bar-track"><div class="bar-fill blue" style="width:60%;">R$ 244 mil ✅</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C3 — Real+Pasto</span>
+                    <div class="bar-track"><div class="bar-fill red" style="width:25%;">−R$ 136 mil ❌</div></div>
+                </div>
+                <div class="bar-row">
+                    <span class="bar-label">C5 — 100% RR/BT</span>
+                    <div class="bar-track"><div class="bar-fill red" style="width:15%;">−R$ 266 mil ❌</div></div>
+                </div>
+            </div>
+
+            <div class="alert danger">
+                <span class="alert-icon">🚨</span>
+                <div>
+                    <strong>Duas configs entram no vermelho no pessimista:</strong> C3 e C5. O milho a preços BT (R$ 58 verão / R$ 50 safrinha) com COTs de R$ 7.000-5.900 não sustenta quebra de produtividade. <strong>O convencional (CV) protege</strong> pelo prêmio de preço.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RANKING FINAL -->
+    <div class="section" id="ranking">
+        <div class="section-header" style="background: linear-gradient(135deg, #f57f17, #ff8f00);">
+            <span class="icon">🏆</span>
+            <h2>Ranking Final</h2>
+        </div>
+        <div class="section-body">
+            <div style="overflow-x:auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Configuração</th>
+                        <th>Margem Base</th>
+                        <th>%</th>
+                        <th>Pior Caso</th>
+                        <th>Melhor Caso</th>
+                        <th>Risco</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#c8e6c9;">
+                        <td>🥇</td>
+                        <td style="text-align:left;"><strong>C2 — Real+🌻Girassol</strong></td>
+                        <td><strong>R$ 1.279.725</strong></td>
+                        <td><strong>18,7%</strong></td>
+                        <td class="positive">R$ 410 mil</td>
+                        <td>R$ 2.176 mil</td>
+                        <td><span class="tag green">BAIXO</span></td>
+                    </tr>
+                    <tr style="background:#e8f5e9;">
+                        <td>🥈</td>
+                        <td style="text-align:left;"><strong>C4 — 100% CV</strong></td>
+                        <td><strong>R$ 1.102.325</strong></td>
+                        <td><strong>16,7%</strong></td>
+                        <td class="positive">R$ 285 mil</td>
+                        <td>R$ 1.917 mil</td>
+                        <td><span class="tag green">BAIXO</span></td>
+                    </tr>
+                    <tr>
+                        <td>🥉</td>
+                        <td style="text-align:left;"><strong>C1 — Real+Cobertura</strong></td>
+                        <td><strong>R$ 1.045.125</strong></td>
+                        <td><strong>16,2%</strong></td>
+                        <td class="positive">R$ 244 mil</td>
+                        <td>R$ 1.845 mil</td>
+                        <td><span class="tag blue">MODERADO</span></td>
+                    </tr>
+                    <tr>
+                        <td>4º</td>
+                        <td style="text-align:left;">C3 — Real+🐂Pasto</td>
+                        <td>R$ 912.325</td>
+                        <td>14,3%</td>
+                        <td class="negative">−R$ 136 mil</td>
+                        <td>R$ 1.704 mil</td>
+                        <td><span class="tag orange">ALTO</span></td>
+                    </tr>
+                    <tr>
+                        <td>5º</td>
+                        <td style="text-align:left;">C5 — 100% RR/BT</td>
+                        <td>R$ 726.050</td>
+                        <td>12,0%</td>
+                        <td class="negative">−R$ 266 mil</td>
+                        <td>R$ 1.462 mil</td>
+                        <td><span class="tag red">ALTO</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">ROI — Retorno sobre Capital Investido</h3>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Config</th><th>Capital</th><th>Margem</th><th>ROI</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="background:#c8e6c9;">
+                        <td>🥇</td><td style="text-align:left;"><strong>C2</strong></td>
+                        <td>R$ 5.552.700</td><td>R$ 1.279.725</td><td class="best"><strong>23,0%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>🥈</td><td style="text-align:left;">C4</td>
+                        <td>R$ 5.480.300</td><td>R$ 1.102.325</td><td class="positive"><strong>20,1%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>🥉</td><td style="text-align:left;">C1</td>
+                        <td>R$ 5.414.700</td><td>R$ 1.045.125</td><td class="positive"><strong>19,3%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>4º</td><td style="text-align:left;">C3</td>
+                        <td>R$ 5.472.700</td><td>R$ 912.325</td><td><strong>16,7%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>5º</td><td style="text-align:left;">C5</td>
+                        <td>R$ 5.327.500</td><td>R$ 726.050</td><td><strong>13,6%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RECOMENDAÇÃO -->
+    <div class="section" id="recomendacao">
+        <div class="section-header" style="background: linear-gradient(135deg, #1a5c2e, #2d8a4e);">
+            <span class="icon">✅</span>
+            <h2>Recomendação Final</h2>
+        </div>
+        <div class="section-body">
+
+            <div class="alert success" style="font-size:1rem; padding:1.5rem;">
+                <span class="alert-icon" style="font-size:2rem;">🏆</span>
+                <div>
+                    <strong style="font-size:1.1rem;">C2 (Configuração Real + Girassol) é a melhor opção.</strong><br>
+                    Com COTs reais elevados, o girassol nos 115 ha se torna a <strong>decisão mais impactante</strong> da safra: adiciona R$ 234.600 à margem, tem o menor risco no pessimista e o maior upside no otimista.
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">🎯 Alavancas de Melhoria — Ordem de Prioridade</h3>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>1️⃣ Trocar Cobertura por Girassol (115 ha) → +R$ 234.600</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="accordion-body show">
+                    <p><strong>De C1 para C2:</strong> Substituir os 115 ha de cobertura por girassol para a Caramuru.</p>
+                    <ul style="margin:0.5rem 0 0.5rem 1.5rem; font-size:0.85rem;">
+                        <li>Lucro de R$ 165.600 + economia de R$ 69.000 em custo de cobertura</li>
+                        <li>Custo baixo (R$ 1.800/ha), ciclo curto (110 dias), menor necessidade hídrica</li>
+                        <li><strong>Mitigação mofo branco:</strong> Consorciar com ruziziensis para palhada</li>
+                        <li><strong>Prioridade ALTA</strong> — baixa complexidade, alto retorno</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>2️⃣ Avaliar migração parcial de Soja RR → CV → +R$ 350/ha</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <p><strong>Cada hectare migrado de RR para CV gera R$ 350/ha a mais.</strong></p>
+                    <ul style="margin:0.5rem 0 0.5rem 1.5rem; font-size:0.85rem;">
+                        <li>Se migrar 100% (164 ha): +R$ 57.400 de margem total</li>
+                        <li>COT CV (R$ 7.000) é R$ 400/ha maior que RR (R$ 6.600) — prêmio de preço compensa</li>
+                        <li><strong>Limitação:</strong> Disponibilidade de semente NGMO, segregação, bônus fixação 35sc</li>
+                        <li><strong>Prioridade MÉDIA</strong> — ganho moderado por ha, mas requer logística</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>3️⃣ ILP Milho + Braquiária (166 ha) — CONDICIONAL à pecuária</span>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="accordion-body">
+                    <p><strong>Só faz sentido se houver demanda real por pasto.</strong></p>
+                    <ul style="margin:0.5rem 0 0.5rem 1.5rem; font-size:0.85rem;">
+                        <li>Perde R$ 132.800 em margem de grão vs milho CV solteiro</li>
+                        <li>Ganha R$ 747.000 em economia de formação de pasto (se usar)</li>
+                        <li><strong>RISCO:</strong> No pessimista, C3 dá prejuízo (−R$ 136 mil)</li>
+                        <li>Benefícios agronômicos (cobertura, descompactação) são reais mas não cobrem o risco financeiro</li>
+                        <li><strong>Prioridade CONDICIONAL</strong> — só se tiver gado próprio ou arrendamento garantido</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3 style="margin:1.5rem 0 1rem;">⚖️ Resumo Decisório</h3>
+            <table>
+                <thead>
+                    <tr><th>Decisão</th><th>Ação</th><th>Ganho</th><th>Risco</th><th>Prioridade</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align:left;">🌻 Girassol</td>
+                        <td>Cobertura → Girassol (115 ha)</td>
+                        <td class="positive">+R$ 234.600</td>
+                        <td><span class="tag green">Baixo</span></td>
+                        <td><span class="tag green">ALTA</span></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">🌱 Mais CV</td>
+                        <td>RR → NGMO (164 ha)</td>
+                        <td class="positive">+R$ 57.400</td>
+                        <td><span class="tag gold">Médio</span></td>
+                        <td><span class="tag gold">MÉDIA</span></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">🐂 ILP</td>
+                        <td>Milho BT+Braquiária (166 ha)</td>
+                        <td class="positive">+R$ 614.200*</td>
+                        <td><span class="tag red">Alto</span></td>
+                        <td><span class="tag orange">CONDICIONAL</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="note">* Valor ILP inclui economia de formação de pasto — só se materializa com uso efetivo da pastagem.</p>
+
+            <div class="alert info" style="margin-top:1.5rem;">
+                <span class="alert-icon">📌</span>
+                <div>
+                    <strong>Nota sobre Bônus CV:</strong> Fixar antecipadamente o máximo possível (35 sc/ha × 218 ha = 7.630 sc = R$ 991.900 travados). O restante (~30 sc/ha = 6.540 sc) será fixado pós-entrega com exposição ao mercado — mas com prêmio R$ 20/sc garantido em 100%.
+                </div>
+            </div>
+
+            <div class="alert warning" style="margin-top:1rem;">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <strong>Alerta geral sobre COTs:</strong> Com custos operacionais de R$ 5.900 a R$ 7.350/ha, as margens estão comprimidas. Um cenário pessimista pode levar a prejuízo em configs com preços BT. A <strong>gestão de custo e a escolha CV</strong> são os maiores diferenciais desta safra.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ======================= CREDENCIAIS ======================= -->
+    <div class="section" style="margin-top:2rem;">
+        <div class="section-header" style="background: linear-gradient(135deg, #1a5c2e, #2d8a4e);">
+            <span class="icon">📋</span>
+            <h2>Análise e Construção</h2>
+        </div>
+        <div class="section-body" style="text-align:center; padding:2.5rem 1.5rem;">
+            <div style="margin-bottom:1.5rem;">
+                <div style="display:inline-flex; align-items:center; gap:0.8rem; background: linear-gradient(135deg, #1a5c2e, #2d8a4e); padding:1rem 2rem; border-radius:16px; box-shadow: 0 4px 16px rgba(26,92,46,0.3);">
+                    <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="46" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        <path d="M30 65 Q35 35 50 30 Q65 35 70 65" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <path d="M50 30 L50 18" stroke="#4caf50" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M50 28 Q58 20 62 22" stroke="#4caf50" stroke-width="2" fill="#4caf50" opacity="0.9"/>
+                        <path d="M50 28 Q42 20 38 22" stroke="#4caf50" stroke-width="2" fill="#4caf50" opacity="0.9"/>
+                        <path d="M50 24 Q55 17 58 19" stroke="#66bb6a" stroke-width="1.5" fill="#66bb6a" opacity="0.7"/>
+                        <path d="M50 24 Q45 17 42 19" stroke="#66bb6a" stroke-width="1.5" fill="#66bb6a" opacity="0.7"/>
+                        <rect x="25" y="65" rx="2" width="50" height="3" fill="rgba(255,255,255,0.4)"/>
+                        <path d="M20 72 L80 72" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+                    </svg>
+                    <div style="text-align:left;">
+                        <div style="font-size:1.6rem; font-weight:800; color:#fff; letter-spacing:1px;">RURAL<span style="color:#4caf50;">IN</span></div>
+                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.7); letter-spacing:2px; text-transform:uppercase;">Inteligência Rural</div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:1.2rem;">
+                <div style="width:90px; height:90px; border-radius:50%; background: linear-gradient(135deg, #1a5c2e, #4caf50); margin:0 auto; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 12px rgba(26,92,46,0.3);">
+                    <span style="font-size:2.2rem;">👨‍💼</span>
+                </div>
+            </div>
+            <h3 style="font-size:1.4rem; font-weight:800; color:var(--green-dark); margin-bottom:0.3rem;">Dr. Sidney Souza</h3>
+            <p style="font-size:1rem; font-weight:600; color:var(--green-mid); margin-bottom:0.2rem;">Economista Agrícola — Estrategista Econômico do Produtor</p>
+            <p style="font-size:0.85rem; color:var(--gray-600); max-width:500px; margin:0 auto;">Especialista em economia da fazenda e gestão de risco no agro</p>
+            <div style="width:60px; height:3px; background: linear-gradient(90deg, var(--green-dark), var(--green-light)); margin:1.2rem auto; border-radius:2px;"></div>
+            <div style="max-width:520px; margin:0 auto 1.5rem;">
+                <div style="display:flex; align-items:flex-start; gap:0.6rem; margin-bottom:0.6rem; text-align:left;">
+                    <span style="color:var(--green-dark); font-size:1rem; flex-shrink:0;">📊</span>
+                    <p style="font-size:0.85rem; color:var(--gray-800);">Transformamos <strong>dados da fazenda</strong> em <strong>decisões econômicas</strong></p>
+                </div>
+                <div style="display:flex; align-items:flex-start; gap:0.6rem; text-align:left;">
+                    <span style="color:var(--green-dark); font-size:1rem; flex-shrink:0;">🎯</span>
+                    <p style="font-size:0.85rem; color:var(--gray-800);">Ajudamos produtores a entender se o <strong>mercado sustenta seu negócio</strong></p>
+                </div>
+            </div>
+            <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:1.5rem;">
+                <a href="mailto:sidneyagro@gmail.com" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1rem; background:var(--gray-100); border-radius:20px; text-decoration:none; color:var(--gray-800); font-size:0.82rem; font-weight:600;">✉️ sidneyagro@gmail.com</a>
+                <a href="https://wa.me/5564992266886" target="_blank" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1rem; background:#dcf8c6; border-radius:20px; text-decoration:none; color:#1a5c2e; font-size:0.82rem; font-weight:600;">📱 (64) 9 9226-6886</a>
+                <a href="https://instagram.com/ruralin.ai" target="_blank" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1rem; background:linear-gradient(135deg, #fce4ec, #f3e5f5); border-radius:20px; text-decoration:none; color:#6a1b9a; font-size:0.82rem; font-weight:600;">📸 @ruralin.ai</a>
+            </div>
+            <div style="display:inline-block; padding:0.6rem 1.5rem; border:2px solid var(--green-light); border-radius:30px; background:var(--green-pale);">
+                <span style="font-size:0.78rem; font-weight:700; color:var(--green-dark);">🌾 Relatório gerado em 31/03/2026 &nbsp;|&nbsp; Faz. Monte Alegre — Montividiu/GO</span>
+            </div>
+            <p style="font-size:0.7rem; color:var(--gray-600); margin-top:1rem;">
+                Dados de mercado: benchmarks Conab, FAEG, Caramuru Alimentos, Embrapa | Valores sujeitos a variação<br>
+                Este relatório é ferramenta de apoio à decisão e não constitui recomendação de investimento.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<!-- FOOTER BAR -->
+<div style="background: linear-gradient(135deg, #1a5c2e, #2d8a4e); padding:1.2rem; text-align:center;">
+    <div style="font-size:1.1rem; font-weight:800; color:#fff; letter-spacing:1px;">RURAL<span style="color:#4caf50;">IN</span> <span style="font-size:0.7rem; font-weight:400; opacity:0.7; margin-left:0.5rem;">Inteligência Rural</span></div>
+    <p style="font-size:0.72rem; color:rgba(255,255,255,0.6); margin-top:0.3rem;">© 2026 Ruralin — Todos os direitos reservados</p>
+</div>
+
+<script>
+    function showConfig(num) {
+        document.querySelectorAll('.config-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.config-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('config' + num).classList.add('active');
+        document.querySelectorAll('.config-tab')[num - 1].classList.add('active');
+    }
+    function toggleAccordion(header) {
+        header.classList.toggle('open');
+        header.nextElementSibling.classList.toggle('show');
+    }
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.bar-fill').forEach(bar => {
+                    const w = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => { bar.style.width = w; }, 100);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.bar-chart').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
