@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>As Lições que Nenhum Curso de Negócios Vai Te Dar</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #161622;
+            --text-primary: #f0ece2;
+            --text-secondary: #a8a4a0;
+            --accent-gold: #d4a853;
+            --accent-red: #c0392b;
+            --accent-blue: #2c82c9;
+            --accent-green: #27ae60;
+            --accent-purple: #8e44ad;
+            --accent-orange: #e67e22;
+            --accent-teal: #16a085;
+            --accent-pink: #e84393;
+            --accent-cyan: #00cec9;
+            --accent-lime: #a8e063;
+            --accent-silver: #b2bec3;
+            --accent-holy: #f9e547;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* ===== TOP NAV BAR ===== */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .top-nav::-webkit-scrollbar { display: none; }
+
+        .nav-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 6px;
+            font-weight: 500;
+        }
+
+        .nav-tab {
+            padding: 8px 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.35s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-tab:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+
+        .nav-tab.active {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.35);
+        }
+
+        .nav-tab.tab-abertura.active { background: var(--accent-gold); border-color: var(--accent-gold); box-shadow: 0 4px 20px rgba(212,168,83,0.35); }
+        .nav-tab.tab-adaptacao.active { background: var(--accent-green); border-color: var(--accent-green); box-shadow: 0 4px 20px rgba(39,174,96,0.35); }
+        .nav-tab.tab-autoconhecimento.active { background: var(--accent-red); border-color: var(--accent-red); box-shadow: 0 4px 20px rgba(192,57,43,0.35); }
+        .nav-tab.tab-resiliencia.active { background: var(--accent-blue); border-color: var(--accent-blue); box-shadow: 0 4px 20px rgba(44,130,201,0.35); }
+        .nav-tab.tab-habitos.active { background: var(--accent-purple); border-color: var(--accent-purple); box-shadow: 0 4px 20px rgba(142,68,173,0.35); }
+        .nav-tab.tab-responsabilidade.active { background: var(--accent-teal); border-color: var(--accent-teal); box-shadow: 0 4px 20px rgba(22,160,133,0.35); }
+        .nav-tab.tab-estrategia.active { background: var(--accent-orange); border-color: var(--accent-orange); box-shadow: 0 4px 20px rgba(230,126,34,0.35); }
+        .nav-tab.tab-desejo.active { background: var(--accent-pink); border-color: var(--accent-pink); box-shadow: 0 4px 20px rgba(232,67,147,0.35); }
+        .nav-tab.tab-comunicacao.active { background: var(--accent-cyan); border-color: var(--accent-cyan); box-shadow: 0 4px 20px rgba(0,206,201,0.35); }
+        .nav-tab.tab-identidade.active { background: var(--accent-lime); border-color: var(--accent-lime); color: #1a1a2e; box-shadow: 0 4px 20px rgba(168,224,99,0.35); }
+        .nav-tab.tab-pensamento.active { background: var(--accent-silver); border-color: var(--accent-silver); color: #1a1a2e; box-shadow: 0 4px 20px rgba(178,190,195,0.35); }
+        .nav-tab.tab-jesus.active { background: linear-gradient(135deg, var(--accent-holy), #f0c27f); border-color: var(--accent-holy); color: #1a1a2e; box-shadow: 0 4px 25px rgba(249,229,71,0.4); }
+        .nav-tab.tab-encerramento.active { background: linear-gradient(135deg, #667eea, #764ba2); border-color: #667eea; color: #fff; box-shadow: 0 4px 25px rgba(102,126,234,0.4); }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            height: 100vh;
+            padding-top: 62px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        /* ===== PANELS ===== */
+        .panel {
+            display: none;
+            min-height: calc(100vh - 62px);
+            padding: 60px 80px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel.active {
+            display: flex;
+            animation: panelFadeIn 0.6s ease-out;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(249,229,71,0.2); }
+            50% { box-shadow: 0 0 50px rgba(249,229,71,0.5); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .panel-content {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== HERO PANEL ===== */
+        .hero-panel {
+            text-align: center;
+            flex-direction: column;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 60%; left: 85%; animation-delay: 1s; }
+        .particle:nth-child(3) { top: 35%; left: 25%; animation-delay: 2s; }
+        .particle:nth-child(4) { top: 75%; left: 55%; animation-delay: 3s; }
+        .particle:nth-child(5) { top: 10%; left: 70%; animation-delay: 4s; }
+        .particle:nth-child(6) { top: 80%; left: 15%; animation-delay: 1.5s; }
+        .particle:nth-child(7) { top: 25%; left: 90%; animation-delay: 2.5s; }
+        .particle:nth-child(8) { top: 90%; left: 40%; animation-delay: 3.5s; }
+
+        .hero-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 1rem;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-title span {
+            color: var(--accent-gold);
+            font-style: italic;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease-out 0.7s both;
+        }
+
+        .hero-themes {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.9s both;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .theme-chip {
+            padding: 8px 18px;
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .theme-chip:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+
+        .hero-start-hint {
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        .hero-start-hint span {
+            color: var(--accent-gold);
+        }
+
+        /* ===== BOOK PANELS ===== */
+        .book-layout {
+            display: flex;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .book-visual {
+            flex: 0 0 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .book-icon-box {
+            width: 260px;
+            height: 340px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .book-emoji {
+            font-size: 7rem;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .book-meta { text-align: center; }
+
+        .book-author-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .book-title-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--text-primary);
+        }
+
+        .book-text-area { flex: 1; }
+
+        .panel-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 5.5rem;
+            font-weight: 900;
+            opacity: 0.06;
+            position: absolute;
+            top: 30px;
+            left: 50px;
+        }
+
+        .book-main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.2;
+        }
+
+        .book-hook-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 28px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .book-hook-text::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            border-radius: 2px;
+        }
+
+        .book-body {
+            font-size: 1.02rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+            margin-bottom: 28px;
+        }
+
+        .provocation {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 22px 28px;
+        }
+
+        .provocation-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .provocation-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .hidden-lesson {
+            margin-top: 18px;
+            padding: 14px 22px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid;
+        }
+
+        .hidden-lesson-label {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .hidden-lesson-text {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* ===== COLOR THEMES PER PANEL ===== */
+        .t-adaptacao .book-main-title, .t-adaptacao .provocation-label { color: var(--accent-green); }
+        .t-adaptacao .book-hook-text::before, .t-adaptacao .hidden-lesson { border-color: var(--accent-green); }
+        .t-adaptacao .book-icon-box { background: linear-gradient(135deg, rgba(39,174,96,0.12), rgba(39,174,96,0.03)); }
+
+        .t-autoconhecimento .book-main-title, .t-autoconhecimento .provocation-label { color: var(--accent-red); }
+        .t-autoconhecimento .book-hook-text::before, .t-autoconhecimento .hidden-lesson { border-color: var(--accent-red); }
+        .t-autoconhecimento .book-icon-box { background: linear-gradient(135deg, rgba(192,57,43,0.12), rgba(192,57,43,0.03)); }
+
+        .t-resiliencia .book-main-title, .t-resiliencia .provocation-label { color: var(--accent-blue); }
+        .t-resiliencia .book-hook-text::before, .t-resiliencia .hidden-lesson { border-color: var(--accent-blue); }
+        .t-resiliencia .book-icon-box { background: linear-gradient(135deg, rgba(44,130,201,0.12), rgba(44,130,201,0.03)); }
+
+        .t-habitos .book-main-title, .t-habitos .provocation-label { color: var(--accent-purple); }
+        .t-habitos .book-hook-text::before, .t-habitos .hidden-lesson { border-color: var(--accent-purple); }
+        .t-habitos .book-icon-box { background: linear-gradient(135deg, rgba(142,68,173,0.12), rgba(142,68,173,0.03)); }
+
+        .t-responsabilidade .book-main-title, .t-responsabilidade .provocation-label { color: var(--accent-teal); }
+        .t-responsabilidade .book-hook-text::before, .t-responsabilidade .hidden-lesson { border-color: var(--accent-teal); }
+        .t-responsabilidade .book-icon-box { background: linear-gradient(135deg, rgba(22,160,133,0.12), rgba(22,160,133,0.03)); }
+
+        .t-estrategia .book-main-title, .t-estrategia .provocation-label { color: var(--accent-orange); }
+        .t-estrategia .book-hook-text::before, .t-estrategia .hidden-lesson { border-color: var(--accent-orange); }
+        .t-estrategia .book-icon-box { background: linear-gradient(135deg, rgba(230,126,34,0.12), rgba(230,126,34,0.03)); }
+
+        .t-desejo .book-main-title, .t-desejo .provocation-label { color: var(--accent-pink); }
+        .t-desejo .book-hook-text::before, .t-desejo .hidden-lesson { border-color: var(--accent-pink); }
+        .t-desejo .book-icon-box { background: linear-gradient(135deg, rgba(232,67,147,0.12), rgba(232,67,147,0.03)); }
+
+        .t-comunicacao .book-main-title, .t-comunicacao .provocation-label { color: var(--accent-cyan); }
+        .t-comunicacao .book-hook-text::before, .t-comunicacao .hidden-lesson { border-color: var(--accent-cyan); }
+        .t-comunicacao .book-icon-box { background: linear-gradient(135deg, rgba(0,206,201,0.12), rgba(0,206,201,0.03)); }
+
+        .t-identidade .book-main-title, .t-identidade .provocation-label { color: var(--accent-lime); }
+        .t-identidade .book-hook-text::before, .t-identidade .hidden-lesson { border-color: var(--accent-lime); }
+        .t-identidade .book-icon-box { background: linear-gradient(135deg, rgba(168,224,99,0.12), rgba(168,224,99,0.03)); }
+
+        .t-pensamento .book-main-title, .t-pensamento .provocation-label { color: var(--accent-silver); }
+        .t-pensamento .book-hook-text::before, .t-pensamento .hidden-lesson { border-color: var(--accent-silver); }
+        .t-pensamento .book-icon-box { background: linear-gradient(135deg, rgba(178,190,195,0.12), rgba(178,190,195,0.03)); }
+
+        .t-jesus .book-main-title, .t-jesus .provocation-label { color: var(--accent-holy); }
+        .t-jesus .book-hook-text::before, .t-jesus .hidden-lesson { border-color: var(--accent-holy); }
+        .t-jesus .book-icon-box { background: linear-gradient(135deg, rgba(249,229,71,0.15), rgba(240,194,127,0.05)); animation: glow 3s ease-in-out infinite; }
+
+        /* ===== ENCERRAMENTO / CREDENTIALS PANEL ===== */
+        .encerramento-panel {
+            text-align: center;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 70%);
+            flex-direction: column;
+        }
+
+        .enc-thankyou {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        .enc-final-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-style: italic;
+            color: var(--accent-gold);
+            max-width: 750px;
+            margin: 0 auto 50px;
+            line-height: 1.7;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .credential-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            border-radius: 20px;
+            padding: 50px 60px;
+            max-width: 650px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.7s both;
+        }
+
+        .credential-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-gold), #f0c27f, var(--accent-gold));
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        .credential-badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        .credential-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .credential-title {
+            font-size: 1.05rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .credential-divider {
+            width: 60px;
+            height: 1px;
+            background: rgba(212, 168, 83, 0.3);
+            margin: 0 auto 24px;
+        }
+
+        .credential-specialties {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .credential-specialties li {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 2;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .credential-specialties li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            color: var(--accent-gold);
+            font-size: 0.55rem;
+            top: 2px;
+        }
+
+        .credential-contact {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .contact-item:hover {
+            color: var(--accent-gold);
+        }
+
+        .contact-item .c-icon {
+            font-size: 1.1rem;
+        }
+
+        .contact-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* ===== KEYBOARD NAV HINT ===== */
+        .key-hint {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 8px 20px;
+            background: rgba(20, 20, 30, 0.9);
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            border-radius: 30px;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .key-hint kbd {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .panel { padding: 40px 30px; }
+            .book-layout { flex-direction: column; gap: 40px; }
+            .book-visual { flex: none; }
+            .hero-title { font-size: 2.6rem; }
+            .credential-card { padding: 40px 30px; }
+        }
+
+        @media (max-width: 600px) {
+            .top-nav { padding: 10px 12px; gap: 6px; }
+            .nav-tab { padding: 6px 12px; font-size: 0.7rem; }
+            .hero-title { font-size: 1.9rem; }
+            .book-main-title { font-size: 1.8rem; }
+            .panel { padding: 30px 20px; }
+            .credential-card { padding: 30px 20px; }
+            .credential-name { font-size: 2rem; }
+            .credential-contact { flex-direction: column; align-items: center; gap: 12px; }
+            .contact-divider { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP NAVIGATION BAR ===== -->
+    <nav class="top-nav">
+        <span class="nav-label">Ir para:</span>
+        <button class="nav-tab tab-abertura active" data-panel="abertura">Abertura</button>
+        <button class="nav-tab tab-adaptacao" data-panel="adaptacao">Adaptação</button>
+        <button class="nav-tab tab-autoconhecimento" data-panel="autoconhecimento">Autoconhecimento</button>
+        <button class="nav-tab tab-resiliencia" data-panel="resiliencia">Resiliência &amp; Propósito</button>
+        <button class="nav-tab tab-habitos" data-panel="habitos">Hábitos Invisíveis</button>
+        <button class="nav-tab tab-responsabilidade" data-panel="responsabilidade">Responsabilidade</button>
+        <button class="nav-tab tab-estrategia" data-panel="estrategia">Estratégia</button>
+        <button class="nav-tab tab-desejo" data-panel="desejo">Desejo &amp; Motivação</button>
+        <button class="nav-tab tab-comunicacao" data-panel="comunicacao">Comunicação</button>
+        <button class="nav-tab tab-identidade" data-panel="identidade">Identidade</button>
+        <button class="nav-tab tab-pensamento" data-panel="pensamento">Pensamento Crítico</button>
+        <button class="nav-tab tab-jesus" data-panel="jesus">O Maior Líder</button>
+        <button class="nav-tab tab-encerramento" data-panel="encerramento">Encerramento</button>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- ================= ABERTURA ================= -->
+        <div class="panel hero-panel active" id="abertura">
+            <div class="particles">
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            </div>
+            <div class="panel-content">
+                <p class="hero-subtitle">Uma palestra sobre negócios — sem falar de negócios</p>
+                <h1 class="hero-title">As Lições que <span>Nenhum Curso</span> de Negócios Vai Te Dar</h1>
+                <p class="hero-description">Dez obras que não têm NADA a ver com empreendedorismo — e que têm TUDO a ver com o seu negócio. Uma jornada do autoconhecimento à liderança suprema.</p>
+                <div class="hero-themes">
+                    <span class="theme-chip">🧬 Adaptação</span>
+                    <span class="theme-chip">🪞 Autoconhecimento</span>
+                    <span class="theme-chip">🌊 Resiliência</span>
+                    <span class="theme-chip">🧪 Hábitos</span>
+                    <span class="theme-chip">⚡ Responsabilidade</span>
+                    <span class="theme-chip">⚔️ Estratégia</span>
+                    <span class="theme-chip">🔥 Desejo</span>
+                    <span class="theme-chip">🗣️ Comunicação</span>
+                    <span class="theme-chip">🌍 Identidade</span>
+                    <span class="theme-chip">💡 Pensamento Crítico</span>
+                    <span class="theme-chip" style="border-color: rgba(249,229,71,0.4); color: #f9e547;">✝️ O Maior Líder</span>
+                </div>
+                <p class="hero-start-hint">Clique nos temas acima para <span>iniciar a jornada</span> →</p>
+            </div>
+        </div>
+
+        <!-- ================= 01 — ADAPTAÇÃO / DARWIN ================= -->
+        <div class="panel t-adaptacao" id="adaptacao">
+            <span class="panel-number">01</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🧬</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Charles Darwin</p>
+                            <p class="book-title-name">A Origem das Espécies</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Pare de Imitar<br>Dinossauros</h2>
+                        <p class="book-hook-text">"Não é o mais forte que sobrevive, nem o mais inteligente. É o que melhor se adapta à mudança."</p>
+                        <p class="book-body">Darwin passou 5 anos no HMS Beagle observando a natureza. Os dinossauros dominaram por <strong>165 milhões de anos</strong> — maiores, mais fortes, mais assustadores. E desapareceram. Quem sobreviveu? Um bichinho pequeno, insignificante, que se escondia em tocas. <strong>O mamífero. Nós.</strong><br><br>O pequeno empreendedor <strong>já é</strong> a mutação do mercado. O problema? Ele quer imitar o dinossauro grande — a grande rede, a franquia gigante — e vira um dinossauro pequeno. O pior dos dois mundos. A natureza faz milhões de micro-experimentos. A maioria falha. Alguns funcionam. E esses mudam tudo.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Quantos experimentos você fez no seu negócio este mês? Ou está repetindo a mesma fórmula do ano passado esperando resultado diferente?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">A natureza não tem medo de errar — ela erra bilhões de vezes. O empreendedor brasileiro tem pavor de errar UMA vez.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 02 — AUTOCONHECIMENTO / NIETZSCHE ================= -->
+        <div class="panel t-autoconhecimento" id="autoconhecimento">
+            <span class="panel-number">02</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">😢</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Irvin Yalom</p>
+                            <p class="book-title-name">Quando Nietzsche Chorou</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Suas Feridas Estão<br>Gerindo Seu Negócio</h2>
+                        <p class="book-hook-text">"Todo empreendedor carrega dois negócios: o que o mundo vê e o que ele esconde de si mesmo."</p>
+                        <p class="book-body">Nietzsche — o filósofo do super-homem, da força, da vontade de poder — estava despedaçado. Apaixonado por uma mulher que o rejeitou. Doente. Sozinho. O médico Josef Breuer, bem-sucedido por fora, vivia uma mentira emocional. <strong>Dois homens brilhantes. Dois prisioneiros daquilo que não conseguiam admitir.</strong><br><br>O empreendedor que não cobra o preço justo não tem problema de estratégia — tem <strong>medo de rejeição</strong>. O que não demite quem precisa não tem bondade — tem <strong>medo de conflito</strong>. O que aceita qualquer cliente não tem resiliência — tem <strong>ferida de autoestima</strong>. O empreendedor que não faz terapia faz o negócio pagar por isso.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Nietzsche disse: 'Aquele que tem um porquê pode suportar quase qualquer como.' Mas e se o seu porquê for uma mentira que você conta para si mesmo? Quantos abriram o negócio por paixão e hoje acordam com um peso no peito?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">A dualidade — ser forte por fora e frágil por dentro — destrói mais negócios do que a falta de capital.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 03 — RESILIÊNCIA & PROPÓSITO / HEMINGWAY + CAMUS ================= -->
+        <div class="panel t-resiliencia" id="resiliencia">
+            <span class="panel-number">03</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🌊</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Hemingway + Camus</p>
+                            <p class="book-title-name">O Velho e o Mar &amp; O Mito de Sísifo</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">O Troféu é a Subida,<br>Não o Topo</h2>
+                        <p class="book-hook-text">"Um homem pode ser destruído, mas não derrotado." — Hemingway<br>"É preciso imaginar Sísifo feliz." — Camus</p>
+                        <p class="book-body"><strong>Santiago.</strong> 84 dias sem pescar nada. No 85º, pesca o maior marlim da sua vida. Luta 3 dias sozinho. Vence. No caminho de volta, os tubarões devoram tudo. Chega ao porto com uma carcaça. E no dia seguinte... <strong>está de volta ao mar.</strong><br><br><strong>Sísifo.</strong> Condenado pelos deuses a empurrar uma pedra até o topo da montanha, assistir ela rolar de volta e empurrar de novo. Para sempre. Camus diz: a vida é absurda. E a resposta não é desistir — é <strong>criar sentido no ato de empurrar.</strong><br><br>Dois autores. Dois mundos. Uma única verdade: <strong>se você empreende esperando "chegar lá", já perdeu.</strong> Santiago não voltou ao mar pelo peixe — voltou porque pescar era quem ele ERA. Sísifo não empurra a pedra pela recompensa — empurra porque encontrou sentido no caminho. O empreendedor imbatível não depende do resultado. Ele encontrou significado no processo.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Quando os tubarões comeram seu peixe, você voltou ao mar ou ficou no porto reclamando? E nessa terça-feira, quando a pedra rolar de volta... você desce sorrindo ou reclamando?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Propósito não é destino — é caminho. Quem aprende a se motivar pela jornada se torna imbatível contra qualquer crise.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 04 — HÁBITOS INVISÍVEIS / DAWKINS ================= -->
+        <div class="panel t-habitos" id="habitos">
+            <span class="panel-number">04</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🧪</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Richard Dawkins</p>
+                            <p class="book-title-name">O Gene Egoísta</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Seus Hábitos São Parasitas<br>Disfarçados de Virtude</h2>
+                        <p class="book-hook-text">"Você não dirige seu negócio. Seus hábitos dirigem."</p>
+                        <p class="book-body">Em 1976, Dawkins virou a biologia de cabeça para baixo: não somos organismos que carregam genes. Somos <strong>veículos</strong> que os genes construíram para se replicar. O gene não se importa se você é feliz — quer se copiar. Você é só o carro. Ele é o motorista.<br><br>Seus <strong>hábitos funcionam igual</strong>. O hábito de fazer tudo sozinho "porque ninguém faz do meu jeito" não é virtude — é um <strong>parasita</strong>. Ele te dá a ilusão de controle enquanto mata sua capacidade de escalar. Checar o WhatsApp a cada 3 minutos. Dizer sim para todo cliente. Não tirar férias há 3 anos. <strong>Nenhum desses hábitos trabalha para você.</strong> Eles trabalham para si mesmos.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Você é dono dos seus hábitos ou veículo deles? Aquele seu jeito de 'querer fazer tudo sozinho' é virtude ou é um parasita que está matando seu crescimento?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Para evoluir, às vezes você precisa trair seus próprios instintos. Delegar dói. Dizer não dói. Cobrar mais caro dói. Mas talvez seja o único caminho.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 05 — RESPONSABILIDADE / SHELLEY ================= -->
+        <div class="panel t-responsabilidade" id="responsabilidade">
+            <span class="panel-number">05</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">⚡</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Mary Shelley</p>
+                            <p class="book-title-name">Frankenstein</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Criou e Abandonou?<br>A Culpa é Sua</h2>
+                        <p class="book-hook-text">"O monstro não era a criatura. Era o criador que abandonou sua criação."</p>
+                        <p class="book-body">Mary Shelley tinha <strong>18 anos</strong>. Victor Frankenstein cria vida — o impossível — e no momento em que a criatura abre os olhos... ele <strong>foge</strong>. Horrorizado. A criatura não nasceu má. Nasceu <strong>sozinha, abandonada, sem guia</strong>. Quando tentou se aproximar dos humanos, foi rejeitada. Aí sim, tornou-se monstro. O vilão não é a criatura — é o criador.<br><br>Quantos empreendedores criam algo e depois <strong>abandonam</strong>? O funcionário contratado e nunca treinado. A cultura da empresa nunca definida. O cliente que comprou e nunca mais recebeu atenção. E quando esse funcionário atende mal, a equipe não tem iniciativa, o cliente vai embora... <strong>reclamam do monstro que eles mesmos criaram.</strong></p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Uma adolescente entendeu em 1818 o que muitos empresários não entendem em 2026: se você cria algo e abandona, não culpe a criação quando ela se volta contra você."</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Seu negócio é sua criatura. Ele reflete exatamente o nível de presença — ou de abandono — que você dedicou a ele.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 06 — ESTRATÉGIA / SUN TZU ================= -->
+        <div class="panel t-estrategia" id="estrategia">
+            <span class="panel-number">06</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">⚔️</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Sun Tzu</p>
+                            <p class="book-title-name">A Arte da Guerra</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">A Suprema Vitória É<br>Vencer Sem Lutar</h2>
+                        <p class="book-hook-text">"Se você conhece o inimigo e conhece a si mesmo, não precisa temer o resultado de cem batalhas."</p>
+                        <p class="book-body">Sun Tzu era um general chinês há 2.500 anos. Ele nunca viu uma planilha, nunca ouviu falar em marketing — e mesmo assim escreveu o <strong>manual definitivo de estratégia</strong> que a humanidade já produziu.<br><br>A lição mais devastadora: <strong>"A suprema arte da guerra é derrotar o inimigo sem lutar."</strong> Traduzindo: se você está numa guerra de preço, <strong>já perdeu</strong>. A pergunta não é "como vencer o concorrente?" — é "como criar um posicionamento onde eu NÃO TENHO concorrente?"<br><br>O açougue que ensina cortes de carne no Instagram não compete com o açougue do lado — <strong>está em outra categoria</strong>. A costureira que faz consultoria de estilo não compete por preço — compete por <strong>valor percebido</strong>. Sun Tzu ensinou: o melhor estrategista não é o que vence todas as batalhas — é o que <strong>escolhe quais batalhas evitar</strong>.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Você está travando uma guerra contra seus concorrentes ou está construindo um território onde ninguém pode te alcançar? Lembre-se: quem briga por preço já perdeu a guerra antes de começar."</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Conheça a si mesmo (seus diferenciais reais) e conheça o terreno (seu mercado). A vitória é decidida antes da batalha.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 07 — DESEJO & MOTIVAÇÃO / PLATÃO ================= -->
+        <div class="panel t-desejo" id="desejo">
+            <span class="panel-number">07</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🔥</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Platão</p>
+                            <p class="book-title-name">O Banquete</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">O Desejo Que Move<br>Tudo — Inclusive Seu Negócio</h2>
+                        <p class="book-hook-text">"O amor não é aquilo que se possui. É aquilo que se busca. E é na busca que nos tornamos melhores."</p>
+                        <p class="book-body">Há 2.400 anos, Platão reuniu os maiores pensadores de Atenas num jantar para responder UMA pergunta: <strong>o que é o amor?</strong> Cada convidado dá sua resposta. Mas a mais poderosa vem de Sócrates, citando a sacerdotisa Diotima: o amor — Eros — <strong>não é posse, é BUSCA</strong>. É a força que nos move em direção àquilo que nos falta.<br><br>Agora pensem: por que vocês abriram o negócio? <strong>O que faltava?</strong> Independência? Reconhecimento? Liberdade? Prover para a família? Esse desejo — esse Eros — é o motor. Mas Platão adverte: <strong>Eros é cego</strong> quando não é guiado pela razão. O desejo de crescer sem estratégia vira ganância. O desejo de agradar sem limites vira submissão. O desejo de provar valor vira autodestruição.<br><br>O empreendedor que conhece seu desejo VERDADEIRO — não o que ele conta para os outros, mas o que pulsa no fundo — <strong>esse tem direção</strong>. Os outros têm apenas velocidade. E velocidade sem direção é só pressa.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Platão perguntaria a você: o que REALMENTE te move? Não a resposta bonita para o Instagram. A resposta que você sussurra para si mesmo às 3 da manhã."</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Desejo sem consciência é destrutivo. Desejo com consciência é a força mais poderosa do universo. Conheça o seu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 08 — COMUNICAÇÃO / O CORPO FALA ================= -->
+        <div class="panel t-comunicacao" id="comunicacao">
+            <span class="panel-number">08</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🗣️</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Pierre Weil &amp; Roland Tompakow</p>
+                            <p class="book-title-name">O Corpo Fala</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Seu Cliente Já Te Disse<br>Tudo — Sem Abrir a Boca</h2>
+                        <p class="book-hook-text">"As palavras mentem. O corpo, nunca."</p>
+                        <p class="book-body">Estudos indicam que até <strong>93% da comunicação humana é não-verbal</strong>. Tom de voz, postura, expressão facial, gestos, olhar. Weil e Tompakow decodificaram essa linguagem invisível que todos emitem, mas poucos sabem ler.<br><br>O cliente que cruza os braços enquanto ouve seu preço <strong>não está com frio</strong> — está se protegendo. O funcionário que evita o olhar quando diz "está tudo bem" <strong>não está bem</strong>. O sócio que sorri com a boca mas não com os olhos <strong>não concorda com você</strong>.<br><br>O empreendedor que não lê o corpo está <strong>cego em 93% das negociações</strong>. Ele ouve o "vou pensar" e espera. O que lê o corpo viu, dez segundos antes, que o cliente já tinha decidido — e sabe exatamente o momento de avançar ou recuar. <strong>Comunicação não é o que você diz. É o que o outro entende.</strong> E o que o outro entende começa muito antes das palavras.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Quantas vendas você perdeu não pelo que disse, mas pelo que NÃO leu? Quantas vezes o cliente te disse 'não' com o corpo e você continuou o discurso como se nada tivesse acontecido?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">O melhor vendedor não é o que fala mais. É o que ESCUTA mais — inclusive o que não é dito. Olhos, mãos e postura dizem a verdade que a boca esconde.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 09 — IDENTIDADE / DARCY RIBEIRO ================= -->
+        <div class="panel t-identidade" id="identidade">
+            <span class="panel-number">09</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">🌍</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Darcy Ribeiro</p>
+                            <p class="book-title-name">O Povo Brasileiro</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">Você Não Pode Vender Para<br>um Povo Que Não Conhece</h2>
+                        <p class="book-hook-text">"O Brasil não foi descoberto. Foi inventado. E continua se reinventando todos os dias."</p>
+                        <p class="book-body">Darcy Ribeiro dedicou a vida a entender uma pergunta que parece simples e é abismal: <strong>quem somos nós?</strong> O povo brasileiro não é UMA coisa — é uma <strong>fusão explosiva</strong> de indígena, africano e europeu. Somos o povo da gambiarra, do jeitinho, da festa no meio da crise, da fé inabalável mesmo quando tudo desaba.<br><br>O empreendedor que importa modelo americano de negócios sem entender a <strong>alma brasileira</strong> está vendendo casaco de neve no cerrado. O brasileiro compra por <strong>relação, confiança e afeto</strong> — não por funil de vendas. Ele quer ser chamado pelo nome. Quer saber se o dono é "gente boa". Quer indicar para o compadre.<br><br>Darcy nos ensina: somos um povo <strong>plural</strong>. Convivem aqui evangélicos, católicos, espíritas, agnósticos. Brancos, negros, pardos, indígenas. Ricos, pobres, classe média. <strong>Se seu negócio fala com todo mundo, não fala com ninguém.</strong> Mas se entende a alma de quem quer servir... conquista lealdade que nenhum desconto compra.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Você conhece seu cliente de verdade? Não o avatar de marketing. O ser humano. De onde ele vem? O que ele teme? O que ele celebra? Se você não sabe, está vendendo no escuro."</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">Empreender no Brasil exige entender o Brasil. E entender o Brasil é aceitar sua pluralidade — cultural, religiosa, social — como força, não como problema.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 10 — PENSAMENTO CRÍTICO / O MUNDO DE SOFIA ================= -->
+        <div class="panel t-pensamento" id="pensamento">
+            <span class="panel-number">10</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">💡</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Jostein Gaarder</p>
+                            <p class="book-title-name">O Mundo de Sofia</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">A Pergunta Mais Perigosa<br>Que Existe: "Por Quê?"</h2>
+                        <p class="book-hook-text">"A única coisa de que precisamos para nos tornarmos bons filósofos é a capacidade de nos admirarmos."</p>
+                        <p class="book-body">Sofia tem 14 anos quando recebe um bilhete misterioso: <strong>"Quem é você?"</strong> A partir daí, um filósofo desconhecido a leva numa viagem por toda a história do pensamento humano — de Sócrates a Sartre, passando por Aristóteles, Descartes, Kant, Marx, Darwin, Freud.<br><br>Gaarder faz algo brilhante: mostra que a filosofia não é um exercício acadêmico — é a <strong>arte de questionar o óbvio</strong>. E é exatamente isso que o empreendedor esqueceu de fazer. Quando foi a última vez que você perguntou <strong>"por quê?"</strong> de verdade?<br><br>Por que eu vendo dessa forma? <strong>Porque sempre foi assim.</strong> Por que meu horário é esse? <strong>Porque todo mundo faz assim.</strong> Por que meu preço é esse? <strong>Porque o concorrente cobra isso.</strong> Essas respostas são <strong>prisões disfarçadas de respostas</strong>. O empreendedor que para de perguntar "por quê" está morto — só não foi avisado.</p>
+                        <div class="provocation">
+                            <p class="provocation-label">🎯 Provocação</p>
+                            <p class="provocation-quote">"Sofia teve coragem de questionar tudo aos 14 anos. E você? Quantas verdades absolutas do seu negócio são apenas hábitos que nunca foram questionados?"</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">Lição oculta</p>
+                            <p class="hidden-lesson-text">O pensamento crítico é o antivírus da mediocridade. Num mundo que te dá respostas prontas, a habilidade mais valiosa é saber fazer as perguntas certas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 11 — O MAIOR LÍDER / JESUS ================= -->
+        <div class="panel t-jesus" id="jesus">
+            <span class="panel-number">✝️</span>
+            <div class="panel-content">
+                <div class="book-layout">
+                    <div class="book-visual">
+                        <div class="book-icon-box"><span class="book-emoji">✝️</span></div>
+                        <div class="book-meta">
+                            <p class="book-author-name">Os Evangelhos</p>
+                            <p class="book-title-name">A Vida e Obra de Jesus Cristo</p>
+                        </div>
+                    </div>
+                    <div class="book-text-area">
+                        <h2 class="book-main-title">O Maior Líder Que Já<br>Caminhou Sobre a Terra</h2>
+                        <p class="book-hook-text">"Eu vim para que tenham vida, e a tenham em abundância." — João 10:10</p>
+                        <p class="book-body">Percorremos juntos dez obras. Falamos de adaptação com Darwin, de feridas internas com Nietzsche, de resiliência com Hemingway, de absurdo com Camus, de hábitos com Dawkins, de responsabilidade com Shelley, de estratégia com Sun Tzu, de desejo com Platão, de comunicação com Weil, de identidade com Darcy Ribeiro e de pensamento crítico com Gaarder.<br><br>Mas <strong>tudo o que esses autores ensinaram em milhares de páginas, um único homem viveu em 33 anos</strong> — sem escrever uma linha sequer.<br><br>
+                        <strong>Jesus foi a adaptação em pessoa.</strong> Nasceu numa manjedoura, não num palácio. Escolheu pescadores, não doutores. Falava em parábolas para que o mais simples entendesse. <em>"Sede prudentes como as serpentes e simples como as pombas"</em> (Mateus 10:16).<br><br>
+                        <strong>Jesus praticou o autoconhecimento radical.</strong> Passou 40 dias no deserto enfrentando suas próprias tentações antes de começar sua missão. Ele sabia QUEM era e POR QUE veio. <em>"Eu sou o caminho, a verdade e a vida"</em> (João 14:6). Sem dúvida. Sem hesitação.<br><br>
+                        <strong>Jesus foi a resiliência suprema.</strong> Traído por um discípulo, negado por outro, abandonado por quase todos no momento mais difícil. E na cruz, em vez de maldição: <em>"Pai, perdoa-lhes, porque não sabem o que fazem"</em> (Lucas 23:34).<br><br>
+                        <strong>Jesus denunciou os hábitos e sistemas que escravizavam.</strong> Virou as mesas dos cambistas no templo. Desafiou os fariseus que usavam a religião como instrumento de poder. <em>"Ai de vós, que carregais os homens com fardos pesados de se carregar, e vós mesmos não tocais nesses fardos com um de vossos dedos"</em> (Lucas 11:46).<br><br>
+                        <strong>Jesus não abandonou sua criação.</strong> Onde Frankenstein fugiu, Jesus ficou. Treinou seus 12 por três anos. Lavou os pés dos discípulos — o líder que serve. <em>"O maior entre vós será vosso servo"</em> (Mateus 23:11).<br><br>
+                        <strong>Jesus era o estrategista supremo.</strong> Com 12 homens comuns, sem dinheiro, sem exército, sem tecnologia — iniciou o maior movimento da história da humanidade. 2.000 anos depois, <strong>2,4 bilhões de pessoas</strong> seguem seus ensinamentos.<br><br>
+                        <strong>Jesus lia as pessoas como ninguém.</strong> Sabia o que Zaqueu precisava antes de ele falar. Viu a fé na mulher que tocou sua veste em meio à multidão. Olhou para Pedro e viu a rocha que ele se tornaria, não o homem frágil que era.<br><br>
+                        <strong>Jesus entendia a pluralidade.</strong> Sentou com prostitutas, cobradores de impostos, leprosos, estrangeiros. Num mundo de exclusão, ele praticou a <strong>inclusão radical</strong>. <em>"Não são os sãos que precisam de médico, mas sim os doentes"</em> (Marcos 2:17).<br><br>
+                        Todos os autores que vimos hoje nos deram fragmentos da verdade. <strong>Jesus viveu a verdade inteira.</strong></p>
+                        <div class="provocation">
+                            <p class="provocation-label">✝️ A Mensagem Final</p>
+                            <p class="provocation-quote">"Jesus não tinha empresa, não tinha CNPJ, não tinha MBA. Tinha propósito, coragem, compaixão e uma visão tão clara que transformou 12 homens comuns nos líderes mais influentes da história. Se Ele fez isso com pescadores e cobradores de impostos... imagine o que Ele pode fazer com você — se você tiver a coragem de seguir o caminho."</p>
+                        </div>
+                        <div class="hidden-lesson">
+                            <p class="hidden-lesson-label">A Lição Suprema</p>
+                            <p class="hidden-lesson-text">"Buscai primeiro o Reino de Deus e a sua justiça, e todas as demais coisas vos serão acrescentadas." — Mateus 6:33. O empreendedor que coloca o propósito acima do lucro, o serviço acima do status e o amor acima do medo... esse não precisa de mais nenhum livro. Precisa apenas de fé — e ação.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ENCERRAMENTO — CREDENCIAIS ================= -->
+        <div class="panel encerramento-panel" id="encerramento">
+            <div class="particles">
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+                <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+            </div>
+            <div class="panel-content">
+                <p class="enc-thankyou">Obrigado.</p>
+                <p class="enc-final-quote">"Quando foi a última vez que você leu algo que não tinha NADA a ver com negócios... e descobriu que tinha TUDO a ver?"</p>
+
+                <div class="credential-card">
+                    <span class="credential-badge">Análise e Construção</span>
+                    <h2 class="credential-name">Dr. Sidney Souza</h2>
+                    <p class="credential-title">Economista e Administrador Agrícola<br>Estrategista Econômico do Produtor</p>
+                    <div class="credential-divider"></div>
+                    <ul class="credential-specialties">
+                        <li>Especialista em economia da fazenda e gestão de risco no agro</li>
+                        <li>Transformamos dados da fazenda em decisões econômicas</li>
+                        <li>Ajudamos produtores a entender se o mercado sustenta seu negócio</li>
+                    </ul>
+                    <div class="credential-contact">
+                        <span class="contact-item"><span class="c-icon">✉️</span> sidneyagro@gmail.com</span>
+                        <span class="contact-divider"></span>
+                        <span class="contact-item"><span class="c-icon">📱</span> (64) 9 9226-6886</span>
+                        <span class="contact-divider"></span>
+                        <span class="contact-item"><span class="c-icon">📷</span> @ruralin.ai</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /main-content -->
+
+    <!-- Keyboard hint -->
+    <div class="key-hint">
+        <kbd>←</kbd> <kbd>→</kbd> para navegar entre temas &nbsp;|&nbsp; Clique nas abas acima
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.nav-tab');
+        const panels = document.querySelectorAll('.panel');
+        let currentIndex = 0;
+
+        function showPanel(panelId) {
+            panels.forEach(p => p.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+
+            const targetPanel = document.getElementById(panelId);
+            const targetTab = document.querySelector(`[data-panel="${panelId}"]`);
+
+            if (targetPanel) targetPanel.classList.add('active');
+            if (targetTab) {
+                targetTab.classList.add('active');
+                targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            currentIndex = Array.from(tabs).findIndex(t => t.dataset.panel === panelId);
+
+            // Scroll main content to top
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                showPanel(tab.dataset.panel);
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                currentIndex = Math.min(currentIndex + 1, tabs.length - 1);
+                showPanel(tabs[currentIndex].dataset.panel);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentIndex = Math.max(currentIndex - 1, 0);
+                showPanel(tabs[currentIndex].dataset.panel);
+            }
+        });
+
+        // Hide hint after first interaction
+        let hintHidden = false;
+        function hideHint() {
+            if (!hintHidden) {
+                const hint = document.querySelector('.key-hint');
+                hint.style.opacity = '0';
+                hint.style.transition = 'opacity 1s';
+                hintHidden = true;
+            }
+        }
+
+        tabs.forEach(t => t.addEventListener('click', hideHint));
+        document.addEventListener('keydown', (e) => {
+            if (['ArrowRight','ArrowLeft','ArrowUp','ArrowDown'].includes(e.key)) hideHint();
+        });
+    </script>
+</body>
+</html>
