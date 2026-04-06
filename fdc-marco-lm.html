@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Fluxo de Caixa — Leandro Martins | Faz. Monte Alegre</title>
+    <style>
+        :root {
+            --primary: #1a5632;
+            --primary-light: #2d7a4a;
+            --primary-dark: #0f3d22;
+            --accent: #d4a017;
+            --accent-light: #f2c94c;
+            --bg-dark: #0a0f0d;
+            --bg-card: #111916;
+            --bg-card-alt: #162119;
+            --text-primary: #e8ede9;
+            --text-secondary: #9aaa9e;
+            --text-muted: #6b7d72;
+            --border: #1e3328;
+            --border-light: #2a4436;
+            --red: #e74c3c;
+            --red-bg: rgba(231, 76, 60, 0.1);
+            --green: #27ae60;
+            --green-bg: rgba(39, 174, 96, 0.1);
+            --yellow: #f39c12;
+            --yellow-bg: rgba(243, 156, 18, 0.1);
+            --blue: #3498db;
+            --blue-bg: rgba(52, 152, 219, 0.1);
+            --orange: #e67e22;
+            --orange-bg: rgba(230, 126, 34, 0.1);
+            --purple: #9b59b6;
+            --purple-bg: rgba(155, 89, 182, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-light);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 160, 23, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(212, 160, 23, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent-light);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 4px;
+        }
+
+        .header .period {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* DISCLAIMER */
+        .disclaimer {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.08) 0%, rgba(230, 126, 34, 0.05) 100%);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-left: 4px solid var(--yellow);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 30px;
+        }
+
+        .disclaimer-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+        }
+
+        .disclaimer-title .icon {
+            font-size: 1.4rem;
+        }
+
+        .disclaimer p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        .disclaimer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .disclaimer strong {
+            color: var(--accent-light);
+        }
+
+        .disclaimer ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+
+        .disclaimer ul li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            padding: 4px 0 4px 20px;
+            position: relative;
+        }
+
+        .disclaimer ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-number {
+            background: var(--primary);
+            color: var(--accent-light);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .card-alt {
+            background: var(--bg-card-alt);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-light);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* KPI GRID */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-light);
+        }
+
+        .kpi-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kpi-detail {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .kpi-value.green { color: var(--green); }
+        .kpi-value.red { color: var(--red); }
+        .kpi-value.yellow { color: var(--yellow); }
+        .kpi-value.blue { color: var(--blue); }
+        .kpi-value.white { color: var(--text-primary); }
+
+        /* TABLES */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+
+        thead th {
+            background: var(--primary-dark);
+            color: var(--accent-light);
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--primary);
+            white-space: nowrap;
+        }
+
+        thead th:last-child,
+        thead th.right {
+            text-align: right;
+        }
+
+        tbody td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        tbody td.right {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tbody td.muted {
+            color: var(--text-muted);
+        }
+
+        tbody tr:hover {
+            background: rgba(45, 122, 74, 0.08);
+        }
+
+        tbody tr.subtotal {
+            background: rgba(212, 160, 23, 0.06);
+            font-weight: 600;
+        }
+
+        tbody tr.total {
+            background: rgba(212, 160, 23, 0.12);
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        tbody tr.total td {
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent-light);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tag-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
+        .tag-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(231,76,60,0.3); }
+        .tag-yellow { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(243,156,18,0.3); }
+        .tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(52,152,219,0.3); }
+        .tag-orange { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(230,126,34,0.3); }
+        .tag-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(155,89,182,0.3); }
+
+        /* PROGRESS BARS */
+        .bar-container {
+            margin-bottom: 14px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .bar-label-text {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .bar-label-value {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .bar-track {
+            width: 100%;
+            height: 10px;
+            background: var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.8s ease;
+        }
+
+        .bar-fill.green { background: linear-gradient(90deg, #1e8449, #27ae60); }
+        .bar-fill.red { background: linear-gradient(90deg, #c0392b, #e74c3c); }
+        .bar-fill.yellow { background: linear-gradient(90deg, #d4a017, #f2c94c); }
+        .bar-fill.blue { background: linear-gradient(90deg, #2471a3, #3498db); }
+        .bar-fill.orange { background: linear-gradient(90deg, #ca6f1e, #e67e22); }
+        .bar-fill.purple { background: linear-gradient(90deg, #7d3c98, #9b59b6); }
+
+        /* HIGHLIGHT BOXES */
+        .highlight-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            border: 1px solid;
+        }
+
+        .highlight-box.green {
+            background: var(--green-bg);
+            border-color: rgba(39,174,96,0.3);
+        }
+
+        .highlight-box.red {
+            background: var(--red-bg);
+            border-color: rgba(231,76,60,0.3);
+        }
+
+        .highlight-box.yellow {
+            background: var(--yellow-bg);
+            border-color: rgba(243,156,18,0.3);
+        }
+
+        .highlight-box.blue {
+            background: var(--blue-bg);
+            border-color: rgba(52,152,219,0.3);
+        }
+
+        .highlight-box h4 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .highlight-box h4.green { color: var(--green); }
+        .highlight-box h4.red { color: var(--red); }
+        .highlight-box h4.yellow { color: var(--yellow); }
+        .highlight-box h4.blue { color: var(--blue); }
+
+        .highlight-box p, .highlight-box li {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* CYCLE DIAGRAM */
+        .cycle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .cycle-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cycle-card .emoji {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .cycle-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .cycle-card .phase {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 3px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .phase-harvest { background: var(--green-bg); color: var(--green); border: 1px solid rgba(39,174,96,0.3); }
+        .phase-spend { background: var(--orange-bg); color: var(--orange); border: 1px solid rgba(230,126,34,0.3); }
+        .phase-invest { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(155,89,182,0.3); }
+
+        .cycle-card .detail {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .cycle-card .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 8px 0;
+        }
+
+        .cycle-card .value.out { color: var(--red); }
+        .cycle-card .value.in { color: var(--green); }
+
+        /* TWO COLUMN */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .header { padding: 24px; }
+            .header h1 { font-size: 1.4rem; }
+            .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+            .cycle-grid { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+            table { font-size: 0.8rem; }
+            thead th, tbody td { padding: 8px 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <span class="header-badge">📊 Análise de Fluxo de Caixa</span>
+            <h1>Leandro Martins</h1>
+            <div class="subtitle">Fazenda Monte Alegre — Montividiu/GO</div>
+            <div class="period">Período analisado: Fevereiro e Março de 2026 &nbsp;|&nbsp; Emissão: 06/04/2026</div>
+        </div>
+
+        <!-- DISCLAIMER -->
+        <div class="disclaimer">
+            <div class="disclaimer-title">
+                <span class="icon">⚠️</span>
+                Nota Importante — Estágio da Análise
+            </div>
+            <p>
+                Este relatório apresenta a <strong>análise preliminar do fluxo de caixa</strong> com base em <strong>apenas dois meses de dados</strong> (Fevereiro e Março de 2026). A Fazenda Monte Alegre opera <strong>três atividades produtivas simultâneas</strong> — Lavoura (Soja), Pecuária Bovina e Equinos — cada uma com ciclos de receita e despesa completamente distintos:
+            </p>
+            <ul>
+                <li><strong>Lavoura (Soja):</strong> receita concentrada na colheita (Fev–Abr), insumos pagos ao longo do ano — o período captura apenas o início da receita</li>
+                <li><strong>Pecuária Bovina:</strong> em pleno ciclo de engorda/investimento, com venda dos lotes prevista para momento futuro — o período captura somente desembolsos</li>
+                <li><strong>Equinos:</strong> fase de formação de plantel e investimento em genética — o período captura investimento pesado sem retorno comercial significativo</li>
+            </ul>
+            <p>
+                Portanto, <strong>os indicadores de receita, cobertura global e eficiência estão naturalmente distorcidos</strong>. O saldo negativo do período NÃO representa crise financeira — representa a fotografia de um momento onde duas das três atividades estão em ciclo de gasto.
+            </p>
+            <p>
+                <strong>Para uma análise completa e conclusiva</strong> — incluindo rentabilidade por atividade, capacidade de pagamento, sustentabilidade do fluxo e projeções — será necessário acumular <strong>pelo menos um ciclo completo de dados (12 meses)</strong>, contemplando as entradas de receita de todas as atividades. Até lá, esta análise foca no que é sólido e mensurável: <strong>o diagnóstico de saídas, a estrutura de desembolso e o perfil de cada centro de custo</strong>.
+            </p>
+        </div>
+
+        <!-- SEÇÃO 1: QUADRO GERAL -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <div class="section-title">Quadro Geral do Período</div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Saldo Fevereiro/2026</div>
+                    <div class="kpi-value red">-R$ 926.934</div>
+                    <div class="kpi-detail">Mês de desembolso intenso</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Saldo Março/2026</div>
+                    <div class="kpi-value green">+R$ 186.424</div>
+                    <div class="kpi-detail">Início da colheita de soja</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Saldo Acumulado (2 meses)</div>
+                    <div class="kpi-value red">-R$ 740.511</div>
+                    <div class="kpi-detail">Receita parcial + investimentos</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Saída Média Mensal</div>
+                    <div class="kpi-value white">R$ 1,69 Mi</div>
+                    <div class="kpi-detail">Ritmo de consumo de caixa</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Saída Média Diária</div>
+                    <div class="kpi-value white">R$ 56.383</div>
+                    <div class="kpi-detail">Velocidade de drenagem</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Custo Fixo Mensal Estimado</div>
+                    <div class="kpi-value yellow">R$ 340.000</div>
+                    <div class="kpi-detail">Piso mínimo de desembolso</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 2: CICLO DAS ATIVIDADES -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <div class="section-title">Ciclo das Atividades em Fev–Mar/2026</div>
+            </div>
+
+            <div class="cycle-grid">
+                <div class="cycle-card">
+                    <div class="emoji">🌱</div>
+                    <h4 style="color: var(--green);">Lavoura (Soja)</h4>
+                    <span class="phase phase-harvest">COLHEITA INICIADA</span>
+                    <div class="value in">+R$ 2.438.719</div>
+                    <div class="detail">Receita parcial de soja<br>Saídas: ~R$ 640k (insumos, MO)</div>
+                    <div class="value out" style="font-size: 1rem;">-R$ 640.000</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="emoji">🐂</div>
+                    <h4 style="color: var(--orange);">Pecuária Bovina</h4>
+                    <span class="phase phase-spend">CICLO DE ENGORDA</span>
+                    <div class="value in" style="font-size: 1rem;">+R$ 111.650</div>
+                    <div class="detail">Vendas pontuais de gado/bezerro<br>Saídas: ~R$ 540k (manejo, infra, MO)</div>
+                    <div class="value out">-R$ 540.000</div>
+                </div>
+                <div class="cycle-card">
+                    <div class="emoji">🐴</div>
+                    <h4 style="color: var(--purple);">Equinos</h4>
+                    <span class="phase phase-invest">FORMAÇÃO DE PLANTEL</span>
+                    <div class="value in" style="font-size: 1rem;">+R$ 15.857</div>
+                    <div class="detail">Venda pontual de cavalo<br>Saídas: ~R$ 548k (genética, embriões, MO)</div>
+                    <div class="value out">-R$ 548.000</div>
+                </div>
+            </div>
+
+            <div class="highlight-box yellow">
+                <h4 class="yellow">💡 Por que o saldo é negativo?</h4>
+                <p>
+                    Fevereiro e Março representam uma janela onde a <strong>lavoura começa a gerar receita</strong> (colheita de soja), mas a <strong>pecuária e os equinos estão em pleno ciclo de desembolso</strong>. É como fotografar um negócio que opera 3 frentes, mas em apenas 2 meses — o retrato mostra o esforço, mas não mostra os resultados das atividades que ainda vão faturar.
+                </p>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: DIAGNÓSTICO DE SAÍDAS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <div class="section-title">Diagnóstico de Saídas — Para Onde Vai o Dinheiro</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📊 Distribuição Total de Saídas (R$ 3,38 Mi em 2 meses)</div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🏗️ Investimentos Imobilizados</span>
+                        <span class="bar-label-value">R$ 644.000 — 19,0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill blue" style="width: 100%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🐴 Equinos (genética + operação)</span>
+                        <span class="bar-label-value">R$ 548.000 — 16,2%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill purple" style="width: 85%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🐂 Pecuária Bovina (oper. + invest.)</span>
+                        <span class="bar-label-value">R$ 540.000 — 16,0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill orange" style="width: 84%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🌱 Lavoura (insumos + MO + aplicação)</span>
+                        <span class="bar-label-value">R$ 494.000 — 14,6%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill green" style="width: 77%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">👤 Pró-labore + Retiradas Societárias</span>
+                        <span class="bar-label-value">R$ 430.000 — 12,7%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill yellow" style="width: 67%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">📋 Serviços de Terceiros</span>
+                        <span class="bar-label-value">R$ 303.000 — 9,0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill blue" style="width: 47%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🔧 Frota + Veículos</span>
+                        <span class="bar-label-value">R$ 139.000 — 4,1%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill yellow" style="width: 22%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">🏢 Administrativo</span>
+                        <span class="bar-label-value">R$ 237.000 — 7,0%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill green" style="width: 37%;"></div></div>
+                </div>
+
+                <div class="bar-container">
+                    <div class="bar-label">
+                        <span class="bar-label-text">💰 Financeiro + Impostos</span>
+                        <span class="bar-label-value">R$ 48.000 — 1,4%</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill red" style="width: 7%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 4: PERFIL DE DESEMBOLSO POR ATIVIDADE -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <div class="section-title">Perfil de Desembolso por Atividade Produtiva</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">⚖️ Proporção de Demanda de Caixa entre Atividades</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Atividade</th>
+                                <th class="right">Saída Total (R$)</th>
+                                <th class="right">Part. (%)</th>
+                                <th class="right">Receita no Período (R$)</th>
+                                <th>Fase Atual</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🌱 Lavoura</td>
+                                <td class="right">640.000</td>
+                                <td class="right">37%</td>
+                                <td class="right" style="color: var(--green);">2.438.719 (parcial)</td>
+                                <td><span class="tag tag-green">Colheita iniciada</span></td>
+                            </tr>
+                            <tr>
+                                <td>🐂 Pecuária Bovina</td>
+                                <td class="right">540.000</td>
+                                <td class="right">31%</td>
+                                <td class="right" style="color: var(--yellow);">111.650 (residual)</td>
+                                <td><span class="tag tag-orange">Ciclo de engorda</span></td>
+                            </tr>
+                            <tr>
+                                <td>🐴 Equinos</td>
+                                <td class="right">548.000</td>
+                                <td class="right">32%</td>
+                                <td class="right" style="color: var(--text-muted);">15.857 (pontual)</td>
+                                <td><span class="tag tag-purple">Formação de plantel</span></td>
+                            </tr>
+                            <tr class="total">
+                                <td>TOTAL ATIVIDADES</td>
+                                <td class="right">1.728.000</td>
+                                <td class="right">100%</td>
+                                <td class="right">2.566.226</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="highlight-box blue">
+                <h4 class="blue">📐 Equilíbrio de Demanda: 37% : 31% : 32%</h4>
+                <p>
+                    As três atividades produtivas consomem caixa de forma <strong>quase equitativa</strong> (~1/3 cada). Porém, geram receita em momentos completamente diferentes do ano. Esse é o dado estrutural mais relevante do período — e a principal razão do descasamento temporário.
+                </p>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 5: ESTRUTURA NATUREZA x INVESTIMENTO -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <div class="section-title">Estrutura do Fluxo — Operação vs. Investimento</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">🏛️ Natureza das Saídas</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Natureza</th>
+                                <th class="right">Valor (R$)</th>
+                                <th class="right">Part. (%)</th>
+                                <th>Classificação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Custeio Operacional</td>
+                                <td class="right">1.294.000</td>
+                                <td class="right">38,3%</td>
+                                <td><span class="tag tag-orange">Gasto corrente</span></td>
+                            </tr>
+                            <tr>
+                                <td>Investimento (formação de ativo)</td>
+                                <td class="right">1.288.500</td>
+                                <td class="right">38,1%</td>
+                                <td><span class="tag tag-blue">Capitalização</span></td>
+                            </tr>
+                            <tr>
+                                <td>Pessoal (pró-labore + retiradas + salários)</td>
+                                <td class="right">510.000</td>
+                                <td class="right">15,1%</td>
+                                <td><span class="tag tag-yellow">Remuneração</span></td>
+                            </tr>
+                            <tr>
+                                <td>Serviços / Suporte</td>
+                                <td class="right">242.000</td>
+                                <td class="right">7,1%</td>
+                                <td><span class="tag tag-green">Suporte operacional</span></td>
+                            </tr>
+                            <tr>
+                                <td>Financeiro + Impostos</td>
+                                <td class="right">48.000</td>
+                                <td class="right">1,4%</td>
+                                <td><span class="tag tag-red">Obrigatório</span></td>
+                            </tr>
+                            <tr class="total">
+                                <td>TOTAL</td>
+                                <td class="right">3.382.500</td>
+                                <td class="right">100%</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="highlight-box green">
+                    <h4 class="green">✅ Razão Custeio/Investimento = 1:1</h4>
+                    <p>
+                        Para cada R$ 1 gasto em operação corrente, a fazenda investe R$ 1 em formação de ativo. A maioria das fazendas opera com razão 3:1 ou 4:1. Isso confirma que a propriedade está em <strong>fase de expansão/capitalização ativa</strong>.
+                    </p>
+                </div>
+                <div class="highlight-box green">
+                    <h4 class="green">✅ Rigidez do Fluxo = 21,5%</h4>
+                    <p>
+                        Apenas 21,5% das saídas são fixas e obrigatórias. Os outros <strong>78,5% são discricionários</strong> (investimentos, equinos, insumos calibráveis). Isso dá ao produtor <strong>alta flexibilidade</strong> para ajustar o fluxo se necessário.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 6: DETALHAMENTO POR CENTRO DE CUSTO -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <div class="section-title">Detalhamento das Saídas por Centro de Custo</div>
+            </div>
+
+            <!-- PECUARIA BOVINA -->
+            <div class="card">
+                <div class="card-title">🐂 Pecuária Bovina — Desembolso Total: ~R$ 540.000</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th class="right">Fev/26 (R$)</th>
+                                <th class="right">Mar/26 (R$)</th>
+                                <th class="right">Total (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="subtotal"><td colspan="4">Compras de Animais</td></tr>
+                            <tr><td>Compra Animais-Plante</td><td class="right">11.851</td><td class="right">5.625</td><td class="right">17.476</td></tr>
+                            <tr><td>Compra Gado Fêmea Engorda</td><td class="right">3.806</td><td class="right">—</td><td class="right">3.806</td></tr>
+                            <tr><td>Compra Sêmen/Embrião</td><td class="right">4.245</td><td class="right">1.625</td><td class="right">5.870</td></tr>
+                            <tr class="subtotal"><td colspan="4">Recursos Humanos</td></tr>
+                            <tr><td>Salário PEC</td><td class="right">20.315</td><td class="right">6.470</td><td class="right">26.785</td></tr>
+                            <tr><td>Mão de Obra Terc. PEC</td><td class="right">5.290</td><td class="right">5.755</td><td class="right">11.045</td></tr>
+                            <tr><td>Adiantamento Salário PEC</td><td class="right">2.000</td><td class="right">1.500</td><td class="right">3.500</td></tr>
+                            <tr class="subtotal"><td colspan="4">Manutenção do Rebanho</td></tr>
+                            <tr><td>Sal Mineral PEC</td><td class="right">31.571</td><td class="right">—</td><td class="right">31.571</td></tr>
+                            <tr><td>Suplemento PEC</td><td class="right">—</td><td class="right">31.571</td><td class="right">31.571</td></tr>
+                            <tr><td>Medicamentos/Vacinas</td><td class="right">2.917</td><td class="right">15.751</td><td class="right">18.668</td></tr>
+                            <tr><td>Material de Trabalho PEC</td><td class="right">11.863</td><td class="right">23.271</td><td class="right">35.134</td></tr>
+                            <tr><td>Manut. Infra Estrutura PEC</td><td class="right">15.863</td><td class="right">18.932</td><td class="right">34.795</td></tr>
+                            <tr class="subtotal"><td colspan="4">Investimento Pecuário</td></tr>
+                            <tr><td>Infraestrutura Pecuária</td><td class="right">12.190</td><td class="right">55.580</td><td class="right">67.770</td></tr>
+                            <tr><td>Abertura de Pastos</td><td class="right">19.166</td><td class="right">28.415</td><td class="right">47.581</td></tr>
+                            <tr><td>Reforma de Pastos</td><td class="right">20.535</td><td class="right">—</td><td class="right">20.535</td></tr>
+                            <tr><td>Equipamentos PEC</td><td class="right">—</td><td class="right">5.000</td><td class="right">5.000</td></tr>
+                            <tr class="subtotal"><td colspan="4">Outros PEC</td></tr>
+                            <tr><td>Assistência Veterinária</td><td class="right">14.148</td><td class="right">10.555</td><td class="right">24.703</td></tr>
+                            <tr><td>Manut. Frota PEC (comb. + peças + serv.)</td><td class="right">18.009</td><td class="right">55.670</td><td class="right">73.679</td></tr>
+                            <tr><td>Alimentação/Hig. + Tel/Energia + Software</td><td class="right">5.328</td><td class="right">18.160</td><td class="right">23.488</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- EQUINOS -->
+            <div class="card">
+                <div class="card-title">🐴 Equinos — Desembolso Total: ~R$ 548.000</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th class="right">Fev/26 (R$)</th>
+                                <th class="right">Mar/26 (R$)</th>
+                                <th class="right">Total (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Compra de Cavalos</td><td class="right">87.651</td><td class="right">199.783</td><td class="right">287.434</td></tr>
+                            <tr><td>Compra de Embriões In Vitro</td><td class="right">39.117</td><td class="right">49.860</td><td class="right">88.977</td></tr>
+                            <tr><td>Aluguel de Receptora de Dev.</td><td class="right">8.500</td><td class="right">27.890</td><td class="right">36.390</td></tr>
+                            <tr><td>Compra de Cobertura de CAV</td><td class="right">11.750</td><td class="right">17.200</td><td class="right">28.950</td></tr>
+                            <tr><td>Desp. Reprodução CAV</td><td class="right">—</td><td class="right">19.283</td><td class="right">19.283</td></tr>
+                            <tr><td>Ração/Suplemento p/ Cavalos</td><td class="right">10.697</td><td class="right">7.814</td><td class="right">18.511</td></tr>
+                            <tr><td>Mão de Obra dos Cavalos</td><td class="right">15.150</td><td class="right">8.000</td><td class="right">23.150</td></tr>
+                            <tr><td>Infra Estrutura p/ Cavalos</td><td class="right">8.000</td><td class="right">—</td><td class="right">8.000</td></tr>
+                            <tr><td>Piquete de Fretes</td><td class="right">18.067</td><td class="right">—</td><td class="right">18.067</td></tr>
+                            <tr><td>Coberta Terceirizada</td><td class="right">14.705</td><td class="right">—</td><td class="right">14.705</td></tr>
+                            <tr><td>Doma / Medicação / Outros</td><td class="right">1.470</td><td class="right">3.030</td><td class="right">4.500</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="highlight-box yellow" style="margin-top: 12px;">
+                    <h4 class="yellow">🐴 Composição do investimento equino</h4>
+                    <p>
+                        <strong>52,5%</strong> do desembolso em equinos é <strong>aquisição de animais e genética</strong> (compra de cavalos + embriões + coberturas = R$ 405k). São investimentos em formação de patrimônio genético, com horizonte de retorno de médio/longo prazo.
+                    </p>
+                </div>
+            </div>
+
+            <!-- LAVOURA -->
+            <div class="card">
+                <div class="card-title">🌱 Lavoura — Desembolso Total: ~R$ 640.000</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th class="right">Fev/26 (R$)</th>
+                                <th class="right">Mar/26 (R$)</th>
+                                <th class="right">Total (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Insumos — Defensivos</td><td class="right">2.871</td><td class="right">266.334</td><td class="right">269.205</td></tr>
+                            <tr><td>Insumos — Sementes</td><td class="right">55.699</td><td class="right">169.317</td><td class="right">225.016</td></tr>
+                            <tr><td>RH Lavoura — Diaristas</td><td class="right">25.756</td><td class="right">58.907</td><td class="right">84.663</td></tr>
+                            <tr><td>Comissão da Safra</td><td class="right">5.000</td><td class="right">2.000</td><td class="right">7.000</td></tr>
+                            <tr><td>Administrador de Safra</td><td class="right">—</td><td class="right">24.100</td><td class="right">24.100</td></tr>
+                            <tr><td>Salários/Remunerações</td><td class="right">14.375</td><td class="right">15.725</td><td class="right">30.100</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PRÓ-LABORE + RETIRADAS -->
+            <div class="card">
+                <div class="card-title">👤 Pró-labore + Retiradas — Desembolso Total: ~R$ 430.000</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th class="right">Total 2 meses (R$)</th>
+                                <th class="right">Part. (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>P - LJ</td><td class="right">95.009</td><td class="right">22,1%</td></tr>
+                            <tr><td>P - JP</td><td class="right">42.915</td><td class="right">10,0%</td></tr>
+                            <tr><td>P - Netto</td><td class="right">54.767</td><td class="right">12,7%</td></tr>
+                            <tr><td>Paula Lim</td><td class="right">27.324</td><td class="right">6,4%</td></tr>
+                            <tr class="subtotal"><td>Subtotal Pró-labore</td><td class="right">220.015</td><td class="right">51,2%</td></tr>
+                            <tr><td>Retirada — Joel Cruvinel de Lima</td><td class="right">200.000</td><td class="right">46,5%</td></tr>
+                            <tr><td>Impostos e Taxas / SEFAZ</td><td class="right">3.129</td><td class="right">0,7%</td></tr>
+                            <tr class="total"><td>TOTAL</td><td class="right">~430.000</td><td class="right">100%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- INVESTIMENTOS IMOBILIZADOS -->
+            <div class="card">
+                <div class="card-title">🏗️ Investimentos Imobilizados — Desembolso Total: ~R$ 644.000</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rubrica</th>
+                                <th class="right">Total 2 meses (R$)</th>
+                                <th class="right">Part. (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Aquisição de Máq/Equip/Impl.</td><td class="right">544.329</td><td class="right">84,5%</td></tr>
+                            <tr><td>Consórcios</td><td class="right">34.639</td><td class="right">5,4%</td></tr>
+                            <tr><td>Aplicação Aérea</td><td class="right">31.093</td><td class="right">4,8%</td></tr>
+                            <tr><td>Construção de Benfeitorias</td><td class="right">17.359</td><td class="right">2,7%</td></tr>
+                            <tr><td>Aquisição de Veículos</td><td class="right">14.117</td><td class="right">2,2%</td></tr>
+                            <tr><td>Aquisição de Imóveis</td><td class="right">2.300</td><td class="right">0,4%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 7: INDICADORES VÁLIDOS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <div class="section-title">Indicadores Válidos do Fluxo (2 meses)</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">📐 Indicadores que não dependem de receita completa</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Indicador</th>
+                                <th class="right">Valor</th>
+                                <th>O que revela</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Saída média mensal</td>
+                                <td class="right">R$ 1.691.500</td>
+                                <td>Ritmo de consumo de caixa</td>
+                                <td><span class="tag tag-yellow">Referência</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Saída média diária</td>
+                                <td class="right">R$ 56.383</td>
+                                <td>Velocidade de drenagem</td>
+                                <td><span class="tag tag-yellow">Referência</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Custo fixo mensal estimado</td>
+                                <td class="right">R$ 340.000</td>
+                                <td>Piso mínimo de desembolso</td>
+                                <td><span class="tag tag-yellow">Referência</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Rigidez do fluxo</td>
+                                <td class="right">21,5%</td>
+                                <td>Alta flexibilidade para ajustes</td>
+                                <td><span class="tag tag-green">Positivo</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Razão Custeio / Investimento</td>
+                                <td class="right">1 : 1</td>
+                                <td>Modo expansão ativo</td>
+                                <td><span class="tag tag-blue">Expansão</span></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Equilíbrio entre atividades</td>
+                                <td class="right">37 : 31 : 32</td>
+                                <td>Lavoura : Pecuária : Equinos</td>
+                                <td><span class="tag tag-green">Equilibrado</span></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Invest. PEC + EQU / Total Saídas</td>
+                                <td class="right">32,2%</td>
+                                <td>1/3 do caixa vai para atividades em formação</td>
+                                <td><span class="tag tag-yellow">Monitorar</span></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Retiradas / Total de Saídas</td>
+                                <td class="right">12,7%</td>
+                                <td>Compatível com o porte</td>
+                                <td><span class="tag tag-green">Adequado</span></td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>Dispersão de saídas entre meses</td>
+                                <td class="right">19,5%</td>
+                                <td>Saídas bem distribuídas</td>
+                                <td><span class="tag tag-green">Estável</span></td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>Cobertura de custos fixos (c/ receita parcial)</td>
+                                <td class="right">3,89x</td>
+                                <td>Mesmo com receita incompleta, cobre fixos</td>
+                                <td><span class="tag tag-green">Confortável</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 8: O QUE PODEMOS E NÃO PODEMOS AFIRMAR -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <div class="section-title">Diagnóstico — O que Sabemos e o que Falta</div>
+            </div>
+
+            <div class="two-col">
+                <div class="highlight-box green">
+                    <h4 class="green">✅ O que podemos afirmar com segurança</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 12px;">
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> A fazenda opera 3 atividades simultâneas que demandam caixa de forma equilibrada (~1/3 cada), mas geram receita em janelas temporais completamente diferentes</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> O ritmo de saída é de ~R$ 1,7 Mi/mês — esse é o custo de manter a fazenda rodando com investimentos inclusos</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> 38% de tudo que sai é investimento — a fazenda está em fase de capitalização ativa</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> A rigidez é baixa (21,5%) — se precisar ajustar, há 78,5% de saídas que podem ser calibradas</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> O saldo negativo de R$ 740k reflete o momento do ciclo, não necessariamente uma fragilidade estrutural</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✔</span> Os equinos absorvem R$ 548k em 2 meses — 52,5% em genética (ativo de longo prazo)</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box red">
+                    <h4 class="red">❌ O que NÃO podemos afirmar ainda</h4>
+                    <ul style="list-style: none; padding: 0; margin-top: 12px;">
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Se a operação como um todo é superavitária ou deficitária — falta receita completa de gado, cavalos e soja</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Se o ritmo de investimento é sustentável no médio prazo — precisa de pelo menos 12 meses de dados</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Se há descasamento estrutural ou apenas sazonal — 2 meses não permitem distinguir</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Rentabilidade por atividade — sem receita completa de cada centro, é impossível calcular</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Capacidade de pagamento e endividamento — CDBs e posição bancária ainda não fornecidos</li>
+                        <li style="padding: 6px 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">✗</span> Qualquer projeção ou tendência confiável — sem série histórica</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 9: CONCLUSÃO -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <div class="section-title">Conclusão e Próximos Passos</div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <div class="card-title">📋 Síntese do Período</div>
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 16px;">
+                    A Fazenda Monte Alegre apresenta um <strong style="color: var(--text-primary);">perfil de operação diversificada em fase de capitalização</strong>. Os dois meses analisados revelam uma estrutura de desembolso robusta, com investimento pesado em três frentes simultâneas (pastagens, genética equina e imobilizado), suportada pela receita da soja que começa a entrar em março.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8; margin-bottom: 16px;">
+                    O saldo negativo de <strong style="color: var(--red);">R$ 740.511</strong> no período é <strong style="color: var(--text-primary);">consistente com o momento do ciclo produtivo</strong> — onde duas das três atividades estão em fase de gasto e a terceira (soja) tem receita parcialmente registrada. A baixa rigidez do fluxo (21,5%) indica que há espaço para ajustes se necessário, sem comprometer a operação.
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.8;">
+                    <strong style="color: var(--accent-light);">Dado central:</strong> A fazenda gasta de forma equilibrada entre as 3 atividades (37:31:32), mas gera receita em momentos diferentes — o que torna a gestão do fluxo de caixa o fator mais crítico da operação.
+                </p>
+            </div>
+
+            <div class="card card-alt">
+                <div class="card-title">🗺️ Próximos Passos para Análise Completa</div>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Dado Necessário</th>
+                                <th>Para qual análise</th>
+                                <th>Prioridade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Preço de venda e volume total da soja</td>
+                                <td>Fechar receita da lavoura e rentabilidade</td>
+                                <td><span class="tag tag-red">Alta</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Produtividade realizada (sc/ha)</td>
+                                <td>Custo por hectare e eficiência produtiva</td>
+                                <td><span class="tag tag-red">Alta</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>CDBs e posição bancária</td>
+                                <td>Análise de endividamento e liquidez</td>
+                                <td><span class="tag tag-red">Alta</span></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Projeção de venda dos lotes de gado</td>
+                                <td>Receita pecuária e ciclo de retorno</td>
+                                <td><span class="tag tag-orange">Média</span></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Fluxo dos meses subsequentes (Abr–Dez)</td>
+                                <td>Série histórica, sazonalidade, projeções</td>
+                                <td><span class="tag tag-orange">Média</span></td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Inventário e avaliação do plantel equino</td>
+                                <td>ROI da atividade equina</td>
+                                <td><span class="tag tag-yellow">Normal</span></td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Área plantada e arrendamentos</td>
+                                <td>Análise por hectare e escala</td>
+                                <td><span class="tag tag-yellow">Normal</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="disclaimer" style="margin-top: 20px;">
+                <div class="disclaimer-title">
+                    <span class="icon">📌</span>
+                    Compromisso com o Processo
+                </div>
+                <p>
+                    A construção de uma análise financeira completa e confiável é um <strong>processo gradual e contínuo</strong>. Com dois meses de dados e três atividades de ciclos distintos, esta primeira entrega foca no que é sólido: o mapeamento de saídas e a estrutura de desembolso. À medida que novos meses forem sendo lançados e os dados complementares forem fornecidos, a análise será progressivamente enriquecida com:
+                </p>
+                <ul>
+                    <li>Indicadores de rentabilidade por atividade (lavoura, pecuária, equinos)</li>
+                    <li>Análise de endividamento e capacidade de pagamento</li>
+                    <li>Projeções de fluxo e cenários</li>
+                    <li>Análise de sazonalidade e tendência</li>
+                    <li>Benchmarks regionais comparativos</li>
+                </ul>
+                <p>
+                    <strong>O objetivo é alcançar, ao final de um ciclo completo (12 meses), um diagnóstico financeiro integral</strong> que permita ao produtor tomar decisões estratégicas com base em dados concretos e análises robustas.
+                </p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Relatório gerado em 06/04/2026 &nbsp;|&nbsp; Análise preliminar — Fev–Mar/2026</p>
+            <p>Fazenda Monte Alegre — Leandro Martins — Montividiu/GO</p>
+            <p style="margin-top: 8px; color: var(--text-muted);">⚡ Próxima atualização: mediante recebimento de dados complementares</p>
+        </div>
+
+    </div>
+</body>
+</html>
