@@ -1,0 +1,2617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Financeira do Fluxo de Caixa — Março/2026 | Rural In</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1B5E20;
+            --primary-light: #2E7D32;
+            --primary-dark: #0D3B0F;
+            --accent: #F9A825;
+            --accent-light: #FFD54F;
+            --danger: #C62828;
+            --danger-light: #EF5350;
+            --warning: #F57F17;
+            --warning-light: #FFB300;
+            --success: #2E7D32;
+            --success-light: #66BB6A;
+            --info: #0277BD;
+            --info-light: #29B6F6;
+            --bg: #F5F5F0;
+            --card: #FFFFFF;
+            --text: #212121;
+            --text-secondary: #616161;
+            --border: #E0E0E0;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px 40px;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .header-badge {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 44px);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .header-title span {
+            color: var(--accent);
+        }
+
+        .header-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-meta-item i {
+            opacity: 0.7;
+        }
+
+        .nav-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar { display: none; }
+
+        .nav-item {
+            padding: 14px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .score-banner {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 40px 24px;
+        }
+
+        .score-banner-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .score-circle-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(var(--danger) 0% 28.3%, rgba(255,255,255,0.1) 28.3% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .score-circle-inner {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-value {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--danger-light);
+            line-height: 1;
+        }
+
+        .score-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .score-status {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--danger-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .score-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .score-detail-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+        }
+
+        .score-detail-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 6px;
+        }
+
+        .score-detail-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .score-detail-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .score-detail-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 1s ease;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .section-icon.green { background: linear-gradient(135deg, #2E7D32, #43A047); }
+        .section-icon.red { background: linear-gradient(135deg, #C62828, #E53935); }
+        .section-icon.blue { background: linear-gradient(135deg, #0277BD, #0288D1); }
+        .section-icon.orange { background: linear-gradient(135deg, #E65100, #F57C00); }
+        .section-icon.purple { background: linear-gradient(135deg, #6A1B9A, #8E24AA); }
+        .section-icon.teal { background: linear-gradient(135deg, #00695C, #00897B); }
+        .section-icon.brown { background: linear-gradient(135deg, #4E342E, #6D4C41); }
+        .section-icon.indigo { background: linear-gradient(135deg, #283593, #3949AB); }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .kpi-card.danger::before { background: var(--danger); }
+        .kpi-card.warning::before { background: var(--warning); }
+        .kpi-card.success::before { background: var(--success); }
+        .kpi-card.info::before { background: var(--info); }
+
+        .kpi-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .kpi-value.danger { color: var(--danger); }
+        .kpi-value.warning { color: var(--warning); }
+        .kpi-value.success { color: var(--success); }
+        .kpi-value.info { color: var(--info); }
+
+        .kpi-detail {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        .kpi-benchmark {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin: 0 -8px;
+            padding: 0 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 14px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        thead th:first-child {
+            text-align: left;
+            border-radius: 8px 0 0 0;
+        }
+
+        thead th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        tbody td {
+            padding: 10px 14px;
+            text-align: right;
+            border-bottom: 1px solid #f0f0f0;
+            white-space: nowrap;
+        }
+
+        tbody td:first-child {
+            text-align: left;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody tr.total-row {
+            background: #E8F5E9;
+            font-weight: 700;
+        }
+
+        tbody tr.total-row td {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .val-positive { color: var(--success); font-weight: 600; }
+        .val-negative { color: var(--danger); font-weight: 600; }
+        .val-warning { color: var(--warning); font-weight: 600; }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .badge-danger { background: #FFEBEE; color: var(--danger); }
+        .badge-warning { background: #FFF8E1; color: var(--warning); }
+        .badge-success { background: #E8F5E9; color: var(--success); }
+        .badge-info { background: #E1F5FE; color: var(--info); }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-height: 400px;
+            margin: 16px 0;
+        }
+
+        .chart-container canvas {
+            max-height: 400px;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            margin: 16px 0;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .alert i {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .alert-danger {
+            background: #FFEBEE;
+            border-left: 4px solid var(--danger);
+            color: #B71C1C;
+        }
+
+        .alert-warning {
+            background: #FFF8E1;
+            border-left: 4px solid var(--warning);
+            color: #E65100;
+        }
+
+        .alert-success {
+            background: #E8F5E9;
+            border-left: 4px solid var(--success);
+            color: #1B5E20;
+        }
+
+        .alert-info {
+            background: #E1F5FE;
+            border-left: 4px solid var(--info);
+            color: #01579B;
+        }
+
+        .dre-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .dre-item.level-0 {
+            font-weight: 700;
+            font-size: 15px;
+            background: #f8f9fa;
+        }
+
+        .dre-item.level-1 {
+            padding-left: 32px;
+        }
+
+        .dre-item.highlight-green {
+            background: #E8F5E9;
+            font-weight: 700;
+        }
+
+        .dre-item.highlight-red {
+            background: #FFEBEE;
+            font-weight: 700;
+        }
+
+        .dre-item.highlight-blue {
+            background: #E3F2FD;
+            font-weight: 700;
+        }
+
+        .progress {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1.5s ease;
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .rec-card {
+            background: white;
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-left: 5px solid;
+        }
+
+        .rec-card.urgent { border-left-color: var(--danger); }
+        .rec-card.important { border-left-color: var(--warning); }
+        .rec-card.normal { border-left-color: var(--success); }
+
+        .rec-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rec-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .rec-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .rec-tag.curto { background: #FFCDD2; color: #B71C1C; }
+        .rec-tag.medio { background: #FFE0B2; color: #E65100; }
+        .rec-tag.longo { background: #C8E6C9; color: #1B5E20; }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: white;
+            padding: 48px 24px 32px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .footer-brand h3 span { color: var(--accent); }
+
+        .footer-brand p {
+            opacity: 0.8;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        .footer-contact h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .footer-contact-item i {
+            width: 20px;
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin-bottom: 20px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .footer-disclaimer {
+            background: rgba(255,255,255,0.08);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 24px;
+            font-size: 11px;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 24px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .comparison-item h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .comparison-item .big-value {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .comparison-item .sub-value {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: white;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 20px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: white;
+        }
+
+        .timeline-item.critical::before {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .timeline-item.positive::before {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .timeline-item.warning-dot::before {
+            background: var(--warning);
+            border-color: var(--warning);
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .timeline-text {
+            font-size: 13px;
+            margin-top: 4px;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .score-banner-inner {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header-top {
+                justify-content: center;
+            }
+
+            .nav-item {
+                padding: 12px 14px;
+                font-size: 12px;
+            }
+
+            .card {
+                padding: 20px 16px;
+            }
+
+            .section-header {
+                flex-wrap: wrap;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .score-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .score-circle-inner {
+                width: 115px;
+                height: 115px;
+            }
+
+            .score-value {
+                font-size: 34px;
+            }
+
+            .rec-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @media print {
+            .nav-bar { display: none; }
+            .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+            body { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-content">
+        <div class="header-top">
+            <div class="logo-area">
+                <div class="logo-icon">🌾</div>
+                <div>
+                    <div class="logo-text">Rural <span>In</span></div>
+                    <div class="logo-sub">Gestão & Inteligência no Agro</div>
+                </div>
+            </div>
+            <div class="header-badge">
+                <i class="fas fa-file-chart-line"></i> Relatório Financeiro
+            </div>
+        </div>
+        <h1 class="header-title">
+            Análise Financeira do<br>Fluxo de Caixa — <span>Março/2026</span>
+        </h1>
+        <div class="header-meta">
+            <div class="header-meta-item">
+                <i class="fas fa-user"></i>
+                Fernando Machado
+            </div>
+            <div class="header-meta-item">
+                <i class="fas fa-map-marker-alt"></i>
+                Doverlândia — GO
+            </div>
+            <div class="header-meta-item">
+                <i class="fas fa-calendar"></i>
+                Período: Jul/2025 — Mar/2026
+            </div>
+            <div class="header-meta-item">
+                <i class="fas fa-seedling"></i>
+                Lavoura (Soja) & Pecuária de Corte
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-bar">
+    <div class="nav-inner">
+        <a href="#score" class="nav-item active">Score</a>
+        <a href="#resumo" class="nav-item">Resumo</a>
+        <a href="#receitas" class="nav-item">Receitas</a>
+        <a href="#custos" class="nav-item">Custos</a>
+        <a href="#endividamento" class="nav-item">Endividamento</a>
+        <a href="#liquidez" class="nav-item">Liquidez</a>
+        <a href="#bancario" class="nav-item">Saldos Bancários</a>
+        <a href="#rentabilidade" class="nav-item">Rentabilidade</a>
+        <a href="#projecoes" class="nav-item">Projeções</a>
+        <a href="#recomendacoes" class="nav-item">Recomendações</a>
+    </div>
+</nav>
+
+<!-- SCORE BANNER -->
+<section class="score-banner" id="score">
+    <div class="score-banner-inner">
+        <div class="score-circle-wrap">
+            <div class="score-circle">
+                <div class="score-circle-inner">
+                    <div class="score-value">2,83</div>
+                    <div class="score-label">de 10</div>
+                </div>
+            </div>
+            <div class="score-status">⚠ Estado Crítico</div>
+        </div>
+        <div class="score-details">
+            <div class="score-detail-card">
+                <div class="score-detail-label">Rentabilidade</div>
+                <div class="score-detail-value" style="color:#EF5350">3,0</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:30%;background:#EF5350"></div></div>
+            </div>
+            <div class="score-detail-card">
+                <div class="score-detail-label">Liquidez</div>
+                <div class="score-detail-value" style="color:#EF5350">2,0</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:20%;background:#EF5350"></div></div>
+            </div>
+            <div class="score-detail-card">
+                <div class="score-detail-label">Endividamento</div>
+                <div class="score-detail-value" style="color:#EF5350">1,5</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:15%;background:#EF5350"></div></div>
+            </div>
+            <div class="score-detail-card">
+                <div class="score-detail-label">Eficiência Operacional</div>
+                <div class="score-detail-value" style="color:#FFB300">4,0</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:40%;background:#FFB300"></div></div>
+            </div>
+            <div class="score-detail-card">
+                <div class="score-detail-label">Diversificação</div>
+                <div class="score-detail-value" style="color:#FFB300">5,0</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:50%;background:#FFB300"></div></div>
+            </div>
+            <div class="score-detail-card">
+                <div class="score-detail-label">Z-Score (Solvência)</div>
+                <div class="score-detail-value" style="color:#EF5350">1,56</div>
+                <div class="score-detail-bar"><div class="score-detail-fill" style="width:52%;background:#EF5350"></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- RESUMO EXECUTIVO -->
+    <section class="section" id="resumo">
+        <div class="section-header">
+            <div class="section-icon green"><i class="fas fa-chart-pie"></i></div>
+            <div>
+                <div class="section-title">Resumo Executivo</div>
+                <div class="section-subtitle">Visão geral do fluxo de caixa — 9 meses consolidados</div>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card success">
+                <div class="kpi-label">Total de Entradas</div>
+                <div class="kpi-value success">R$ 2,50 Mi</div>
+                <div class="kpi-detail">Jul/25 a Mar/26 — 9 meses</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label">Total de Saídas</div>
+                <div class="kpi-value danger">R$ 2,41 Mi</div>
+                <div class="kpi-detail">Custos + Despesas + Investimentos</div>
+            </div>
+            <div class="kpi-card info">
+                <div class="kpi-label">Saldo Acumulado</div>
+                <div class="kpi-value info">R$ 89.734</div>
+                <div class="kpi-detail">Resultado do período</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-label">Saldo Bancário Atual</div>
+                <div class="kpi-value warning">R$ 97.524</div>
+                <div class="kpi-detail">Mar/2026 — todas as contas</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chart-bar" style="color:var(--primary)"></i> Fluxo de Caixa Mensal — Entradas vs. Saídas</div>
+            <div class="chart-container">
+                <canvas id="chartFluxoMensal"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chart-line" style="color:var(--info)"></i> Saldo Acumulado ao Longo do Período</div>
+            <div class="chart-container">
+                <canvas id="chartSaldoAcumulado"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-table" style="color:var(--primary)"></i> Demonstrativo Mensal Detalhado</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th>Entradas</th>
+                            <th>Saídas</th>
+                            <th>Saldo Mensal</th>
+                            <th>Saldo Acumulado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Jul/25</td>
+                            <td>830.638,04</td>
+                            <td>272.381,43</td>
+                            <td class="val-positive">+558.256,61</td>
+                            <td class="val-positive">558.256,61</td>
+                        </tr>
+                        <tr>
+                            <td>Ago/25</td>
+                            <td>100.281,34</td>
+                            <td>336.044,71</td>
+                            <td class="val-negative">-235.763,37</td>
+                            <td class="val-positive">322.493,24</td>
+                        </tr>
+                        <tr>
+                            <td>Set/25</td>
+                            <td>16.255,39</td>
+                            <td>250.746,81</td>
+                            <td class="val-negative">-234.491,42</td>
+                            <td class="val-positive">88.001,82</td>
+                        </tr>
+                        <tr>
+                            <td>Out/25</td>
+                            <td>279.935,56</td>
+                            <td>245.108,26</td>
+                            <td class="val-positive">+34.827,30</td>
+                            <td class="val-positive">122.829,12</td>
+                        </tr>
+                        <tr>
+                            <td>Nov/25</td>
+                            <td>316.056,06</td>
+                            <td>343.573,46</td>
+                            <td class="val-negative">-27.517,40</td>
+                            <td class="val-positive">95.311,72</td>
+                        </tr>
+                        <tr>
+                            <td>Dez/25</td>
+                            <td>41.328,36</td>
+                            <td>66.746,59</td>
+                            <td class="val-negative">-25.418,23</td>
+                            <td class="val-positive">69.893,49</td>
+                        </tr>
+                        <tr>
+                            <td>Jan/26</td>
+                            <td>51.041,40</td>
+                            <td>107.516,83</td>
+                            <td class="val-negative">-56.475,43</td>
+                            <td class="val-positive">13.418,06</td>
+                        </tr>
+                        <tr>
+                            <td>Fev/26</td>
+                            <td>67.518,03</td>
+                            <td>66.178,53</td>
+                            <td class="val-positive">+1.339,50</td>
+                            <td class="val-positive">14.757,56</td>
+                        </tr>
+                        <tr>
+                            <td>Mar/26</td>
+                            <td>794.135,73</td>
+                            <td>719.111,64</td>
+                            <td class="val-positive">+75.024,09</td>
+                            <td class="val-positive">89.781,65</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>TOTAL</td>
+                            <td>2.497.190,91</td>
+                            <td>2.407.407,26</td>
+                            <td class="val-positive">+89.783,65</td>
+                            <td>—</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="alert alert-warning" style="margin-top:16px;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div><strong>Atenção:</strong> 5 dos 9 meses (55,6%) tiveram saldo negativo.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECEITAS -->
+    <section class="section" id="receitas">
+        <div class="section-header">
+            <div class="section-icon green"><i class="fas fa-arrow-trend-up"></i></div>
+            <div>
+                <div class="section-title">Análise de Receitas</div>
+                <div class="section-subtitle">Decomposição e sazonalidade das fontes de renda</div>
+            </div>
+        </div>
+
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            <div><strong>Dependência de Terceiros: 58,52%</strong> — Quase 59% de tudo que entrou no caixa veio de empréstimos, custeio bancário e operações financeiras. A receita produtiva genuína representa apenas 41,48% do total.</div>
+        </div>
+
+        <div class="card-grid" style="margin-bottom:20px;">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-coins" style="color:var(--success)"></i> Receita Genuína vs. Terceiros</div>
+                <div class="chart-container" style="max-height:300px;">
+                    <canvas id="chartReceitaGenuina"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title"><i class="fas fa-leaf" style="color:var(--primary)"></i> Mix Produtivo: Soja vs. Pecuária</div>
+                <div class="chart-container" style="max-height:300px;">
+                    <canvas id="chartMixProdutivo"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-cow" style="color:#6D4C41"></i> Receita por Categoria Animal</div>
+            <div class="chart-container" style="max-height:300px;">
+                <canvas id="chartPecuaria"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-calendar-alt" style="color:var(--primary)"></i> Sazonalidade: Receita de Produção Mensal</div>
+            <div class="chart-container">
+                <canvas id="chartSazonalidade"></canvas>
+            </div>
+            <div class="alert alert-info" style="margin-top:12px;">
+                <i class="fas fa-info-circle"></i>
+                <div><strong>Padrão sazonal:</strong> Pecuária gera receita distribuída (Jul–Nov), enquanto a soja concentra em Fev–Mar (colheita). Essa complementaridade é positiva para o fluxo de caixa.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CUSTOS -->
+    <section class="section" id="custos">
+        <div class="section-header">
+            <div class="section-icon red"><i class="fas fa-arrow-trend-down"></i></div>
+            <div>
+                <div class="section-title">Análise de Custos</div>
+                <div class="section-subtitle">Decomposição, concentração e evolução dos custos de produção</div>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card danger">
+                <div class="kpi-label">Custo Total (9 meses)</div>
+                <div class="kpi-value danger">R$ 900.517</div>
+                <div class="kpi-detail">Média mensal: R$ 100.057</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-label">Custo Março/26</div>
+                <div class="kpi-value warning">R$ 402.405</div>
+                <div class="kpi-detail">+585% vs. mês anterior (outlier)</div>
+            </div>
+            <div class="kpi-card info">
+                <div class="kpi-label">Custo Mensal Normal</div>
+                <div class="kpi-value info">R$ 62.264</div>
+                <div class="kpi-detail">Excluindo março (fertilizantes)</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label">Coef. Variação</div>
+                <div class="kpi-value danger">109,8%</div>
+                <div class="kpi-detail">Alta volatilidade (19% s/ março)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chart-area" style="color:var(--danger)"></i> Evolução Mensal dos Custos</div>
+            <div class="chart-container">
+                <canvas id="chartCustosMensal"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-ranking-star" style="color:var(--warning)"></i> Top 10 Custos Acumulados (9 meses)</div>
+            <div class="chart-container" style="max-height:400px;">
+                <canvas id="chartTopCustos"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-bullseye" style="color:var(--danger)"></i> Concentração de Custos em Março/26</div>
+            <div class="chart-container" style="max-height:300px;">
+                <canvas id="chartCustosMarco"></canvas>
+            </div>
+            <div class="alert alert-danger" style="margin-top:12px;">
+                <i class="fas fa-exclamation-circle"></i>
+                <div><strong>HHI de 5.921 em Março/26</strong> — Concentração altíssima. Somente fertilizantes representaram 76,4% dos custos do mês (R$ 307.624).</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENDIVIDAMENTO -->
+    <section class="section" id="endividamento">
+        <div class="section-header">
+            <div class="section-icon orange"><i class="fas fa-scale-balanced"></i></div>
+            <div>
+                <div class="section-title">Análise de Endividamento</div>
+                <div class="section-subtitle">Posição de dívida, custo e estratégia de reorganização</div>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card danger">
+                <div class="kpi-label">Saldo Devedor Estimado</div>
+                <div class="kpi-value danger">R$ 410.420</div>
+                <div class="kpi-detail">Contratos em discussão judicial</div>
+            </div>
+            <div class="kpi-card info">
+                <div class="kpi-label">Status Judicial</div>
+                <div class="kpi-value info" style="font-size:20px;">Suspensão Deferida</div>
+                <div class="kpi-detail">Cobranças suspensas por decisão judicial</div>
+                <div class="kpi-benchmark">✅ Fôlego para reorganização</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-label">Custo da Dívida (a.a.)</div>
+                <div class="kpi-value warning">~15,1%</div>
+                <div class="kpi-detail">Juros pagos: R$ 90.869 em 9 meses</div>
+            </div>
+            <div class="kpi-card success">
+                <div class="kpi-label">Impacto na Safra 26/27</div>
+                <div class="kpi-value success" style="font-size:20px;">Caixa Desonerado</div>
+                <div class="kpi-detail">Compromissos bancários fora do fluxo operacional</div>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-money-bill-transfer" style="color:var(--danger)"></i> Capital Tomado vs. Devolvido (Safra 25/26)</div>
+                <div class="chart-container" style="max-height:300px;">
+                    <canvas id="chartDivida"></canvas>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title"><i class="fas fa-percent" style="color:var(--warning)"></i> Endividamento / Receita</div>
+                <div style="text-align:center; padding:20px;">
+                    <div style="font-size:64px; font-weight:900; color:var(--danger);">40,1%</div>
+                    <div style="font-size:14px; color:var(--text-secondary); margin-top:8px;">da receita produtiva comprometida com dívidas na safra 25/26</div>
+                    <div class="progress" style="max-width:400px; margin:16px auto; height:12px;">
+                        <div class="progress-fill" style="width:40.1%; background: linear-gradient(90deg, var(--warning), var(--danger));"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; max-width:400px; margin:0 auto; font-size:11px; color:var(--text-secondary);">
+                        <span>0% Livre</span>
+                        <span>30% Limite saudável</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-success">
+            <i class="fas fa-gavel"></i>
+            <div><strong>Medida Judicial Estratégica Adotada:</strong> Identificada a incapacidade de honrar todos os compromissos financeiros dentro da safra 25/26, foi protocolado pedido judicial de suspensão das cobranças bancárias. A decisão foi favorável, garantindo ao produtor o <strong>fôlego necessário</strong> para se reorganizar e apresentar um plano de pagamento adequado. Com isso, a safra 26/27 pode ser planejada com foco exclusivo na <strong>produção e na melhoria da eficiência técnico-administrativa</strong>, sem a pressão de rolagem de dívidas.</div>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="fas fa-route"></i>
+            <div><strong>Novo Ciclo sem Dependência de Empréstimos:</strong> Com os compromissos bancários em discussão judicial, o produtor deixa de depender de novos empréstimos para financiar a operação. Isso interrompe o padrão anterior de captação-investimento-esgotamento e permite que toda a geração de caixa da safra 26/27 seja direcionada para <strong>custos de produção, constituição de reserva e melhoria operacional</strong>.</div>
+        </div>
+    </section>
+
+    <!-- LIQUIDEZ E SALDOS BANCÁRIOS -->
+    <section class="section" id="liquidez">
+        <div class="section-header">
+            <div class="section-icon blue"><i class="fas fa-droplet"></i></div>
+            <div>
+                <div class="section-title">Liquidez e Capital de Giro</div>
+                <div class="section-subtitle">Capacidade de honrar compromissos de curto prazo</div>
+            </div>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card danger">
+                <div class="kpi-label">Runway (Mar/26)</div>
+                <div class="kpi-value danger">26 dias</div>
+                <div class="kpi-detail">Ideal: >90 dias</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label">Drawdown Máximo</div>
+                <div class="kpi-value danger">-99,71%</div>
+                <div class="kpi-detail">De R$572k → R$1.644 (Jul→Jan)</div>
+            </div>
+            <div class="kpi-card danger">
+                <div class="kpi-label">Meses com Liquidez < 1x</div>
+                <div class="kpi-value danger">6 de 9</div>
+                <div class="kpi-detail">66,7% do tempo insuficiente</div>
+            </div>
+            <div class="kpi-card warning">
+                <div class="kpi-label">Gap de Capital de Giro</div>
+                <div class="kpi-value warning">R$ 1.689</div>
+                <div class="kpi-detail">Receita - Custos mensais (quase zero)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-gauge-high" style="color:var(--danger)"></i> Índice de Liquidez Imediata — Evolução Mensal</div>
+            <div class="chart-container">
+                <canvas id="chartLiquidez"></canvas>
+            </div>
+            <div class="alert alert-danger" style="margin-top:12px;">
+                <i class="fas fa-triangle-exclamation"></i>
+                <div><strong>Janeiro/2026 — Ponto de menor liquidez:</strong> Apenas R$ 1.643,86 em todas as contas. Liquidez de 0,015x — equivalente a 0,35 dia de operação.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SALDOS BANCÁRIOS -->
+    <section class="section" id="bancario">
+        <div class="section-header">
+            <div class="section-icon indigo"><i class="fas fa-building-columns"></i></div>
+            <div>
+                <div class="section-title">Saldos Bancários por Conta</div>
+                <div class="section-subtitle">Distribuição e evolução dos recursos por instituição financeira</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-layer-group" style="color:var(--info)"></i> Evolução dos Saldos por Conta</div>
+            <div class="chart-container">
+                <canvas id="chartBancario"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-table" style="color:var(--primary)"></i> Saldos Bancários Detalhados (R$)</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Conta</th>
+                            <th>Jul/25</th>
+                            <th>Ago/25</th>
+                            <th>Set/25</th>
+                            <th>Out/25</th>
+                            <th>Nov/25</th>
+                            <th>Dez/25</th>
+                            <th>Jan/26</th>
+                            <th>Fev/26</th>
+                            <th>Mar/26</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BB LAV</td>
+                            <td>3.703</td>
+                            <td>3.980</td>
+                            <td>7.099</td>
+                            <td>11.391</td>
+                            <td>74.799</td>
+                            <td>62.631</td>
+                            <td class="val-negative">—</td>
+                            <td>1.799</td>
+                            <td>4.298</td>
+                        </tr>
+                        <tr>
+                            <td>BB PEC</td>
+                            <td>32.366</td>
+                            <td>27.426</td>
+                            <td>2.339</td>
+                            <td>75.377</td>
+                            <td>21.914</td>
+                            <td>9.843</td>
+                            <td class="val-negative">—</td>
+                            <td>3.002</td>
+                            <td>6.042</td>
+                        </tr>
+                        <tr>
+                            <td>SICOOB</td>
+                            <td>1.562</td>
+                            <td>447</td>
+                            <td>807</td>
+                            <td>3.721</td>
+                            <td>1.637</td>
+                            <td>589</td>
+                            <td>474</td>
+                            <td>13.393</td>
+                            <td>37</td>
+                        </tr>
+                        <tr>
+                            <td>CAIXA</td>
+                            <td>535.075</td>
+                            <td>305.090</td>
+                            <td>92.205</td>
+                            <td>40.038</td>
+                            <td>4.650</td>
+                            <td>4.517</td>
+                            <td>1.170</td>
+                            <td>2.141</td>
+                            <td>87.148</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>TOTAL</td>
+                            <td>572.706</td>
+                            <td>336.944</td>
+                            <td>102.451</td>
+                            <td>130.527</td>
+                            <td>102.999</td>
+                            <td>77.580</td>
+                            <td class="val-negative">1.644</td>
+                            <td>20.335</td>
+                            <td>97.524</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-pie-chart" style="color:#4527A0"></i> Concentração Bancária Média</div>
+            <div class="card-grid">
+                <div>
+                    <div class="chart-container" style="max-height:280px;">
+                        <canvas id="chartConcentracao"></canvas>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:column; justify-content:center;">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div><strong>HHI Bancário: 5.581</strong> — 72,5% dos recursos concentrados na Caixa Econômica Federal. Recomenda-se diversificar entre pelo menos 3 instituições com limite de 40% cada.</div>
+                    </div>
+                    <div style="margin-top:12px;">
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;"><span>CAIXA</span><strong>72,5%</strong></div>
+                        <div class="progress"><div class="progress-fill" style="width:72.5%;background:var(--danger)"></div></div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin:8px 0 4px;"><span>BB PEC</span><strong>13,1%</strong></div>
+                        <div class="progress"><div class="progress-fill" style="width:13.1%;background:var(--info)"></div></div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin:8px 0 4px;"><span>BB LAV</span><strong>12,1%</strong></div>
+                        <div class="progress"><div class="progress-fill" style="width:12.1%;background:var(--success)"></div></div>
+                        <div style="display:flex;justify-content:space-between;font-size:13px;margin:8px 0 4px;"><span>SICOOB</span><strong>1,7%</strong></div>
+                        <div class="progress"><div class="progress-fill" style="width:1.7%;background:var(--warning)"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TIMELINE - Cronologia da Pressão de Caixa -->
+        <div class="card">
+            <div class="card-title"><i class="fas fa-timeline" style="color:var(--info)"></i> Cronologia da Pressão de Caixa — Safra 25/26</div>
+            <div class="timeline">
+                <div class="timeline-item positive">
+                    <div class="timeline-date">Julho/2025</div>
+                    <div class="timeline-text">Captação do custeio bancário (R$ 749 mil). Caixa atinge pico: <strong>R$ 572.706</strong></div>
+                </div>
+                <div class="timeline-item critical">
+                    <div class="timeline-date">Agosto–Setembro/2025</div>
+                    <div class="timeline-text">Investimentos pesados em animais, máquinas e aplicação bancária. Consumo de <strong>R$ 470 mil</strong> em 2 meses (-82%)</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Outubro/2025</div>
+                    <div class="timeline-text">Breve recuperação com venda de gado. Saldo sobe para R$ 130.527</div>
+                </div>
+                <div class="timeline-item warning-dot">
+                    <div class="timeline-date">Nov/2025–Jan/2026</div>
+                    <div class="timeline-text">Devolução de empréstimos + entressafra. Queda progressiva até <strong style="color:var(--danger)">R$ 1.644</strong> — ponto de menor liquidez do período</div>
+                </div>
+                <div class="timeline-item positive">
+                    <div class="timeline-date">Fev–Mar/2026</div>
+                    <div class="timeline-text">Colheita da soja + ingresso de receita. Recuperação para <strong>R$ 97.524</strong></div>
+                </div>
+                <div class="timeline-item positive">
+                    <div class="timeline-date" style="color:var(--success);">Medida Estratégica — Rural In</div>
+                    <div class="timeline-text">Suspensão judicial das cobranças bancárias deferida. Produtor ganha <strong>fôlego para reorganização financeira</strong> e foco na produção na safra 26/27</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RENTABILIDADE -->
+    <section class="section" id="rentabilidade">
+        <div class="section-header">
+            <div class="section-icon purple"><i class="fas fa-chart-line"></i></div>
+            <div>
+                <div class="section-title">Rentabilidade e DRE</div>
+                <div class="section-subtitle">Margens, retorno sobre investimento e ponto de equilíbrio</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-file-invoice-dollar" style="color:var(--primary)"></i> DRE Simplificada — 9 Meses (Jul/25–Mar/26)</div>
+            <div class="dre-item level-0" style="background:#E8F5E9;">
+                <span>(+) Receita Bruta de Produção</span>
+                <span class="val-positive">R$ 1.023.911,20</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(+) Receitas Operacionais</span>
+                <span>R$ 11.967,82</span>
+            </div>
+            <div class="dre-item highlight-green">
+                <span>= Receita Operacional Bruta</span>
+                <span>R$ 1.035.879,02</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(-) Custos de Produção</span>
+                <span class="val-negative">(R$ 900.517,34)</span>
+            </div>
+            <div class="dre-item highlight-blue">
+                <span>= Lucro Bruto</span>
+                <span>R$ 135.361,68</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(-) Despesas Operacionais</span>
+                <span class="val-negative">(R$ 107.196,43)</span>
+            </div>
+            <div class="dre-item highlight-blue">
+                <span>= EBITDA (Proxy)</span>
+                <span style="font-weight:700">R$ 28.165,25</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(-) Juros e Despesas Financeiras</span>
+                <span class="val-negative">(R$ 90.868,67)</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(-) Seguros</span>
+                <span class="val-negative">(R$ 12.920,59)</span>
+            </div>
+            <div class="dre-item highlight-red">
+                <span>= Resultado Antes de Investimentos</span>
+                <span class="val-negative">(R$ 75.624,01)</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(-) Investimentos</span>
+                <span class="val-negative">(R$ 497.919,59)</span>
+            </div>
+            <div class="dre-item highlight-red">
+                <span>= Resultado Final (s/ empréstimos)</span>
+                <span class="val-negative">(R$ 573.543,60)</span>
+            </div>
+            <div class="dre-item level-1">
+                <span>(+) Capital de Terceiros Líquido</span>
+                <span class="val-positive">R$ 663.277,65</span>
+            </div>
+            <div class="dre-item" style="background:var(--primary); color:white; font-weight:700; font-size:15px;">
+                <span>= Saldo Efetivo do Período</span>
+                <span>R$ 89.734,05</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-percentage" style="color:var(--danger)"></i> Indicadores de Margem</div>
+            <div class="kpi-grid" style="margin-bottom:0">
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Margem Bruta</div>
+                    <div class="kpi-value danger">13,22%</div>
+                    <div class="kpi-benchmark">Benchmark: 20-30%</div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Margem EBITDA</div>
+                    <div class="kpi-value danger">2,75%</div>
+                    <div class="kpi-benchmark">Benchmark: 10-15%</div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-label">Margem Líquida</div>
+                    <div class="kpi-value danger">-7,39%</div>
+                    <div class="kpi-benchmark">Benchmark: >5%</div>
+                </div>
+                <div class="kpi-card danger">
+                    <div class="kpi-label">ROIC (Anualizado)</div>
+                    <div class="kpi-value danger">7,54%</div>
+                    <div class="kpi-benchmark">Custo dívida: 15,1% → Spread: -7,6%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-code-compare" style="color:var(--primary)"></i> Rentabilidade Comparativa: Soja vs. Pecuária</div>
+            <div class="comparison-grid">
+                <div class="comparison-item" style="background:#FFF8E1;">
+                    <h4>🌱 SOJA</h4>
+                    <div class="big-value" style="color:var(--warning)">~9,7%</div>
+                    <div class="sub-value">Margem Bruta</div>
+                    <div style="margin-top:12px; font-size:13px; color:var(--text-secondary);">
+                        Receita: R$ 476.211<br>
+                        Custos Diretos: ~R$ 430.000
+                    </div>
+                </div>
+                <div class="comparison-item" style="background:#E8F5E9;">
+                    <h4>🐂 PECUÁRIA</h4>
+                    <div class="big-value" style="color:var(--success)">~92,6%</div>
+                    <div class="sub-value">Margem Bruta</div>
+                    <div style="margin-top:12px; font-size:13px; color:var(--text-secondary);">
+                        Receita: R$ 547.701<br>
+                        Custos Diretos: ~R$ 40.606
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-success" style="margin-top:16px;">
+                <i class="fas fa-lightbulb"></i>
+                <div><strong>A pecuária é o verdadeiro motor de lucro!</strong> Enquanto a soja gera margem apertada de ~10%, a pecuária extensiva entrega ~93%. A soja tem papel no fluxo de caixa concentrado (colheita), mas a pecuária sustenta a margem da fazenda.</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-crosshairs" style="color:var(--info)"></i> Ponto de Equilíbrio (Break-Even)</div>
+            <div class="chart-container" style="max-height:300px;">
+                <canvas id="chartBreakEven"></canvas>
+            </div>
+            <div style="text-align:center; margin-top:16px;">
+                <div style="font-size:13px; color:var(--text-secondary);">Receita de Break-Even</div>
+                <div style="font-size:32px; font-weight:900; color:var(--info);">R$ 1.029.582 /ano</div>
+                <div style="font-size:14px; margin-top:8px;">
+                    Margem de Segurança: <span class="badge badge-warning">24,58%</span>
+                </div>
+                <div style="font-size:13px; color:var(--text-secondary); margin-top:4px;">
+                    Uma queda de 25% na receita leva ao prejuízo operacional
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJEÇÕES -->
+    <section class="section" id="projecoes">
+        <div class="section-header">
+            <div class="section-icon teal"><i class="fas fa-crystal-ball"></i></div>
+            <div>
+                <div class="section-title">Projeções e Cenários</div>
+                <div class="section-subtitle">Modelagem preditiva e análise de sensibilidade</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chess" style="color:var(--primary)"></i> Cenários Projetivos — Próximos 12 Meses</div>
+            <div class="chart-container" style="max-height:350px;">
+                <canvas id="chartCenarios"></canvas>
+            </div>
+            <div class="table-wrap" style="margin-top:16px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cenário</th>
+                            <th>Receita Produtiva</th>
+                            <th>Custo Total</th>
+                            <th>Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-success">Otimista</span> Soja R$130/sc + gado +15%</td>
+                            <td>1.600.000</td>
+                            <td>1.100.000</td>
+                            <td class="val-positive">+500.000</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-info">Base</span> Mantendo padrão atual</td>
+                            <td>1.365.215</td>
+                            <td>1.230.000</td>
+                            <td class="val-positive">+135.215</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-warning">Pessimista</span> Soja -20% + gado -10%</td>
+                            <td>1.050.000</td>
+                            <td>1.200.000</td>
+                            <td class="val-negative">-150.000</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-danger">Estresse</span> Quebra de safra 50%</td>
+                            <td>750.000</td>
+                            <td>1.150.000</td>
+                            <td class="val-negative">-400.000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-shield-halved" style="color:var(--danger)"></i> Z-Score de Altman (Adaptado) — Risco de Insolvência</div>
+            <div style="text-align:center; padding:20px;">
+                <div style="display:inline-flex; gap:0; border-radius:50px; overflow:hidden; width:100%; max-width:500px; height:40px; margin-bottom:20px;">
+                    <div style="flex:1.81; background:var(--danger); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">PERIGO<br>&lt;1,81</div>
+                    <div style="flex:1.18; background:var(--warning); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">CINZENTA<br>1,81-2,99</div>
+                    <div style="flex:2; background:var(--success); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:700;">SEGURA<br>&gt;2,99</div>
+                </div>
+                <div style="font-size:64px; font-weight:900; color:var(--danger);">1,56</div>
+                <div style="font-size:16px; font-weight:700; color:var(--danger); text-transform:uppercase; letter-spacing:2px; margin-top:8px;">Zona de Perigo</div>
+                <div style="font-size:13px; color:var(--text-secondary); margin-top:12px; max-width:500px; margin-left:auto; margin-right:auto;">
+                    O Z-Score revisado, com saldos bancários reais e dívida líquida negativa, posiciona o produtor na <strong>zona de perigo de insolvência</strong>. A medida judicial de suspensão das cobranças é um passo fundamental para reverter esse cenário ao longo das próximas safras.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECOMENDAÇÕES -->
+    <section class="section" id="recomendacoes">
+        <div class="section-header">
+            <div class="section-icon brown"><i class="fas fa-clipboard-check"></i></div>
+            <div>
+                <div class="section-title">Plano de Ação e Recomendações</div>
+                <div class="section-subtitle">Ações estratégicas priorizadas por urgência e impacto</div>
+            </div>
+        </div>
+
+        <div class="rec-grid">
+            <div class="rec-card urgent">
+                <h4><span style="font-size:18px">1️⃣</span> Constituir Reserva de Emergência</h4>
+                <p>Meta mínima: <strong>R$ 200.000</strong> antes de Jul/26, para cobrir a entressafra sem repetir a pressão de caixa de Jan/26. Priorizar CDB com liquidez diária.</p>
+                <span class="rec-tag curto">Imediato</span>
+            </div>
+            <div class="rec-card urgent">
+                <h4><span style="font-size:18px">2️⃣</span> Reduzir Custo de Fertilizantes</h4>
+                <p>Compra coletiva via cooperativa, análise de solo precisa para dosagem variável, avaliar organominerais. <strong>Economia potencial: R$ 60-75 mil/ano</strong>.</p>
+                <span class="rec-tag curto">Próxima safra</span>
+            </div>
+            <div class="rec-card urgent">
+                <h4><span style="font-size:18px">3️⃣</span> Revisar Pró-Labore</h4>
+                <p>Atual: ~R$ 22.770/mês. Sugestão: <strong>R$ 15.000/mês</strong> (compatível com a geração de caixa). Economia de ~R$ 70 mil/ano.</p>
+                <span class="rec-tag curto">Imediato</span>
+            </div>
+            <div class="rec-card important">
+                <h4><span style="font-size:18px">4️⃣</span> Intensificar a Pecuária</h4>
+                <p>Atividade mais rentável (margem 93%). Avaliar <strong>ILP (Integração Lavoura-Pecuária)</strong>, pasto rotacionado e aumento de lotação.</p>
+                <span class="rec-tag medio">6-12 meses</span>
+            </div>
+            <div class="rec-card important">
+                <h4><span style="font-size:18px">5️⃣</span> Diversificar Lavoura</h4>
+                <p>Avaliar safrinha de <strong>milho, sorgo ou milheto</strong> sobre a palhada da soja para gerar receita adicional e reduzir risco.</p>
+                <span class="rec-tag medio">6-12 meses</span>
+            </div>
+            <div class="rec-card normal">
+                <h4><span style="font-size:18px">6️⃣</span> Hedge de Preços — Soja e Milho</h4>
+                <p>Travar preço da <strong>soja safra 26/27</strong> via NDF ou opções na B3 quando atingir R$ 125+/saca. Para o <strong>milho safrinha</strong> (58 ha em bom desenvolvimento), avaliar fixação antecipada de preço para garantir margem, considerando o bom estado da lavoura atual.</p>
+                <span class="rec-tag longo">Até Set/26</span>
+            </div>
+            <div class="rec-card normal">
+                <h4><span style="font-size:18px">7️⃣</span> Diversificar Contas Bancárias</h4>
+                <p>Reduzir concentração na Caixa (72,5%). Distribuir entre <strong>3+ instituições</strong> com limite de 40% cada para mitigar risco bancário.</p>
+                <span class="rec-tag medio">30 dias</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPI DASHBOARD FINAL -->
+    <section class="section">
+        <div class="section-header">
+            <div class="section-icon indigo"><i class="fas fa-gauge"></i></div>
+            <div>
+                <div class="section-title">Painel Final de Indicadores</div>
+                <div class="section-subtitle">Todos os KPIs consolidados com benchmark e status</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Valor</th>
+                            <th>Benchmark</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Margem Bruta</td>
+                            <td>13,22%</td>
+                            <td>20-30%</td>
+                            <td><span class="badge badge-danger">🔴 Abaixo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Margem EBITDA</td>
+                            <td>2,75%</td>
+                            <td>10-15%</td>
+                            <td><span class="badge badge-danger">🔴 Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>Margem Líquida</td>
+                            <td>-7,39%</td>
+                            <td>>5%</td>
+                            <td><span class="badge badge-danger">🔴 Negativo</span></td>
+                        </tr>
+                        <tr>
+                            <td>DSCR</td>
+                            <td>0,032</td>
+                            <td>>1,25</td>
+                            <td><span class="badge badge-danger">🔴 Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>Dependência de Terceiros</td>
+                            <td>58,52%</td>
+                            <td><30%</td>
+                            <td><span class="badge badge-danger">🔴 Alto</span></td>
+                        </tr>
+                        <tr>
+                            <td>Z-Score (Solvência)</td>
+                            <td>1,56</td>
+                            <td>>2,99</td>
+                            <td><span class="badge badge-danger">🔴 Perigo</span></td>
+                        </tr>
+                        <tr>
+                            <td>ROIC Anualizado</td>
+                            <td>7,54%</td>
+                            <td>>15%</td>
+                            <td><span class="badge badge-danger">🔴 Abaixo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Spread (ROIC - Dívida)</td>
+                            <td>-7,59%</td>
+                            <td>>0%</td>
+                            <td><span class="badge badge-danger">🔴 Destruição</span></td>
+                        </tr>
+                        <tr>
+                            <td>Margem Segurança Break-Even</td>
+                            <td>24,58%</td>
+                            <td>>40%</td>
+                            <td><span class="badge badge-warning">🟡 Apertado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Runway (dias)</td>
+                            <td>26 dias</td>
+                            <td>>90 dias</td>
+                            <td><span class="badge badge-danger">🔴 Crítico</span></td>
+                        </tr>
+                        <tr>
+                            <td>Drawdown Máximo</td>
+                            <td>-99,71%</td>
+                            <td><-50%</td>
+                            <td><span class="badge badge-danger">🔴 Severo</span></td>
+                        </tr>
+                        <tr>
+                            <td>Margem Pecuária</td>
+                            <td>92,6%</td>
+                            <td>>80%</td>
+                            <td><span class="badge badge-success">🟢 Excelente</span></td>
+                        </tr>
+                        <tr>
+                            <td>Margem Soja</td>
+                            <td>~9,7%</td>
+                            <td>>15%</td>
+                            <td><span class="badge badge-danger">🔴 Apertado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Reposição de Rebanho</td>
+                            <td>32,25%</td>
+                            <td>25-35%</td>
+                            <td><span class="badge badge-success">🟢 Adequado</span></td>
+                        </tr>
+                        <tr>
+                            <td>Suspensão Judicial</td>
+                            <td>Deferida</td>
+                            <td>—</td>
+                            <td><span class="badge badge-success">✅ Conquistado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Rural <span>In</span></h3>
+                <p style="font-size:14px; opacity:0.9; margin-bottom:4px;">Análise e Construção</p>
+                <p style="font-size:18px; font-weight:700; margin-top:12px;">Dr. Sidney Souza</p>
+                <p style="margin-top:4px;">
+                    Economista Agrícola — Estrategista Econômico do Produtor<br>
+                    Especialista em economia da fazenda e gestão de risco no agro
+                </p>
+                <p style="margin-top:16px; font-style:italic; opacity:0.9; border-left:3px solid var(--accent); padding-left:12px;">
+                    "Transformamos dados da fazenda em decisões econômicas.<br>
+                    Ajudamos produtores a entender se o mercado sustenta seu negócio."
+                </p>
+            </div>
+            <div class="footer-contact">
+                <h4>Contato</h4>
+                <div class="footer-contact-item">
+                    <i class="fas fa-envelope"></i>
+                    sidneyagro@gmail.com
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    (64) 9 9226-6886
+                </div>
+                <div class="footer-contact-item">
+                    <i class="fab fa-instagram"></i>
+                    @ruralin.ai
+                </div>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">
+            <span>© 2026 Rural In — Gestão & Inteligência no Agro. Todos os direitos reservados.</span>
+            <span>Relatório gerado em 06/Abr/2026</span>
+        </div>
+        <div class="footer-disclaimer">
+            <strong>Aviso Legal:</strong> Este relatório é de uso exclusivo do cliente identificado e tem caráter consultivo. Os indicadores, projeções e cenários apresentados são baseados nos dados fornecidos e em premissas que podem não se concretizar. As recomendações não constituem garantia de resultado. Recomenda-se análise complementar com profissionais das áreas jurídica, tributária e agronômica para tomada de decisões.
+        </div>
+    </div>
+</footer>
+
+<!-- CHARTS SCRIPTS -->
+<script>
+    Chart.register(ChartDataLabels);
+
+    const defaultFont = { family: "'Inter', sans-serif", size: 11 };
+    Chart.defaults.font = defaultFont;
+    Chart.defaults.plugins.datalabels.display = false;
+
+    const months = ['Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26'];
+
+    // 1. Fluxo Mensal
+    new Chart(document.getElementById('chartFluxoMensal'), {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Entradas',
+                    data: [830638, 100281, 16255, 279936, 316056, 41328, 51041, 67518, 794136],
+                    backgroundColor: 'rgba(46,125,50,0.8)',
+                    borderRadius: 4,
+                    barPercentage: 0.4,
+                    categoryPercentage: 0.8
+                },
+                {
+                    label: 'Saídas',
+                    data: [272381, 336045, 250747, 245108, 343573, 66747, 107517, 66179, 719112],
+                    backgroundColor: 'rgba(198,40,40,0.8)',
+                    borderRadius: 4,
+                    barPercentage: 0.4,
+                    categoryPercentage: 0.8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 2. Saldo Acumulado
+    new Chart(document.getElementById('chartSaldoAcumulado'), {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Saldo Acumulado',
+                data: [558257, 322493, 88002, 122829, 95312, 69893, 13418, 14758, 89782],
+                borderColor: '#0277BD',
+                backgroundColor: 'rgba(2,119,189,0.1)',
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: '#0277BD',
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => 'R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+                    }
+                },
+                datalabels: {
+                    display: true,
+                    color: '#0277BD',
+                    anchor: 'top',
+                    align: 'top',
+                    font: { size: 10, weight: '600' },
+                    formatter: v => 'R$' + (v/1000).toFixed(0) + 'k'
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$ ' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 3. Receita Genuína vs Terceiros
+    new Chart(document.getElementById('chartReceitaGenuina'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Receita Produtiva', 'Receita Operacional', 'Capital de Terceiros / Financeiro'],
+            datasets: [{
+                data: [1023911, 11968, 1461312],
+                backgroundColor: ['#2E7D32', '#66BB6A', '#E53935'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: { weight: '700', size: 12 },
+                    formatter: (v, ctx) => {
+                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                        return ((v/total)*100).toFixed(1) + '%';
+                    }
+                }
+            }
+        }
+    });
+
+    // 4. Mix Produtivo
+    new Chart(document.getElementById('chartMixProdutivo'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Soja', 'Pecuária (Bovinos)'],
+            datasets: [{
+                data: [476211, 547701],
+                backgroundColor: ['#F9A825', '#2E7D32'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12 } },
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: { weight: '700', size: 14 },
+                    formatter: (v, ctx) => {
+                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                        return ((v/total)*100).toFixed(1) + '%';
+                    }
+                }
+            }
+        }
+    });
+
+    // 5. Pecuária por categoria
+    new Chart(document.getElementById('chartPecuaria'), {
+        type: 'bar',
+        data: {
+            labels: ['Novilha', 'Vaca Boiadeira', 'Marruco', 'Bezerros', 'Bezerras'],
+            datasets: [{
+                label: 'Receita (R$)',
+                data: [345128, 133091, 36640, 20023, 12818],
+                backgroundColor: ['#2E7D32', '#43A047', '#66BB6A', '#81C784', '#A5D6A7'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    display: true,
+                    anchor: 'end',
+                    align: 'end',
+                    color: '#333',
+                    font: { size: 11, weight: '600' },
+                    formatter: v => 'R$ ' + (v/1000).toFixed(0) + 'k'
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 6. Sazonalidade
+    new Chart(document.getElementById('chartSazonalidade'), {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Soja',
+                    data: [0, 0, 0, 0, 0, 0, 0, 22867, 453344],
+                    backgroundColor: '#F9A825',
+                    borderRadius: 4,
+                    barPercentage: 0.5
+                },
+                {
+                    label: 'Pecuária',
+                    data: [38178, 98639, 4400, 49222, 313800, 0, 25403, 18058, 0],
+                    backgroundColor: '#2E7D32',
+                    borderRadius: 4,
+                    barPercentage: 0.5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+                    }
+                }
+            },
+            scales: {
+                x: { stacked: true, grid: { display: false } },
+                y: {
+                    stacked: true,
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                }
+            }
+        }
+    });
+
+    // 7. Custos Mensal
+    new Chart(document.getElementById('chartCustosMensal'), {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Custos (R$)',
+                data: [68942, 42470, 51599, 66880, 73056, 58180, 78218, 58765, 402405],
+                borderColor: '#C62828',
+                backgroundColor: 'rgba(198,40,40,0.1)',
+                fill: true,
+                tension: 0.3,
+                pointBackgroundColor: months.map((m,i) => i === 8 ? '#C62828' : '#E57373'),
+                pointRadius: months.map((m,i) => i === 8 ? 8 : 5),
+                borderWidth: 3
+            },
+            {
+                label: 'Média (s/ março)',
+                data: Array(9).fill(62264),
+                borderColor: '#FFB300',
+                borderDash: [8, 4],
+                borderWidth: 2,
+                pointRadius: 0,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 8. Top Custos
+    new Chart(document.getElementById('chartTopCustos'), {
+        type: 'bar',
+        data: {
+            labels: ['Fertilizantes','Pró-Labore','Diesel','Salários','Consultoria Técnica','Máquinas (M.O.)','Herbicidas','Frete','Diária','Medicamentos Vet.'],
+            datasets: [{
+                label: 'Valor (R$)',
+                data: [307624, 204929, 72314, 53558, 45553, 39461, 24925, 14077, 13655, 12145],
+                backgroundColor: [
+                    '#C62828','#D32F2F','#E53935','#EF5350','#E57373',
+                    '#EF9A9A','#FFCDD2','#FFEBEE','#FFF5F5','#FFF5F5'
+                ],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    display: true,
+                    anchor: 'end',
+                    align: 'end',
+                    color: '#333',
+                    font: { size: 10, weight: '600' },
+                    formatter: v => 'R$ ' + (v/1000).toFixed(0) + 'k'
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                y: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 9. Custos Março
+    new Chart(document.getElementById('chartCustosMarco'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Fertilizantes','Pró-Labore','Diesel','Herbicidas','Inseticidas','Outros'],
+            datasets: [{
+                data: [307624, 21323, 14835, 17347, 8100, 33176],
+                backgroundColor: ['#C62828','#E53935','#EF5350','#E57373','#EF9A9A','#FFCDD2'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { font: { size: 11 }, padding: 8 } },
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: { weight: '700', size: 11 },
+                    formatter: (v, ctx) => {
+                        const total = ctx.dataset.data.reduce((a,b) => a+b, 0);
+                        const pct = ((v/total)*100).toFixed(1);
+                        return pct > 5 ? pct + '%' : '';
+                    }
+                }
+            }
+        }
+    });
+
+    // 10. Dívida
+    new Chart(document.getElementById('chartDivida'), {
+        type: 'bar',
+        data: {
+            labels: ['Capital Tomado', 'Capital Devolvido', 'Saldo Devedor', 'Juros Pagos'],
+            datasets: [{
+                data: [1191232, 780812, 410420, 90869],
+                backgroundColor: ['#0277BD', '#2E7D32', '#C62828', '#F57F17'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    display: true,
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#333',
+                    font: { size: 11, weight: '700' },
+                    formatter: v => 'R$ ' + (v/1000).toFixed(0) + 'k'
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 11. Liquidez
+    new Chart(document.getElementById('chartLiquidez'), {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Saldo Bancário',
+                    data: [572706, 336944, 102451, 130527, 102999, 77580, 1644, 20335, 97524],
+                    backgroundColor: months.map((m,i) => {
+                        const vals = [572706, 336944, 102451, 130527, 102999, 77580, 1644, 20335, 97524];
+                        if (vals[i] < 50000) return 'rgba(198,40,40,0.8)';
+                        if (vals[i] < 120000) return 'rgba(245,127,23,0.8)';
+                        return 'rgba(46,125,50,0.8)';
+                    }),
+                    borderRadius: 4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Liquidez Imediata (x)',
+                    data: [5.11, 3.01, 0.91, 1.16, 0.92, 0.69, 0.015, 0.18, 0.87],
+                    type: 'line',
+                    borderColor: '#0277BD',
+                    backgroundColor: 'transparent',
+                    pointBackgroundColor: '#0277BD',
+                    pointRadius: 5,
+                    borderWidth: 3,
+                    tension: 0.3,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: {
+                    position: 'left',
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                },
+                y1: {
+                    position: 'right',
+                    min: 0,
+                    max: 6,
+                    ticks: { callback: v => v.toFixed(1) + 'x' },
+                    grid: { display: false }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 12. Saldos Bancários
+    new Chart(document.getElementById('chartBancario'), {
+        type: 'bar',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: 'CAIXA',
+                    data: [535075, 305090, 92205, 40038, 4650, 4517, 1170, 2141, 87148],
+                    backgroundColor: '#0277BD'
+                },
+                {
+                    label: 'BB PEC',
+                    data: [32366, 27426, 2339, 75377, 21914, 9843, 0, 3002, 6042],
+                    backgroundColor: '#2E7D32'
+                },
+                {
+                    label: 'BB LAV',
+                    data: [3703, 3980, 7099, 11391, 74799, 62631, 0, 1799, 4298],
+                    backgroundColor: '#F9A825'
+                },
+                {
+                    label: 'SICOOB',
+                    data: [1562, 447, 807, 3721, 1637, 589, 474, 13393, 37],
+                    backgroundColor: '#8E24AA'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' } },
+            scales: {
+                x: { stacked: true, grid: { display: false } },
+                y: {
+                    stacked: true,
+                    ticks: { callback: v => 'R$' + (v/1000).toFixed(0) + 'k' },
+                    grid: { color: '#f0f0f0' }
+                }
+            }
+        }
+    });
+
+    // 13. Concentração Bancária
+    new Chart(document.getElementById('chartConcentracao'), {
+        type: 'doughnut',
+        data: {
+            labels: ['CAIXA (72,5%)', 'BB PEC (13,1%)', 'BB LAV (12,1%)', 'SICOOB (1,7%)'],
+            datasets: [{
+                data: [72.5, 13.1, 12.1, 1.7],
+                backgroundColor: ['#0277BD', '#2E7D32', '#F9A825', '#8E24AA'],
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { font: { size: 11 } } },
+                datalabels: {
+                    display: true,
+                    color: '#fff',
+                    font: { weight: '700', size: 13 },
+                    formatter: v => v > 5 ? v + '%' : ''
+                }
+            }
+        }
+    });
+
+    // 14. Break-Even
+    new Chart(document.getElementById('chartBreakEven'), {
+        type: 'bar',
+        data: {
+            labels: ['Receita Projetada\n(12 meses)', 'Break-Even'],
+            datasets: [{
+                data: [1365215, 1029582],
+                backgroundColor: ['#2E7D32', '#0277BD'],
+                borderRadius: 8,
+                barPercentage: 0.5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    display: true,
+                    anchor: 'end',
+                    align: 'top',
+                    color: '#333',
+                    font: { size: 13, weight: '700' },
+                    formatter: v => 'R$ ' + (v/1000000).toFixed(2) + ' Mi'
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$' + (v/1000000).toFixed(1) + 'Mi' },
+                    grid: { color: '#f0f0f0' },
+                    suggestedMax: 1600000
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // 15. Cenários
+    new Chart(document.getElementById('chartCenarios'), {
+        type: 'bar',
+        data: {
+            labels: ['Otimista', 'Base', 'Pessimista', 'Estresse'],
+            datasets: [
+                {
+                    label: 'Receita',
+                    data: [1600000, 1365215, 1050000, 750000],
+                    backgroundColor: 'rgba(46,125,50,0.8)',
+                    borderRadius: 4,
+                    barPercentage: 0.35,
+                    categoryPercentage: 0.8
+                },
+                {
+                    label: 'Custo',
+                    data: [1100000, 1230000, 1200000, 1150000],
+                    backgroundColor: 'rgba(198,40,40,0.8)',
+                    borderRadius: 4,
+                    barPercentage: 0.35,
+                    categoryPercentage: 0.8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ctx.dataset.label + ': R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { callback: v => 'R$' + (v/1000000).toFixed(1) + 'Mi' },
+                    grid: { color: '#f0f0f0' }
+                },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Smooth scroll for nav
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            this.classList.add('active');
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Active nav on scroll
+    window.addEventListener('scroll', () => {
+        const sections = document.querySelectorAll('.section, .score-banner');
+        const navItems = document.querySelectorAll('.nav-item');
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            if (window.pageYOffset >= sectionTop) {
+                current = section.getAttribute('id');
+            }
+        });
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === '#' + current) {
+                item.classList.add('active');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
