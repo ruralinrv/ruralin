@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Comercial — RuralIn | Fazenda DCC</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --accent: #FF8F00;
+            --accent-light: #FFA726;
+            --dark: #1a1a2e;
+            --gray-900: #212121;
+            --gray-700: #616161;
+            --gray-500: #9E9E9E;
+            --gray-300: #E0E0E0;
+            --gray-100: #F5F5F5;
+            --white: #FFFFFF;
+            --success: #43A047;
+            --warning: #FB8C00;
+            --danger: #E53935;
+            --gradient-primary: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
+            --gradient-accent: linear-gradient(135deg, #E65100 0%, #FF8F00 50%, #FFA726 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========== HERO / CAPA ========== */
+        .hero {
+            background: var(--gradient-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(46, 125, 50, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, rgba(255, 143, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid rgba(46, 125, 50, 0.4);
+            color: var(--primary-light);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .hero-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+
+        .hero-logo span {
+            color: var(--primary-light);
+        }
+
+        .hero-tagline {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .hero-title strong {
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-500);
+            margin-bottom: 40px;
+        }
+
+        .hero-client {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 40px;
+            display: inline-block;
+        }
+
+        .hero-client-label {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .hero-client-name {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-client-farm {
+            color: var(--primary-light);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .hero-date {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        .hero-validity {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* ========== CONTAINER ========== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== SECTION ========== */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray-700);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========== APRESENTAÇÃO ========== */
+        .intro-section {
+            background: var(--white);
+            border-radius: 0;
+        }
+
+        .intro-letter {
+            max-width: 750px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            color: var(--gray-700);
+            line-height: 1.9;
+        }
+
+        .intro-letter p {
+            margin-bottom: 20px;
+        }
+
+        .intro-letter .greeting {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .intro-letter .highlight {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .intro-letter .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray-300);
+        }
+
+        .intro-letter .signature-name {
+            font-weight: 700;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+        }
+
+        .intro-letter .signature-role {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        /* ========== DIAGNÓSTICO ========== */
+        .diagnostic-section {
+            background: var(--gray-100);
+        }
+
+        .diagnostic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .diag-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+
+        .diag-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .diag-card.danger {
+            border-left-color: var(--danger);
+        }
+
+        .diag-card.success {
+            border-left-color: var(--success);
+        }
+
+        .diag-card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .diag-card-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .diag-card-desc {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            margin-top: 4px;
+        }
+
+        /* ========== ESCOPO / SERVIÇOS ========== */
+        .services-section {
+            background: var(--white);
+        }
+
+        .service-item {
+            display: flex;
+            gap: 24px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .service-content {
+            flex: 1;
+        }
+
+        .service-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .service-desc {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        .service-tag {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .service-tag.optional {
+            background: rgba(255, 143, 0, 0.1);
+            color: var(--accent);
+        }
+
+        /* ========== BENEFÍCIOS ECONÔMICOS ========== */
+        .economy-section {
+            background: var(--gradient-dark);
+            color: var(--white);
+            padding: 80px 0;
+        }
+
+        .economy-section .section-title {
+            color: var(--white);
+        }
+
+        .economy-section .section-subtitle {
+            color: var(--gray-500);
+        }
+
+        .economy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .economy-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .economy-card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .economy-card-title {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .economy-card-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-light);
+        }
+
+        .economy-card-desc {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 6px;
+        }
+
+        .economy-highlight {
+            background: rgba(46, 125, 50, 0.15);
+            border: 1px solid rgba(46, 125, 50, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .economy-highlight-label {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .economy-highlight-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-light);
+        }
+
+        .economy-highlight-desc {
+            font-size: 0.95rem;
+            color: var(--gray-300);
+            margin-top: 8px;
+        }
+
+        /* ========== ECONOMIA ADMINISTRATIVA ========== */
+        .savings-section {
+            background: var(--white);
+        }
+
+        .savings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .savings-table thead th {
+            background: var(--gradient-primary);
+            color: var(--white);
+            padding: 16px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+
+        .savings-table tbody td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--gray-300);
+            font-size: 0.95rem;
+        }
+
+        .savings-table tbody tr:nth-child(even) {
+            background: var(--gray-100);
+        }
+
+        .savings-table tbody tr:last-child {
+            background: #FFF3E0;
+            font-weight: 700;
+        }
+
+        .savings-table .value-col {
+            text-align: right;
+            font-weight: 600;
+            color: var(--danger);
+        }
+
+        .savings-table tbody tr:last-child .value-col {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+        }
+
+        .savings-note {
+            text-align: center;
+            margin-top: 24px;
+            padding: 20px;
+            background: #E8F5E9;
+            border-radius: 12px;
+            font-size: 1rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* ========== ROI ========== */
+        .roi-section {
+            background: var(--gray-100);
+        }
+
+        .roi-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .roi-box {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 36px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .roi-box.current {
+            border-top: 4px solid var(--danger);
+        }
+
+        .roi-box.future {
+            border-top: 4px solid var(--success);
+        }
+
+        .roi-box-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .roi-metric {
+            margin-bottom: 20px;
+        }
+
+        .roi-metric-label {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .roi-metric-value {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--gray-900);
+        }
+
+        .roi-arrow {
+            font-size: 2.5rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .roi-bottom {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .roi-stat {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .roi-stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .roi-stat-label {
+            font-size: 0.85rem;
+            color: var(--gray-700);
+            margin-top: 4px;
+        }
+
+        /* ========== INVESTIMENTO / PRICING ========== */
+        .pricing-section {
+            background: var(--white);
+            padding: 80px 0;
+        }
+
+        .pricing-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--gradient-dark);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: var(--white);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .pricing-plan-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pricing-plan-desc {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: 30px;
+        }
+
+        .pricing-value {
+            margin-bottom: 30px;
+        }
+
+        .pricing-currency {
+            font-size: 1.2rem;
+            font-weight: 600;
+            vertical-align: super;
+            color: var(--gray-500);
+        }
+
+        .pricing-amount {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--accent-light);
+        }
+
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--gray-500);
+        }
+
+        .pricing-per-liter {
+            display: inline-block;
+            background: rgba(255, 143, 0, 0.15);
+            border: 1px solid rgba(255, 143, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-light);
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            color: var(--gray-300);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li .check {
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pricing-features li .optional-badge {
+            font-size: 0.7rem;
+            background: rgba(255, 143, 0, 0.2);
+            color: var(--accent-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .pricing-contract {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 20px;
+        }
+
+        /* ========== CRONOGRAMA ========== */
+        .timeline-section {
+            background: var(--gray-100);
+        }
+
+        .timeline {
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gray-300);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-dot.accent {
+            background: var(--gradient-accent);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            flex: 1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-content.highlight {
+            border: 2px solid var(--accent);
+            background: #FFF8E1;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        /* ========== ACEITE ========== */
+        .accept-section {
+            background: var(--white);
+            padding: 80px 0;
+        }
+
+        .accept-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .accept-card h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .accept-card .accept-desc {
+            text-align: center;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-divider {
+            border: none;
+            border-top: 2px dashed var(--gray-300);
+            margin: 30px 0;
+        }
+
+        .form-divider-label {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .terms-box {
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+
+        .terms-box h4 {
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 16px;
+            background: #E8F5E9;
+            border-radius: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--gray-900);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-accept {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-accept:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ========== MODAL SUCESSO ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .modal-desc {
+            font-size: 1rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        .modal-close {
+            margin-top: 30px;
+            padding: 14px 40px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--gradient-dark);
+            color: var(--gray-500);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .footer-brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .footer-brand span {
+            color: var(--primary-light);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero-logo {
+                font-size: 2.8rem;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .diagnostic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .economy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roi-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .roi-arrow {
+                transform: rotate(90deg);
+            }
+
+            .roi-bottom {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-amount {
+                font-size: 3rem;
+            }
+
+            .hero-client {
+                padding: 20px;
+            }
+
+            .accept-card {
+                padding: 30px 20px;
+            }
+
+            .pricing-card {
+                padding: 40px 24px;
+            }
+
+            .service-item {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .savings-table {
+                font-size: 0.85rem;
+            }
+
+            .savings-table thead th,
+            .savings-table tbody td {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HERO / CAPA ========== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Proposta Comercial</div>
+            <div class="hero-logo">Rural<span>In</span></div>
+            <div class="hero-tagline">Informação e Decisão</div>
+            
+            <h1 class="hero-title">Assessoria em <strong>Gestão Financeira</strong><br>e Estratégia para Pecuária Leiteira</h1>
+            <p class="hero-subtitle">Proposta personalizada de consultoria contínua</p>
+
+            <div class="hero-client">
+                <div class="hero-client-label">Proposta destinada a</div>
+                <div class="hero-client-name">Sr. Eduino Pacheco Neto</div>
+                <div class="hero-client-farm">Fazenda DCC — Pecuária Leiteira</div>
+            </div>
+
+            <div class="hero-date">Emitida em 10 de Abril de 2026</div>
+            <div class="hero-validity">⏳ Validade: 15 dias úteis</div>
+        </div>
+    </section>
+
+    <!-- ========== APRESENTAÇÃO ========== -->
+    <section class="section intro-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Apresentação</h2>
+                <p class="section-subtitle">Uma proposta feita sob medida para a Fazenda DCC</p>
+            </div>
+
+            <div class="intro-letter">
+                <p class="greeting">Prezado Sr. Eduino Pacheco Neto,</p>
+                
+                <p>É com grande satisfação que apresentamos esta proposta de <span class="highlight">assessoria contínua em gestão financeira e estratégia</span> para a Fazenda DCC.</p>
+                
+                <p>Após uma análise detalhada da operação, identificamos <span class="highlight">oportunidades expressivas de ganho</span> em margem, eficiência e posicionamento estratégico. Acreditamos que, com acompanhamento técnico-financeiro adequado e ferramentas de gestão modernas, a Fazenda DCC pode atingir um novo patamar de rentabilidade e profissionalização.</p>
+                
+                <p>A <span class="highlight">RuralIn</span> é uma consultoria especializada em gestão financeira e estratégica para pecuária leiteira. Nosso diferencial está na combinação de <span class="highlight">expertise técnica, tecnologia proprietária (Software RuralIn)</span> e um modelo de acompanhamento próximo que une o consultor, o veterinário e o produtor em torno de decisões baseadas em dados.</p>
+
+                <p>O que nos diferencia no mercado é a entrega de um <span class="highlight">departamento financeiro e administrativo completo</span>, eliminando a necessidade de escritório físico, contratação de pessoal administrativo e custos operacionais. Tudo isso com a conveniência de acessar suas informações a qualquer momento, de qualquer lugar.</p>
+
+                <p>Nas próximas seções, apresentamos o escopo detalhado dos serviços, os benefícios econômicos e o investimento proposto.</p>
+
+                <div class="signature">
+                    <div class="signature-name">Sidney — RuralIn</div>
+                    <div class="signature-role">Consultor em Gestão Financeira e Estratégia para o Agro</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DIAGNÓSTICO ATUAL ========== -->
+    <section class="section diagnostic-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Diagnóstico Atual</h2>
+                <p class="section-subtitle">Panorama identificado na operação da Fazenda DCC</p>
+            </div>
+
+            <div class="diagnostic-grid">
+                <div class="diag-card warning">
+                    <div class="diag-card-title">Produção Diária</div>
+                    <div class="diag-card-value">5.000 L/dia</div>
+                    <div class="diag-card-desc">Meta com Compost Barn: 8.400 L/dia</div>
+                </div>
+                <div class="diag-card danger">
+                    <div class="diag-card-title">Margem Líquida</div>
+                    <div class="diag-card-value">R$ 0,34/L</div>
+                    <div class="diag-card-desc">Potencial identificado: R$ 0,72/L</div>
+                </div>
+                <div class="diag-card warning">
+                    <div class="diag-card-title">Score de Maturidade</div>
+                    <div class="diag-card-value">50/100</div>
+                    <div class="diag-card-desc">Meta em 36 meses: 82/100</div>
+                </div>
+                <div class="diag-card success">
+                    <div class="diag-card-title">Potencial de Receita</div>
+                    <div class="diag-card-value">+ R$ 1,5 Mi/ano</div>
+                    <div class="diag-card-desc">Ganho projetado com a reestruturação</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ESCOPO DOS SERVIÇOS ========== -->
+    <section class="section services-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Escopo dos Serviços</h2>
+                <p class="section-subtitle">Tudo o que está incluído no Plano Premium RuralIn</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📊</div>
+                <div class="service-content">
+                    <div class="service-name">Assessoria Financeira Completa</div>
+                    <div class="service-desc">Gestão financeira integral da atividade leiteira: controle de receitas, despesas, contas a pagar e a receber, conciliação de fluxo de caixa e apuração de resultados mensais. Substituição completa de um departamento administrativo-financeiro.</div>
+                    <span class="service-tag">Contínuo</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📈</div>
+                <div class="service-content">
+                    <div class="service-name">Construção e Acompanhamento de Indicadores Financeiros</div>
+                    <div class="service-desc">Criação de painel de indicadores financeiros e zootécnicos avançados: custo por litro, margem operacional, EBITDA da atividade, ponto de equilíbrio, eficiência de rebanho, relação custo/receita por categoria e benchmarking com mercado.</div>
+                    <span class="service-tag">Setup + Atualização Mensal</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📋</div>
+                <div class="service-content">
+                    <div class="service-name">Relatório Mensal de Análise do Fluxo de Caixa</div>
+                    <div class="service-desc">Emissão de relatório profissional mensal detalhando: fluxo de caixa operacional, investimentos, financiamentos, DRE da atividade leiteira, análise de desvios do planejado vs. realizado e recomendações de ajuste.</div>
+                    <span class="service-tag">Mensal</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🤝</div>
+                <div class="service-content">
+                    <div class="service-name">Reunião Estratégica Mensal (Tríade de Gestão)</div>
+                    <div class="service-desc">Reunião mensal presencial ou online unindo a RuralIn, o veterinário responsável e o produtor para análise de resultados, definição de estratégias e planejamento de ações para o próximo ciclo.</div>
+                    <span class="service-tag">1x por Mês</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">💻</div>
+                <div class="service-content">
+                    <div class="service-name">Software RuralIn (SaaS) — Acesso Completo</div>
+                    <div class="service-desc">Acesso ao sistema RuralIn com dados da fazenda atualizados em tempo real. Consulte seus indicadores, fluxo de caixa, relatórios e painel estratégico de qualquer dispositivo, a qualquer momento. Inclui painel digital interativo com atualizações trimestrais.</div>
+                    <span class="service-tag">Acesso Ilimitado 24/7</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🏦</div>
+                <div class="service-content">
+                    <div class="service-name">Assessoria em Captação de Recursos Financeiros</div>
+                    <div class="service-desc">Prospecção e assessoria na captação de crédito rural (FCO, Pronamp, BNDES, Inovagro e outras linhas) para capital de giro, construção do Compost Barn e demais investimentos. Inclui montagem de projetos, análise de viabilidade e acompanhamento bancário completo.</div>
+                    <span class="service-tag">Sob Demanda + Acompanhamento</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📞</div>
+                <div class="service-content">
+                    <div class="service-name">Suporte Técnico-Financeiro Ilimitado</div>
+                    <div class="service-desc">Canal direto de comunicação via WhatsApp e telefone para dúvidas, consultas e apoio em decisões financeiras do dia a dia. Atendimento ilimitado sem restrição de horário comercial.</div>
+                    <span class="service-tag">Ilimitado</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🎓</div>
+                <div class="service-content">
+                    <div class="service-name">Treinamento da Equipe</div>
+                    <div class="service-desc">Capacitação da equipe da fazenda em gestão financeira básica, lançamento de dados e uso do sistema RuralIn, garantindo autonomia e qualidade nos registros. Disponível sob demanda caso o cliente deseje participar do processo operacional.</div>
+                    <span class="service-tag optional">Opcional — Sob Demanda</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ECONOMIA ADMINISTRATIVA ========== -->
+    <section class="section savings-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Economia Administrativa</h2>
+                <p class="section-subtitle">A RuralIn substitui custos fixos que você não precisa mais ter</p>
+            </div>
+
+            <table class="savings-table">
+                <thead>
+                    <tr>
+                        <th>Custo que você elimina</th>
+                        <th style="text-align:right;">Estimativa Mensal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>👤 Funcionário administrativo / financeiro (CLT + encargos)</td>
+                        <td class="value-col">R$ 5.000 — R$ 8.000</td>
+                    </tr>
+                    <tr>
+                        <td>🏢 Aluguel de escritório / sala comercial</td>
+                        <td class="value-col">R$ 1.800 — R$ 4.000</td>
+                    </tr>
+                    <tr>
+                        <td>🖥️ Computador, impressora, materiais de escritório</td>
+                        <td class="value-col">R$ 3.000 — R$ 5.000</td>
+                    </tr>
+                    <tr>
+                        <td>📡 Internet, telefone, energia do escritório</td>
+                        <td class="value-col">R$ 300 — R$ 500</td>
+                    </tr>
+                    <tr>
+                        <td>📊 Software de gestão financeira (licença)</td>
+                        <td class="value-col">R$ 400 — R$ 900</td>
+                    </tr>
+                    <tr>
+                        <td>📝 Contador / consultor financeiro avulso</td>
+                        <td class="value-col">R$ 1.500 — R$ 3.000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>💰 Total de custos eliminados</strong></td>
+                        <td class="value-col">R$ 12.000 — R$ 21.400</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="savings-note">
+                ✅ Com a RuralIn a R$ 5.500/mês, você ECONOMIZA de R$ 6.500 a R$ 15.900/mês<br>
+                e recebe um serviço <strong>muito superior</strong> ao que teria montando estrutura própria
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ROI / PROJEÇÃO ========== -->
+    <section class="section roi-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Projeção de Resultados</h2>
+                <p class="section-subtitle">O retorno projetado sobre o investimento na consultoria</p>
+            </div>
+
+            <div class="roi-comparison">
+                <div class="roi-box current">
+                    <div class="roi-box-label">📍 Cenário Atual</div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Produção</div>
+                        <div class="roi-metric-value">5.000 L/dia</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem/Litro</div>
+                        <div class="roi-metric-value">R$ 0,34</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem Mensal</div>
+                        <div class="roi-metric-value">R$ 51.000</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem Anual</div>
+                        <div class="roi-metric-value" style="color: #E53935;">R$ 612.000</div>
+                    </div>
+                </div>
+
+                <div class="roi-arrow">→</div>
+
+                <div class="roi-box future">
+                    <div class="roi-box-label">🎯 Cenário Projetado</div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Produção</div>
+                        <div class="roi-metric-value">8.400 L/dia</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem/Litro</div>
+                        <div class="roi-metric-value">R$ 0,72</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem Mensal</div>
+                        <div class="roi-metric-value">R$ 181.440</div>
+                    </div>
+                    <div class="roi-metric">
+                        <div class="roi-metric-label">Margem Anual</div>
+                        <div class="roi-metric-value" style="color: #43A047;">R$ 2.177.280</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="roi-bottom">
+                <div class="roi-stat">
+                    <div class="roi-stat-value">R$ 0,02</div>
+                    <div class="roi-stat-label">Custo da consultoria por litro produzido</div>
+                </div>
+                <div class="roi-stat">
+                    <div class="roi-stat-value">R$ 66.000</div>
+                    <div class="roi-stat-label">Investimento anual na RuralIn</div>
+                </div>
+                <div class="roi-stat">
+                    <div class="roi-stat-value">31x</div>
+                    <div class="roi-stat-label">Retorno projetado sobre o investimento</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BENEFÍCIOS ECONÔMICOS ========== -->
+    <section class="economy-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Por que a RuralIn?</h2>
+                <p class="section-subtitle">O que você ganha ao ter a RuralIn ao seu lado</p>
+            </div>
+
+            <div class="economy-grid">
+                <div class="economy-card">
+                    <div class="economy-card-icon">🏢</div>
+                    <div class="economy-card-title">Zero Escritório</div>
+                    <div class="economy-card-value">100%</div>
+                    <div class="economy-card-desc">Eliminação de custos com estrutura administrativa física</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">👤</div>
+                    <div class="economy-card-title">Zero Contratação</div>
+                    <div class="economy-card-value">CLT Free</div>
+                    <div class="economy-card-desc">Sem encargos trabalhistas com administrativo/financeiro</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">💻</div>
+                    <div class="economy-card-title">Tecnologia Incluída</div>
+                    <div class="economy-card-value">SaaS 24/7</div>
+                    <div class="economy-card-desc">Software de gestão completo incluso sem custo adicional</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">🏦</div>
+                    <div class="economy-card-title">Captação de Crédito</div>
+                    <div class="economy-card-value">FCO & +</div>
+                    <div class="economy-card-desc">Assessoria completa em linhas de financiamento rural</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">🤝</div>
+                    <div class="economy-card-title">Tríade Estratégica</div>
+                    <div class="economy-card-value">3 em 1</div>
+                    <div class="economy-card-desc">RuralIn + Veterinário + Produtor juntos nas decisões</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">📊</div>
+                    <div class="economy-card-title">Decisão Baseada em Dados</div>
+                    <div class="economy-card-value">100%</div>
+                    <div class="economy-card-desc">Relatórios, indicadores e análises para cada decisão</div>
+                </div>
+            </div>
+
+            <div class="economy-highlight">
+                <div class="economy-highlight-label">Para cada R$ 1 investido na consultoria</div>
+                <div class="economy-highlight-value">Retorno de R$ 31</div>
+                <div class="economy-highlight-desc">A RuralIn custa menos de R$ 0,02 por litro, mas pode gerar R$ 0,38/L de ganho adicional</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== INVESTIMENTO ========== -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Investimento</h2>
+                <p class="section-subtitle">Plano Premium — Assessoria completa para a Fazenda DCC</p>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-badge">⭐ Plano Premium</div>
+                <div class="pricing-plan-name">Assessoria Integral RuralIn</div>
+                <div class="pricing-plan-desc">Gestão financeira + Tecnologia + Estratégia + Captação de recursos</div>
+
+                <div class="pricing-value">
+                    <span class="pricing-currency">R$</span>
+                    <span class="pricing-amount">5.500</span>
+                    <span class="pricing-period">/mês</span>
+                </div>
+
+                <div class="pricing-per-liter">≈ R$ 0,02 por litro produzido</div>
+
+                <ul class="pricing-features">
+                    <li><span class="check">✓</span> Assessoria financeira completa e contínua</li>
+                    <li><span class="check">✓</span> Indicadores financeiros e zootécnicos avançados</li>
+                    <li><span class="check">✓</span> Relatório mensal profissional de fluxo de caixa</li>
+                    <li><span class="check">✓</span> 1 reunião estratégica mensal (RuralIn + Vet + Produtor)</li>
+                    <li><span class="check">✓</span> Acesso completo ao Software RuralIn (SaaS 24/7)</li>
+                    <li><span class="check">✓</span> Painel digital interativo com atualizações trimestrais</li>
+                    <li><span class="check">✓</span> Assessoria em captação de crédito + acompanhamento bancário</li>
+                    <li><span class="check">✓</span> Suporte técnico-financeiro ilimitado (WhatsApp/telefone)</li>
+                    <li><span class="check">✓</span> Treinamento da equipe <span class="optional-badge">OPCIONAL</span></li>
+                    <li><span class="check">✓</span> Dispensa escritório, administrativo e custos de estrutura</li>
+                </ul>
+
+                <div class="pricing-contract">
+                    📄 Contrato mínimo de 12 meses | Pagamento até o dia 10 de cada mês
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CRONOGRAMA ========== -->
+    <section class="section timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h2 class="section-title">Cronograma de Implantação</h2>
+                <p class="section-subtitle">Primeiros passos após o aceite da proposta</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot accent">S0</div>
+                    <div class="timeline-content highlight">
+                        <div class="timeline-title">⭐ Semana 0 — Rediagnóstico em Condições Reais de Campo</div>
+                        <div class="timeline-desc">Visita técnica à Fazenda DCC para realimentar e validar o diagnóstico inicial com novas informações coletadas in loco. Levantamento de dados reais atualizados de produção, custos, rebanho e infraestrutura para garantir uma análise mais assertiva e condizente com as condições reais da operação.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 1 — Kick-off e Levantamento Financeiro</div>
+                        <div class="timeline-desc">Reunião inicial de alinhamento, coleta de dados financeiros históricos, levantamento de receitas/despesas e configuração inicial do sistema RuralIn com base nos dados reais validados.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 2 — Setup de Indicadores</div>
+                        <div class="timeline-desc">Construção dos indicadores financeiros e zootécnicos, parametrização do painel digital e definição de metas com base no rediagnóstico realizado.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 3 — Prospecção de Crédito</div>
+                        <div class="timeline-desc">Início da prospecção de linhas de crédito (FCO, Pronamp, etc.), análise de viabilidade do Compost Barn e preparação da documentação bancária.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S4</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 4 — Primeira Reunião Estratégica</div>
+                        <div class="timeline-desc">Primeira reunião da Tríade (RuralIn + Vet + Produtor), apresentação do painel de indicadores, entrega do primeiro relatório e definição do plano de ação para os próximos 90 dias.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ACEITE ========== -->
+    <section class="accept-section" id="aceite">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">9</div>
+                <h2 class="section-title">Aceite da Proposta</h2>
+                <p class="section-subtitle">Preencha os dados abaixo para formalizar o aceite e iniciarmos a confecção do contrato</p>
+            </div>
+
+            <div class="accept-card">
+                <h3>📋 Dados para o Contrato</h3>
+                <p class="accept-desc">Todas as informações são necessárias para a elaboração do contrato de prestação de serviços.</p>
+
+                <form id="acceptForm" onsubmit="submitForm(event)">
+                    
+                    <div class="form-divider-label">👤 Dados Pessoais</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" id="nome" placeholder="Ex: Eduino Pacheco Neto" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CPF <span class="required">*</span></label>
+                            <input type="text" id="cpf" placeholder="000.000.000-00" required maxlength="14" oninput="maskCPF(this)">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>RG <span class="required">*</span></label>
+                            <input type="text" id="rg" placeholder="Número do RG" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone / WhatsApp <span class="required">*</span></label>
+                            <input type="text" id="telefone" placeholder="(64) 99999-9999" required maxlength="15" oninput="maskPhone(this)">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>E-mail <span class="required">*</span></label>
+                            <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Endereço de Cobrança <span class="required">*</span></label>
+                            <input type="text" id="enderecoCobranca" placeholder="Rua, nº, Bairro, Cidade - UF, CEP" required>
+                        </div>
+                    </div>
+
+                    <hr class="form-divider">
+                    <div class="form-divider-label">🐄 Dados da Fazenda</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome da Fazenda <span class="required">*</span></label>
+                            <input type="text" id="nomeFazenda" placeholder="Ex: Fazenda DCC" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Município da Fazenda <span class="required">*</span></label>
+                            <input type="text" id="municipioFazenda" placeholder="Ex: Rio Verde - GO" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Endereço / Localização da Fazenda <span class="required">*</span></label>
+                            <textarea id="enderecoFazenda" placeholder="Rodovia, KM, referência, coordenadas ou endereço completo" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="terms-box">
+                        <h4>📄 Termos e Condições Resumidos</h4>
+                        <p><strong>1. Objeto:</strong> Prestação de serviços de assessoria em gestão financeira, estratégia e tecnologia para pecuária leiteira, conforme escopo descrito nesta proposta.</p>
+                        <p><strong>2. Vigência:</strong> Contrato com duração mínima de 12 (doze) meses, renovável automaticamente por períodos iguais e sucessivos.</p>
+                        <p><strong>3. Investimento:</strong> R$ 5.500,00 (cinco mil e quinhentos reais) mensais, com vencimento todo dia 10 de cada mês.</p>
+                        <p><strong>4. Reajuste:</strong> O valor será reajustado anualmente pelo IGPM/FGV ou índice que o substitua.</p>
+                        <p><strong>5. Rescisão:</strong> Qualquer parte poderá rescindir o contrato com aviso prévio de 60 (sessenta) dias. Em caso de rescisão antecipada sem justa causa, aplicar-se-á multa de 20% sobre o valor restante do contrato.</p>
+                        <p><strong>6. Confidencialidade:</strong> A RuralIn se compromete a manter sigilo absoluto sobre todas as informações financeiras e operacionais da Fazenda DCC.</p>
+                        <p><strong>7. Software:</strong> O acesso ao Software RuralIn (SaaS) está incluso na mensalidade e será disponibilizado durante toda a vigência do contrato.</p>
+                        <p><strong>8. Resultados:</strong> Os valores projetados nesta proposta são estimativas baseadas em análise técnica e não constituem garantia de resultado.</p>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termsCheck" required>
+                        <label for="termsCheck">
+                            Eu, <strong>Eduino Pacheco Neto</strong>, li e concordo com os termos desta proposta comercial. Desejo contratar o <strong>Plano Premium RuralIn</strong> no valor de <strong>R$ 5.500,00/mês</strong> e autorizo o uso dos dados acima para confecção do contrato.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-accept" id="btnAccept">
+                        ✅ Aceitar Proposta e Enviar Dados
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODAL SUCESSO ========== -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <div class="modal-title">Proposta Aceita com Sucesso!</div>
+            <div class="modal-desc">
+                Obrigado, <strong>Sr. Eduino</strong>!<br><br>
+                Seus dados foram registrados. A equipe da <strong>RuralIn</strong> entrará em contato em até <strong>24 horas</strong> para formalização do contrato e início da implantação.<br><br>
+                <strong>Bem-vindo ao time! 🌿🐄</strong>
+            </div>
+            <button class="modal-close" onclick="closeModal()">Enviar dados via WhatsApp →</button>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-brand">Rural<span>In</span></div>
+        <p>Informação e Decisão</p>
+        <br>
+        <p>📧 contato@ruralin.com.br &nbsp; | &nbsp; 📱 WhatsApp: (64) 99226-6886</p>
+        <br>
+        <p>© 2026 RuralIn — Todos os direitos reservados</p>
+        <p style="margin-top: 8px;">Proposta confidencial destinada exclusivamente ao Sr. Eduino Pacheco Neto</p>
+    </footer>
+
+    <script>
+        // ========== MÁSCARAS ==========
+        function maskCPF(input) {
+            let v = input.value.replace(/\D/g, '');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = v;
+        }
+
+        function maskPhone(input) {
+            let v = input.value.replace(/\D/g, '');
+            v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+            v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        // ========== NÚMERO DO WHATSAPP DA RURALIN ==========
+        // ⚠️ SIDNEY: Substitua pelo seu número real abaixo (apenas números, com código do país)
+        const WHATSAPP_RURALIN = '5564992266886';
+
+        // ========== SUBMIT ==========
+        function submitForm(e) {
+            e.preventDefault();
+
+            const formData = {
+                nome: document.getElementById('nome').value,
+                cpf: document.getElementById('cpf').value,
+                rg: document.getElementById('rg').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                enderecoCobranca: document.getElementById('enderecoCobranca').value,
+                nomeFazenda: document.getElementById('nomeFazenda').value,
+                municipioFazenda: document.getElementById('municipioFazenda').value,
+                enderecoFazenda: document.getElementById('enderecoFazenda').value,
+                dataAceite: new Date().toLocaleString('pt-BR'),
+                plano: 'Premium — R$ 5.500,00/mês'
+            };
+
+            // Salva no localStorage
+            localStorage.setItem('ruralin_aceite_dcc', JSON.stringify(formData));
+
+            // Monta mensagem para WhatsApp
+            const msg = `🌿 *ACEITE DE PROPOSTA — RURALIN*%0A%0A` +
+                `📋 *Dados para Contrato:*%0A` +
+                `👤 Nome: ${formData.nome}%0A` +
+                `🪪 CPF: ${formData.cpf}%0A` +
+                `🪪 RG: ${formData.rg}%0A` +
+                `📱 Telefone: ${formData.telefone}%0A` +
+                `📧 E-mail: ${formData.email}%0A` +
+                `🏠 End. Cobrança: ${formData.enderecoCobranca}%0A%0A` +
+                `🐄 *Dados da Fazenda:*%0A` +
+                `🏡 Nome: ${formData.nomeFazenda}%0A` +
+                `📍 Município: ${formData.municipioFazenda}%0A` +
+                `📍 Endereço: ${formData.enderecoFazenda}%0A%0A` +
+                `💎 *Plano:* ${formData.plano}%0A` +
+                `📅 *Data do Aceite:* ${formData.dataAceite}%0A%0A` +
+                `✅ Proposta aceita digitalmente via portal RuralIn.`;
+
+            // Armazena a mensagem
+            localStorage.setItem('ruralin_whatsapp_msg', msg);
+
+            // Mostra modal de sucesso
+            document.getElementById('successModal').classList.add('active');
+
+            // Log no console
+            console.log('=== ACEITE DA PROPOSTA ===');
+            console.log(JSON.stringify(formData, null, 2));
+            console.log('========================');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+
+            // Abre WhatsApp com os dados para o número da RuralIn
+            const msg = localStorage.getItem('ruralin_whatsapp_msg');
+            if (msg) {
+                const whatsappURL = `https://wa.me/${WHATSAPP_RURALIN}?text=${msg}`;
+                window.open(whatsappURL, '_blank');
+            }
+        }
+
+        // Scroll suave
+        document.querySelectorAll('a[href="#aceite"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('#aceite').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+
+</body>
+</html>
