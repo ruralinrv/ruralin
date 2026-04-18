@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Laranja & Suco — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--cyan:#06b6d4;--lime:#84cc16;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:1.7rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2rem;margin-right:6px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.87rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.87rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.alert.cyan{background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}.kpi.cy::before{background:var(--cyan)}
+.kpi-lb{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:5px;font-weight:600}
+.kpi-val{font-size:1.25rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}.kpi-val.or{color:var(--orange)}
+.kpi-sub{font-size:.74rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:16px;border-left:4px solid;font-size:.89rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:16px}
+.card h3{font-size:.95rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.lr{background:linear-gradient(135deg,#c2410c,#fb923c)}
+.sec-title .icon.sc{background:linear-gradient(135deg,#92400e,#fbbf24)}
+.sec-title .icon.sf{background:linear-gradient(135deg,#166534,#4ade80)}
+.sec-title .icon.gl{background:linear-gradient(135deg,#1e40af,#60a5fa)}
+.sec-title .icon.gr{background:linear-gradient(135deg,#991b1b,#ef4444)}
+.sec-title h2{font-size:1.2rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.9rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--orange),var(--border2),transparent);margin:30px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+thead th{background:var(--bg3);padding:11px 12px;text-align:center;font-weight:600;color:var(--text2);font-size:.73rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:10px 12px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:18px 0}
+.thermo h4{font-size:.9rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(194,65,12,.08),rgba(194,65,12,.02));border:1px solid rgba(194,65,12,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.92rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(194,65,12,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:16px}
+.chart-box h3{font-size:.9rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:280px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-size:.8rem;font-weight:700;margin-bottom:6px}
+.badge.up{background:rgba(34,197,94,.15);color:var(--up);border:1px solid rgba(34,197,94,.3)}
+.badge.dn{background:rgba(239,68,68,.15);color:var(--dn);border:1px solid rgba(239,68,68,.3)}
+.badge.nt{background:rgba(234,179,8,.15);color:var(--nt);border:1px solid rgba(234,179,8,.3)}
+.badge.or{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.3)}
+.hl-green{background:linear-gradient(90deg,rgba(239,68,68,.08),transparent);border-left:3px solid var(--dn);padding:18px 22px;border-radius:0 var(--r) var(--r) 0;margin-bottom:16px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🍊</span> Laranja & Suco — <span class="hl">Safra 25/26 Fecha em 292,94 mi cx (+27%). Pera Mesa R$ 44,88/cx. Estoques +75%. Export Suco −8%. Europa Foge −32%. Greening Avança. Custo +16%.</span></h1>
+  <p class="sub">
+    <span class="badge up">📦 Safra 25/26: 292,94 mi cx (+26,9%) — Fundecitrus</span>
+    <span class="badge dn">📉 Export suco: −8,1% vol., −23,2% receita | UE: −32%!</span>
+    <span class="badge or">🦠 Greening + Déficit hídrico (−13% chuva) = pressão estrutural</span><br>
+    Pera mesa SP: <strong style="color:var(--up)">R$ 44,88/cx</strong> (+2,5%) &nbsp;|&nbsp;
+    Pera indústria: <strong style="color:var(--dn)">R$ 29,18/cx</strong> (−3,5%) &nbsp;|&nbsp;
+    Safra 25/26: <strong style="color:var(--up)">292,94 mi cx</strong> (+26,9%) &nbsp;|&nbsp;
+    Estoques suco: <strong style="color:var(--up)">616.460 t</strong> (+75,4%) &nbsp;|&nbsp;
+    FCOJ export: <strong style="color:var(--dn)">−8,1%</strong> &nbsp;|&nbsp;
+    Receita: <strong style="color:var(--dn)">−23,2%</strong> &nbsp;|&nbsp;
+    UE: <strong style="color:var(--dn)">−41,9% receita!</strong>
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert green">
+  <span class="ai">📦</span>
+  <div><strong style="color:var(--up)">Safra 25/26 fecha em 292,94 mi cx (+26,9% vs 24/25)!</strong> <strong>Fundecitrus (10/abr):</strong> <em>"Produção 26,9% maior que 2024/25 (230,87 mi cx), mas 6,9% abaixo da projeção inicial (314,60 mi cx)."</em> Recuperação forte após safra desastrosa, mas <strong>déficit hídrico (−13% chuvas) e greening impediram resultado pleno.</strong></div>
+</div>
+
+<div class="alert orange">
+  <span class="ai">🍊</span>
+  <div><strong style="color:var(--orange)">Laranja pera mesa inicia abril em alta: R$ 44,88/cx (+2,5%)!</strong> <strong>CEPEA/Globo Rural (6/abr):</strong> <em>"O suporte vem da menor oferta — as últimas frutas da safra 2025/26 estão sendo disponibilizadas. Demanda enfraquecida, contudo, limita a valorização."</em> Frutas com coloração verde afastam consumidor.</div>
+</div>
+
+<div class="alert red">
+  <span class="ai">📉</span>
+  <div><strong style="color:var(--dn)">Exportações de suco DESABAM: −8,1% volume, −23,2% receita!</strong> <strong>CNN/CitrusBR:</strong> <em>"394,76 mil t FCOJ exportadas jul-dez/25. Receita: US$ 1,44 bi (−23,2%). UE: −31,9% volume, −41,9% receita!"</em> Europa fugindo do suco caro. EUA assumem liderança com +34,9%.</div>
+</div>
+
+<div class="alert cyan">
+  <span class="ai">📊</span>
+  <div><strong style="color:var(--cyan)">Estoques de suco +75,4%: recomposição em andamento!</strong> <strong>CitrusBR:</strong> <em>"Estoque em 31/dez/25: 616.460 t (FCOJ equiv.). Alta de 75,4% vs 2024, que era a mínima histórica."</em> Melhor resultado desde 2021 (509 mil t). Safra com melhor qualidade + consumo lento = estoque cresce.</div>
+</div>
+
+<div class="alert red">
+  <span class="ai">🦠</span>
+  <div><strong style="color:var(--dn)">GREENING (HLB): ameaça existencial à citricultura paulista.</strong> <strong>Fundecitrus:</strong> <em>"Alta incidência de greening no cinturão contribuiu para redução do peso dos frutos e aumento da taxa de queda."</em> <strong>HF Brasil/CEPEA:</strong> Custo de produção sobe 15-16% na 25/26, com destaque para defensivos contra psilídeo (vetor do greening).</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi up"><div class="kpi-lb">Pera Mesa SP (Abr)</div><div class="kpi-val up">R$ 44,88/cx</div><div class="kpi-sub">+2,5% vs mar · Fim de safra</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Pera Indústria SP</div><div class="kpi-val dn">R$ 29,18/cx</div><div class="kpi-sub">−3,5% sem. · 40,8 kg</div></div>
+  <div class="kpi up"><div class="kpi-lb">Safra 25/26 Final</div><div class="kpi-val up">292,94 mi cx</div><div class="kpi-sub">+26,9% · Fundecitrus</div></div>
+  <div class="kpi up"><div class="kpi-lb">Estoques Suco Dez/25</div><div class="kpi-val up">616.460 t</div><div class="kpi-sub">+75,4% · Melhor desde 2021</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Export FCOJ Jul-Dez/25</div><div class="kpi-val dn">394,76 mil t</div><div class="kpi-sub">−8,1% vol. · −23,2% receita</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Europa (UE)</div><div class="kpi-val dn">−41,9% receita</div><div class="kpi-sub">−31,9% volume · Fuga!</div></div>
+  <div class="kpi up"><div class="kpi-lb">EUA (55% export)</div><div class="kpi-val up">+34,9% vol.</div><div class="kpi-sub">US$ 746 mi · Líder</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Custo Prod. 25/26</div><div class="kpi-val dn">+15-16%</div><div class="kpi-sub">Colheita + greening</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- PREÇO MESA -->
+<div class="sec-title"><div class="icon lr">🍊</div><h2>Laranja Mesa & Indústria — Fim de Safra Sustenta <span>— Pera R$ 44,88/cx</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📈 Laranja Pera Mesa SP — R$/cx 40,8kg (2026)</h3>
+    <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Variedades SP — Preço por Caixa (sem. 30/3-2/4)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+</div>
+
+<div class="card">
+<h3>📋 Cotações Laranja Mesa SP — Abril 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Variedade</th><th>Preço/cx</th><th>Var. Semanal</th><th>Embalagem</th></tr></thead>
+  <tbody>
+    <tr style="background:rgba(249,115,22,.04)"><td style="text-align:left"><strong>Pera (mesa)</strong></td><td style="color:var(--up)"><strong>R$ 44,88</strong></td><td style="color:var(--up)">+2,5% vs mar</td><td>40,8 kg</td></tr>
+    <tr><td style="text-align:left">Pera (indústria)</td><td style="color:var(--dn)">R$ 29,18</td><td style="color:var(--dn)">−3,5%</td><td>40,8 kg</td></tr>
+    <tr><td style="text-align:left">Natal</td><td>R$ 36,91</td><td style="color:var(--up)">+1,6%</td><td>40,8 kg</td></tr>
+    <tr><td style="text-align:left">Lima (in natura)</td><td>R$ 79,00</td><td>−0,4%</td><td>cx</td></tr>
+    <tr><td style="text-align:left">Lima ácida Tahiti</td><td style="color:var(--dn)">R$ 21,20</td><td style="color:var(--dn)">−9,7%</td><td>27,2 kg</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fontes: CEPEA, Notícias Agrícolas, Globo Rural. Preços SP, semana 30/3-2/4/2026.</p>
+</div>
+
+<div class="co up">
+  <h4>🍊 Fim da Safra 25/26 Sustenta Preço de Mesa</h4>
+  <p><strong>CEPEA (6/abr):</strong> <em>"As últimas frutas da safra 2025/26 estão sendo disponibilizadas. Oferta reduzida dá suporte."</em><br><br>
+  ▸ Coloração esverdeada (frutas da florada 26/27 já aparecendo) → afasta consumidor<br>
+  ▸ Packing houses compraram menos no feriado<br>
+  ▸ <strong>Pera indústria em queda (−3,5%):</strong> usinas com estoques recompostos, menos urgência<br>
+  ▸ <strong>Lima ácida Tahiti despenca −9,7%:</strong> Safra entrando forte<br>
+  ▸ <strong>Para os próximos dias:</strong> Início da safra 26/27 deve pressionar preços de mesa para baixo</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SAFRA FUNDECITRUS -->
+<div class="sec-title"><div class="icon sf">🌳</div><h2>Safra 25/26 — 292,94 mi cx (+27%). Recuperação com Cicatrizes. <span>— Greening + seca</span></h2></div>
+
+<div class="chart-box">
+  <h3>📊 Produção de Laranja — Cinturão SP + Triângulo MG (mi cx 40,8kg)</h3>
+  <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+</div>
+
+<div class="card">
+<h3>📋 Balanço Safra 25/26 — Fundecitrus (10/abr/2026)</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Indicador</th><th>Valor</th><th>Comparação</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Produção final 25/26</strong></td><td style="color:var(--up)"><strong>292,94 mi cx</strong></td><td style="color:var(--up)">+26,9% vs 24/25</td></tr>
+    <tr><td style="text-align:left">Produção 24/25</td><td>230,87 mi cx</td><td>Safra afetada</td></tr>
+    <tr><td style="text-align:left">Projeção inicial (mai/25)</td><td>314,60 mi cx</td><td style="color:var(--dn)">−6,9% (frustração)</td></tr>
+    <tr><td style="text-align:left">Chuvas safra (mai/25-mar/26)</td><td style="color:var(--dn)"><strong>1.135 mm</strong></td><td style="color:var(--dn)">−13% vs média histórica</td></tr>
+    <tr><td style="text-align:left">Triângulo MG + Altinópolis</td><td colspan="2" style="color:var(--dn)">−30% chuva vs histórica (pior!)</td></tr>
+    <tr><td style="text-align:left">Tamanho médio frutos</td><td style="color:var(--dn)">266 frutos/cx</td><td>vs 258 da 24/25 (frutos menores)</td></tr>
+    <tr><td style="text-align:left">Greening (HLB)</td><td style="color:var(--dn)">Alta incidência</td><td>Fator fitossanitário nº1</td></tr>
+    <tr><td style="text-align:left">Custo produção 25/26</td><td style="color:var(--dn)"><strong>+15 a 16%</strong></td><td>R$ 42-54 mil/ha</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<!-- GREENING -->
+<div class="hl-green">
+  <h4 style="color:var(--dn);margin-bottom:8px;font-size:1.05rem">🦠 GREENING (HLB): A Ameaça Existencial</h4>
+  <p style="font-size:.89rem;color:var(--text2);line-height:1.8">
+    <strong>O greening é o fator nº1 da citricultura brasileira.</strong> Causado pela bactéria Candidatus Liberibacter, transmitida pelo psilídeo, <strong>não tem cura</strong>. Árvore infectada = arrancamento.<br><br>
+    <strong>Impactos na 25/26:</strong><br>
+    ▸ Contribuiu para produção −6,9% abaixo da projeção<br>
+    ▸ Aumentou taxa de queda de frutos<br>
+    ▸ Reduziu peso/tamanho dos frutos (266 por caixa vs 258)<br>
+    ▸ <strong>Custo de controle:</strong> Gastos com defensivos para psilídeo representam parte significativa do +16% de alta nos custos<br><br>
+    <strong>Fundecitrus:</strong> <em>"Fatores fitossanitários, mais precisamente o efeito da alta incidência de greening, contribuíram para a redução do peso dos frutos e aumento da taxa de queda."</em><br>
+    <strong>HF Brasil/CEPEA:</strong> <em>"Custo em alta e avanço do greening ameaçam a viabilidade da produção de laranja em 2025/26."</em>
+  </p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SUCO / EXPORTAÇÃO -->
+<div class="sec-title"><div class="icon sc">🧃</div><h2>Suco de Laranja — Export −8%. Europa Foge. EUA Assumem. <span>— Estoques +75%</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📉 Exportações FCOJ — Jul-Dez/25 vs Jul-Dez/24</h3>
+    <div class="chart-wrap"><canvas id="ch4"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Destinos Export — Participação % (Jul-Dez/25)</h3>
+    <div class="chart-wrap"><canvas id="ch5"></canvas></div>
+  </div>
+</div>
+
+<div class="card">
+<h3>📋 Exportações de Suco de Laranja — 1ºSem Safra 25/26 (Jul-Dez/25)</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Destino</th><th>Volume (mil t)</th><th>Var. Vol.</th><th>Receita (US$ mi)</th><th>Var. Receita</th><th>% Total</th></tr></thead>
+  <tbody>
+    <tr style="background:rgba(34,197,94,.04)"><td style="text-align:left"><strong>🇺🇸 EUA</strong></td><td style="color:var(--up)"><strong>217,87</strong></td><td style="color:var(--up)"><strong>+34,9%!</strong></td><td style="color:var(--up)"><strong>746,2</strong></td><td style="color:var(--up)">+10,4%</td><td><strong>55,2%</strong></td></tr>
+    <tr style="background:rgba(239,68,68,.03)"><td style="text-align:left"><strong>🇪🇺 União Europeia</strong></td><td style="color:var(--dn)"><strong>155,29</strong></td><td style="color:var(--dn)"><strong>−31,9%!</strong></td><td style="color:var(--dn)"><strong>601,6</strong></td><td style="color:var(--dn)"><strong>−41,9%!</strong></td><td><strong>39,3%</strong></td></tr>
+    <tr><td style="text-align:left">🌍 Outros</td><td>21,60</td><td>—</td><td>~93,0</td><td>—</td><td>5,5%</td></tr>
+    <tr style="background:rgba(59,130,246,.04)"><td style="text-align:left"><strong>TOTAL</strong></td><td style="color:var(--dn)"><strong>394,76</strong></td><td style="color:var(--dn)"><strong>−8,1%</strong></td><td style="color:var(--dn)"><strong>1.440,8</strong></td><td style="color:var(--dn)"><strong>−23,2%</strong></td><td><strong>100%</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: CitrusBR, CNN Brasil, Folha PE, The AgriBiz. FCOJ equivalente 66 Brix.</p>
+</div>
+
+<div class="co dn">
+  <h4>🇪🇺 A Fuga da Europa: O Que Está Acontecendo?</h4>
+  <p><strong>Europa era o maior comprador. Agora foge: −32% vol., −42% receita!</strong><br><br>
+  ▸ <strong>Preços altos:</strong> Suco ficou caro demais para o varejo europeu<br>
+  ▸ <strong>Consumo caindo 3% a.a.:</strong> Tendência estrutural de queda há décadas<br>
+  ▸ <strong>Preocupação com açúcar:</strong> Consumidores europeus preferem opções "mais saudáveis"<br>
+  ▸ <strong>Destruição de demanda:</strong> Preços de 2024/25 (suco caro + baixa qualidade) afastaram compradores<br><br>
+  <strong>Ibiapaba Netto (CitrusBR):</strong> <em>"Os altos preços da safra passada tiveram efeito muito ruim sobre a demanda. É preciso paciência para que o consumidor volte à categoria."</em><br><br>
+  <strong>Enquanto isso, EUA:</strong> +34,9% volume. Desastre da Flórida (furacões + greening) deixou EUA sem produção própria → dependência total do suco brasileiro. <strong>EUA agora são 55% das exportações BR.</strong></p>
+</div>
+
+<div class="co up">
+  <h4>📊 Estoques Recompõem: +75,4% em 2025</h4>
+  <p><strong>CitrusBR/CEPEA:</strong> <em>"Estoque de suco fechou 2025 em 616.460 t (+75,4% vs 2024, que era o menor da série histórica). Melhor desde 2021."</em><br><br>
+  ▸ Safra 25/26 com <strong>melhor qualidade</strong> (ratio mais alto, limonin mais baixo)<br>
+  ▸ Indústrias exigiram ratio maior → formaram estoque de melhor qualidade<br>
+  ▸ Consumo lento (UE caindo) contribuiu para acumular<br>
+  ▸ <strong>Resultado:</strong> Indústria mais confortável. Menos urgência de compra de fruta → pressiona preço de laranja indústria para baixo.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Laranja Mesa — Tendência Curto Prazo</h4>
+    <div class="th-bar" style="background:linear-gradient(90deg,var(--dn),var(--nt),var(--up))"><div class="th-marker" style="left:55%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.8rem;color:var(--nt);margin-top:5px;font-weight:600">→ NEUTRO/LEVE ALTA — Fim safra 25/26 sustenta. Mas 26/27 começa → pressão. R$ 40-48/cx.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Suco FCOJ — Tendência Internacional</h4>
+    <div class="th-bar" style="background:linear-gradient(90deg,var(--dn),var(--nt),var(--up))"><div class="th-marker" style="left:40%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.8rem;color:var(--dn);margin-top:5px;font-weight:600">⬇ BAIXISTA MODERADO — Estoques +75%. UE caindo. Safra BR maior. Mas Flórida ainda ausente.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Laranja: A Crise Estrutural Por Trás da Recuperação</h3>
+  <p><strong>A safra 25/26 recuperou 27% e parece boa notícia. Mas olhe mais de perto:</strong> ficou 6,9% abaixo da projeção. Choveu 13% menos. Greening avança sem controle. Frutos ficaram menores. E os custos subiram 16%. A "recuperação" é relativa — estamos comparando com 2024/25, que foi uma safra DESASTROSA.</p>
+  <p><strong>O mercado de suco está em crise de demanda:</strong><br>
+  ▸ Europa fugindo (−42% receita!). Consumo global cai 3% a.a. há DÉCADAS.<br>
+  ▸ Consumidor europeu acha suco de laranja caro e "pouco saudável" (açúcar natural).<br>
+  ▸ <strong>Destruição de demanda da safra 24/25:</strong> Preços astronômicos + suco ruim (limonin alto) = consumidor experimentou substitutos e não voltou.<br>
+  ▸ <strong>EUA salvam:</strong> +35% de compras. Sem Flórida (greening + furacões), são dependentes do Brasil. Mas é concentração perigosa.</p>
+  <p><strong>O greening é o elefante na sala:</strong><br>
+  ▸ Não tem cura. Controle é caro (defensivos). Árvore infectada = arrancamento obrigatório.<br>
+  ▸ Cinturão citrícola de SP perde área produtiva ano a ano. Triângulo Mineiro sob pressão.<br>
+  ▸ Custo de R$ 42-54 mil/ha + perda de árvores = <strong>viabilidade econômica em risco</strong> para propriedades menores.<br>
+  ▸ <strong>Tendência estrutural:</strong> Menos pés → menos fruta no médio/longo prazo → suporte ao preço, mas com setor menor.</p>
+  <p><strong>Projeções:</strong><br>
+  ▸ <strong>Laranja mesa curto prazo:</strong> R$ 40-48/cx. Fim de safra sustenta. Início da 26/27 vai pressionar.<br>
+  ▸ <strong>Laranja indústria:</strong> Pressão de baixa. Estoques recompostos. Usinas menos urgentes.<br>
+  ▸ <strong>FCOJ NY:</strong> Volatilidade alta. Pode recuar com estoques maiores. Mas Flórida ausente dá piso. US$ 2.500-3.200/t.<br>
+  ▸ <strong>Safra 26/27:</strong> Fundecitrus ainda não projetou. Acompanhar florada e chuvas nos próximos meses. Greening é incógnita permanente.</p>
+  <p><strong>Recomendação:</strong> Citricultor: <strong>investir no controle do psilídeo é sobrevivência.</strong> Sem controle, perde o pomar inteiro. Quem tem fruta de qualidade (ratio alto) tem poder de barganha com indústria. Indústria: diversificar mercados — não depender só de EUA. China e Ásia podem ser fronteiras de crescimento.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: PERA MESA
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan/26','Fev/26','Mar/26','Ini Abr/26','~17/4(e)'],
+    datasets:[{
+      label:'Pera Mesa SP (R$/cx 40,8kg)',
+      data:[38.50,41.44,43.76,44.88,45.50],
+      borderColor:'#fb923c',backgroundColor:'rgba(251,146,60,.06)',
+      borderWidth:3,fill:true,tension:.35,
+      pointRadius:[4,5,6,7,6],
+      pointBackgroundColor:'#fb923c'
+    },{
+      label:'Pera Indústria SP (R$/cx)',
+      data:[32.00,31.50,30.25,29.18,29.00],
+      borderColor:'#64748b',borderWidth:2,fill:false,tension:.35,borderDash:[4,3],
+      pointRadius:3,pointBackgroundColor:'#64748b'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:3,yValue:48,content:['R$ 44,88','+ 2,5% vs mar','Fim de safra!'],font:{size:10,weight:'bold'},color:'#fb923c'},
+        ind:{type:'label',xValue:3,yValue:26,content:['Indústria','R$ 29,18','−3,5%'],font:{size:9,weight:'bold'},color:'#64748b'}
+      }}
+    },
+    scales:{
+      y:{min:24,max:52,grid:{color:gc},ticks:{callback:v=>'R$'+v.toFixed(0),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: VARIEDADES
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Lima (in nat.)','Pera mesa','Natal','Pera indústria','Tahiti'],
+    datasets:[{
+      label:'R$/cx',
+      data:[79.00,44.88,36.91,29.18,21.20],
+      backgroundColor:['rgba(251,191,36,.4)','rgba(251,146,60,.5)','rgba(249,115,22,.4)','rgba(100,116,139,.4)','rgba(132,204,22,.4)'],
+      borderColor:['#fbbf24','#fb923c','#f97316','#64748b','#84cc16'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt},
+    scales:{
+      x:{min:0,max:90,grid:{color:gc},ticks:{callback:v=>'R$'+v,font:{size:10,weight:'600'}}},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+
+// CHART 3: SAFRAS
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['21/22','22/23','23/24','24/25','25/26'],
+    datasets:[{
+      label:'Produção (mi cx)',
+      data:[264,311,306,230.87,292.94],
+      backgroundColor:function(ctx){
+        return ctx.dataIndex===3?'rgba(239,68,68,.4)':ctx.dataIndex===4?'rgba(34,197,94,.4)':'rgba(100,116,139,.3)';
+      },
+      borderColor:function(ctx){
+        return ctx.dataIndex===3?'#ef4444':ctx.dataIndex===4?'#22c55e':'#64748b';
+      },
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        low:{type:'label',xValue:3,yValue:218,content:['230,87 mi','Desastrosa!'],font:{size:9,weight:'bold'},color:'#ef4444'},
+        rec:{type:'label',xValue:4,yValue:305,content:['292,94 mi','+ 26,9%!'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        proj:{type:'line',yMin:314.6,yMax:314.6,borderColor:'rgba(168,85,247,.3)',borderWidth:1,borderDash:[5,3],
+          label:{display:true,content:'Projeção: 314,60 mi (−6,9%)',position:'start',backgroundColor:'rgba(168,85,247,.3)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:200,max:340,grid:{color:gc},ticks:{callback:v=>v+' mi',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+
+// CHART 4: EXPORTAÇÕES
+new Chart(document.getElementById('ch4').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Volume (mil t)','Receita (US$ bi)'],
+    datasets:[{
+      label:'Jul-Dez/24',
+      data:[429.4,1.876],
+      backgroundColor:'rgba(100,116,139,.3)',borderColor:'#64748b',borderWidth:2,borderRadius:8
+    },{
+      label:'Jul-Dez/25',
+      data:[394.76,1.441],
+      backgroundColor:'rgba(239,68,68,.4)',borderColor:'#ef4444',borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        vol:{type:'label',xValue:0,yValue:445,content:['−8,1%'],font:{size:11,weight:'bold'},color:'#ef4444'},
+        rec:{type:'label',xValue:1,yValue:2.0,content:['−23,2%!'],font:{size:11,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:0,max:500,grid:{color:gc},ticks:{font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+
+// CHART 5: DESTINOS
+new Chart(document.getElementById('ch5').getContext('2d'),{
+  type:'doughnut',
+  data:{
+    labels:['🇺🇸 EUA (55,2%)','🇪🇺 UE (39,3%)','🌍 Outros (5,5%)'],
+    datasets:[{
+      data:[55.2,39.3,5.5],
+      backgroundColor:['rgba(59,130,246,.5)','rgba(239,68,68,.4)','rgba(100,116,139,.3)'],
+      borderColor:['#3b82f6','#ef4444','#64748b'],
+      borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{usePointStyle:true,padding:12,font:{size:10}}},
+      tooltip:tt,
+      annotation:{annotations:{
+        pct:{type:'label',content:['EUA: +34,9%','UE: −31,9%','Inversão!'],font:{size:11,weight:'bold'},color:'#e8edf2'}
+      }}
+    }
+  }
+});
+</script>
+</body>
+</html>

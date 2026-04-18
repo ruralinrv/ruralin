@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cacau — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--cyan:#06b6d4;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:1.65rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2rem;margin-right:6px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.87rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.87rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.alert.cyan{background:rgba(6,182,212,.06);border-color:rgba(6,182,212,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:5px;font-weight:600}
+.kpi-val{font-size:1.25rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}.kpi-val.or{color:var(--orange)}
+.kpi-sub{font-size:.74rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:16px;border-left:4px solid;font-size:.89rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:16px}
+.card h3{font-size:.95rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.pr{background:linear-gradient(135deg,#78350f,#d97706)}
+.sec-title .icon.gl{background:linear-gradient(135deg,#1e40af,#60a5fa)}
+.sec-title .icon.dm{background:linear-gradient(135deg,#991b1b,#f87171)}
+.sec-title .icon.af{background:linear-gradient(135deg,#065f46,#34d399)}
+.sec-title .icon.br{background:linear-gradient(135deg,#166534,#fbbf24)}
+.sec-title h2{font-size:1.2rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.9rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),#78350f,var(--border2),transparent);margin:30px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+thead th{background:var(--bg3);padding:11px 12px;text-align:center;font-weight:600;color:var(--text2);font-size:.73rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:10px 12px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:18px 0}
+.thermo h4{font-size:.9rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(120,53,15,.1),rgba(120,53,15,.02));border:1px solid rgba(120,53,15,.25);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.1rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.92rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(120,53,15,.2);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:16px}
+.chart-box h3{font-size:.9rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;font-size:.8rem;font-weight:700;margin-bottom:6px}
+.badge.up{background:rgba(34,197,94,.15);color:var(--up);border:1px solid rgba(34,197,94,.3)}
+.badge.dn{background:rgba(239,68,68,.15);color:var(--dn);border:1px solid rgba(239,68,68,.3)}
+.badge.nt{background:rgba(234,179,8,.15);color:var(--nt);border:1px solid rgba(234,179,8,.3)}
+.tl{position:relative;padding-left:28px;margin:16px 0}
+.tl::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border2)}
+.tl-item{position:relative;margin-bottom:16px;padding-left:16px}
+.tl-item::before{content:'';position:absolute;left:-22px;top:8px;width:10px;height:10px;border-radius:50%;border:2px solid}
+.tl-item.up::before{border-color:var(--up);background:rgba(34,197,94,.3)}
+.tl-item.dn::before{border-color:var(--dn);background:rgba(239,68,68,.3)}
+.tl-item.nt::before{border-color:var(--nt);background:rgba(234,179,8,.3)}
+.tl-item .dt{font-size:.72rem;color:var(--text3);font-weight:700;text-transform:uppercase}
+.tl-item .desc{font-size:.86rem;color:var(--text2);line-height:1.7}
+.tl-item .desc strong{color:var(--text)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🍫</span> Cacau — <span class="hl">De US$ 12.000 a US$ 2.886 e de Volta a US$ 3.646. A Montanha-Russa Continua. Superávit 287 mil t. Europa −8,3% Moagem. Malásia Surpreende +9%.</span></h1>
+  <p class="sub">
+    <span class="badge dn">📉 Desabou 70% do pico! De US$ 12k→ US$ 2.886 (mínima fev/26)</span>
+    <span class="badge up">📈 Repique técnico: US$ 3.646/t (+8,35% em 14/abr) — Malásia surpreende</span>
+    <span class="badge nt">⚖️ Superávit global: 287 mil t (StoneX) · Produção +11% · Moagem −4,2%</span><br>
+    NY Jul/26: <strong style="color:var(--up)">US$ 3.646/t</strong> (+8,35% dia!) &nbsp;|&nbsp;
+    Londres: <strong>~£ 2.700-2.800/t</strong> &nbsp;|&nbsp;
+    Mínima fev/26: <strong style="color:var(--dn)">US$ 2.886/t</strong> (−70% do pico!) &nbsp;|&nbsp;
+    Pico 2024: <strong>US$ 12.000+/t</strong> &nbsp;|&nbsp;
+    Produção global: <strong style="color:var(--up)">4,7 mi t</strong> (+11%) &nbsp;|&nbsp;
+    Superávit: <strong style="color:var(--up)">287 mil t</strong> (StoneX) &nbsp;|&nbsp;
+    Europa moagem: <strong style="color:var(--dn)">−8,3%</strong> (mínima 12 anos)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert green">
+  <span class="ai">📈</span>
+  <div><strong style="color:var(--up)">Repique de +8,35% em 14/abr! NY a US$ 3.646/t.</strong> <strong>Globo Rural/StoneX:</strong> <em>"Dados de moagem da Malásia surpreenderam. Processamento cresceu 9% no Q1, quando mercado esperava queda. Isso motivou short covering agressivo."</em> Maior patamar em quase 2 meses.</div>
+</div>
+
+<div class="alert red">
+  <span class="ai">📉</span>
+  <div><strong style="color:var(--dn)">A MAIOR QUEDA da história: de US$ 12.000 → US$ 2.886/t (−76%)!</strong> <strong>CNN Brasil:</strong> <em>"Os contratos caíram para o nível mais baixo em quase três anos, perdendo mais de 35% em três semanas."</em> <strong>InfoMoney:</strong> De média US$ 10.700/t (jan/25) → US$ 3.600/t (fev/26). Destruição de demanda + recuperação da oferta.</div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">⚖️</span>
+  <div><strong style="color:var(--nt)">Superávit global confirmado pela 1ª vez em 4 anos!</strong> <strong>ICCO (fev/26):</strong> <em>"Superávit de 75 mil t na 24/25 — primeiro em 4 anos. Produção global 4,73 mi t (+8,4%), moagem 4,61 mi t (−4,2%)."</em> <strong>StoneX projeta 287 mil t de excedente na 25/26.</strong></div>
+</div>
+
+<div class="alert purple">
+  <span class="ai">🇪🇺</span>
+  <div><strong style="color:var(--purple)">Europa: moagem Q4/25 cai −8,3% — mínima de 12 ANOS!</strong> <strong>CropGPT/CocoaIntel:</strong> <em>"European grindings fell 8.3% y/y to a 12-year low."</em> Bloomberg survey espera nova queda de −6% no Q1/26. Indústria reformulou receitas: menos cacau, mais substitutos. <strong>Destruição de demanda pode ser PERMANENTE.</strong></div>
+</div>
+
+<div class="alert cyan">
+  <span class="ai">🏭</span>
+  <div><strong style="color:var(--cyan)">Hershey volta às receitas clássicas — sinal de virada na demanda?</strong> <strong>CocoaIntel (1/abr):</strong> <em>"Hershey indicou retorno a receitas tradicionais de chocolate ao leite e amargo para Reese's. Preços atuais do cacau podem ser economicamente viáveis para retomar formulações originais."</em> Se replicado, pode começar a recuperar demanda.</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi up"><div class="kpi-lb">NY Jul/26 (14/abr)</div><div class="kpi-val up">US$ 3.646/t</div><div class="kpi-sub">+8,35% dia! Short covering</div></div>
+  <div class="kpi dn"><div class="kpi-lb">NY Mai/26 (7/abr)</div><div class="kpi-val dn">US$ 3.120/t</div><div class="kpi-sub">−3,52% · Excedente pesa</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Mínima Fev/26</div><div class="kpi-val dn">US$ 2.886/t</div><div class="kpi-sub">Menor em ~3 anos!</div></div>
+  <div class="kpi nt"><div class="kpi-lb">Produção Global 24/25</div><div class="kpi-val nt">4,73 mi t</div><div class="kpi-sub">+8,4% · ICCO</div></div>
+  <div class="kpi up"><div class="kpi-lb">Superávit 25/26 (StoneX)</div><div class="kpi-val up">287 mil t</div><div class="kpi-sub">Após anos de déficit!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Europa Moagem Q4/25</div><div class="kpi-val dn">−8,3% a.a.</div><div class="kpi-sub">Mínima 12 anos!</div></div>
+  <div class="kpi up"><div class="kpi-lb">Malásia Moagem Q1/26</div><div class="kpi-val up">+8,7% a.a.</div><div class="kpi-sub">91.496 t · Surpresa!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Costa Marfim Arrivals</div><div class="kpi-val dn">1,42 mi t</div><div class="kpi-sub">−1,2% a.a. (até 29/mar)</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- TIMELINE -->
+<div class="sec-title"><div class="icon pr">📅</div><h2>A Montanha-Russa do Cacau: Cronologia <span>— Do recorde ao colapso ao repique</span></h2></div>
+
+<div class="chart-box">
+  <h3>📈 Cacau NY — A Montanha-Russa 2023-2026 (US$/t)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="tl">
+  <div class="tl-item up"><div class="dt">2023 — Início da Crise</div><div class="desc"><strong>3 anos consecutivos de safras ruins</strong> na África Ocidental (seca + doenças). Preços começam a disparar de US$ 2.500 → US$ 4.000.</div></div>
+  <div class="tl-item up"><div class="dt">Jan 2024 — US$ 5.000+</div><div class="desc">Déficit de oferta se agrava. <strong>Costa do Marfim e Gana em crise.</strong> Estoques mínimos históricos.</div></div>
+  <div class="tl-item up"><div class="dt">Abr 2024 — PICO: US$ 12.000+/t</div><div class="desc"><strong>Recorde absoluto.</strong> Pânico de compra. Indústria de chocolate em choque. Ovos de Páscoa 2024 ultracaros.</div></div>
+  <div class="tl-item dn"><div class="dt">Jan 2025 — US$ 10.700/t</div><div class="desc">Pico de preço médio mensal. <strong>Destruição de demanda massiva.</strong> Europa corta moagem. Indústrias reformulam receitas.</div></div>
+  <div class="tl-item dn"><div class="dt">2025 — Correção Violenta</div><div class="desc">Safra 24/25 recupera (+11%). Clima melhora na África. <strong>ICCO confirma 1ºsuperávit em 4 anos.</strong> Preços despencam.</div></div>
+  <div class="tl-item dn"><div class="dt">Fev 2026 — MÍNIMA: US$ 2.886/t</div><div class="desc"><strong>−76% do pico!</strong> Menor em ~3 anos. StoneX projeta superávit 287 mil t. Londres perdeu 37% em 3 semanas.</div></div>
+  <div class="tl-item up"><div class="dt">14/Abr 2026 — REPIQUE: US$ 3.646/t</div><div class="desc"><strong>+8,35% no dia!</strong> Malásia moagem +9% surpreende. Short covering massivo. <strong>Piso em US$ 3.300?</strong></div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OFERTA/DEMANDA GLOBAL -->
+<div class="sec-title"><div class="icon gl">🌍</div><h2>Balanço Global — Superávit Após 4 Anos de Déficit <span>— Produção +8,4%, Moagem −4,2%</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 Produção vs Moagem Global (mi t)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Balanço Global (mil t) — Déficit → Superávit</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="card">
+<h3>📋 Balanço Global de Cacau — ICCO / StoneX / Rabobank</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Indicador</th><th>24/25</th><th>25/26 (proj.)</th><th>Fonte</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Produção global</strong></td><td style="color:var(--up)"><strong>4,73 mi t</strong> (+8,4%)</td><td style="color:var(--up)">↑ Crescendo</td><td>ICCO</td></tr>
+    <tr><td style="text-align:left"><strong>Moagem global</strong></td><td style="color:var(--dn)"><strong>4,61 mi t</strong> (−4,2%)</td><td style="color:var(--dn)">Fraca</td><td>ICCO</td></tr>
+    <tr><td style="text-align:left"><strong>Balanço</strong></td><td style="color:var(--up)"><strong>+75 mil t SUPERÁVIT</strong></td><td style="color:var(--up)"><strong>+287 mil t</strong></td><td>ICCO / StoneX</td></tr>
+    <tr><td style="text-align:left">Estoques finais</td><td>~1,35 mi t (+5,9%)</td><td>Recompondo</td><td>ICCO</td></tr>
+    <tr><td style="text-align:left">Estoques/moagem</td><td>29,2% (vs 26,4%)</td><td>↑</td><td>ICCO</td></tr>
+    <tr><td style="text-align:left">ICE warehouse stocks</td><td colspan="2">~2,30 mi bags (máxima 8,25 meses)</td><td>CocoaIntel</td></tr>
+    <tr style="background:rgba(59,130,246,.03)"><td colspan="4" style="text-align:left;font-weight:700;color:var(--blue)">ORIGENS</td></tr>
+    <tr><td style="text-align:left">🇨🇮 Costa do Marfim arrivals</td><td colspan="2">1,42 mi t (até 29/mar) · −1,2% a.a.</td><td>CocoaIntel</td></tr>
+    <tr><td style="text-align:left">🇨🇮 Farmgate mid-crop</td><td colspan="2"><strong>1.200 CFA/kg</strong> (−57%!) → Compras aceleraram</td><td>CropGPT</td></tr>
+    <tr><td style="text-align:left">🇬🇭 Gana produção 25/26</td><td colspan="2">~650 mil t projetadas</td><td>CropGPT</td></tr>
+    <tr><td style="text-align:left">🇬🇭 Gana farmgate</td><td colspan="2">41.392 cedis (−30%) · Ainda acima do NY!</td><td>CropGPT</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="dv"></div>
+
+<!-- DEMANDA -->
+<div class="sec-title"><div class="icon dm">🏭</div><h2>Demanda — Destruição Massiva. Europa −8,3%. <span>Malásia surpreende +9%</span></h2></div>
+
+<div class="co dn">
+  <h4>📉 A Destruição de Demanda Pode Ser PERMANENTE</h4>
+  <p><strong>Europa Q4/25:</strong> Moagem caiu −8,3% a.a. → mínima de 12 ANOS.<br>
+  <strong>Europa Q1/26 (Bloomberg survey):</strong> Expectativa de nova queda de −6%.<br><br>
+  ▸ <strong>Reformulação de receitas:</strong> Indústria reduziu teor de cacau e substituiu por ingredientes alternativos<br>
+  ▸ <strong>BMI Research:</strong> <em>"Grande parte da redução reflete erosão permanente de demanda por reformulações — incluindo redução do teor de cacau e substituição por alternativas. Isso continuará a restringir perspectivas."</em><br>
+  ▸ <strong>Vendas Páscoa 2026:</strong> Queda estimada de −5% vs 2025 (Bloomberg Intelligence)<br>
+  ▸ <strong>Shrinkflation:</strong> Fabricantes reduziram peso das barras e ovos, não reverteram<br><br>
+  <strong>Mas Malásia surpreendeu!</strong> Q1/26: +8,7% a.a. (91.496 t). Expectativa era de −9 a −12%!<br>
+  <strong>Caio Santos (StoneX/Globo Rural):</strong> <em>"Grande parte do mercado esperava recuo nas moagens, mas esse aumento pegou todos de surpresa."</em><br><br>
+  <strong>Hershey sinaliza volta às receitas clássicas:</strong> Se mais fabricantes seguirem, demanda pode se recuperar gradualmente.</p>
+</div>
+
+<div class="card">
+<h3>📋 Moagem Regional — Q1/26</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Região</th><th>Tendência Q4/25</th><th>Q1/26 (Expectativa/Real)</th><th>Destaque</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>🇪🇺 Europa (ECA)</strong></td><td style="color:var(--dn)">−8,3% a.a.</td><td style="color:var(--dn)">~−6% (Bloomberg survey)</td><td>Mínima 12 anos! Reformulações</td></tr>
+    <tr><td style="text-align:left"><strong>🇲🇾 Malásia</strong></td><td>—</td><td style="color:var(--up)"><strong>+8,7%!</strong> (91.496 t)</td><td>SURPRESA! Esperava-se −9%!</td></tr>
+    <tr><td style="text-align:left">🌏 Ásia (geral)</td><td style="color:var(--dn)">Fraca</td><td>A definir</td><td>Dados da semana</td></tr>
+    <tr><td style="text-align:left">🌎 América do Norte</td><td style="color:var(--dn)">Fraca</td><td>A definir</td><td>Hershey retorna a receitas clássicas?</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="dv"></div>
+
+<!-- COTAÇÕES -->
+<div class="sec-title"><div class="icon pr">💰</div><h2>Cotações em Detalhe — Repique Técnico <span>— US$ 3.646/t (+8,35%!)</span></h2></div>
+
+<div class="card">
+<h3>📋 Cotações Cacau — Abril 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Contrato</th><th>Preço</th><th>Var. Dia</th><th>Contexto</th></tr></thead>
+  <tbody>
+    <tr style="background:rgba(34,197,94,.04)"><td style="text-align:left"><strong>NY Jul/26 (14/abr)</strong></td><td style="color:var(--up)"><strong>US$ 3.646/t</strong></td><td style="color:var(--up)"><strong>+8,35%!</strong></td><td>Maior em ~2 meses. Malásia surpreende</td></tr>
+    <tr><td style="text-align:left">NY Mai/26 (7/abr)</td><td>US$ 3.120/t</td><td style="color:var(--dn)">−3,52%</td><td>Excedente global pesa</td></tr>
+    <tr><td style="text-align:left">NY Mai/26 (~30/mar)</td><td>~US$ 3.130/t</td><td>Estabilizando</td><td>Consolidação pós-selloff</td></tr>
+    <tr><td style="text-align:left">Londres (13/abr)</td><td>~£ 2.700-2.800/t</td><td style="color:var(--up)">+1,2%</td><td>Acompanha NY com defasagem</td></tr>
+    <tr><td style="text-align:left">Mínima (fev/26)</td><td style="color:var(--dn)"><strong>US$ 2.886/t</strong></td><td>—</td><td>Menor em ~3 anos</td></tr>
+    <tr><td style="text-align:left">Média fev/26</td><td>~US$ 3.600/t</td><td>—</td><td>InfoMoney</td></tr>
+    <tr style="background:rgba(239,68,68,.03)"><td style="text-align:left"><em>Pico jan/25</em></td><td style="color:var(--dn)"><em>US$ 10.700/t</em></td><td>—</td><td><em>Recorde. Crise de oferta.</em></td></tr>
+    <tr style="background:rgba(239,68,68,.03)"><td style="text-align:left"><em>Pico absoluto abr/24</em></td><td style="color:var(--dn)"><em>US$ 12.000+/t</em></td><td>—</td><td><em>ALL TIME HIGH</em></td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Cacau NY — Tendência Curto Prazo</h4>
+    <div class="th-bar" style="background:linear-gradient(90deg,var(--dn),var(--nt),var(--up))"><div class="th-marker" style="left:42%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.8rem;color:var(--nt);margin-top:5px;font-weight:600">→ NEUTRO/VOLÁTIL — Superávit pesa, mas Malásia surpreendeu. US$ 3.000-3.800. Piso ~US$ 3.300?</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Demanda Global — Recuperação?</h4>
+    <div class="th-bar" style="background:linear-gradient(90deg,var(--dn),var(--nt),var(--up))"><div class="th-marker" style="left:32%"></div></div>
+    <div class="th-lb"><span>Destruição</span><span>Estável</span><span>Forte</span></div>
+    <p style="font-size:.8rem;color:var(--dn);margin-top:5px;font-weight:600">⬇ FRACA — Europa −8,3%. Reformulações permanentes. Hershey pode ser exceção. Recuperação lenta.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Cacau: O Maior Boom-Bust de Uma Geração</h3>
+  <p><strong>O cacau protagonizou o maior ciclo de alta e queda de commodities agrícolas desta geração.</strong> De US$ 2.500 (2023) → US$ 12.000+ (abr/24) → US$ 2.886 (fev/26). Uma oscilação de +380% e depois −76%. Nenhuma outra commodity agrícola fez isso nos últimos 50 anos.</p>
+  <p><strong>O que aconteceu?</strong><br>
+  ▸ <strong>2022-2024:</strong> 3 safras ruins consecutivas na África Ocidental (seca extrema, doenças, envelhecimento de árvores). Costa do Marfim e Gana = 60% da produção mundial. Estoques zeraram.<br>
+  ▸ <strong>2024:</strong> Pânico. Fundos especulativos inflaram preço acima do fundamentado. US$ 12k era bolha pura.<br>
+  ▸ <strong>2025:</strong> Clima melhorou. Produção +11%. MAS o estrago na demanda foi feito — indústria reformulou receitas, cortou teor de cacau, reduziu embalagens (shrinkflation). Moagem caiu −4,2%.<br>
+  ▸ <strong>2026:</strong> Superávit confirmado (75 mil t ICCO, 287 mil t StoneX projeção 25/26). Preços colapsaram para ~US$ 3.000.</p>
+  <p><strong>Onde estamos agora (17/abr/26)?</strong><br>
+  ▸ <strong>NY a US$ 3.646/t</strong> após repique de +8,35% por surpresa da Malásia (moagem +9%).<br>
+  ▸ <strong>Mas Europa espera −6% no Q1.</strong> O dado Malásia é exceção, não regra.<br>
+  ▸ <strong>Short covering:</strong> Fundos tinham maior posição vendida desde 2022. Fecharam posições por medo. Movimento técnico, não fundamentalista.<br>
+  ▸ <strong>Piso técnico ~US$ 3.300:</strong> ainvest sugere esse como novo equilíbrio. Superávit pressiona, mas US$ 2.886 pode ter sido overshoot.</p>
+  <p><strong>A grande questão: a destruição de demanda é permanente?</strong><br>
+  ▸ <strong>BMI diz SIM:</strong> Reformulações de produtos, substituição por CBE (cocoa butter equivalents), redução de teor. Consumidor não vai notar volta ao original.<br>
+  ▸ <strong>Hershey diz NÃO:</strong> Retorna às receitas clássicas. Se preço ficar abaixo de US$ 4.000, vale voltar ao cacau real.<br>
+  ▸ <strong>Minha leitura:</strong> Parte da destruição é permanente (−30% da demanda europeia pode nunca voltar). Parte é temporária (Asia cresce, Hershey volta). Resultado: demanda se estabiliza 5-10% abaixo do pré-crise.</p>
+  <p><strong>Projeções:</strong><br>
+  ▸ <strong>Curto prazo (abr-jun/26):</strong> US$ 3.000-3.800. Volátil. Dados de moagem Q1 (Europa, América do Norte) serão decisivos esta semana.<br>
+  ▸ <strong>2ºsem/26:</strong> Se superávit se confirma (287 mil t), preço pode testar US$ 2.800-3.200 novamente.<br>
+  ▸ <strong>Risco altista:</strong> El Niño. Se atingir África Ocidental no 2ºsem → safra 26/27 pode frustrar → preços disparam de novo.<br>
+  ▸ <strong>Para o Brasil (BA/PA):</strong> Preços atuais ainda são historicamente altos. Produção brasileira cresce. Oportunidade para o cacauicultor baiano e paraense que tem qualidade.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: MONTANHA RUSSA
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan/23','Jul/23','Jan/24','Abr/24','Jul/24','Jan/25','Jul/25','Out/25','Fev/26','Mar/26','7/4','14/4'],
+    datasets:[{
+      label:'Cacau NY (US$/t)',
+      data:[2500,3300,5000,12000,9000,10700,7500,5000,2886,3130,3120,3646],
+      borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,5,10,6,8,5,5,8,5,5,9],
+      pointBackgroundColor:function(ctx){
+        const v=ctx.dataset.data[ctx.dataIndex];
+        return v>=10000?'#ef4444':v<=3000?'#22c55e':'#d97706';
+      }
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        peak:{type:'label',xValue:3,yValue:12800,content:['🔥 PICO ABSOLUTO','US$ 12.000+/t','Abr/2024'],font:{size:10,weight:'bold'},color:'#ef4444',backgroundColor:'rgba(239,68,68,.1)',padding:6},
+        low:{type:'label',xValue:8,yValue:2300,content:['📉 MÍNIMA','US$ 2.886/t','Fev/2026','−76%!'],font:{size:9,weight:'bold'},color:'#22c55e',backgroundColor:'rgba(34,197,94,.1)',padding:6},
+        now:{type:'label',xValue:11,yValue:4200,content:['📈 REPIQUE','US$ 3.646/t','+8,35%!'],font:{size:9,weight:'bold'},color:'#fbbf24',backgroundColor:'rgba(251,191,36,.1)',padding:6},
+        floor:{type:'line',yMin:3300,yMax:3300,borderColor:'rgba(234,179,8,.25)',borderWidth:1,borderDash:[5,3],
+          label:{display:true,content:'Piso ~US$ 3.300?',position:'end',backgroundColor:'rgba(234,179,8,.3)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:1500,max:14000,grid:{color:gc},ticks:{callback:v=>'$'+v.toLocaleString(),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:8,weight:'600'},maxRotation:45}}
+    }
+  }
+});
+
+// CHART 2: PRODUÇÃO vs MOAGEM
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['21/22','22/23','23/24','24/25','25/26(p)'],
+    datasets:[{
+      label:'Produção (mi t)',
+      data:[4.90,4.45,4.36,4.73,4.90],
+      backgroundColor:'rgba(34,197,94,.35)',borderColor:'#22c55e',borderWidth:2,borderRadius:8
+    },{
+      label:'Moagem (mi t)',
+      data:[4.95,4.85,4.81,4.61,4.55],
+      backgroundColor:'rgba(239,68,68,.35)',borderColor:'#ef4444',borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        def:{type:'label',xValue:2,yValue:5.05,content:['DÉFICIT','Produção < Moagem'],font:{size:9,weight:'bold'},color:'#ef4444'},
+        sur:{type:'label',xValue:4,yValue:5.05,content:['SUPERÁVIT!','Produção > Moagem'],font:{size:9,weight:'bold'},color:'#22c55e'}
+      }}
+    },
+    scales:{
+      y:{min:4.0,max:5.2,grid:{color:gc},ticks:{callback:v=>v.toFixed(1)+' mi',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+
+// CHART 3: BALANÇO
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['21/22','22/23','23/24','24/25','25/26(p)'],
+    datasets:[{
+      label:'Balanço (mil t)',
+      data:[-50,-400,-450,75,287],
+      backgroundColor:function(ctx){
+        return ctx.dataset.data[ctx.dataIndex]>=0?'rgba(34,197,94,.4)':'rgba(239,68,68,.4)';
+      },
+      borderColor:function(ctx){
+        return ctx.dataset.data[ctx.dataIndex]>=0?'#22c55e':'#ef4444';
+      },
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.15)',borderWidth:1},
+        sur:{type:'label',xValue:4,yValue:310,content:['SUPERÁVIT','287 mil t','StoneX'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        worst:{type:'label',xValue:2,yValue:-490,content:['DÉFICIT','−450 mil t','Crise!'],font:{size:9,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:-520,max:350,grid:{color:gc},ticks:{callback:v=>(v>0?'+':'')+v+' mil',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

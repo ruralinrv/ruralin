@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Feijão — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:1.9rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.35rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.fj{background:linear-gradient(135deg,#78350f,#a16207)}
+.sec-title .icon.of{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+.sec-title .icon.exp{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title .icon.rsk{background:linear-gradient(135deg,#6d28d9,#a855f7)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(161,98,7,.08),rgba(161,98,7,.02));border:1px solid rgba(161,98,7,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(161,98,7,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.badge.dn{background:rgba(239,68,68,.15);color:var(--dn);border:1px solid rgba(239,68,68,.3)}
+.badge.nt{background:rgba(234,179,8,.15);color:var(--nt);border:1px solid rgba(234,179,8,.3)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🫘</span> Feijão — <span class="hl">Após Recordes no 1ºTri, Preços Caem em Abril. Carioca −3,4%. Preto −4,3%. Estoques a 2,2% (Crítico!). Export Mar +51%.</span></h1>
+  <p class="sub">
+    <span class="badge dn">📉 Correção após recordes! Demanda fraca pressiona</span>
+    <span class="badge nt">⚠️ Estoques/consumo 26/27: apenas 2,2%!</span><br>
+    Carioca GO Nota 9+ (10/4): <strong style="color:var(--dn)">R$ 306,74/sc</strong> (−3,44% abr) &nbsp;|&nbsp;
+    Preto PR Sul (10/4): <strong style="color:var(--dn)">R$ 166,06/sc</strong> (−4,30% abr) &nbsp;|&nbsp;
+    Export mar: <strong style="color:var(--up)">27,28 mil t</strong> (+51,3% a.a.) &nbsp;|&nbsp;
+    Safra 25/26 Conab: <strong style="color:var(--dn)">2,9 mi t</strong> (−4,7%) &nbsp;|&nbsp;
+    Oferta total 26/27: <strong style="color:var(--dn)">−10,2%</strong> &nbsp;|&nbsp;
+    Est/Consumo: <strong style="color:var(--dn)">2,2%</strong> (SAFRAS)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert red">
+  <span class="ai">📉</span>
+  <div><strong style="color:var(--dn)">Preços caem após trimestre RECORDE!</strong> <strong>Globo Rural/CEPEA (13/abr):</strong> <em>"Após altas expressivas ao longo do 1º trimestre e patamares recordes, as cotações dos feijões preto e carioca iniciaram abril em queda."</em> <strong>Carioca:</strong> −3,44%. <strong>Preto:</strong> −4,30%. Demanda fraca + transição para 2ª safra.</div>
+</div>
+
+<div class="alert orange">
+  <span class="ai">⚠️</span>
+  <div><strong style="color:var(--orange)">ESTOQUES CRÍTICOS: 2,2% da relação estoque/consumo em 26/27!</strong> <strong>SAFRAS & Mercado:</strong> <em>"Um nível tecnicamente apertado, que eleva o risco de disrupções e movimentos abruptos de preço ao longo do ciclo. Oferta total projeta retração de 10,2%."</em> Estoques iniciais caíram −46,3%!</div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">🌧️</span>
+  <div><strong style="color:var(--nt)">2ª safra: incertezas climáticas no Sul!</strong> <strong>CEPEA:</strong> <em>"Mercado busca novo equilíbrio, influenciado pela transição para a segunda safra, especialmente diante das incertezas climáticas no Sul do País."</em> A 2ª safra é crucial para recompor oferta. Se falhar → preços voltam a subir forte.</div>
+</div>
+
+<div class="alert green">
+  <span class="ai">🚢</span>
+  <div><strong style="color:var(--up)">Exportações de março: +51,3%!</strong> Brasil exportou <strong>27,28 mil t</strong> em março (+2,4% vs fev, +51,3% vs mar/25). Feijão BR competitivo no mercado externo. Importações: 3,13 mil t (−17% vs fev, mas 4x mais que mar/25).</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi dn"><div class="kpi-lb">Carioca GO Nota 9+ (10/4)</div><div class="kpi-val dn">R$ 306,74/sc</div><div class="kpi-sub">−3,44% abril · Saindo de recordes</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Preto PR Sul (10/4)</div><div class="kpi-val dn">R$ 166,06/sc</div><div class="kpi-sub">−4,30% abril · Viés baixista</div></div>
+  <div class="kpi up"><div class="kpi-lb">Export Mar/26</div><div class="kpi-val up">27,28 mil t</div><div class="kpi-sub">+51,3% a.a. · +2,4% vs fev</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Safra 25/26 Conab</div><div class="kpi-val dn">2,9 mi t</div><div class="kpi-sub">−4,7% vs anterior</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Est/Consumo 26/27</div><div class="kpi-val dn">2,2%</div><div class="kpi-sub">CRÍTICO! (SAFRAS)</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Oferta Total 26/27</div><div class="kpi-val dn">−10,2%</div><div class="kpi-sub">Estoques iniciais −46,3%!</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- COTAÇÕES -->
+<div class="sec-title"><div class="icon fj">🫘</div><h2>Cotações — Correção Após Recordes <span>— Carioca firme, Preto cede mais</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📉 Feijão Carioca — Abr/2026 (R$/sc 60kg)</h3>
+    <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📉 Feijão Preto — Abr/2026 (R$/sc 60kg)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+</div>
+
+<div class="card">
+<h3>📋 Cotações por Praça e Tipo — Abril 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Tipo / Praça</th><th>R$/sc 60kg</th><th>Var. Recente</th><th>Tendência</th></tr></thead>
+  <tbody>
+    <tr style="background:rgba(234,179,8,.04)"><td colspan="4" style="text-align:left;font-weight:700;color:var(--accent2)">CARIOCA</td></tr>
+    <tr><td style="text-align:left">GO Leste — Nota 9+ (CEPEA 10/4)</td><td style="color:var(--dn)"><strong>R$ 306,74</strong></td><td style="color:var(--dn)">−3,44% abr</td><td>📉 Queda</td></tr>
+    <tr><td style="text-align:left">MG NO — Nota 8-8,5 (IBRAFE)</td><td><strong>R$ 287,68</strong></td><td style="color:var(--up)">+4,28%</td><td>→ Firme</td></tr>
+    <tr><td style="text-align:left">MG NO — Nota 9+ Pen.12 (IBRAFE)</td><td><strong>R$ 294,67</strong></td><td>−0,10%</td><td>→ Estável</td></tr>
+    <tr><td style="text-align:left">MG TM/AP — Nota 8-8,5</td><td><strong>R$ 272,56</strong></td><td>+0,64%</td><td>→ Estável</td></tr>
+    <tr><td style="text-align:left">PR Sul — Nota 8-8,5 (CEPEA)</td><td><strong>R$ 263,05</strong></td><td style="color:var(--up)">+1,16%</td><td>→ Firme</td></tr>
+    <tr><td style="text-align:left">PR Curitiba — Nota 8-8,5</td><td><strong>R$ 276,20</strong></td><td style="color:var(--up)">+3,96%</td><td>→ Firme</td></tr>
+    <tr><td style="text-align:left">PR Curitiba — Nota 9+ Pen.12</td><td style="color:var(--up)"><strong>R$ 308,75</strong></td><td style="color:var(--up)">+5,71%</td><td>📈 Alta! Prêmio qualidade</td></tr>
+    <tr><td style="text-align:left;color:var(--text3)">PNF Negócios (Nota 9+)</td><td style="color:var(--text3)">R$ 300-320</td><td>—</td><td>Referência</td></tr>
+    <tr style="background:rgba(168,85,247,.04)"><td colspan="4" style="text-align:left;font-weight:700;color:var(--purple)">PRETO</td></tr>
+    <tr><td style="text-align:left">PR Sul — Tipo 1 (CEPEA 10/4)</td><td style="color:var(--dn)"><strong>R$ 166,06</strong></td><td style="color:var(--dn)">−4,30% abr</td><td>📉 Queda</td></tr>
+    <tr><td style="text-align:left">PR Curitiba — Tipo 1</td><td><strong>R$ 191,90</strong></td><td style="color:var(--up)">+1,55%</td><td>→ Firme CWB</td></tr>
+    <tr><td style="text-align:left">PR Sul — Tipo 1</td><td><strong>R$ 184,92</strong></td><td>+1,15%</td><td>→ Estável</td></tr>
+    <tr><td style="text-align:left;color:var(--text3)">PNF Negócios (Preto)</td><td style="color:var(--text3)">R$ 190-200</td><td>—</td><td>Referência</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fontes: CEPEA/CNA, IBRAFE, Globo Rural, Notícias Agrícolas. <strong>Prêmio por qualidade Nota 9+ é o destaque: spread ampliando.</strong></p>
+</div>
+
+<div class="co nt">
+  <h4>📊 Carioca vs Preto: Comportamentos Diferentes</h4>
+  <p><strong>Carioca:</strong> Preços firmes na maioria das praças. Queda concentrada no topo (GO Nota 9+: −3,4%). Mas Curitiba Nota 9+ SUBIU +5,71%! <strong>O prêmio por qualidade está mandando.</strong> Oferta de Nota 9+ é reduzida → spread amplia.<br><br>
+  <strong>Preto:</strong> Viés mais baixista. PR Sul caiu −4,30%. <strong>IBRAFE:</strong> <em>"Preto com viés de baixa que tem mais a ver com comportamento de compra e sensibilidade do varejo do que com sobra real."</em> Comprador mais seletivo. Pressiona preço e prazo.<br><br>
+  <strong>CEPEA:</strong> "Preços do feijão preto seguem em queda; carioca se sustenta."</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- OFERTA / SAFRA -->
+<div class="sec-title"><div class="icon of">🌾</div><h2>Safra & Oferta — Cenário Estrutural Apertado <span>— Produção cai, estoques despencam</span></h2></div>
+
+<div class="chart-box">
+  <h3>📊 Balanço de Oferta/Demanda — Feijão 26/27 (SAFRAS & Mercado)</h3>
+  <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+</div>
+
+<div class="card">
+<h3>📋 Dados Fundamentais — Feijão 2025/26 e 2026/27</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Indicador</th><th>25/26</th><th>26/27 (proj.)</th><th>Variação</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left">Produção (Conab)</td><td>~3,1 mi t</td><td style="color:var(--dn)"><strong>2,9 mi t</strong></td><td style="color:var(--dn)">−4,7%</td></tr>
+    <tr><td style="text-align:left">Área plantada</td><td>~2,69 mi ha</td><td style="color:var(--dn)">2,58 mi ha</td><td style="color:var(--dn)">−4,2%</td></tr>
+    <tr><td style="text-align:left">Produtividade</td><td>~1.137 kg/ha</td><td style="color:var(--dn)">1.130 kg/ha</td><td>−0,6%</td></tr>
+    <tr><td style="text-align:left"><strong>Oferta total</strong></td><td>—</td><td style="color:var(--dn)"><strong>Retração</strong></td><td style="color:var(--dn)"><strong>−10,2%</strong></td></tr>
+    <tr><td style="text-align:left"><strong>Estoques iniciais</strong></td><td>—</td><td style="color:var(--dn)"><strong>Despencaram</strong></td><td style="color:var(--dn)"><strong>−46,3%!</strong></td></tr>
+    <tr><td style="text-align:left"><strong>Est/Consumo</strong></td><td>—</td><td style="color:var(--dn)"><strong>2,2%</strong></td><td style="color:var(--dn)">Crítico!</td></tr>
+    <tr><td style="text-align:left">Consumo</td><td>—</td><td>−0,7%</td><td>~Estável</td></tr>
+    <tr><td style="text-align:left">Exportações proj.</td><td>—</td><td>−29,8%</td><td>Recua</td></tr>
+    <tr><td style="text-align:left">Comercialização mar/26</td><td colspan="2">~65% da produção</td><td style="color:var(--up)">vs 55% média hist.</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fontes: Conab (6ºlevantamento), SAFRAS & Mercado, eBarn. <strong style="color:var(--dn)">Cenário 26/27 = mais apertado que 25/26!</strong></p>
+</div>
+
+<div class="co dn">
+  <h4>🚨 SAFRAS & Mercado: "Novo Regime Estrutural"</h4>
+  <p><strong>Evandro Oliveira (SAFRAS):</strong> <em>"O mercado avança no ano comercial 26/27 sob um novo regime estrutural, marcado por compressão de oferta e aumento da sensibilidade a choques."</em><br><br>
+  ▸ <strong>1ª safra:</strong> Forte contração no Sul (perdas de área e produtividade)<br>
+  ▸ <strong>2ª safra:</strong> Compensação parcial no Norte/NE, mas "sem força suficiente para neutralizar a retração estrutural do Centro-Sul"<br>
+  ▸ <strong>Mosca-branca:</strong> Pressão fitossanitária ativa<br>
+  ▸ <strong>Migração de área:</strong> Produtor preferiu soja e milho (rentabilidade maior)<br>
+  ▸ <strong>Est/consumo 2,2%:</strong> <em>"Eleva o risco de disrupções e movimentos abruptos de preço"</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- EXPORTAÇÕES -->
+<div class="sec-title"><div class="icon exp">🚢</div><h2>Comércio Exterior — Export Surpreende <span>— +51,3% em março</span></h2></div>
+
+<div class="co up">
+  <h4>🚢 Exportações Recorde: +51,3% em Março!</h4>
+  <p><strong>Secex (mar/26):</strong> 27,28 mil t exportadas (+2,4% vs fev, +51,3% vs mar/25).<br>
+  <strong>Taroba/CEPEA:</strong> <em>"Desempenho brasileiro segue surpreendendo positivamente no mercado externo."</em><br><br>
+  <strong>Importações:</strong> 3,13 mil t (−17% vs fev). Mas ainda 4x maior que mar/25. <strong>Sinal:</strong> Brasil importando mais que o habitual para complementar oferta interna apertada.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Feijão Carioca — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:43%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ NEUTRO/LEVE BAIXA — Correção de recordes. Mas estoques apertados limitam queda. R$ 270-310/sc.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Feijão Preto — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:35%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--dn);margin-top:6px;font-weight:600">⬇ BAIXISTA MODERADO — Comprador seletivo. Varejo resiste. Pode buscar R$ 155-165/sc.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Feijão: Correção Temporária Num Mercado Estruturalmente Apertado</h3>
+  <p><strong>O feijão vive um momento paradoxal:</strong> preços caem em abril, mas os fundamentos são os mais apertados em anos. Isso acontece porque o 1º trimestre foi tão forte (recordes!) que a demanda simplesmente não acompanhou. O consumidor empurrou de volta. O varejo travou. E o mercado busca equilíbrio.</p>
+  <p><strong>Mas — ATENÇÃO MÁXIMA ao que vem por trás:</strong><br>
+  ▸ <strong>Estoques iniciais: −46,3%.</strong> Zerados.<br>
+  ▸ <strong>Relação est/consumo: 2,2%.</strong> Basta 1 evento (seca, geada, mosca-branca) para explodir preços.<br>
+  ▸ <strong>Produção 26/27: −5,5%.</strong> Área menor (soja/milho pagam mais).<br>
+  ▸ <strong>1ª safra Sul: Contração forte.</strong> 2ª safra não compensa.<br>
+  ▸ <strong>SAFRAS chama de "novo regime estrutural."</strong> Menos previsível, mais volátil.</p>
+  <p><strong>A correção é temporária.</strong> Se a 2ª safra decepcionar por clima no Sul, os preços voltam para recordes RÁPIDO. Não há colchão de estoque. O mercado está nu.</p>
+  <p><strong>O que observar:</strong><br>
+  ▸ <strong>Carioca Nota 9+:</strong> Prêmio de qualidade é real. Quem tem feijão bom, tem ouro. Spread ampliando vs Nota 8.<br>
+  ▸ <strong>Preto:</strong> Mais vulnerável. Varejo mais sensível. Comprador espera. Mas base não está sobrando.<br>
+  ▸ <strong>2ª safra (mai-jun):</strong> O evento mais importante do mercado. Definirá preços do 2ºsem.<br>
+  ▸ <strong>Mosca-branca:</strong> Monitorar! Pressão fitossanitária pode derrubar produtividade.</p>
+  <p><strong>Recomendação:</strong> Produtor com carioca Nota 9+: <strong>vender com calma, parcelas.</strong> O prêmio por qualidade sustenta. Quem tem preto: <strong>não esperar muito. Viés é de baixa no curto prazo.</strong> Para comprador/indústria: recompor estoques agora na correção pode ser inteligente — quando 2ª safra falhar (se falhar), preço dispara sem aviso.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: CARIOCA
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar ini','Mar fim','01/4','07/4','10/4','~17/4'],
+    datasets:[{
+      label:'Carioca GO Nota 9+ R$/sc',
+      data:[260,285,310,320,317,312,306.74,305],
+      borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,.06)',
+      borderWidth:3,fill:true,tension:.35,
+      pointRadius:[4,4,5,6,5,4,6,6],
+      pointBackgroundColor:function(ctx){
+        const v=ctx.dataset.data[ctx.dataIndex];
+        return v>=315?'#22c55e':v<=308?'#ef4444':'#fbbf24';
+      }
+    },{
+      label:'Carioca PR CWB Nota 9+ R$/sc',
+      data:[245,270,290,305,300,303,308.75,310],
+      borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.04)',
+      borderWidth:2,fill:false,tension:.35,borderDash:[4,3],
+      pointRadius:3,pointBackgroundColor:'#22c55e'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        rec:{type:'label',xValue:3,yValue:328,content:['RECORDE','1ºTri!'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        now:{type:'label',xValue:6,yValue:298,content:['R$ 306,74','−3,44% abr'],font:{size:10,weight:'bold'},color:'#ef4444'},
+        cwb:{type:'label',xValue:6,yValue:316,content:['CWB +5,71%!'],font:{size:9,weight:'bold'},color:'#22c55e'}
+      }}
+    },
+    scales:{
+      y:{min:230,max:340,grid:{color:gc},ticks:{callback:v=>'R$'+v,font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: PRETO
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar ini','Mar fim','01/4','07/4','10/4','~17/4'],
+    datasets:[{
+      label:'Preto PR Sul Tipo 1 R$/sc',
+      data:[155,168,178,180,173.50,170,166.06,164],
+      borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.06)',
+      borderWidth:3,fill:true,tension:.35,
+      pointRadius:[4,4,5,6,5,4,6,6],
+      pointBackgroundColor:function(ctx){
+        const v=ctx.dataset.data[ctx.dataIndex];
+        return v>=175?'#22c55e':v<=168?'#ef4444':'#a855f7';
+      }
+    },{
+      label:'Preto CWB Tipo 1 R$/sc',
+      data:[165,180,190,195,193,192,191.90,190],
+      borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.04)',
+      borderWidth:2,fill:false,tension:.35,borderDash:[4,3],
+      pointRadius:3,pointBackgroundColor:'#3b82f6'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        rec:{type:'label',xValue:3,yValue:200,content:['Pico','Mar/26'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        now:{type:'label',xValue:6,yValue:158,content:['R$ 166,06','−4,30% abr'],font:{size:10,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:145,max:210,grid:{color:gc},ticks:{callback:v=>'R$'+v,font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 3: BALANÇO OFERTA/DEMANDA
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Produção','Estoques Iniciais','Oferta Total','Consumo','Exportações','Est/Consumo (%)'],
+    datasets:[{
+      label:'Variação 26/27 vs 25/26 (%)',
+      data:[-5.5,-46.3,-10.2,-0.7,-29.8,null],
+      backgroundColor:['rgba(239,68,68,.4)','rgba(239,68,68,.6)','rgba(239,68,68,.5)','rgba(234,179,8,.3)','rgba(59,130,246,.3)','rgba(168,85,247,.4)'],
+      borderColor:['#ef4444','#ef4444','#ef4444','#eab308','#3b82f6','#a855f7'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        zero:{type:'line',xMin:0,xMax:0,borderColor:'rgba(255,255,255,.3)',borderWidth:1},
+        est:{type:'label',yValue:1,xValue:-50,content:['−46,3%!','Estoques','ZERADOS'],font:{size:10,weight:'bold'},color:'#ef4444'},
+        ratio:{type:'label',yValue:5,xValue:-25,content:['Est/Consumo','= 2,2%','CRÍTICO!'],font:{size:10,weight:'bold'},color:'#a855f7'}
+      }}
+    },
+    scales:{
+      x:{min:-55,max:10,grid:{color:gc},ticks:{callback:v=>v+'%',font:{size:10,weight:'600'}}},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

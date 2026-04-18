@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Soja — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--green:#2d8a44;--green2:#34d399;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.soja{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title .icon.cbot{background:linear-gradient(135deg,#92400e,#f59e0b)}
+.sec-title .icon.safra{background:linear-gradient(135deg,#0e7490,#06b6d4)}
+.sec-title .icon.alert{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02));border:1px solid rgba(34,197,94,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(34,197,94,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🌱</span> Soja — <span class="hl">Conab Eleva Safra p/ 179,15 mi t. Paranaguá R$ 126,67. Dólar Abaixo de R$ 5 Pressiona. EUA Plantando 3x Mais Rápido.</span></h1>
+  <p class="sub">
+    CEPEA Paranaguá 16/4: <strong style="color:var(--dn)">R$ 126,67/sc</strong> (−1,99% mês) &nbsp;|&nbsp;
+    CBOT Mai/26 15/4: <strong style="color:var(--up)">$11,66/bu</strong> (+0,69%) &nbsp;|&nbsp;
+    Safra BR: <strong style="color:var(--up)">179,15 mi t</strong> (Conab elevou!) &nbsp;|&nbsp;
+    Plantio EUA 26/27: <strong style="color:var(--dn)">6%</strong> (vs 2% média — 3x mais rápido!) &nbsp;|&nbsp;
+    Dólar: <strong style="color:var(--up)">R$ 4,976</strong> (abaixo de R$ 5!)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert orange">
+  <span class="ai">⚠️</span>
+  <div><strong style="color:var(--orange)">Conab elevou safra para 179,15 mi t</strong> — era 177,85 em março. Produção gigantesca confirma maior safra da história. Colheita quase encerrada. <strong>Mais soja = mais pressão sobre preços internos.</strong></div>
+</div>
+
+<div class="alert blue">
+  <span class="ai">💵</span>
+  <div><strong style="color:var(--blue)">Dólar rompeu R$ 5,00 — Paranaguá perdeu −2% no mês.</strong> CEPEA Paranaguá caiu de R$ 129,24 (31/mar) para R$ 126,67 (16/abr). O câmbio é o principal vilão: cada R$ 0,10 a menos no dólar tira R$ 2-3 da saca. <strong>Céleres Consultoria:</strong> <em>"Visão para 2026 segue sendo de preços pressionados. Aproveite janelas de alta."</em></div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">🇺🇸</span>
+  <div><strong style="color:var(--nt)">EUA plantando 3x mais rápido!</strong> USDA: 6% da área plantada vs 2% da média. Clima favorável no Meio-Oeste. <strong>Se safra americana for cheia:</strong> CBOT perde $11,50 → pressiona Brasil. <strong>Analista Terra Agronegócios:</strong> <em>"Briga por área entre soja e milho pode sustentar preços da soja."</em></div>
+</div>
+
+<div class="alert green">
+  <span class="ai">📈</span>
+  <div><strong style="color:var(--up)">Farelo sustentou Chicago na semana.</strong> Alta de +4% no farelo em 10/abr puxou grão. Óleo recuou com trégua Ormuz (petróleo caiu). <strong>Complexo dividido: farelo sobe, óleo cai, grão lateral entre $11,50-11,75.</strong></div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi dn"><div class="kpi-lb">CEPEA Paranaguá 16/4</div><div class="kpi-val dn">R$ 126,67/sc</div><div class="kpi-sub">−0,14% dia · −1,99% mês</div></div>
+  <div class="kpi dn"><div class="kpi-lb">CEPEA PR ~16/4</div><div class="kpi-val dn">~R$ 119,50/sc</div><div class="kpi-sub">Estim. tendência baixista</div></div>
+  <div class="kpi nt"><div class="kpi-lb">CBOT Mai/26 (15/4)</div><div class="kpi-val nt">$11,66/bu</div><div class="kpi-sub">+0,69% · Range $11,50-11,75</div></div>
+  <div class="kpi up"><div class="kpi-lb">Safra BR (Conab)</div><div class="kpi-val up">179,15 mi t</div><div class="kpi-sub">Elevou de 177,85 → RECORDE!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Plantio EUA 26/27</div><div class="kpi-val dn">6%</div><div class="kpi-sub">vs 2% média → 3x mais rápido</div></div>
+  <div class="kpi up"><div class="kpi-lb">Dólar 17/4</div><div class="kpi-val up">R$ 4,976</div><div class="kpi-sub">Abaixo de R$ 5! Pressiona soja</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- PREÇOS CEPEA -->
+<div class="sec-title"><div class="icon soja">🌱</div><h2>CEPEA — Evolução de Preços <span>— Paranaguá e Paraná</span></h2></div>
+
+<div class="card">
+<h3>📊 CEPEA Paranaguá (R$/sc 60kg) — Abril 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Data</th><th>R$/sc</th><th>Var./Dia</th><th>Var./Mês</th><th>US$/sc</th></tr></thead>
+  <tbody>
+    <tr><td><strong>16/04</strong></td><td style="color:var(--dn)"><strong>126,67</strong></td><td>−0,14%</td><td style="color:var(--dn)">−1,99%</td><td>25,37</td></tr>
+    <tr><td>15/04</td><td>126,85</td><td>+0,51%</td><td>−1,85%</td><td>25,41</td></tr>
+    <tr><td>14/04</td><td>126,21</td><td>−0,39%</td><td>−2,34%</td><td>25,29</td></tr>
+    <tr><td>13/04</td><td>126,70</td><td>+0,09%</td><td>−1,97%</td><td>25,35</td></tr>
+    <tr><td>10/04</td><td>126,58</td><td>−0,99%</td><td>−2,06%</td><td>25,27</td></tr>
+    <tr><td>09/04</td><td>127,84</td><td>−0,22%</td><td>−1,08%</td><td>25,24</td></tr>
+    <tr><td>08/04</td><td>128,12</td><td>−0,15%</td><td>−0,87%</td><td>25,07</td></tr>
+    <tr><td>07/04</td><td>128,31</td><td>−0,39%</td><td>−0,72%</td><td>24,86</td></tr>
+    <tr><td>06/04</td><td>128,81</td><td>+0,24%</td><td>−0,33%</td><td>25,02</td></tr>
+    <tr><td>01/04</td><td style="color:var(--text3)">127,91</td><td>−1,03%</td><td>−1,03%</td><td>24,80</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: CEPEA-Esalq/USP · Tendência: <strong style="color:var(--dn)">BAIXISTA</strong> — acumula −2% no mês. Dólar é o principal fator de pressão.</p>
+</div>
+
+<!-- GRÁFICOS -->
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📉 CEPEA Paranaguá — Abril 2026 (R$/sc)</h3>
+    <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 CBOT Soja Mai/26 — Abr 2026 (US$/bu)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- CHICAGO -->
+<div class="sec-title"><div class="icon cbot">🏛️</div><h2>Chicago (CBOT) — Lateral entre $11,50-11,75 <span>— Farelo sustenta, óleo recua</span></h2></div>
+
+<div class="co nt">
+  <h4>🏛️ CBOT: Soja lateral, sem grande tendência</h4>
+  <p>Semana 14-17/abr: soja oscilou entre <strong>$11,58 (mín. em 14/abr)</strong> e <strong>$11,67 (máx. em 15/abr)</strong>. Fatores:<br>
+  <strong>Altistas:</strong> Farelo forte (+4% em 10/abr) · Guerra comercial EUA-China = BR fornecedor · Demanda chinesa firme<br>
+  <strong>Baixistas:</strong> Plantio EUA 3x acima da média · Safra BR recorde 179,15 mi t · Petróleo em queda (trégua Ormuz) derruba óleo de soja<br><br>
+  <strong>Ceema/Mais Soja:</strong> <em>"O relatório de abril do USDA não trouxe grandes novidades. O mais importante é o de maio, com 1ª estimativa de produção EUA 2026/27."</em><br>
+  <strong>Terra Agronegócios:</strong> <em>"Briga por área entre soja e milho nos EUA pode sustentar preços."</em></p>
+</div>
+
+<div class="co dn">
+  <h4>⬇️ 14/abr: Soja caiu para $11,58 — Pior dia da semana</h4>
+  <p><strong>Reuters:</strong> <em>"Venda técnica e queda do petróleo pressionaram."</em> Contrato Mai bateu $11,8375 (máx. 1 mês) em 13/abr, depois devolveu. Avanço do plantio EUA (6% vs 2%) pesou. <strong>Suporte: $11,50 · Resistência: $11,80</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SAFRA BR -->
+<div class="sec-title"><div class="icon safra">🌾</div><h2>Safra Brasil 25/26 — Conab Eleva para 179,15 mi t <span>— Recorde!</span></h2></div>
+
+<div class="card">
+<h3>📋 Estimativas de Safra — Comparativo</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Fonte</th><th>Produção (mi t)</th><th>Mudança vs Anterior</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Conab (abr/26)</strong></td><td style="color:var(--up)"><strong>179,15</strong></td><td style="color:var(--up)">+1,30 mi t (era 177,85)</td></tr>
+    <tr><td style="text-align:left">StoneX</td><td>179,70</td><td>—</td></tr>
+    <tr><td style="text-align:left">USDA (abr/26)</td><td>180,00</td><td>Mantido</td></tr>
+    <tr><td style="text-align:left">Safra 24/25</td><td style="color:var(--text3)">154,60</td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)"><strong>Variação vs safra anterior:</strong> +15,9% ou +24,55 mi t. É como produzir uma "Argentina inteira" a mais que no ano passado.</p>
+</div>
+
+<div class="co dn">
+  <h4>📉 Safra recorde + dólar caindo = receita em reais COMPRIMIDA</h4>
+  <p>Comparativo de receita por saca:<br>
+  • <strong>Jan/26:</strong> CBOT $11,70 × USD R$ 5,34 = R$ ~124,91/sc (CEPEA PR)<br>
+  • <strong>10/abr:</strong> CBOT $11,76 × USD R$ 5,01 = R$ ~120,94/sc<br>
+  • <strong>16/abr:</strong> CBOT $11,66 × USD R$ 4,98 = R$ ~119,50/sc (estim.)<br><br>
+  <strong>De jan para agora:</strong> perda de ~R$ 5/sc apenas pelo câmbio! Em uma safra de 179 mi t = <strong>perda de ~R$ 15 bilhões em receita bruta</strong> pelo câmbio.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- EUA -->
+<div class="sec-title"><div class="icon alert">🇺🇸</div><h2>EUA Safra 26/27 — Plantio 3x Mais Rápido <span>— Risco para Preços</span></h2></div>
+
+<div class="co or">
+  <h4>⚡ USDA: 6% plantado vs 2% da média — alerta!</h4>
+  <p><strong>Globo Rural (14/abr):</strong> <em>"O plantio de soja nos EUA do ciclo 2026/27 começou em ritmo acelerado e contribuiu para pressionar os preços."</em><br><br>
+  Clima favorável no Meio-Oeste. Se mantiver esse ritmo:<br>
+  • <strong>Cenário 1 (safra cheia):</strong> CBOT pode testar $10,50-11,00 no 2ºsem → devastador para preços BR<br>
+  • <strong>Cenário 2 (briga de área):</strong> Milho tomando área da soja → soja pode sustentar $11,50+<br><br>
+  <strong>Evento-chave: Relatório USDA de MAIO</strong> → 1ª estimativa oficial de produção EUA 26/27. Pode mudar tudo.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- PRAÇAS -->
+<div class="card">
+<h3>📍 Preços Regionais — Praças (semana ~14-16/abr)</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Praça</th><th>R$/sc</th><th>Variação Semana</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left">Paranaguá (PR) — CEPEA</td><td><strong>R$ 126,67</strong></td><td style="color:var(--dn)">−1,99% mês</td></tr>
+    <tr><td style="text-align:left">Ponta Grossa (PR) — AgRural</td><td><strong>R$ 121,50</strong></td><td style="color:var(--up)">+R$ 1,50</td></tr>
+    <tr><td style="text-align:left">Rondonópolis (MT) — AgRural</td><td><strong>R$ 107,00</strong></td><td style="color:var(--up)">+R$ 2,00</td></tr>
+    <tr><td style="text-align:left">L.E.Magalhães (BA) — AgRural</td><td><strong>R$ 112,00</strong></td><td style="color:var(--up)">+R$ 1,50</td></tr>
+    <tr><td style="text-align:left">Rio Verde (GO) — estim.</td><td><strong>~R$ 110-113</strong></td><td>—</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)"><strong>Nota:</strong> Praças do interior reagiram levemente em 15-16/abr com alta do farelo em Chicago. Mas tendência mensal segue baixista.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Soja Interior BR — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:35%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--dn);margin-top:6px;font-weight:600">⬇ BAIXISTA — Safra recorde + dólar caindo + comercialização atrasada</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ CBOT Soja — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:45%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ LATERAL — Range $11,50-11,75. Farelo sustenta, plantio EUA pressiona.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Soja: Tríplice Pressão</h3>
+  <p>A soja vive um momento de <strong>tríplice pressão baixista no mercado interno:</strong></p>
+  <p><strong>1. Safra recorde:</strong> Conab elevou para 179,15 mi t. USDA mantém 180 mi t. Oferta nunca foi tão grande.<br>
+  <strong>2. Dólar abaixo de R$ 5:</strong> Receita em reais cai ~R$ 2-3/sc por cada R$ 0,10. Desde janeiro, já perdeu R$ 5/sc.<br>
+  <strong>3. Comercialização atrasada:</strong> ~54% vendida (−5 pp vs ano passado). Muita soja represada. Se todos venderem juntos → preço despenca.</p>
+  <p><strong>Chicago segura o piso</strong> graças ao farelo forte e à guerra comercial EUA-China que direciona demanda ao Brasil. Mas o plantio nos EUA 3x acima da média é sinal de alerta para o 2º semestre.</p>
+  <p><strong>Recomendação:</strong> Aproveitar repiques para vender parcelas. Travar câmbio quando possível. O relatório USDA de maio pode ser o divisor de águas do ano — trará a 1ª estimativa de produção EUA 26/27. Se área de soja cair (milho tomou espaço), pode haver surpresa altista. <strong>Fique atento às janelas.</strong></p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: CEPEA PARANAGUÁ
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['01/4','02/4','06/4','07/4','08/4','09/4','10/4','13/4','14/4','15/4','16/4'],
+    datasets:[{
+      label:'Paranaguá R$/sc',
+      data:[127.91,128.50,128.81,128.31,128.12,127.84,126.58,126.70,126.21,126.85,126.67],
+      borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,4,4,5,4,4,4,7],
+      pointBackgroundColor:function(ctx){return ctx.dataIndex===10?'#ef4444':'#22c55e'}
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:10,yValue:125.5,content:['R$ 126,67','−2,0% mês'],font:{size:10,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:125,max:130,grid:{color:gc},ticks:{callback:v=>'R$'+v.toFixed(0),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: CBOT
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['01/4','02/4','06/4','07/4','08/4','09/4','10/4','13/4','14/4','15/4'],
+    datasets:[{
+      label:'CBOT Mai/26 US$/bu',
+      data:[11.63,11.63,11.68,11.58,11.59,11.68,11.76,11.75,11.58,11.66],
+      borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,4,4,5,5,6,7],
+      pointBackgroundColor:function(ctx){
+        const v=ctx.dataset.data[ctx.dataIndex];
+        return v>=11.70?'#22c55e':v<=11.60?'#ef4444':'#eab308';
+      }
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        sup:{type:'line',yMin:11.50,yMax:11.50,borderColor:'rgba(239,68,68,.4)',borderWidth:2,borderDash:[4,3],
+          label:{display:true,content:'Suporte $11,50',position:'start',backgroundColor:'rgba(239,68,68,.5)',font:{size:9}}},
+        res:{type:'line',yMin:11.80,yMax:11.80,borderColor:'rgba(34,197,94,.4)',borderWidth:2,borderDash:[4,3],
+          label:{display:true,content:'Resistência $11,80',position:'start',backgroundColor:'rgba(34,197,94,.5)',font:{size:9}}}
+      }}
+    },
+    scales:{
+      y:{min:11.40,max:11.90,grid:{color:gc},ticks:{callback:v=>'$'+v.toFixed(2),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Arroz — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:1.85rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.35rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.ar{background:linear-gradient(135deg,#065f46,#34d399)}
+.sec-title .icon.col{background:linear-gradient(135deg,#92400e,#fbbf24)}
+.sec-title .icon.exp{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.sec-title .icon.saf{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(6,95,70,.08),rgba(6,95,70,.02));border:1px solid rgba(6,95,70,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(6,95,70,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.badge.nt{background:rgba(234,179,8,.15);color:var(--nt);border:1px solid rgba(234,179,8,.3)}
+.badge.bl{background:rgba(59,130,246,.15);color:var(--blue);border:1px solid rgba(59,130,246,.3)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🍚</span> Arroz — <span class="hl">R$ 62,77/sc (Estável). Colheita RS 79%. Safra −14,4%. Export 1ºTri +144%! Import Recorde. Produtor Não Vende.</span></h1>
+  <p class="sub">
+    <span class="badge nt">⚖️ Mercado travado: produtor não aceita preço, comprador espera colheita</span>
+    <span class="badge bl">🚢 Export 1ºTri: 685 mil t (+144%!) | Import mar: 176 mil t (+70% recorde!)</span><br>
+    CEPEA/IRGA RS (14/4): <strong style="color:var(--nt)">R$ 62,77/sc 50kg</strong> (+0,85% abr) &nbsp;|&nbsp;
+    Colheita RS: <strong style="color:var(--up)">79,3%</strong> (Irga 16/4) &nbsp;|&nbsp;
+    Produção 25/26: <strong style="color:var(--dn)">10,914 mi t</strong> (−14,4%) &nbsp;|&nbsp;
+    Export 1ºTri: <strong style="color:var(--up)">685 mil t</strong> (+144%) &nbsp;|&nbsp;
+    Import mar: <strong style="color:var(--up)">176,1 mil t</strong> (maior desde jul/24)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert amber">
+  <span class="ai">⚖️</span>
+  <div><strong style="color:var(--nt)">Mercado TRAVADO: queda de braço entre produtor e comprador.</strong> <strong>Globo Rural (15/abr):</strong> <em>"Mercado brasileiro de arroz mantém baixa liquidez, refletindo impasse entre os agentes. Produtores mantêm postura cautelosa, aguardando preços mais atrativos."</em> Preço a R$ 62,77 — produtor diz que <strong>não remunera custos de produção</strong>.</div>
+</div>
+
+<div class="alert red">
+  <span class="ai">📉</span>
+  <div><strong style="color:var(--dn)">Safra 25/26: −14,4% (Conab).</strong> Produção de 10,914 mi t. RS (70% do BR): 7,543 mi t (−13,6%). Área: −11,6%. Produtividade: −3,3%. <strong>Exame (jan/26):</strong> <em>"Mesmo com queda na oferta, analistas estimam que preços não devem subir — estoques + importações ainda fortes."</em> Em 2025, arroz caiu 26,6% no IBGE.</div>
+</div>
+
+<div class="alert green">
+  <span class="ai">🚢</span>
+  <div><strong style="color:var(--up)">Exportações EXPLODIRAM: +144% no 1ºTri!</strong> <strong>Abiarroz:</strong> 685 mil t exportadas jan-mar (+144% vs 2025). Receita: US$ 159,7 mi (+55%). Destinos: Venezuela, Senegal, México. Arroz beneficiado: +106%. <strong>Motivo:</strong> recomposição de estoques em 2025 permitiu retomar embarques.</div>
+</div>
+
+<div class="alert blue">
+  <span class="ai">📦</span>
+  <div><strong style="color:var(--blue)">Importações também disparam!</strong> <strong>Secex mar/26:</strong> 176,1 mil t importadas (+55,7% vs fev, +70% vs mar/25). Maior volume desde jul/2024. <strong>CEPEA:</strong> <em>"Importações ganharam força, impulsionadas pela necessidade de suprimento e competitividade dos produtos importados."</em> Brasil exporta E importa ao mesmo tempo!</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi nt"><div class="kpi-lb">CEPEA/IRGA RS (14/4)</div><div class="kpi-val nt">R$ 62,77/sc</div><div class="kpi-sub">50kg · +0,85% abr · Estável</div></div>
+  <div class="kpi up"><div class="kpi-lb">Colheita RS (16/4)</div><div class="kpi-val up">79,3%</div><div class="kpi-sub">PCE 88% | Zona Sul 83,6%</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Produção 25/26</div><div class="kpi-val dn">10,914 mi t</div><div class="kpi-sub">−14,4% vs 24/25 (Conab)</div></div>
+  <div class="kpi up"><div class="kpi-lb">Export 1ºTri/26</div><div class="kpi-val up">685 mil t</div><div class="kpi-sub">+144%! US$ 159,7 mi</div></div>
+  <div class="kpi up"><div class="kpi-lb">Import Mar/26</div><div class="kpi-val bl">176,1 mil t</div><div class="kpi-sub">+70% a.a. · Maior desde jul/24</div></div>
+  <div class="kpi up"><div class="kpi-lb">Export Mar/26</div><div class="kpi-val up">240,7 mil t</div><div class="kpi-sub">+78,8% a.a. · Maior 3 meses</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- PREÇO -->
+<div class="sec-title"><div class="icon ar">🍚</div><h2>Preço Casca RS — Estável, Liquidez Baixa <span>— Produtor segura, comprador espera</span></h2></div>
+
+<div class="chart-box">
+  <h3>📊 CEPEA/IRGA-RS Arroz em Casca — Mar-Abr 2026 (R$/sc 50kg)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="co nt">
+  <h4>⚖️ O Grande Impasse do Arroz</h4>
+  <p><strong>PRODUTOR:</strong> Avalia que R$ 62-63/sc <strong>não remunera custos de produção.</strong> Segura lotes. Foco na lavoura. Espera R$ 70+.<br><br>
+  <strong>COMPRADOR:</strong> Sabe que colheita avança (79%). Espera oferta aumentar. Compra apenas o necessário. Aposta em preços menores.<br><br>
+  <strong>RESULTADO:</strong> Negócios limitados. Liquidez baixíssima. Preço lateral.<br><br>
+  <strong>Globo Rural (8/abr):</strong> <em>"Produtores avaliam que os preços não remuneram adequadamente os custos. Compradores têm comprado apenas o necessário, operando com cautela."</em><br><br>
+  <strong>CEPEA (8/abr):</strong> <em>"Retração vendedora mantém liquidez baixa. Expectativa de leilões oficiais também afeta."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- COLHEITA -->
+<div class="sec-title"><div class="icon col">🌾</div><h2>Colheita RS — 79,3% Concluída <span>— Fase final, chuvas desaceleraram</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 Avanço da Colheita RS — Abril 2026 (%)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Colheita por Regional RS (%)</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="co up">
+  <h4>🌾 IRGA (17/abr): Colheita a 79,3%</h4>
+  <p><strong>SAFRAS & Mercado (17/abr):</strong> <em>"Colheita de arroz atinge 79,3% da área semeada no RS, mantendo bom desempenho geral."</em><br><br>
+  ▸ <strong>Planície Costeira Externa (PCE):</strong> 88% — mais adiantada<br>
+  ▸ <strong>Zona Sul:</strong> 83,56%<br>
+  ▸ Chuvas na semana desaceleraram ritmo<br>
+  ▸ Fase final: natural redução de velocidade<br><br>
+  <strong>Flávia Tomita (Diretora Técnica Irga):</strong> <em>"A colheita avança de forma consistente. Neste momento final da safra, é natural uma redução no ritmo, também influenciada pelas chuvas."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SAFRA -->
+<div class="sec-title"><div class="icon saf">📦</div><h2>Safra & Balanço — Produção Menor, Comércio Explodiuﾠ<span>— Export +144%, Import +70%</span></h2></div>
+
+<div class="card">
+<h3>📋 Dados da Safra 25/26 — Arroz Brasil</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Indicador</th><th>24/25</th><th>25/26</th><th>Var.</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Produção BR</strong></td><td>12,757 mi t</td><td style="color:var(--dn)"><strong>10,914 mi t</strong></td><td style="color:var(--dn)"><strong>−14,4%</strong></td></tr>
+    <tr><td style="text-align:left">RS (70% do BR)</td><td>8,731 mi t</td><td style="color:var(--dn)">7,543 mi t</td><td style="color:var(--dn)">−13,6%</td></tr>
+    <tr><td style="text-align:left">SC</td><td>1,275 mi t</td><td>1,225 mi t</td><td>−3,9%</td></tr>
+    <tr><td style="text-align:left">MT</td><td>537,1 mil t</td><td style="color:var(--dn)">334,6 mil t</td><td style="color:var(--dn)">−37,7%</td></tr>
+    <tr><td style="text-align:left">Área plantada</td><td>1,764 mi ha</td><td style="color:var(--dn)">1,559 mi ha</td><td style="color:var(--dn)">−11,6%</td></tr>
+    <tr><td style="text-align:left">Produtividade</td><td>7.233 kg/ha</td><td style="color:var(--dn)">6.997 kg/ha</td><td>−3,3%</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: Conab 5ºlevantamento (fev/26), SAFRAS & Mercado. <strong>Maior queda concentrada no MT (−37,7%!).</strong></p>
+</div>
+
+<div class="card">
+<h3>📋 Comércio Exterior — Março & 1º Trimestre 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Fluxo</th><th>Março/26</th><th>Var. a.a.</th><th>1ºTri/26</th><th>Var. a.a.</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Exportações</strong></td><td style="color:var(--up)"><strong>240,7 mil t</strong></td><td style="color:var(--up)">+78,8%</td><td style="color:var(--up)"><strong>685 mil t</strong></td><td style="color:var(--up)"><strong>+144%!</strong></td></tr>
+    <tr><td style="text-align:left"><strong>Importações</strong></td><td style="color:var(--blue)"><strong>176,1 mil t</strong></td><td style="color:var(--blue)">+70%</td><td>—</td><td>—</td></tr>
+    <tr><td style="text-align:left">Receita export 1ºTri</td><td colspan="2">—</td><td style="color:var(--up)"><strong>US$ 159,7 mi</strong></td><td style="color:var(--up)">+55%</td></tr>
+    <tr><td style="text-align:left">Arroz beneficiado export</td><td colspan="2">~50% do total</td><td>349,5 mil t</td><td style="color:var(--up)">+106%</td></tr>
+    <tr><td style="text-align:left;color:var(--text3)">Destinos principais</td><td colspan="4" style="color:var(--text3)">Venezuela, Senegal, México</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)"><strong>Paradoxo:</strong> Brasil exporta e importa arroz ao mesmo tempo! Export: arroz beneficiado com valor agregado. Import: arroz competitivo de Mercosul/Ásia para complementar oferta interna.</p>
+</div>
+
+<div class="co bl">
+  <h4>🚢 Por Que Brasil Exporta E Importa Ao Mesmo Tempo?</h4>
+  <p><strong>EXPORTA:</strong> Estoques recompostos de 2025 → retomada de embarques. Arroz beneficiado BR competitivo na América Latina e África. Venezuela, Senegal, México compram forte.<br><br>
+  <strong>IMPORTA:</strong> Safra 25/26 menor (−14,4%). Necessidade de complementar oferta interna. Arroz importado (Paraguai, Uruguai, Tailândia) é competitivo em preço.<br><br>
+  <strong>Globo Rural (15/abr):</strong> <em>"Importações ganharam força em março, impulsionadas pela necessidade de suprimento e pela competitividade dos produtos importados. 176,1 mil t, maior volume desde julho de 2024."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Arroz Casca RS — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:42%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ NEUTRO/LEVE BAIXA — Colheita avançando pressiona. Produtor segura, mas oferta cresce. R$ 58-65/sc.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Arroz Casca RS — Tendência Médio Prazo (2ºSem)</h4>
+    <div class="th-bar"><div class="th-marker" style="left:55%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬆ LEVE ALTA — Safra −14,4% + export forte = oferta interna pode apertar no 2ºsem. R$ 70+ possível.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Arroz: O Paradoxo da Abundância Aparente</h3>
+  <p><strong>O arroz é um paradoxo em 2026:</strong> a safra cai 14,4%, mas o preço não sobe. Exportações explodem +144%, importações disparam +70% — e o mercado fica travado a R$ 62-63/sc.</p>
+  <p><strong>O que explica isso?</strong><br>
+  ▸ <strong>Estoques de 2025 foram recompostos:</strong> Depois das enchentes de 2024, o Brasil importou pesado e recompôs estoques. Isso dá colchão agora.<br>
+  ▸ <strong>Colheita a 79%:</strong> Oferta entrando no mercado pressiona. Compradores sabem disso e esperam.<br>
+  ▸ <strong>Produtor segura:</strong> Diz que R$ 62 não paga o custo. Mas colheita custa dinheiro, e caixa uma hora aperta.<br>
+  ▸ <strong>Importação competitiva:</strong> Arroz paraguaio/uruguaio/tailandês é alternativa real.</p>
+  <p><strong>O risco está no 2º semestre:</strong><br>
+  ▸ Safra é 14,4% menor. Se exportações continuarem no ritmo de +144%, os estoques vão apertar.<br>
+  ▸ Segundo o CEPEA antigo (referência): "Indicador atravessa abril na casa dos R$ 76 e opera nos R$ 75 no início de maio" — em anos de safra normal.<br>
+  ▸ <strong>Com safra menor e export alto, preço pode buscar R$ 70-75/sc no 2ºsem se a oferta encurtar.</strong></p>
+  <p><strong>Cenário:</strong><br>
+  ▸ <strong>Curto prazo (abr-mai):</strong> R$ 58-65/sc. Colheita pressiona. Lateral.<br>
+  ▸ <strong>Médio prazo (jun-set):</strong> R$ 65-75/sc. Entressafra + safra menor = potencial de alta.<br>
+  ▸ <strong>Se leilões oficiais forem anunciados:</strong> Suporte psicológico ao produtor.</p>
+  <p><strong>Recomendação:</strong> Produtor: <strong>não vender tudo na colheita.</strong> Guardar parcela para 2ºsem quando oferta encurta. Quem precisa de caixa agora: negociar por qualidade (tipo 1 paga melhor). Indústria: aproveitar colheita para recompor estoque a R$ 60-63 — pode ser o piso do ano.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: CEPEA/IRGA RS
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Início Mar','10/3','17/3','24/3','31/3','01/4','07/4','10/4','14/4','~17/4'],
+    datasets:[{
+      label:'CEPEA/IRGA RS (R$/sc 50kg)',
+      data:[55.50,57.00,59.00,60.50,62.00,62.24,62.35,62.50,62.77,62.90],
+      borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,5,5,5,5,5,7,6],
+      pointBackgroundColor:function(ctx){
+        const v=ctx.dataset.data[ctx.dataIndex];
+        return v>=62.5?'#22c55e':v>=60?'#eab308':'#ef4444';
+      }
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:8,yValue:65,content:['R$ 62,77','+ 0,85% abr'],font:{size:11,weight:'bold'},color:'#34d399'},
+        mar:{type:'label',xValue:1,yValue:53,content:['Mar: +12%','de alta!'],font:{size:9,weight:'bold'},color:'#22c55e'},
+        custo:{type:'line',yMin:70,yMax:70,borderColor:'rgba(239,68,68,.4)',borderWidth:2,borderDash:[5,3],
+          label:{display:true,content:'Custo de produção ~R$ 70',position:'start',backgroundColor:'rgba(239,68,68,.5)',font:{size:9}}}
+      }}
+    },
+    scales:{
+      y:{min:52,max:75,grid:{color:gc},ticks:{callback:v=>'R$'+v.toFixed(0),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:8,weight:'600'},maxRotation:45}}
+    }
+  }
+});
+
+// CHART 2: COLHEITA RS
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Mar ini','Mar med','Mar fim','07/4','14/4','16/4'],
+    datasets:[{
+      label:'Colheita RS (%)',
+      data:[30,45,58,68,75,79.3],
+      borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,.08)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,5,5,5,8],
+      pointBackgroundColor:'#fbbf24'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:5,yValue:85,content:['79,3%','Irga 16/abr'],font:{size:12,weight:'bold'},color:'#fbbf24'},
+        meta:{type:'line',yMin:100,yMax:100,borderColor:'rgba(34,197,94,.3)',borderWidth:1,borderDash:[4,3],
+          label:{display:true,content:'100%',position:'end',backgroundColor:'rgba(34,197,94,.3)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:20,max:105,grid:{color:gc},ticks:{callback:v=>v+'%',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 3: REGIONAIS RS
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['PCE','Zona Sul','Média RS','Demais regiões'],
+    datasets:[{
+      label:'Colheita (%)',
+      data:[88,83.56,79.3,72],
+      backgroundColor:['rgba(34,197,94,.5)','rgba(34,197,94,.4)','rgba(251,191,36,.4)','rgba(234,179,8,.3)'],
+      borderColor:['#22c55e','#22c55e','#fbbf24','#eab308'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        pce:{type:'label',xValue:0,yValue:93,content:['88%','Mais adiantada'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        zs:{type:'label',xValue:1,yValue:88.5,content:['83,6%'],font:{size:9,weight:'bold'},color:'#22c55e'}
+      }}
+    },
+    scales:{
+      y:{min:0,max:100,grid:{color:gc},ticks:{callback:v=>v+'%',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Milho — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--green:#2d8a44;--green2:#34d399;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.milho{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.sec-title .icon.b3{background:linear-gradient(135deg,#1d4ed8,#3b82f6)}
+.sec-title .icon.cbot{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.sec-title .icon.safr{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(245,158,11,.02));border:1px solid rgba(245,158,11,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(245,158,11,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🌽</span> Milho — <span class="hl">B3 Derrete −4% na Semana com Dólar <R$5. CEPEA Estável em R$ 69. CBOT Reage com Demanda EUA. Safrinha sob Vigilância Climática.</span></h1>
+  <p class="sub">
+    CEPEA Campinas: <strong>~R$ 69,53/sc</strong> (estável) &nbsp;|&nbsp;
+    B3 Mai/26: <strong style="color:var(--dn)">R$ 67,33</strong> (−4,3% semana!) &nbsp;|&nbsp;
+    B3 Jul/26: <strong style="color:var(--dn)">R$ 67,73</strong> (−3,8%) &nbsp;|&nbsp;
+    CBOT Mai/26: <strong style="color:var(--up)">$4,4875/bu</strong> (+1,8%) &nbsp;|&nbsp;
+    Argentina: <strong style="color:var(--up)">61 mi t RECORDE</strong> &nbsp;|&nbsp;
+    Dólar: <strong style="color:var(--up)">R$ 4,976</strong> (esmaga B3)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert red">
+  <span class="ai">🚨</span>
+  <div><strong style="color:var(--dn)">B3 DERRETEU −4,3% na semana!</strong> Milho Mai/26 foi de R$ 71,32 (2/abr) → R$ 68,27 (10/abr) → <strong>R$ 67,33 (15/abr).</strong> Pior semana em meses. <strong>Notícias Agrícolas:</strong> <em>"Dólar abaixo de R$ 5 encarece a originação e reduz competitividade do agro. Farmer selling em 28%. Custo de originação pressiona o programa de exportação da safrinha."</em></div>
+</div>
+
+<div class="alert blue">
+  <span class="ai">💵</span>
+  <div><strong style="color:var(--blue)">Dólar é o PRINCIPAL fator de pressão no milho B3.</strong> Com dólar a R$ 4,976, a paridade de exportação caiu forte. Exportadores menos posicionados que no ano anterior. <strong>Agrinvest:</strong> <em>"O câmbio em R$ 5,00 pressiona o programa de exportação da safrinha."</em> Cada R$ 0,10 = ~R$ 1,50/sc de milho.</div>
+</div>
+
+<div class="alert green">
+  <span class="ai">🌧️</span>
+  <div><strong style="color:var(--up)">Clima melhorou para a safrinha!</strong> Chuvas chegaram ao Paraná e outras regiões produtoras. Plantio da 2ª safra avançando. <strong>Seca nos EUA recuou de 44% → 29%.</strong> Conab elevou estimativa da safrinha. Estoques finais sobem 10,5%. <strong>Mais oferta = mais pressão.</strong></div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">🇦🇷</span>
+  <div><strong style="color:var(--nt)">Argentina: safra recorde de 61 mi t!</strong> Bolsa de Buenos Aires elevou projeção. Mais milho argentino no mercado = concorrência para BR. <strong>CBOT sentiu: 4 semanas seguidas de queda antes de reagir esta semana.</strong></div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi nt"><div class="kpi-lb">CEPEA Campinas</div><div class="kpi-val nt">~R$ 69,53/sc</div><div class="kpi-sub">Estável na casa dos R$ 69</div></div>
+  <div class="kpi dn"><div class="kpi-lb">B3 Mai/26 (15/4)</div><div class="kpi-val dn">R$ 67,33</div><div class="kpi-sub">−4,3% semana · −5,6% mês!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">B3 Jul/26 (15/4)</div><div class="kpi-val dn">R$ 67,73</div><div class="kpi-sub">−3,8% semana</div></div>
+  <div class="kpi up"><div class="kpi-lb">CBOT Mai/26 (17/4)</div><div class="kpi-val up">$4,4875/bu</div><div class="kpi-sub">+1,8% semana · Demanda EUA</div></div>
+  <div class="kpi up"><div class="kpi-lb">Argentina Safra</div><div class="kpi-val up">61 mi t</div><div class="kpi-sub">RECORDE · Revisão ↑</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Farmer Selling BR</div><div class="kpi-val dn">28%</div><div class="kpi-sub">Igual ao ano anterior</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- B3 -->
+<div class="sec-title"><div class="icon b3">📉</div><h2>B3 — Derretimento: −4,3% na Semana <span>— Dólar + Safrinha + Conab</span></h2></div>
+
+<div class="chart-box">
+  <h3>📉 Milho B3 Mai/26 — Abril 2026 (R$/sc)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="card">
+<h3>📋 B3 Milho — Evolução Semanal Abril/2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Data</th><th>Mai/26 (R$/sc)</th><th>Jul/26</th><th>Set/26</th><th>Destaque</th></tr></thead>
+  <tbody>
+    <tr><td>02/abr</td><td>R$ 71,32</td><td>R$ 71,30</td><td>R$ 72,07</td><td>Ref. início mês</td></tr>
+    <tr><td>08/abr</td><td style="color:var(--dn)">R$ 69,13</td><td>R$ 69,70</td><td>R$ 70,60</td><td>Dólar caiu p/ R$ 5,10</td></tr>
+    <tr><td>10/abr</td><td style="color:var(--dn)">R$ 68,27</td><td>R$ 68,60</td><td>R$ 69,40</td><td>−4,3% semana! Dólar R$ 5,02</td></tr>
+    <tr><td>13/abr</td><td style="color:var(--dn)">~R$ 67,50</td><td>—</td><td>—</td><td>B3 mais uma sessão no vermelho</td></tr>
+    <tr><td><strong>15/abr</strong></td><td style="color:var(--dn)"><strong>R$ 67,33</strong></td><td><strong>R$ 67,73</strong></td><td><strong>R$ 68,66</strong></td><td>Conab + dólar R$ 4,98</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: B3/BM&F, Notícias Agrícolas, Agrolink · <strong style="color:var(--dn)">Acumulado abril: Mai/26 −5,6%</strong></p>
+</div>
+
+<div class="co dn">
+  <h4>📉 Por Que a B3 Derreteu? 3 Fatores Combinados</h4>
+  <p><strong>1. Dólar despencou:</strong> De R$ 5,17 (início abr) → R$ 4,976 (17/abr) = −3,7%. Paridade de exportação caiu junto. <em>"Custo de originação pressiona o programa de exportação da safrinha"</em> (Agrinvest).<br>
+  <strong>2. Conab elevou safrinha:</strong> Estimativa de estoques finais subiu 10,5%. Mais oferta projetada.<br>
+  <strong>3. Clima melhorou:</strong> Chuvas na safrinha (PR, GO, MT) + seca EUA recuou de 44%→29%. Menos medo de quebra.<br><br>
+  <strong>Resultado:</strong> B3 perdeu suporte de R$ 68 e testou R$ 67. <strong>Próximo suporte: R$ 65 (se dólar for a R$ 4,80).</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- CBOT -->
+<div class="sec-title"><div class="icon cbot">🇺🇸</div><h2>Chicago (CBOT) — Reagiu esta Semana <span>— Demanda EUA + Vendas Fortes</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 CBOT Milho Mai/26 — Abril ($/bu)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 B3 vs CBOT — Divergência</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="co up">
+  <h4>📈 CBOT Reagiu: Demanda EUA Firme</h4>
+  <p><strong>USDA anunciou venda de 430 mil t de milho (14/abr)</strong> → sinal de demanda forte. Exportações EUA +30% vs ano anterior. CBOT Mai/26: $4,41 (10/abr) → <strong>$4,4875 (17/abr) = +1,8%.</strong><br><br>
+  <strong>Globo Rural (14/abr):</strong> <em>"Milho lidera alta dos grãos em Chicago após aumento da demanda."</em><br>
+  <strong>Granoeste:</strong> <em>"Demanda segue firme, principalmente nos EUA, com exportações recordes e ritmo 30% acima de anos anteriores."</em><br><br>
+  <strong>Porém:</strong> safra Argentina recorde (61 mi t), plantio EUA 5% (acima de 4%), e seca EUA recuando limitam alta. <strong>CBOT preso entre $4,40-4,60.</strong></p>
+</div>
+
+<div class="co nt">
+  <h4>⚠️ Divergência B3 ↓ vs CBOT ↑ — O Dólar Explica Tudo</h4>
+  <p>Fenômeno raro: <strong>CBOT sobe (+1,8%) enquanto B3 desaba (−4,3%).</strong> Motivo: dólar caiu −3,7% no mesmo período. A queda cambial anulou completamente a alta internacional. <strong>Para o produtor BR: receita em reais caiu apesar de Chicago subir.</strong> É o pior cenário: mercado externo não compensa o câmbio.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SAFRINHA -->
+<div class="sec-title"><div class="icon safr">🌾</div><h2>Safrinha 2026 — Clima Melhorou, Mas Vigilância Continua <span>— Colheita a partir de maio</span></h2></div>
+
+<div class="card">
+<h3>📋 Safra de Milho BR — Panorama</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Item</th><th>Status</th><th>Detalhe</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>1ª Safra (verão)</strong></td><td style="color:var(--up)">~95% colhida</td><td>Oferta chegando ao mercado spot</td></tr>
+    <tr><td style="text-align:left"><strong>2ª Safra (safrinha)</strong></td><td style="color:var(--nt)">Em desenvolvimento</td><td>Plantio encerrado. Chuvas melhoraram.</td></tr>
+    <tr><td style="text-align:left"><strong>Colheita safrinha</strong></td><td>2ª quinzena de maio</td><td>Pressão de oferta a caminho</td></tr>
+    <tr><td style="text-align:left"><strong>Conab safrinha</strong></td><td style="color:var(--up)">Elevou estimativa</td><td>Estoques finais +10,5%</td></tr>
+    <tr><td style="text-align:left"><strong>Clima PR</strong></td><td style="color:var(--up)">Chuvas chegaram</td><td>Aliviou estresse hídrico</td></tr>
+    <tr><td style="text-align:left"><strong>RS colheita</strong></td><td style="color:var(--up)">~92%</td><td>Preços R$ 56-62/sc (baixos)</td></tr>
+    <tr><td style="text-align:left"><strong>SC colheita</strong></td><td style="color:var(--up)">~96,5%</td><td>Mercado travado: bid R$ 65, ask R$ 75</td></tr>
+    <tr><td style="text-align:left"><strong>Export abr (7 dias)</strong></td><td style="color:var(--dn)">297,83 mil t</td><td>Ritmo fraco vs 2025</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="co or">
+  <h4>⚠️ Safrinha: Alívio Agora, Mas Maio é Decisivo</h4>
+  <p>Chuvas melhoraram cenário no PR e partes do CO. <strong>Mas atenção:</strong> o período crítico para a safrinha é o enchimento de grãos (maio-junho). Se chuvas secarem em maio → quebra. Se mantiverem → oferta cheia → preços caem mais.<br><br>
+  <strong>Notícias Agrícolas (13/abr):</strong> <em>"O avanço do plantio da safrinha, a melhora do clima e o dólar enfraquecido pesam sobre as cotações no cenário nacional."</em><br>
+  <strong>Agrolink (13/abr):</strong> <em>"Seca nos EUA recuou de 44% para 29%. Chuvas previstas para Meio-Oeste reforçam perspectiva de oferta confortável."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- MERCADO FÍSICO -->
+<div class="card">
+<h3>📍 Milho Físico — Praças Regionais</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Praça / Região</th><th>Preço (R$/sc)</th><th>Situação</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left">CEPEA Campinas (SP)</td><td><strong>~R$ 69,53</strong></td><td>Estável na casa R$ 69</td></tr>
+    <tr><td style="text-align:left">Rio Grande do Sul</td><td>R$ 56-62</td><td>Liquidez baixa, colheita 92%</td></tr>
+    <tr><td style="text-align:left">Santa Catarina</td><td>R$ 65-75</td><td>Spread amplo, mercado travado</td></tr>
+    <tr><td style="text-align:left">Paraná</td><td>~R$ 63-68</td><td>Negociações pontuais</td></tr>
+    <tr><td style="text-align:left">Goiás / MT (safrinha)</td><td>~R$ 55-60</td><td>Aguardando colheita</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)"><strong>CEPEA:</strong> <em>"Indicador segue estável na casa dos R$ 69/sc. Compradores cautelosos, vendedores com estoques."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Milho B3 — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:30%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--dn);margin-top:6px;font-weight:600">⬇ BAIXISTA — Dólar <R$5 + Conab eleva safrinha + colheita chegando. Suporte R$ 65.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Milho CBOT — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:48%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ LATERAL — Demanda forte sustenta, mas safra Argentina recorde + EUA plantando limita alta.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Milho: B3 Sofre Mais que Chicago</h3>
+  <p>O milho vive uma <strong>divergência importante:</strong> Chicago subiu +1,8% na semana (demanda EUA forte, vendas de 430 mil t), mas a B3 despencou −4,3%. O dólar abaixo de R$ 5,00 destruiu a paridade de exportação brasileira.</p>
+  <p><strong>Números falam:</strong> B3 Mai/26 foi de R$ 71,32 (início abr) para R$ 67,33 (15/abr). São R$ 4/sc de perda em 2 semanas. Para quem tem 100 mil sacas na safrinha, são R$ 400 mil a menos.</p>
+  <p><strong>A situação vai piorar antes de melhorar:</strong><br>
+  ▸ Colheita de safra verão chegando ao mercado (pressão spot)<br>
+  ▸ Safrinha com clima melhor → expectativa de safra cheia<br>
+  ▸ Dólar pode cair mais (Focus: R$ 5,40 fim de ano, mas spot em R$ 4,97)<br>
+  ▸ Argentina com 61 mi t recorde → concorrência<br>
+  ▸ Exportações BR fracas em abril (298 mil t em 7 dias)</p>
+  <p><strong>O que pode reverter?</strong><br>
+  ▸ Trégua Ormuz romper → dólar pula → B3 sobe<br>
+  ▸ Seca atingir safrinha em maio-junho → quebra de produção<br>
+  ▸ Demanda por etanol de milho (MT) seguir forte<br>
+  ▸ USDA de maio confirmar área menor de milho EUA</p>
+  <p><strong>Recomendação:</strong> Para quem precisa vender milho físico, <strong>o cenário é de urgência moderada.</strong> B3 pode testar R$ 65 se dólar continuar caindo. Considerar travamentos parciais de preço no mercado futuro. Ficar atento ao clima da safrinha em maio — é o fator que pode mudar tudo.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: B3 MILHO MAI/26
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['01/4','02/4','06/4','07/4','08/4','09/4','10/4','13/4','14/4','15/4'],
+    datasets:[{
+      label:'B3 Mai/26 R$/sc',
+      data:[71.99,71.32,71.00,70.10,69.13,68.80,68.27,67.50,67.60,67.33],
+      borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,5,4,5,4,4,7],
+      pointBackgroundColor:'#ef4444'
+    },{
+      label:'CEPEA Campinas ~R$ 69',
+      data:[69.5,69.5,69.3,69.2,69.0,69.0,69.1,69.3,69.4,69.5],
+      borderColor:'rgba(234,179,8,.6)',borderWidth:2,borderDash:[6,4],
+      pointRadius:0,fill:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:10}}},tooltip:tt,
+      annotation:{annotations:{
+        sup:{type:'line',yMin:65,yMax:65,borderColor:'rgba(239,68,68,.4)',borderWidth:2,borderDash:[4,3],
+          label:{display:true,content:'Próx. suporte R$ 65',position:'start',backgroundColor:'rgba(239,68,68,.5)',font:{size:9}}},
+        now:{type:'label',xValue:9,yValue:66,content:['R$ 67,33','−5,6% mês!'],font:{size:10,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:63,max:73,grid:{color:gc},ticks:{callback:v=>'R$'+v.toFixed(0),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: CBOT MILHO
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['01/4','02/4','06/4','07/4','08/4','09/4','10/4','13/4','14/4','17/4'],
+    datasets:[{
+      label:'CBOT Mai/26 $/bu',
+      data:[4.52,4.52,4.52,4.50,4.47,4.44,4.41,4.41,4.43,4.49],
+      borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,4,4,5,4,4,7],
+      pointBackgroundColor:function(ctx){return ctx.dataIndex>=8?'#22c55e':'#f59e0b'}
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:9,yValue:4.53,content:['$4,4875','Reagiu! +1,8%'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        sup:{type:'line',yMin:4.40,yMax:4.40,borderColor:'rgba(239,68,68,.4)',borderWidth:1,borderDash:[4,3],
+          label:{display:true,content:'Suporte $4,40',position:'end',backgroundColor:'rgba(239,68,68,.5)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:4.30,max:4.60,grid:{color:gc},ticks:{callback:v=>'$'+v.toFixed(2),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 3: DIVERGÊNCIA B3 vs CBOT
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['B3 Mai/26','CBOT Mai/26','Dólar'],
+    datasets:[{
+      label:'Variação Semanal (%)',
+      data:[-4.3,1.8,-3.7],
+      backgroundColor:['rgba(239,68,68,.4)','rgba(34,197,94,.4)','rgba(59,130,246,.4)'],
+      borderColor:['#ef4444','#22c55e','#3b82f6'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.3)',borderWidth:1},
+        lb1:{type:'label',xValue:0,yValue:-5.5,content:['B3 derreteu','Dólar + safrinha'],font:{size:9},color:'#ef4444'},
+        lb2:{type:'label',xValue:1,yValue:3.3,content:['CBOT reagiu','Demanda EUA'],font:{size:9},color:'#22c55e'},
+        lb3:{type:'label',xValue:2,yValue:-5,content:['Dólar <R$5','Ormuz reabriu'],font:{size:9},color:'#3b82f6'}
+      }}
+    },
+    scales:{
+      y:{min:-7,max:5,grid:{color:gc},ticks:{callback:v=>v+'%',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:11,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

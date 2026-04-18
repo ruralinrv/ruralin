@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Café — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.cafe{background:linear-gradient(135deg,#78350f,#d97706)}
+.sec-title .icon.ny{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title .icon.saf{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.sec-title .icon.rob{background:linear-gradient(135deg,#6d28d9,#a855f7)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(217,119,6,.08),rgba(217,119,6,.02));border:1px solid rgba(217,119,6,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(217,119,6,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.badge.dn{background:rgba(239,68,68,.15);color:var(--dn);border:1px solid rgba(239,68,68,.3)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">☕</span> Café — <span class="hl">NY Rompeu 300 ¢/lb ↓ com Safra Recorde. Arábica Cai R$ 90/sc em 3 Semanas. Robusta Despenca −4,5%. Superávit de 10 mi Sacas em 2026.</span></h1>
+  <p class="sub">
+    <span class="badge dn">⚠️ NY ROMPEU 300 ¢/lb — Sinal técnico BAIXISTA</span><br>
+    ICE Mai/26 (16/4): <strong style="color:var(--dn)">296,45 ¢/lb</strong> (−2,6%) &nbsp;|&nbsp;
+    ICE Jul/26: <strong style="color:var(--dn)">290,40 ¢/lb</strong> (−2,6%) &nbsp;|&nbsp;
+    CEPEA Arábica SP: <strong style="color:var(--dn)">~R$ 1.885/sc</strong> (−R$ 90 desde 25/mar) &nbsp;|&nbsp;
+    CEPEA Robusta ES: <strong style="color:var(--dn)">R$ 921/sc</strong> (−4,5% em 3 dias!) &nbsp;|&nbsp;
+    Safra BR 26/27: <strong style="color:var(--up)">+75 mi sacas RECORDE</strong> &nbsp;|&nbsp;
+    Superávit global: <strong style="color:var(--dn)">10 mi sacas</strong> (StoneX)
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert red">
+  <span class="ai">🚨</span>
+  <div><strong style="color:var(--dn)">NY ROMPEU 300 ¢/lb para BAIXO!</strong> Marco técnico importantíssimo. <strong>SAFRAS (16/abr):</strong> <em>"As cotações despencaram com as perspectivas de aumento da oferta com a chegada da safra brasileira. O mercado rompeu para baixo a linha de 300 centavos e acentuou o movimento negativo tecnicamente."</em> Mai/26: 296,45 ¢ (−2,6%). Jul/26: 290,40 ¢ (−2,6%).</div>
+</div>
+
+<div class="alert orange">
+  <span class="ai">🌾</span>
+  <div><strong style="color:var(--orange)">Safra 26/27 será RECORDE: +75 mi sacas!</strong> <strong>StoneX:</strong> superávit global de <strong>10 mi sacas em 2026</strong> (maior em 6 anos!). Conab: 66,2 mi sc (conservadora). Casas privadas: 75+ mi sc. <strong>Forbes/Reuters:</strong> <em>"Uma safra recorde no Brasil deve colaborar com uma recuperação de estoques globais."</em></div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">📉</span>
+  <div><strong style="color:var(--nt)">Arábica caiu R$ 90/sc em 3 semanas!</strong> CEPEA Arábica SP: de ~R$ 1.975 (25/mar) → R$ 1.885 (7/abr). Pressão da colheita próxima. <strong>Forbes:</strong> <em>"Colheita se aproxima e pressiona preços. Arábica recua na maior parte dos dias desde o fim de março."</em></div>
+</div>
+
+<div class="alert purple">
+  <span class="ai">🫘</span>
+  <div><strong style="color:var(--purple)">Robusta/Conilon DESPENCOU −4,54% em 3 dias!</strong> CEPEA ES: R$ 921,86/sc (6/abr). Colheita já iniciou em abril! <strong>CNN/Reuters:</strong> <em>"Ofertas abaixo de R$ 900/sc chegando. Produtores vendem apenas para liquidar compromissos de curto prazo."</em> Mas Londres sobe (oferta curta curto prazo).</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi dn"><div class="kpi-lb">ICE Arábica Mai/26</div><div class="kpi-val dn">296,45 ¢/lb</div><div class="kpi-sub">−2,6% · Rompeu 300! (16/abr)</div></div>
+  <div class="kpi dn"><div class="kpi-lb">ICE Arábica Jul/26</div><div class="kpi-val dn">290,40 ¢/lb</div><div class="kpi-sub">−2,6% · Caminho a 280?</div></div>
+  <div class="kpi dn"><div class="kpi-lb">CEPEA Arábica SP</div><div class="kpi-val dn">~R$ 1.885/sc</div><div class="kpi-sub">−R$ 90 desde 25/mar</div></div>
+  <div class="kpi dn"><div class="kpi-lb">CEPEA Robusta ES</div><div class="kpi-val dn">R$ 921/sc</div><div class="kpi-sub">−4,54% em 3 dias! Colheita iniciou</div></div>
+  <div class="kpi up"><div class="kpi-lb">Safra BR 26/27</div><div class="kpi-val up">+75 mi sc</div><div class="kpi-sub">RECORDE HISTÓRICO!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Superávit Global</div><div class="kpi-val dn">10 mi sc</div><div class="kpi-sub">Maior em 6 anos! (StoneX)</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- ICE NY ARÁBICA -->
+<div class="sec-title"><div class="icon ny">🗽</div><h2>NY Arábica — Rompeu 300 ¢ ↓ <span>— Safra recorde + superávit = pressão</span></h2></div>
+
+<div class="chart-box">
+  <h3>📉 ICE Arábica Mai/26 — Março-Abril 2026 (¢/lb)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="co dn">
+  <h4>📉 Cronologia da Queda em NY</h4>
+  <p>
+  <strong>25/mar:</strong> ~310 ¢/lb (pico recente)<br>
+  <strong>02/abr:</strong> 294,95 ¢ (−0,96%) — pressão safra<br>
+  <strong>06/abr:</strong> 298,05 ¢ (+0,9%) — real forte sustentou<br>
+  <strong>10/abr:</strong> ~297 ¢ (+1,41%) — recuperação Carvalhaes<br>
+  <strong>15/abr:</strong> 301,50 ¢ — tentou retestar 300 por cima<br>
+  <strong>16/abr:</strong> <strong style="color:var(--dn)">296,45 ¢ (−2,6%) — ROMPEU 300!</strong><br><br>
+  <strong>SAFRAS (16/abr):</strong> <em>"Cotações despencaram com perspectivas de aumento da oferta com a safra brasileira."</em><br>
+  <strong>Próximo suporte técnico:</strong> 280 ¢ (se perder, pode buscar 260 ¢).</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- SAFRA -->
+<div class="sec-title"><div class="icon saf">🌾</div><h2>Safra Brasil 26/27 — A Safra que Muda Tudo <span>— +75 mi sacas!</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 Estimativas Safra BR 26/27 (mi sacas)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Balanço Global de Café 2026</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="card">
+<h3>📋 Safra Brasileira — Dados-Chave</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Item</th><th>Valor</th><th>Fonte</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Safra BR 26/27</strong></td><td style="color:var(--up)"><strong>+75 mi sacas</strong></td><td>StoneX/casas privadas</td></tr>
+    <tr><td style="text-align:left">Conab (conservadora)</td><td>66,2 mi sacas</td><td>Conab/CNN</td></tr>
+    <tr><td style="text-align:left">Safra anterior (25/26)</td><td>~58 mi sc (menor)</td><td>Referência</td></tr>
+    <tr><td style="text-align:left"><strong>Superávit global 2026</strong></td><td style="color:var(--dn)"><strong>10 mi sacas</strong></td><td>StoneX</td></tr>
+    <tr><td style="text-align:left">Superávit 2025</td><td>1,8 mi sacas</td><td>StoneX (comparativo)</td></tr>
+    <tr><td style="text-align:left">Colheita robusta</td><td style="color:var(--up)">Já iniciou (abr)</td><td>CEPEA</td></tr>
+    <tr><td style="text-align:left">Colheita arábica</td><td>Intensifica mai-jun</td><td>CEPEA</td></tr>
+    <tr><td style="text-align:left">Clima 26/27</td><td style="color:var(--up)">Favorável!</td><td>CEPEA (mar/26)</td></tr>
+    <tr><td style="text-align:left">Estoques ICE</td><td>~580 mil sc (baixos)</td><td>Carvalhaes</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="co or">
+  <h4>⚠️ O Paradoxo: Safra Recorde + Estoques Baixos</h4>
+  <p><strong>Safra 26/27 será monstruosa (+75 mi sc).</strong> Mas estoques ICE estão em apenas 580 mil sc (vs 780 mil ano atrás). Export acumuladas na safra 25/26: 29,09 mi sc (−21,2%). <strong>Ou seja:</strong> o mundo está desabastecido AGORA, mas a mega-safra vem chegando. <strong>O mercado antecipa: NY cai.</strong><br><br>
+  <strong>Notícias Agrícolas (15/abr):</strong> <em>"Exportações acumuladas somaram 29,09 mi sacas (jul-mar), queda de 21,2% — menor volume desde 2022/23. Mas produção menor na 25/26 e estoques historicamente baixos sustentam robusta em Londres."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- ROBUSTA -->
+<div class="sec-title"><div class="icon rob">🫘</div><h2>Robusta/Conilon — Colheita Começou, Preço Desaba <span>— Mas Londres sobe!</span></h2></div>
+
+<div class="co dn">
+  <h4>📉 Robusta BR: −4,54% em 3 Dias!</h4>
+  <p><strong>CEPEA ES Tipo 6:</strong> R$ 921,86/sc (6/abr) — caiu de R$ 965 (1/abr). Ofertas tipo 7/8 já abaixo de R$ 900/sc.<br><br>
+  <strong>Forbes/Reuters (7/abr):</strong> <em>"Liquidez no mercado do robusta está lenta há semanas. Produtores vendem café apenas para liquidar compromissos de curto prazo. A pressão baixista foi mais significativa no mercado interno."</em><br><br>
+  <strong>Porém — Londres SOBE!</strong> Robusta Mai/26: US$ 3.502/t (+44 pts em 15/abr). Jul/26: US$ 3.379/t. <strong>Motivo:</strong> oferta curta global (Vietnã + Indonésia) segura Londres. <strong>Divergência BR ↓ vs Londres ↑ = Oportunidade de arbitragem.</strong></p>
+</div>
+
+<div class="co up">
+  <h4>📈 O Que Sustenta Café AINDA Acima de $2,90</h4>
+  <p>▸ <strong>Estoques ICE baixíssimos:</strong> 580 mil sc (vs 780 mil ano atrás)<br>
+  ▸ <strong>Exportações BR fracas na 25/26:</strong> −21,2% acumulado<br>
+  ▸ <strong>Real forte:</strong> Desestimula vendas do produtor BR → menos café no mercado<br>
+  ▸ <strong>Guerra Ormuz:</strong> Incerteza logística sustenta prêmio de risco<br>
+  ▸ <strong>Robusta Londres:</strong> Firme em US$ 3.500/t (oferta curta Vietnã)<br><br>
+  <strong>Carvalhaes (10/abr):</strong> <em>"Estoques certificados ICE estão mais baixos que em períodos anteriores. Volume em pouco mais de 580 mil sacas."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Arábica NY — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:32%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--dn);margin-top:6px;font-weight:600">⬇ BAIXISTA — Rompeu 300 ¢. Safra recorde chega. Superávit 10 mi sc. Próx. suporte: 280 ¢.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Robusta Londres — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:55%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ LATERAL/ALTA — Oferta Vietnã curta sustenta. BR colhendo = pressão local, não global.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Café: A Grande Correção Chegou</h3>
+  <p><strong>O café arábica está em correção aberta.</strong> NY rompeu 300 ¢/lb na quinta (16/abr) — marco técnico que sinaliza mais queda. CEPEA Arábica SP perdeu R$ 90/sc em 3 semanas. Robusta ES despencou 4,54% em 3 dias.</p>
+  <p><strong>O driver é claro:</strong> a safra brasileira 26/27 será a maior da história. StoneX estima superávit de 10 mi sacas (vs 1,8 mi em 2025). Clima favorável. Chuvas de março reforçaram enchimento dos grãos. <strong>O mercado está antecipando a avalanche de oferta.</strong></p>
+  <p><strong>Mas NEM TUDO é baixista:</strong><br>
+  ▸ Estoques ICE em 580 mil sc (historicamente baixos)<br>
+  ▸ Exportações BR na safra 25/26: −21,2%<br>
+  ▸ Robusta Londres firme ($3.500/t) — Vietnã com oferta curta<br>
+  ▸ Qualquer evento climático (geada, seca) muda tudo em 24h<br>
+  ▸ <strong>Café é a commodity mais volátil do agro brasileiro</strong></p>
+  <p><strong>Cenário para as próximas semanas:</strong><br>
+  ▸ <strong>NY Arábica:</strong> 270-300 ¢/lb. Pode buscar 260 ¢ se safra confirmar. Suporte forte em 280 ¢.<br>
+  ▸ <strong>CEPEA Arábica SP:</strong> R$ 1.750-1.900/sc. Tendência de queda até colheita (jun).<br>
+  ▸ <strong>CEPEA Robusta ES:</strong> R$ 850-930/sc. Colheita em curso = pressão de oferta local.<br>
+  ▸ <strong>Londres Robusta:</strong> $3.200-3.600/t. Sustentado pela escassez Vietnã.</p>
+  <p><strong>Recomendação:</strong> Produtor de arábica: <strong>não esperar recuperação para vender.</strong> A tendência é de preços menores até jun-jul (pico da colheita). Fixar parcelas acima de R$ 1.850/sc enquanto possível. Para robusta: mercado está travado. Se precisar de caixa, vender agora. Se puder segurar, Londres pode ajudar no 2ºsem. <strong>Atenção total ao clima em maio — qualquer surpresa é gatilho de reversão.</strong></p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: ICE ARÁBICA
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['25/3','28/3','01/4','02/4','06/4','09/4','10/4','13/4','15/4','16/4'],
+    datasets:[{
+      label:'ICE Mai/26 ¢/lb',
+      data:[310,305,300,294.95,298.05,295,297,305,301.50,296.45],
+      borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[5,4,5,5,4,4,4,4,4,8],
+      pointBackgroundColor:function(ctx){return ctx.dataset.data[ctx.dataIndex]>=300?'#eab308':'#ef4444'}
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        l300:{type:'line',yMin:300,yMax:300,borderColor:'rgba(234,179,8,.5)',borderWidth:2,borderDash:[6,3],
+          label:{display:true,content:'NÍVEL 300 ¢ (ROMPEU ↓)',position:'start',backgroundColor:'rgba(234,179,8,.6)',font:{size:9,weight:'bold'}}},
+        sup:{type:'line',yMin:280,yMax:280,borderColor:'rgba(239,68,68,.4)',borderWidth:1,borderDash:[4,3],
+          label:{display:true,content:'Próx. suporte 280 ¢',position:'end',backgroundColor:'rgba(239,68,68,.5)',font:{size:8}}},
+        now:{type:'label',xValue:9,yValue:290,content:['296,45 ¢','−2,6%!'],font:{size:11,weight:'bold'},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:275,max:320,grid:{color:gc},ticks:{callback:v=>v+'¢',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: SAFRA BR
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['25/26 (atual)','26/27 Conab','26/27 StoneX+'],
+    datasets:[{
+      label:'Produção (mi sacas)',
+      data:[58,66.2,75],
+      backgroundColor:['rgba(100,116,139,.4)','rgba(234,179,8,.4)','rgba(34,197,94,.4)'],
+      borderColor:['#64748b','#eab308','#22c55e'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        rec:{type:'label',xValue:2,yValue:80,content:['75+ mi sacas','RECORDE!'],font:{size:11,weight:'bold'},color:'#22c55e'},
+        delta:{type:'label',xValue:1,yValue:55,content:['Salto de','29% vs 25/26!'],font:{size:9},color:'#eab308'}
+      }}
+    },
+    scales:{
+      y:{min:0,max:85,grid:{color:gc},ticks:{callback:v=>v+'mi',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+
+// CHART 3: BALANÇO GLOBAL
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['2024','2025','2026'],
+    datasets:[{
+      label:'Superávit/Déficit (mi sacas)',
+      data:[-3.5,1.8,10],
+      backgroundColor:['rgba(239,68,68,.4)','rgba(234,179,8,.4)','rgba(34,197,94,.4)'],
+      borderColor:['#ef4444','#eab308','#22c55e'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        zero:{type:'line',yMin:0,yMax:0,borderColor:'rgba(255,255,255,.3)',borderWidth:1},
+        big:{type:'label',xValue:2,yValue:12.5,content:['10 mi sacas','Maior superávit','em 6 anos!'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        def:{type:'label',xValue:0,yValue:-5.5,content:['Déficit','2024'],font:{size:9},color:'#ef4444'}
+      }}
+    },
+    scales:{
+      y:{min:-6,max:14,grid:{color:gc},ticks:{callback:v=>v+' mi',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:12,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

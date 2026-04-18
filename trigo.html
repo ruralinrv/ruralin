@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Trigo — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.tr{background:linear-gradient(135deg,#92400e,#fbbf24)}
+.sec-title .icon.cbot{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title .icon.log{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.sec-title .icon.imp{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(251,191,36,.02));border:1px solid rgba(251,191,36,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(251,191,36,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.badge.up{background:rgba(34,197,94,.15);color:var(--up);border:1px solid rgba(34,197,94,.3)}
+.badge.nt{background:rgba(234,179,8,.15);color:var(--nt);border:1px solid rgba(234,179,8,.3)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🌾</span> Trigo — <span class="hl">Brasil Sobe na Contramão: PR R$ 1.315/t (+2,3%). Entressafra + Frete Caro. CBOT $5,92 (+17% no Ano). Trigo Inverno EUA Deteriora.</span></h1>
+  <p class="sub">
+    <span class="badge up">📈 BR sobe com entressafra e oferta restrita</span>
+    <span class="badge nt">⚠️ CBOT +17% no ano! Trigo inverno EUA: apenas 34% bom/excelente</span><br>
+    CEPEA PR (13/4): <strong style="color:var(--up)">R$ 1.315/t</strong> (+2,34% abr) &nbsp;|&nbsp;
+    CEPEA RS (13/4): <strong style="color:var(--up)">R$ 1.174,53/t</strong> (+1,90% abr) &nbsp;|&nbsp;
+    CBOT Mai/26 (14/4): <strong style="color:var(--up)">$5,92/bu</strong> (+9 pts) &nbsp;|&nbsp;
+    CBOT Jul/26: <strong style="color:var(--up)">$6,01/bu</strong> (+10 pts) &nbsp;|&nbsp;
+    CBOT YTD: <strong style="color:var(--up)">+17,08%</strong> &nbsp;|&nbsp;
+    Frete: <strong style="color:var(--dn)">Disparou!</strong>
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert green">
+  <span class="ai">📈</span>
+  <div><strong style="color:var(--up)">Trigo SOBE no Brasil: Entressafra + Frete + Oferta Restrita.</strong> <strong>Globo Rural (14/abr):</strong> <em>"Preços do trigo continuam subindo, mesmo diante da retração das cotações externas e da desvalorização do dólar. Alta impulsionada pela necessidade de reposição de estoques e baixa disponibilidade no mercado spot durante a entressafra."</em></div>
+</div>
+
+<div class="alert orange">
+  <span class="ai">🚛</span>
+  <div><strong style="color:var(--orange)">FRETE é o grande vilão!</strong> <strong>Agrolink (9/abr):</strong> <em>"Trigo emperra e custo do frete dispara alerta. Moinhos evitam aquisições diante dos altos custos de frete. Fretes no interior RS: R$ 1.200-1.250."</em> A partir de 1º/abr: PIS/COFINS passou a incidir sobre importação de trigo!</div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">🇺🇸</span>
+  <div><strong style="color:var(--nt)">CBOT +17% no ano!</strong> Trigo inverno EUA: apenas <strong>34% boas/excelentes condições</strong> (−1pp vs semana anterior, vs 47% ano passado!). <strong>Ucrânia:</strong> safra revisada para baixo. <strong>Notícias Agrícolas (14/abr):</strong> <em>"Trigo sobe em Chicago e reacende alerta para custo de importação no Brasil."</em></div>
+</div>
+
+<div class="alert purple">
+  <span class="ai">🇦🇷</span>
+  <div><strong style="color:var(--purple)">Argentina saiu do radar!</strong> <strong>Abitrigo/TF:</strong> <em>"Ausência recente de ofertas de trigo argentino. Safra argentina com problemas de qualidade."</em> Sem o trigo argentino como alternativa competitiva, BR fica mais dependente do mercado interno. Carga uruguaia aguardada em Porto Alegre.</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi up"><div class="kpi-lb">CEPEA PR (13/4)</div><div class="kpi-val up">R$ 1.315/t</div><div class="kpi-sub">+2,34% abr · Pão/Melhorador</div></div>
+  <div class="kpi up"><div class="kpi-lb">CEPEA RS (13/4)</div><div class="kpi-val up">R$ 1.174/t</div><div class="kpi-sub">+1,90% abr · Brando</div></div>
+  <div class="kpi up"><div class="kpi-lb">CBOT Mai/26 (14/4)</div><div class="kpi-val up">$5,92/bu</div><div class="kpi-sub">+9 pts · YTD +17%!</div></div>
+  <div class="kpi up"><div class="kpi-lb">CBOT Jul/26 (14/4)</div><div class="kpi-val up">$6,01/bu</div><div class="kpi-sub">+10 pts · Acima de $6!</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Trigo Inv. EUA (bom)</div><div class="kpi-val dn">34%</div><div class="kpi-sub">vs 47% ano passado! −1pp semana</div></div>
+  <div class="kpi or"><div class="kpi-lb">Pedido Vendedor PR</div><div class="kpi-val">R$ 1.350-1.400</div><div class="kpi-sub">Comprador resiste!</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- BRASIL -->
+<div class="sec-title"><div class="icon tr">🌾</div><h2>Mercado Interno — Alta na Contramão <span>— Oferta restrita + Demanda firme</span></h2></div>
+
+<div class="chart-box">
+  <h3>📈 Trigo Brasil — Evolução Mar-Abr 2026 (R$/t)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="card">
+<h3>📋 Trigo Brasil — Praças Regionais (Abril 2026)</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Praça / Estado</th><th>Preço (R$/t)</th><th>Var. Abril</th><th>Situação</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Paraná (CEPEA)</strong></td><td style="color:var(--up)"><strong>R$ 1.315</strong></td><td style="color:var(--up)">+2,34%</td><td>Pão/Melhorador · Pedidas R$ 1.350-1.400</td></tr>
+    <tr><td style="text-align:left"><strong>RS (CEPEA)</strong></td><td style="color:var(--up)"><strong>R$ 1.174</strong></td><td style="color:var(--up)">+1,90%</td><td>Brando · Pedidas R$ 1.300-1.350</td></tr>
+    <tr><td style="text-align:left">RS interior (FOB)</td><td>R$ 1.200-1.250</td><td>—</td><td>Conforme qualidade e local</td></tr>
+    <tr><td style="text-align:left">RS CIF maio</td><td>R$ 1.300</td><td>—</td><td>Pgto antecipado abril</td></tr>
+    <tr><td style="text-align:left">Santa Catarina (CIF)</td><td>~R$ 1.300</td><td>Estável</td><td>Depende de trigo gaúcho</td></tr>
+    <tr><td style="text-align:left">PR Norte (CIF moinho)</td><td>R$ 1.350</td><td>Firme</td><td>Vendedores pedem R$ 1.400</td></tr>
+    <tr><td style="text-align:left">PR Campos Gerais</td><td>R$ 1.370-1.380</td><td>—</td><td>Qualidade premium</td></tr>
+    <tr><td style="text-align:left">Panambi RS (produtor)</td><td>R$ 59/sc</td><td style="color:var(--up)">+3,51%</td><td>De R$ 57 → R$ 59</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: CEPEA, Globo Rural, Abitrigo, TF Agroeconômica, Agrolink. <strong>~85% da safra já comercializada (RS).</strong></p>
+</div>
+
+<div class="co up">
+  <h4>📈 Por Que o Trigo Sobe no Brasil? 5 Fatores</h4>
+  <p><strong>1. Entressafra:</strong> Colheita do trigo BR acontece jul-out. Estamos em abril = plena entressafra. Oferta mínima.<br>
+  <strong>2. Frete disparou:</strong> Custos logísticos elevados. Diesel caro. Moinhos evitam compras.<br>
+  <strong>3. Produtor retraído:</strong> Foco na colheita de soja/milho. RS: ~85% da safra já comercializada. Resta pouco.<br>
+  <strong>4. Argentina sumiu:</strong> Sem ofertas recentes de trigo argentino. Qualidade abaixo do exigido.<br>
+  <strong>5. PIS/COFINS:</strong> A partir de 1º/abr, PIS/COFINS voltou a incidir sobre importação de trigo = custo importação sobe.<br><br>
+  <strong>Globo Rural:</strong> <em>"Postura retraída dos vendedores, que priorizam a safra de verão, reforça o avanço das cotações."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- CBOT -->
+<div class="sec-title"><div class="icon cbot">🇺🇸</div><h2>Chicago (CBOT) — +17% no Ano! <span>— Trigo inverno EUA deteriora</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 CBOT Trigo — Abril 2026 ($/bu)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Trigo Inverno EUA — Condição (% bom/excelente)</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="co up">
+  <h4>📈 CBOT +17% no Ano — Fundamentos Fortes</h4>
+  <p><strong>CBOT Mai/26:</strong> $5,92/bu (14/abr) · YTD: +17,08% · 1 mês: +11,84%<br>
+  <strong>CBOT Jul/26:</strong> $6,01/bu — acima de $6!<br>
+  <strong>TradingView:</strong> Viés de alta forte em todos os contratos (Mai, Jul, Set, Dez 2026).<br><br>
+  <strong>Drivers de alta:</strong><br>
+  ▸ <strong>Trigo inverno EUA:</strong> Apenas 34% boas/excelentes condições (vs 47% ano passado!)<br>
+  ▸ <strong>Ucrânia:</strong> Safra revisada para baixo<br>
+  ▸ <strong>Fechamento de posições short:</strong> Especuladores cobrindo vendidas<br>
+  ▸ <strong>Ormuz/geopolítica:</strong> Incerteza sobre fluxo de grãos Mar Negro</p>
+</div>
+
+<div class="co nt">
+  <h4>⚠️ Trigo Inverno EUA: Situação Preocupante</h4>
+  <p><strong>USDA crop condition (13/abr):</strong> apenas <strong>34% boas/excelentes</strong> (−1pp vs semana anterior). Ano passado: <strong>47%.</strong> Diferença de 13pp!<br><br>
+  <strong>Globo Rural (14/abr):</strong> <em>"O trigo impactado pelos desdobramentos da guerra e dados do USDA sobre a safra de inverno."</em><br><br>
+  <strong>Commodity Board:</strong> <em>"Mercado global de trigo equilibrado mas frágil. O clima em regiões produtivas será o principal impulsionador para qualquer ruptura da faixa atual."</em><br><br>
+  Se as condições piorarem em maio → CBOT pode romper $6,50. Se chuvas chegarem → alívio.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- LOGÍSTICA & IMPORT -->
+<div class="sec-title"><div class="icon log">🚛</div><h2>Logística & Importação — Gargalos Pressionam <span>— Frete + PIS/COFINS + Argentina</span></h2></div>
+
+<div class="co dn">
+  <h4>🚛 Frete Dispara e Trava Mercado</h4>
+  <p><strong>Agrolink (9/abr):</strong> <em>"Custo do frete dispara alerta. Moinhos evitam aquisições."</em><br>
+  <strong>Abitrigo (9/abr):</strong> <em>"Compradores relatam dificuldade em repassar custos."</em><br><br>
+  ▸ Frete RS interior: R$ 1.200-1.250/t (base frete + armazenagem)<br>
+  ▸ Diesel elevado: custo de transporte sobe junto<br>
+  ▸ Colheita de soja/milho compete por caminhões<br>
+  ▸ <strong>Resultado:</strong> moinhos adiam compras, mas quando precisam = pagam mais</p>
+</div>
+
+<div class="co bl">
+  <h4>🛃 Impactos na Importação</h4>
+  <p><strong>1. PIS/COFINS voltou (1º/abr):</strong> Incidência sobre importação de trigo encareceu custo.<br>
+  <strong>2. Argentina sem oferta:</strong> Qualidade limitada. Sem ofertas recentes no mercado.<br>
+  <strong>3. Uruguai:</strong> Carga aguardada em Porto Alegre (solução pontual).<br>
+  <strong>4. CBOT subindo:</strong> +17% YTD = importação fica mais cara em dólar.<br>
+  <strong>5. Dólar a R$ 4,97:</strong> Alivia parcialmente o custo de importação (na contramão).<br><br>
+  <strong>Sinditrigo Pará:</strong> <em>"Embora a Argentina siga como origem mais competitiva, há limitações na qualidade disponível. Os repasses de preço tornam-se inevitáveis."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- DERIVADOS -->
+<div class="card">
+<h3>🍞 Derivados — Farinha Sobe, Farelo Cai</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Derivado</th><th>Tendência</th><th>Detalhe</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Farinha de trigo</strong></td><td style="color:var(--up)"><strong>↑ EM ALTA</strong></td><td>Reajuste ~3% (SC). Encarecimento matéria-prima + logística.</td></tr>
+    <tr><td style="text-align:left"><strong>Farelo de trigo</strong></td><td style="color:var(--dn)"><strong>↓ EM QUEDA</strong></td><td>Aumento de oferta + menor demanda. Substitutos em ração animal.</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)"><strong>Globo Rural:</strong> <em>"Preços das farinhas avançaram, refletindo encarecimento da matéria-prima. Moinhos relatam dificuldades logísticas."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Trigo Brasil — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:68%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬆ ALTISTA — Entressafra plena + frete caro + Argentina sem oferta + PIS/COFINS. Pode testar R$ 1.400/t PR.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ CBOT Trigo — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:63%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬆ ALTISTA MODERADO — Trigo inverno EUA deteriora. Ucrânia revisada. Viés de alta forte (TradingView).</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Trigo: O Silencioso que Sobe Forte</h3>
+  <p><strong>O trigo é a commodity "silenciosa" que está subindo forte em 2026.</strong> Enquanto o mercado foca em soja, milho e café, o trigo acumula +17% em Chicago no ano e sobe consistentemente no Brasil.</p>
+  <p><strong>O cenário interno é claro:</strong> estamos em plena entressafra (colheita BR só em jul-out). A oferta é restrita. O produtor já vendeu 85% da safra no RS. O frete dispara. A Argentina está sem oferta. PIS/COFINS voltou sobre importação. <strong>Todos os vetores apontam para cima.</strong></p>
+  <p><strong>No internacional:</strong> CBOT com viés de alta forte. Trigo de inverno EUA em condições muito piores que 2025 (34% bom vs 47%). Ucrânia cortou safra. <strong>Se o clima nos EUA piorar em maio, CBOT rompe $6,50.</strong></p>
+  <p><strong>Projeções:</strong><br>
+  ▸ <strong>CEPEA PR:</strong> R$ 1.350-1.450/t até junho (entressafra + demanda)<br>
+  ▸ <strong>CEPEA RS:</strong> R$ 1.200-1.300/t<br>
+  ▸ <strong>CBOT:</strong> $5,80-6,50/bu (depende do clima EUA)<br>
+  ▸ <strong>Farinha:</strong> Novos reajustes vindo para abril-maio → impacto no IPCA</p>
+  <p><strong>Recomendação para moinhos:</strong> Aproveitar qualquer janela de compra, especialmente se Argentina retomar ofertas. Estoques curtos + entressafra = vulnerabilidade. <strong>Para produtor com trigo remanescente: posição privilegiada. Mercado pagando prêmio por qualidade.</strong></p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: TRIGO BR
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Início Mar','17/3','24/3','01/4','07/4','09/4','13/4','~17/4'],
+    datasets:[{
+      label:'PR Pão/Melhorador (R$/t)',
+      data:[1280,1290,1310,1300,1320,1330,1315,1340],
+      borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,4,4,6,6],
+      pointBackgroundColor:'#fbbf24'
+    },{
+      label:'RS Brando (R$/t)',
+      data:[1100,1110,1114,1140,1155,1165,1174,1190],
+      borderColor:'#22c55e',backgroundColor:'rgba(34,197,94,.04)',
+      borderWidth:2,fill:true,tension:.3,
+      pointRadius:3,pointBackgroundColor:'#22c55e'
+    },{
+      label:'PR Pedido Vendedor (R$/t)',
+      data:[1320,1330,1350,1350,1350,1350,1380,1400],
+      borderColor:'rgba(239,68,68,.4)',borderWidth:2,borderDash:[6,4],
+      pointRadius:0,fill:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        pr:{type:'label',xValue:6,yValue:1330,content:['PR R$ 1.315','+2,34% abr'],font:{size:10,weight:'bold'},color:'#fbbf24'},
+        rs:{type:'label',xValue:6,yValue:1160,content:['RS R$ 1.174','+1,90% abr'],font:{size:9,weight:'bold'},color:'#22c55e'}
+      }}
+    },
+    scales:{
+      y:{min:1050,max:1450,grid:{color:gc},ticks:{callback:v=>'R$'+v,font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: CBOT TRIGO
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar ini','Mar med','01/4','06/4','10/4','14/4','17/4'],
+    datasets:[{
+      label:'CBOT Mai/26 $/bu',
+      data:[5.05,5.20,5.30,5.40,5.50,5.65,5.80,5.92,5.86],
+      borderColor:'#fbbf24',backgroundColor:'rgba(251,191,36,.06)',
+      borderWidth:3,fill:true,tension:.3,
+      pointRadius:[4,4,4,4,4,4,5,7,6],
+      pointBackgroundColor:function(ctx){return ctx.dataset.data[ctx.dataIndex]>=5.9?'#22c55e':'#fbbf24'}
+    },{
+      label:'CBOT Jul/26 $/bu',
+      data:[5.15,5.30,5.40,5.50,5.60,5.75,5.90,6.01,5.96],
+      borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.04)',
+      borderWidth:2,fill:false,tension:.3,borderDash:[4,3],
+      pointRadius:3,pointBackgroundColor:'#3b82f6'
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:10,font:{size:9}}},tooltip:tt,
+      annotation:{annotations:{
+        now:{type:'label',xValue:7,yValue:6.08,content:['$5,92 Mai','$6,01 Jul','YTD +17%!'],font:{size:10,weight:'bold'},color:'#22c55e'},
+        six:{type:'line',yMin:6.00,yMax:6.00,borderColor:'rgba(234,179,8,.3)',borderWidth:1,borderDash:[4,3],
+          label:{display:true,content:'Nível $6,00',position:'end',backgroundColor:'rgba(234,179,8,.4)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:4.90,max:6.30,grid:{color:gc},ticks:{callback:v=>'$'+v.toFixed(2),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:9,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 3: TRIGO INVERNO EUA
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Abr/25','Semana -2','Semana -1','13/Abr/26'],
+    datasets:[{
+      label:'% Bom/Excelente',
+      data:[47,36,35,34],
+      backgroundColor:['rgba(100,116,139,.4)','rgba(234,179,8,.4)','rgba(239,68,68,.3)','rgba(239,68,68,.5)'],
+      borderColor:['#64748b','#eab308','#ef4444','#ef4444'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        gap:{type:'label',xValue:1.5,yValue:52,content:['13 pp PIOR','que ano passado!'],font:{size:10,weight:'bold'},color:'#ef4444'},
+        y25:{type:'line',yMin:47,yMax:47,borderColor:'rgba(100,116,139,.4)',borderWidth:2,borderDash:[5,3],
+          label:{display:true,content:'Abr/25: 47%',position:'start',backgroundColor:'rgba(100,116,139,.5)',font:{size:8}}}
+      }}
+    },
+    scales:{
+      y:{min:0,max:60,grid:{color:gc},ticks:{callback:v=>v+'%',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

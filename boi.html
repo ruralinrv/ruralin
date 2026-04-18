@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Boi Gordo — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--green:#2d8a44;--green2:#34d399;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.boi{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.sec-title .icon.china{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+.sec-title .icon.ciclo{background:linear-gradient(135deg,#166534,#22c55e)}
+.sec-title .icon.atc{background:linear-gradient(135deg,#6d28d9,#a855f7)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(234,88,12,.08),rgba(234,88,12,.02));border:1px solid rgba(234,88,12,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(234,88,12,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.badge.rec{background:rgba(234,179,8,.15);color:var(--accent2);border:1px solid rgba(234,179,8,.3)}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🐂</span> Boi Gordo — <span class="hl">RECORDE HISTÓRICO! R$ 365,60/@. Maior Valor Desde 1997. Corrida pela Cota China. Export Mar Recorde.</span></h1>
+  <p class="sub">
+    <span class="badge rec">🏆 RECORDE HISTÓRICO R$ 365,60/@</span><br>
+    CEPEA 10/4: <strong style="color:var(--up)">R$ 365,60/@</strong> (maior da série desde 1997!) &nbsp;|&nbsp;
+    Alta 12 meses: <strong style="color:var(--up)">+12,5%</strong> &nbsp;|&nbsp;
+    Alta desde jan: <strong style="color:var(--up)">+R$ 47/@</strong> (R$ 318 → R$ 365) &nbsp;|&nbsp;
+    Boi China SP: <strong style="color:var(--up)">R$ 367/@</strong> &nbsp;|&nbsp;
+    Cota China: <strong style="color:var(--dn)">Esgota em maio!</strong> &nbsp;|&nbsp;
+    Export mar: <strong style="color:var(--up)">233,9 mil t RECORDE</strong>
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert green">
+  <span class="ai">🏆</span>
+  <div><strong style="color:var(--up)">RECORDE HISTÓRICO!</strong> O boi gordo atingiu <strong>R$ 365,60/@</strong> em 10/abr — maior valor nominal da série do CEPEA desde 1997. <strong>Reuters:</strong> <em>"Os preços do boi gordo atingiram patamar recorde com impulso da demanda da China. A alta tem potencial de apertar margens de JBS, MBRF e Minerva."</em></div>
+</div>
+
+<div class="alert red">
+  <span class="ai">🇨🇳</span>
+  <div><strong style="color:var(--dn)">COTA CHINA ESGOTA EM MAIO!</strong> Brasil já preencheu >40% da cota de 1,1 mi t nos 3 primeiros meses. <strong>Abiec/Perosa:</strong> <em>"O Brasil deve preencher até a primeira semana de maio toda a cota."</em> Após a cota: <strong>tarifa salta de 12% → 55%.</strong> Isso = ~600 mil t que NÃO irão para China. <strong>Risco de pressão baixista no 2ºsem.</strong></div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">📈</span>
+  <div><strong style="color:var(--nt)">Bezerro TAMBÉM em máxima histórica!</strong> Farmnews: <em>"Preço da arroba do bezerro: novo patamar histórico em abril de 2026!"</em> Ciclo pecuário de alta: retenção de matrizes → menos animais → preços sobem. <strong>Mas o custo de reposição SOBE junto = margem pode apertar.</strong></div>
+</div>
+
+<div class="alert blue">
+  <span class="ai">🥩</span>
+  <div><strong style="color:var(--blue)">Exportações de março: RECORDE!</strong> 233,9 mil t de carne in natura (Secex). +8,6% vs mar/25. +40,7% vs mar/24. Média: <strong>10.634 t/dia.</strong> Receita subiu 26% (Abiec: 270,8 mil t total). Preço médio da tonelada exportada também em alta!</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi up"><div class="kpi-lb">CEPEA 10/Abr</div><div class="kpi-val up">R$ 365,60/@</div><div class="kpi-sub">🏆 RECORDE desde 1997!</div></div>
+  <div class="kpi up"><div class="kpi-lb">Boi China SP (9/4)</div><div class="kpi-val up">R$ 367/@</div><div class="kpi-sub">+R$ 2 vs boi comum</div></div>
+  <div class="kpi up"><div class="kpi-lb">Alta 12 Meses</div><div class="kpi-val up">+12,5%</div><div class="kpi-sub">Desde R$ 325 (abr/25)</div></div>
+  <div class="kpi up"><div class="kpi-lb">Alta Jan→Abr 2026</div><div class="kpi-val up">+R$ 47/@</div><div class="kpi-sub">De ~R$ 318 → R$ 365</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Cota China 2026</div><div class="kpi-val dn">1,1 mi t</div><div class="kpi-sub">Esgota em MAIO! Tarifa 55% pós-cota</div></div>
+  <div class="kpi up"><div class="kpi-lb">Export Mar/26</div><div class="kpi-val up">233,9 mil t</div><div class="kpi-sub">Recorde p/ março! +8,6% a.a.</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- RECORDE -->
+<div class="sec-title"><div class="icon boi">🐂</div><h2>CEPEA — Recorde Atrás de Recorde <span>— R$ 365,60/@ em 10/abr</span></h2></div>
+
+<div class="chart-box">
+  <h3>📈 CEPEA Boi Gordo — 2026 (R$/@)</h3>
+  <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+</div>
+
+<div class="card">
+<h3>📋 Evolução Semanal — Abril 2026</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Período</th><th>CEPEA (R$/@)</th><th>Boi China SP</th><th>Novilha SP</th><th>Vaca SP</th><th>Escala SP</th></tr></thead>
+  <tbody>
+    <tr><td>Início abril</td><td>R$ 356</td><td>R$ 358</td><td>R$ 342</td><td>R$ 327</td><td>6 dias</td></tr>
+    <tr><td>07/abr</td><td>R$ 362</td><td>R$ 365</td><td>R$ 342</td><td>R$ 330</td><td>6 dias</td></tr>
+    <tr><td>08/abr</td><td style="color:var(--up)"><strong>R$ 365,00</strong></td><td>R$ 365</td><td>R$ 342</td><td>R$ 330</td><td>~6 dias</td></tr>
+    <tr><td>09/abr</td><td style="color:var(--up)"><strong>R$ 365,00</strong></td><td style="color:var(--up)"><strong>R$ 367</strong></td><td style="color:var(--up)">R$ 345</td><td>R$ 330</td><td>~6 dias</td></tr>
+    <tr><td><strong>10/abr</strong></td><td style="color:var(--up)"><strong>R$ 365,60 🏆</strong></td><td>R$ 367</td><td>R$ 345</td><td style="color:var(--up)">R$ 332</td><td>~6 dias</td></tr>
+    <tr><td>~14-17/abr</td><td style="color:var(--up)"><strong>~R$ 365-370</strong></td><td>~R$ 367-370</td><td>~R$ 345-348</td><td>~R$ 332-335</td><td>5-6 dias</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: CEPEA/Esalq-USP, Scot Consultoria, Globo Rural · Alta acumulada abril: <strong style="color:var(--up)">+2,7%</strong></p>
+</div>
+
+<div class="co up">
+  <h4>📈 Por Que o Boi Bateu Recorde? 4 Fatores</h4>
+  <p><strong>1. Ciclo pecuário de alta:</strong> Retenção de matrizes nos últimos 2-3 anos reduziu oferta de animais para abate. <em>"Virada do ciclo pecuário"</em> (Agro em Campo). Oferta de boi a pasto RESTRITA.<br>
+  <strong>2. Corrida pela cota China:</strong> Frigoríficos disputando animais para embarcar antes da cota esgotar. Cota de 1,1 mi t esgota em maio. Tarifa sobe de 12% → 55%.<br>
+  <strong>3. Exportações recordes:</strong> 233,9 mil t em março. Receita +26%. Preço médio da tonelada em alta.<br>
+  <strong>4. Escalas curtas:</strong> Frigoríficos com apenas 5-6 dias de escala de abate. Quem precisa de boi PAGA mais.<br><br>
+  <strong>Scot Consultoria:</strong> <em>"Oferta restrita, principalmente de boiada terminada a pasto. A maior parte do volume é de cocho."</em></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- CHINA -->
+<div class="sec-title"><div class="icon china">🇨🇳</div><h2>Cota China — O Relógio Está Correndo <span>— 600 mil t sem destino após maio</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📊 Preenchimento da Cota China 2026</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>📊 Exportações Mensais 2026 (mil t)</h3>
+    <div class="chart-wrap"><canvas id="ch3"></canvas></div>
+  </div>
+</div>
+
+<div class="co dn">
+  <h4>🚨 Cota Esgota em Maio — O Que Acontece Depois?</h4>
+  <p><strong>China impôs cota de 1,1 mi t com tarifa de 12%. Fora da cota: 55%.</strong><br>
+  Jan: 119,9 mil t · Fev: ~130 mil t · Mar: 233,9 mil t = <strong>>483 mil t (44% da cota em 3 meses!).</strong><br><br>
+  <strong>Abiec/Perosa (8/abr):</strong> <em>"O Brasil deve preencher toda a cota até a 1ª semana de maio."</em><br><br>
+  <strong>Após o esgotamento:</strong><br>
+  ▸ ~600 mil t de carne que iam p/ China ficam SEM destino<br>
+  ▸ Frigoríficos buscam mercados alternativos (Coreia do Sul, EUA, Oriente Médio)<br>
+  ▸ Excedente pode pressionar preço interno da carne<br>
+  ▸ <strong>Preço do boi pode corrigir no 2ºsem se demanda cair</strong><br>
+  ▸ Abiec estuda crédito no "Plano Brasil Soberano" para mitigar perdas</p>
+</div>
+
+<div class="co or">
+  <h4>⚠️ Risco Geopolítico: Febre Aftosa na China</h4>
+  <p><strong>China confirmou focos de febre aftosa em >6.000 bovinos</strong> no norte do país. Abiec diz que NÃO afeta importações brasileiras. Mas <strong>qualquer embargo sanitário unilateral = risco catastrófico.</strong> Monitorar.</p>
+</div>
+
+<div class="dv"></div>
+
+<!-- CICLO PECUÁRIO -->
+<div class="sec-title"><div class="icon ciclo">📊</div><h2>Ciclo Pecuário — Alta Estrutural <span>— Bezerro também bateu máxima</span></h2></div>
+
+<div class="co up">
+  <h4>🔄 Ciclo de Alta: Menos Boi, Mais Preço</h4>
+  <p><strong>O ciclo pecuário virou para alta em 2025 e acelerou em 2026:</strong><br>
+  ▸ Retenção de fêmeas → menos abate → menos carne no mercado<br>
+  ▸ Bezerro em máxima histórica (Farmnews) → custo de reposição alto<br>
+  ▸ Confinamento "salvou" a oferta parcialmente, mas boiada de pasto SUMIU<br>
+  ▸ De R$ 318/@ (jan/26) → R$ 365/@ (abr/26) = <strong>+14,8% em 4 meses!</strong><br><br>
+  <strong>Agro em Campo:</strong> <em>"A valorização está ligada à virada do ciclo pecuário, com retenção de matrizes reduzindo a oferta de animais terminados."</em><br><br>
+  <strong>Projeção:</strong> Alta deve se manter até o 2º semestre. Possível correção quando confinamento entrar em escala (ago-set) e pós-cota China reduzir demanda externa.</p>
+</div>
+
+<div class="card">
+<h3>📋 Praças Pecuárias — Referências (semana ~14-17/abr)</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Praça</th><th>Boi Gordo (R$/@)</th><th>Variação Semana</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left">Araçatuba/Barretos (SP)</td><td><strong>R$ 365-375</strong></td><td style="color:var(--up)">↑ +R$ 3</td></tr>
+    <tr><td style="text-align:left">Três Lagoas (MS)</td><td><strong>~R$ 360</strong></td><td style="color:var(--up)">↑ +3,45%</td></tr>
+    <tr><td style="text-align:left">Colíder (MT)</td><td><strong>~R$ 351</strong></td><td style="color:var(--up)">↑ +3,10%</td></tr>
+    <tr><td style="text-align:left">Cuiabá (MT)</td><td><strong>>R$ 350</strong></td><td style="color:var(--up)">↑</td></tr>
+    <tr><td style="text-align:left">Goiânia (GO)</td><td><strong>>R$ 350</strong></td><td style="color:var(--up)">↑</td></tr>
+    <tr><td style="text-align:left">Campo Grande (MS)</td><td><strong>>R$ 350</strong></td><td style="color:var(--up)">↑</td></tr>
+    <tr><td style="text-align:left">Redenção (PA)</td><td><strong>>R$ 340</strong></td><td style="color:var(--up)">↑</td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.82rem;color:var(--text3)">Fonte: Scot Consultoria, CEPEA, Canal Rural · <strong style="color:var(--up)">33 praças: 22 estáveis, 11 em alta. NENHUMA em queda.</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Boi Gordo — Tendência Curto Prazo (abril-maio)</h4>
+    <div class="th-bar"><div class="th-marker" style="left:75%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬆ ALTISTA — Cota China ainda sendo preenchida + oferta restrita + escalas curtas. R$ 370-380/@ possível.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Boi Gordo — Tendência Médio Prazo (2ºsem)</h4>
+    <div class="th-bar"><div class="th-marker" style="left:45%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--nt);margin-top:6px;font-weight:600">→ NEUTRO/CORREÇÃO — Pós-cota China (jun+) + entrada confinamento (ago+) podem pressionar.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- ATACADO -->
+<div class="sec-title"><div class="icon atc">🥩</div><h2>Atacado & Varejo — Carne Sobe, Varejo Resiste <span>— Pressão Inflacionária</span></h2></div>
+
+<div class="co nt">
+  <h4>🥩 Carne Bovina no Atacado: Subiu</h4>
+  <p><strong>Carcaça casada bovina</strong> avançou no atacado da Grande SP na semana. Reflexo direto do boi caro. <strong>Porém:</strong> vendas ao consumidor final enfraqueceram ao longo da semana. <strong>Agrifatto:</strong> <em>"Vendas ao varejo desaceleraram, reduzindo pedidos de reposição."</em><br><br>
+  <strong>Risco inflacionário:</strong> Boi a R$ 365/@ → carne no supermercado sobe → IPCA de alimentos acelera. IPCA de março já veio 0,88% (acima do esperado). <strong>O boi caro alimenta a inflação.</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — Boi Gordo: O Maior Vencedor de 2026</h3>
+  <p><strong>O boi gordo é, sem dúvida, a commodity vencedora de 2026 até agora.</strong> +14,8% desde janeiro. Recorde histórico desde 1997. Nenhum outro ativo agro brasileiro teve desempenho comparável.</p>
+  <p><strong>A combinação é perfeita para o pecuarista:</strong><br>
+  ▸ Ciclo pecuário de alta (menos boi disponível)<br>
+  ▸ China comprando agressivamente (antes da cota esgotar)<br>
+  ▸ Escalas de abate curtíssimas (frigorífico precisa do boi)<br>
+  ▸ Exportações recordes (233,9 mil t em março!)</p>
+  <p><strong>MAS — e esse é um grande "mas":</strong><br>
+  ▸ <strong>A cota China esgota em maio.</strong> Após isso, 600 mil t ficam sem destino. Tarifa pula de 12% → 55%.<br>
+  ▸ Frigoríficos terão que redirecionar para mercados menores (Coreia, Oriente Médio) com preços piores<br>
+  ▸ Varejo doméstico está resistindo ao repasse → margens dos frigoríficos apertam<br>
+  ▸ Confinamento entra em escala a partir de agosto → mais oferta de boi<br>
+  ▸ <strong>Correção de 5-10% é provável no 2ºsem (R$ 330-350/@)</strong></p>
+  <p><strong>Recomendação:</strong> Quem tem boi pronto, <strong>aproveitar o momento.</strong> Preços podem não voltar a esse patamar tão cedo após a cota China fechar. Para quem está comprando reposição: cuidado. Bezerro em máxima histórica = margem apertada no engorde. Confinamento precisa ser planejado com rigor.</p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: CEPEA BOI 2026
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','01/4','07/4','08/4','09/4','10/4','~17/4'],
+    datasets:[{
+      label:'CEPEA Boi Gordo R$/@',
+      data:[318,335,355,356,362,365,365,365.60,367],
+      borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.08)',
+      borderWidth:3,fill:true,tension:.35,
+      pointRadius:[5,5,5,4,4,5,5,8,8],
+      pointBackgroundColor:['#eab308','#eab308','#eab308','#22c55e','#22c55e','#22c55e','#22c55e','#f59e0b','#f59e0b']
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        rec:{type:'label',xValue:7,yValue:372,content:['🏆 R$ 365,60','RECORDE desde 1997!'],font:{size:11,weight:'bold'},color:'#f59e0b'},
+        jan:{type:'label',xValue:0,yValue:310,content:['R$ 318','Jan/26'],font:{size:9},color:'#9db3c4'},
+        gain:{type:'box',xMin:0,xMax:8,yMin:318,yMax:365.6,backgroundColor:'rgba(34,197,94,.03)',borderWidth:0}
+      }}
+    },
+    scales:{
+      y:{min:310,max:380,grid:{color:gc},ticks:{callback:v=>'R$'+v,font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: COTA CHINA
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'doughnut',
+  data:{
+    labels:['Preenchido (~484 mil t)','Restante (~622 mil t)'],
+    datasets:[{
+      data:[44,56],
+      backgroundColor:['rgba(239,68,68,.6)','rgba(30,51,69,.4)'],
+      borderColor:['#ef4444','#1e3345'],
+      borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{usePointStyle:true,padding:14,font:{size:11},color:'#9db3c4'}},
+      tooltip:tt,
+      annotation:{annotations:{
+        center:{type:'label',xValue:'center',yValue:'center',content:['44%','preenchido','Esgota em MAIO!'],font:{size:13,weight:'bold'},color:'#ef4444'}
+      }}
+    }
+  }
+});
+
+// CHART 3: EXPORTAÇÕES MENSAIS
+new Chart(document.getElementById('ch3').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Jan/26','Fev/26','Mar/26','Abr/26*'],
+    datasets:[{
+      label:'Exportações (mil t)',
+      data:[119.9,130,233.9,200],
+      backgroundColor:['rgba(34,197,94,.4)','rgba(34,197,94,.4)','rgba(245,158,11,.5)','rgba(59,130,246,.3)'],
+      borderColor:['#22c55e','#22c55e','#f59e0b','#3b82f6'],
+      borderWidth:2,borderRadius:8
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:tt,
+      annotation:{annotations:{
+        rec:{type:'label',xValue:2,yValue:245,content:['233,9 mil t','RECORDE março!'],font:{size:10,weight:'bold'},color:'#f59e0b'},
+        est:{type:'label',xValue:3,yValue:212,content:['~200 mil t','Estimativa'],font:{size:9},color:'#3b82f6'}
+      }}
+    },
+    scales:{
+      y:{min:0,max:260,grid:{color:gc},ticks:{callback:v=>v+'k t',font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:11,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>

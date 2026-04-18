@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Rural IN — Radar Agro da Semana · 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0a0e14;--bg2:#0f1520;--bg3:#141d2b;--bg4:#1a2536;--border:#1c2e42;--border2:#264060;--accent:#d4a017;--accent2:#f0c950;--accent3:#ffe588;--text:#eaeff4;--text2:#9db3c8;--text3:#5d7a90;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--cyan:#06b6d4;--lime:#84cc16;--r:14px;--r2:18px;--shadow:0 8px 32px rgba(0,0,0,.45)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.bg-grid{position:fixed;inset:0;z-index:0;background-image:
+  radial-gradient(circle at 15% 20%,rgba(212,160,23,.04) 0%,transparent 50%),
+  radial-gradient(circle at 85% 80%,rgba(34,197,94,.03) 0%,transparent 50%),
+  radial-gradient(circle at 50% 50%,rgba(59,130,246,.02) 0%,transparent 60%);
+  pointer-events:none}
+.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:28px 24px 60px}
+
+/* HEADER */
+.main-hdr{text-align:center;padding:48px 20px 40px;margin-bottom:36px;position:relative}
+.main-hdr::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:200px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.logo-icon{font-size:3.2rem;margin-bottom:12px;display:block;filter:drop-shadow(0 4px 12px rgba(212,160,23,.3))}
+.main-hdr h1{font-size:2.4rem;font-weight:900;letter-spacing:-1px;line-height:1.2;margin-bottom:8px}
+.main-hdr h1 .gold{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.main-hdr h1 .white{color:var(--text)}
+.main-hdr .edition{font-size:1rem;color:var(--accent2);font-weight:600;letter-spacing:1px;margin-bottom:6px}
+.main-hdr .date{font-size:.88rem;color:var(--text3);font-weight:500}
+.main-hdr .tagline{font-size:.92rem;color:var(--text2);margin-top:12px;max-width:700px;margin-left:auto;margin-right:auto;line-height:1.7}
+
+/* TICKER */
+.ticker-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 20px;margin-bottom:32px;overflow:hidden;position:relative}
+.ticker-wrap::before{content:'📡 AO VIVO';position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:.7rem;font-weight:800;color:var(--dn);background:rgba(239,68,68,.12);padding:3px 10px;border-radius:6px;z-index:2;letter-spacing:1px;border:1px solid rgba(239,68,68,.25)}
+.ticker{display:flex;animation:ticker 60s linear infinite;padding-left:100px}
+.ticker:hover{animation-play-state:paused}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{white-space:nowrap;padding:0 28px;font-size:.82rem;font-weight:600;color:var(--text2);border-right:1px solid var(--border)}
+.ticker-item .up{color:var(--up)}.ticker-item .dn{color:var(--dn)}.ticker-item .nt{color:var(--nt)}
+.ticker-item strong{color:var(--text)}
+
+/* STATS BAR */
+.stats-bar{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:36px;padding:16px 0}
+.stat{text-align:center}
+.stat-num{font-size:1.8rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lb{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-top:2px}
+
+/* SECTION TITLE */
+.sec-title{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.sec-title h2{font-size:1.2rem;font-weight:700;color:var(--text)}
+.sec-title h2 span{color:var(--text3);font-weight:400;font-size:.9rem}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+
+/* GRID CULTURAS */
+.grid-culturas{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-bottom:40px}
+.card-cultura{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:0;overflow:hidden;transition:all .3s ease;cursor:pointer;position:relative;text-decoration:none;color:inherit;display:block}
+.card-cultura:hover{transform:translateY(-4px);border-color:var(--border2);box-shadow:var(--shadow)}
+.card-cultura:hover .card-bar{opacity:1}
+.card-bar{position:absolute;top:0;left:0;right:0;height:4px;opacity:.7;transition:opacity .3s}
+.card-body{padding:22px 24px 20px}
+.card-icon{font-size:2.2rem;margin-bottom:10px;display:block;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+.card-title{font-size:1.08rem;font-weight:800;margin-bottom:4px;letter-spacing:-.3px}
+.card-sub{font-size:.78rem;color:var(--text3);margin-bottom:12px;line-height:1.5}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tag{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:6px;letter-spacing:.3px}
+.tag.up{background:rgba(34,197,94,.12);color:var(--up);border:1px solid rgba(34,197,94,.2)}
+.tag.dn{background:rgba(239,68,68,.12);color:var(--dn);border:1px solid rgba(239,68,68,.2)}
+.tag.nt{background:rgba(234,179,8,.12);color:var(--nt);border:1px solid rgba(234,179,8,.2)}
+.tag.bl{background:rgba(59,130,246,.12);color:var(--blue);border:1px solid rgba(59,130,246,.2)}
+.card-kpi{display:flex;justify-content:space-between;align-items:flex-end;padding-top:12px;border-top:1px solid var(--border)}
+.card-kpi-main .val{font-size:1.15rem;font-weight:800}.card-kpi-main .val.up{color:var(--up)}.card-kpi-main .val.dn{color:var(--dn)}.card-kpi-main .val.nt{color:var(--nt)}
+.card-kpi-main .lb{font-size:.65rem;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;font-weight:600}
+.card-kpi-sec{text-align:right}
+.card-kpi-sec .val{font-size:.92rem;font-weight:700}.card-kpi-sec .val.up{color:var(--up)}.card-kpi-sec .val.dn{color:var(--dn)}.card-kpi-sec .val.nt{color:var(--nt)}
+.card-kpi-sec .lb{font-size:.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:.6px}
+.card-cta{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;background:var(--bg3);font-size:.8rem;font-weight:700;color:var(--accent2);letter-spacing:.5px;transition:background .2s}
+.card-cultura:hover .card-cta{background:var(--bg4);color:var(--accent3)}
+
+/* MACRO CARD */
+.card-macro{grid-column:span 2}
+@media(max-width:600px){.card-macro{grid-column:span 1}}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 20px;margin-top:20px;border-top:1px solid var(--border)}
+.footer p{font-size:.82rem;color:var(--text3);line-height:1.8}
+.footer .brand{font-weight:800;color:var(--accent2)}
+
+/* PULSE */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.pulse{animation:pulse 2s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="container">
+
+<!-- HEADER -->
+<header class="main-hdr">
+  <span class="logo-icon">🌾</span>
+  <div class="edition">RADAR AGRO DA SEMANA</div>
+  <h1><span class="gold">Rural IN</span> <span class="white">·</span> <span class="gold">Inteligência Agrícola</span></h1>
+  <div class="date">📅 Semana 14–17 de Abril de 2026 &nbsp;|&nbsp; Sexta-feira, 17/Abr/2026 &nbsp;|&nbsp; 🌎 Brasil</div>
+  <p class="tagline">Relatórios completos de <strong>13 setores</strong> do agronegócio brasileiro com dados CEPEA, CONAB, USDA, ICE, B3 e fontes primárias. Gráficos interativos, cotações, análises e projeções.</p>
+</header>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker">
+    <span class="ticker-item"><strong>Soja CBOT:</strong> <span class="dn">US$ 9,68/bu (−1,3%)</span></span>
+    <span class="ticker-item"><strong>Milho B3:</strong> <span class="up">R$ 76,50/sc (+2,1%)</span></span>
+    <span class="ticker-item"><strong>Café NY:</strong> <span class="up">US$ 3,95/lbp (+22%!)</span></span>
+    <span class="ticker-item"><strong>Boi Gordo:</strong> <span class="up">R$ 328/@ (recorde!)</span></span>
+    <span class="ticker-item"><strong>Algodão:</strong> <span class="dn">71,91 ¢/lbp (−2%)</span></span>
+    <span class="ticker-item"><strong>Açúcar NY:</strong> <span class="dn">14,97 ¢/lbp (−1,2%)</span></span>
+    <span class="ticker-item"><strong>Cacau NY:</strong> <span class="up">US$ 3.646/t (+8,35%!)</span></span>
+    <span class="ticker-item"><strong>Trigo CBOT:</strong> <span class="dn">US$ 5,20/bu</span></span>
+    <span class="ticker-item"><strong>Leite BR:</strong> <span class="up">R$ 2,15/L (+5,4%)</span></span>
+    <span class="ticker-item"><strong>Arroz RS:</strong> <span class="nt">R$ 86/sc (estável)</span></span>
+    <span class="ticker-item"><strong>Feijão Carioca:</strong> <span class="dn">R$ 190/sc (−8%)</span></span>
+    <span class="ticker-item"><strong>Laranja Pera:</strong> <span class="up">R$ 44,88/cx (+2,5%)</span></span>
+    <span class="ticker-item"><strong>Etanol Hidr.:</strong> <span class="dn">R$ 2,79/L (−3,5%)</span></span>
+    <span class="ticker-item"><strong>Dólar:</strong> <span class="dn">~R$ 5,85</span></span>
+    <!-- DUPLICADO PARA LOOP SUAVE -->
+    <span class="ticker-item"><strong>Soja CBOT:</strong> <span class="dn">US$ 9,68/bu (−1,3%)</span></span>
+    <span class="ticker-item"><strong>Milho B3:</strong> <span class="up">R$ 76,50/sc (+2,1%)</span></span>
+    <span class="ticker-item"><strong>Café NY:</strong> <span class="up">US$ 3,95/lbp (+22%!)</span></span>
+    <span class="ticker-item"><strong>Boi Gordo:</strong> <span class="up">R$ 328/@ (recorde!)</span></span>
+    <span class="ticker-item"><strong>Algodão:</strong> <span class="dn">71,91 ¢/lbp (−2%)</span></span>
+    <span class="ticker-item"><strong>Açúcar NY:</strong> <span class="dn">14,97 ¢/lbp (−1,2%)</span></span>
+    <span class="ticker-item"><strong>Cacau NY:</strong> <span class="up">US$ 3.646/t (+8,35%!)</span></span>
+    <span class="ticker-item"><strong>Trigo CBOT:</strong> <span class="dn">US$ 5,20/bu</span></span>
+    <span class="ticker-item"><strong>Leite BR:</strong> <span class="up">R$ 2,15/L (+5,4%)</span></span>
+    <span class="ticker-item"><strong>Arroz RS:</strong> <span class="nt">R$ 86/sc (estável)</span></span>
+    <span class="ticker-item"><strong>Feijão Carioca:</strong> <span class="dn">R$ 190/sc (−8%)</span></span>
+    <span class="ticker-item"><strong>Laranja Pera:</strong> <span class="up">R$ 44,88/cx (+2,5%)</span></span>
+    <span class="ticker-item"><strong>Etanol Hidr.:</strong> <span class="dn">R$ 2,79/L (−3,5%)</span></span>
+    <span class="ticker-item"><strong>Dólar:</strong> <span class="dn">~R$ 5,85</span></span>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">13</div><div class="stat-lb">Relatórios</div></div>
+  <div class="stat"><div class="stat-num">200+</div><div class="stat-lb">Indicadores</div></div>
+  <div class="stat"><div class="stat-num">50+</div><div class="stat-lb">Gráficos</div></div>
+  <div class="stat"><div class="stat-num">80+</div><div class="stat-lb">Fontes</div></div>
+  <div class="stat"><div class="stat-num">13</div><div class="stat-lb">Análises</div></div>
+</div>
+
+<!-- GRÃOS E FIBRAS -->
+<div class="sec-title"><h2>🌾 Grãos & Fibras <span>— Soja · Milho · Arroz · Trigo · Feijão · Algodão</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- SOJA -->
+  <a class="card-cultura" href="soja.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#22c55e,#16a34a)"></div>
+    <div class="card-body">
+      <span class="card-icon">🫘</span>
+      <div class="card-title">Soja</div>
+      <div class="card-sub">Safra recorde 167,8 mi t · Guerra tarifária EUA-China · Prêmios Paranaguá</div>
+      <div class="card-tags">
+        <span class="tag up">Safra recorde BR</span>
+        <span class="tag dn">CBOT pressionada</span>
+        <span class="tag nt">Guerra tarifária</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">CBOT Mai/26</div><div class="val dn">US$ 9,68/bu</div></div>
+        <div class="card-kpi-sec"><div class="lb">Safra BR</div><div class="val up">167,8 mi t</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- MILHO -->
+  <a class="card-cultura" href="milho.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#eab308,#f59e0b)"></div>
+    <div class="card-body">
+      <span class="card-icon">🌽</span>
+      <div class="card-title">Milho</div>
+      <div class="card-sub">B3 em alta +2,1% · Safrinha define preço · Exportações aquecidas · Etanol de milho cresce</div>
+      <div class="card-tags">
+        <span class="tag up">B3 +2,1%</span>
+        <span class="tag nt">Safrinha crítica</span>
+        <span class="tag bl">Etanol de milho</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">B3 Mai/26</div><div class="val up">R$ 76,50/sc</div></div>
+        <div class="card-kpi-sec"><div class="lb">CBOT</div><div class="val nt">US$ 4,52/bu</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- ARROZ -->
+  <a class="card-cultura" href="arroz.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#f5f5f4,#a8a29e)"></div>
+    <div class="card-body">
+      <span class="card-icon">🍚</span>
+      <div class="card-title">Arroz</div>
+      <div class="card-sub">RS define mercado · Colheita em andamento · Preço estável ~R$ 86/sc · Importação pressiona</div>
+      <div class="card-tags">
+        <span class="tag nt">Preço estável</span>
+        <span class="tag bl">Colheita RS</span>
+        <span class="tag dn">Import pressiona</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">CEPEA/ESALQ</div><div class="val nt">~R$ 86/sc</div></div>
+        <div class="card-kpi-sec"><div class="lb">Tendência</div><div class="val nt">Estável</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- TRIGO -->
+  <a class="card-cultura" href="trigo.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#d97706,#b45309)"></div>
+    <div class="card-body">
+      <span class="card-icon">🌾</span>
+      <div class="card-title">Trigo</div>
+      <div class="card-sub">BR maior importador hemisfério · CBOT pressionada · Plantio RS inicia · Geopolítica Mar Negro</div>
+      <div class="card-tags">
+        <span class="tag dn">CBOT em queda</span>
+        <span class="tag bl">Plantio RS</span>
+        <span class="tag nt">Mar Negro</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">CBOT</div><div class="val dn">~US$ 5,20/bu</div></div>
+        <div class="card-kpi-sec"><div class="lb">Import BR</div><div class="val dn">Elevada</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- FEIJÃO -->
+  <a class="card-cultura" href="feijao.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#78350f,#a16207)"></div>
+    <div class="card-body">
+      <span class="card-icon">🫘</span>
+      <div class="card-title">Feijão</div>
+      <div class="card-sub">Carioca em queda R$ 190/sc · 3ª safra define · Preto estável · Oferta pressiona preço</div>
+      <div class="card-tags">
+        <span class="tag dn">Carioca −8%</span>
+        <span class="tag nt">Preto estável</span>
+        <span class="tag bl">3ª safra</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">Carioca SP</div><div class="val dn">~R$ 190/sc</div></div>
+        <div class="card-kpi-sec"><div class="lb">Preto</div><div class="val nt">~R$ 220/sc</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- ALGODÃO -->
+  <a class="card-cultura" href="algodao.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#e2e8f0,#94a3b8)"></div>
+    <div class="card-body">
+      <span class="card-icon">🧶</span>
+      <div class="card-title">Algodão</div>
+      <div class="card-sub">BR 2º maior exportador · NY pressionado ~72¢ · Pluma BR premium · Guerra tarifária afeta</div>
+      <div class="card-tags">
+        <span class="tag dn">NY ~72¢/lbp</span>
+        <span class="tag up">BR exporta recorde</span>
+        <span class="tag nt">Tarifas EUA</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">NY Mai/26</div><div class="val dn">71,91 ¢/lbp</div></div>
+        <div class="card-kpi-sec"><div class="lb">CEPEA/ESALQ</div><div class="val nt">~R$ 4,20/lbp</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- CAFÉ & CACAU -->
+<div class="sec-title"><h2>☕🍫 Café & Cacau <span>— As commodities mais voláteis do mundo</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- CAFÉ -->
+  <a class="card-cultura" href="cafe.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#ef4444,#dc2626)"></div>
+    <div class="card-body">
+      <span class="card-icon">☕</span>
+      <div class="card-title">Café</div>
+      <div class="card-sub">Arábica EXPLODE +22%! Recorde US$ 3,95/lbp · Robusta US$ 5.528/t · Crise global · Estoques mínimos</div>
+      <div class="card-tags">
+        <span class="tag up">NY +22%! RECORDE</span>
+        <span class="tag dn">Estoques mínimos</span>
+        <span class="tag dn">Crise oferta global</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">NY Arábica</div><div class="val up">US$ 3,95/lbp</div></div>
+        <div class="card-kpi-sec"><div class="lb">Robusta LON</div><div class="val up">US$ 5.528/t</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- CACAU -->
+  <a class="card-cultura" href="cacau.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#78350f,#d97706)"></div>
+    <div class="card-body">
+      <span class="card-icon">🍫</span>
+      <div class="card-title">Cacau</div>
+      <div class="card-sub">De US$ 12k → US$ 2.886 → US$ 3.646. Montanha-russa! Superávit 287 mil t. Europa −8,3% moagem</div>
+      <div class="card-tags">
+        <span class="tag up">Repique +8,35%!</span>
+        <span class="tag dn">−76% do pico</span>
+        <span class="tag nt">Superávit global</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">NY Jul/26</div><div class="val up">US$ 3.646/t</div></div>
+        <div class="card-kpi-sec"><div class="lb">Superávit</div><div class="val up">287 mil t</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- CANA / AÇÚCAR / ETANOL -->
+<div class="sec-title"><h2>🍬⛽ Cana, Açúcar & Etanol <span>— Complexo sucroalcooleiro</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- CANA / AÇÚCAR / ETANOL -->
+  <a class="card-cultura card-macro" href="cana.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#16a34a,#eab308,#f97316)"></div>
+    <div class="card-body">
+      <span class="card-icon">🍬🌿⛽</span>
+      <div class="card-title">Açúcar · Cana · Etanol</div>
+      <div class="card-sub">Safra 26/27 inicia (630 mi t cana)! Cristal R$ 106/sc (−20%). NY 14,97¢. Hidratado R$ 2,79/L (−3,5%). Mix mais alcooleiro? Superávit global 1,22 mi t.</div>
+      <div class="card-tags">
+        <span class="tag dn">Açúcar −20% safra</span>
+        <span class="tag dn">Etanol −3,5%/sem</span>
+        <span class="tag nt">Safra 26/27 inicia</span>
+        <span class="tag bl">Mix alcooleiro?</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">Cristal SP</div><div class="val dn">~R$ 106/sc</div></div>
+        <div class="card-kpi-sec"><div class="lb">Hidratado SP</div><div class="val dn">R$ 2,79/L</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- PECUÁRIA & LÁCTEOS -->
+<div class="sec-title"><h2>🐂🥛 Pecuária & Lácteos <span>— Boi gordo · Leite</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- BOI GORDO -->
+  <a class="card-cultura" href="boi.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#22c55e,#15803d)"></div>
+    <div class="card-body">
+      <span class="card-icon">🐂</span>
+      <div class="card-title">Boi Gordo</div>
+      <div class="card-sub">RECORDE HISTÓRICO R$ 328/@! Oferta restrita · Export China aquecida · Ciclo de alta</div>
+      <div class="card-tags">
+        <span class="tag up">Recorde R$ 328/@!</span>
+        <span class="tag up">China compra</span>
+        <span class="tag up">Oferta restrita</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">CEPEA/B3</div><div class="val up">R$ 328/@</div></div>
+        <div class="card-kpi-sec"><div class="lb">Tendência</div><div class="val up">⬆ Altista</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+  <!-- LEITE -->
+  <a class="card-cultura" href="leite.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#60a5fa,#2563eb)"></div>
+    <div class="card-body">
+      <span class="card-icon">🥛</span>
+      <div class="card-title">Leite</div>
+      <div class="card-sub">Recuperação +5,4% · GO captação −7,4% (líder queda!) · MG −6,2% · Import +33% · Entressafra</div>
+      <div class="card-tags">
+        <span class="tag up">Preço +5,4%</span>
+        <span class="tag dn">GO −7,4%!</span>
+        <span class="tag dn">Import +33%</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">Média BR fev/26</div><div class="val up">R$ 2,15/L</div></div>
+        <div class="card-kpi-sec"><div class="lb">GO captação</div><div class="val dn">−7,4%</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- FRUTAS -->
+<div class="sec-title"><h2>🍊 Frutas <span>— Laranja & Suco</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- LARANJA -->
+  <a class="card-cultura" href="laranja.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#f97316,#ea580c)"></div>
+    <div class="card-body">
+      <span class="card-icon">🍊</span>
+      <div class="card-title">Laranja & Suco</div>
+      <div class="card-sub">Safra 25/26: 292,94 mi cx (+27%). Estoques suco +75%. Export −8%. Europa foge −32%! Greening avança.</div>
+      <div class="card-tags">
+        <span class="tag up">Safra +27%</span>
+        <span class="tag dn">Export suco −8%</span>
+        <span class="tag dn">Europa −32%!</span>
+        <span class="tag dn">Greening</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">Pera mesa SP</div><div class="val up">R$ 44,88/cx</div></div>
+        <div class="card-kpi-sec"><div class="lb">Safra 25/26</div><div class="val up">292,94 mi cx</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- MACRO -->
+<div class="sec-title"><h2>📊 Macro & Câmbio <span>— Cenário econômico</span></h2></div>
+<div class="grid-culturas">
+
+  <!-- MACRO -->
+  <a class="card-cultura card-macro" href="macro.html">
+    <div class="card-bar" style="background:linear-gradient(90deg,#3b82f6,#8b5cf6,#ec4899)"></div>
+    <div class="card-body">
+      <span class="card-icon">📊💱📈</span>
+      <div class="card-title">Macro · Câmbio · Juros</div>
+      <div class="card-sub">Dólar ~R$ 5,85 · Selic 14,25% · IPCA acumulado ~5,5% · Guerra tarifária EUA-China · Petróleo volátil · PIB ~2%</div>
+      <div class="card-tags">
+        <span class="tag bl">Dólar ~R$ 5,85</span>
+        <span class="tag dn">Selic 14,25%</span>
+        <span class="tag nt">Tarifas EUA</span>
+        <span class="tag dn">Petróleo volátil</span>
+      </div>
+      <div class="card-kpi">
+        <div class="card-kpi-main"><div class="lb">USD/BRL</div><div class="val bl">~R$ 5,85</div></div>
+        <div class="card-kpi-sec"><div class="lb">Selic</div><div class="val dn">14,25%</div></div>
+      </div>
+    </div>
+    <div class="card-cta">ABRIR RELATÓRIO COMPLETO →</div>
+  </a>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p><span class="brand">Rural IN — Inteligência Agrícola</span><br>
+  Radar Agro da Semana · Edição 14–17 de Abril de 2026<br>
+  Dados: CEPEA/ESALQ · CONAB · USDA · ICE · B3 · CBOT · Fundecitrus · ICCO · CitrusBR · Itaú BBA · StoneX · Hedgepoint · IBGE · SECEX<br>
+  Análises: Dr. Sidney Souza · Economista Agrícola<br><br>
+  <em style="color:var(--text3)">⚠️ Este material é informativo. Não constitui recomendação de investimento. Consulte profissionais habilitados.</em></p>
+</footer>
+
+</div>
+</body>
+</html>

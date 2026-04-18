@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Macro / Geo / Dólar — Radar Agro Rural IN — 14-17 Abr 2026</title>
+<style>
+:root{--bg:#0c1117;--bg2:#111a22;--bg3:#162230;--bg4:#1a2d3d;--border:#1e3345;--border2:#2a5068;--accent:#d4a017;--accent2:#f0c950;--green:#2d8a44;--green2:#34d399;--text:#e8edf2;--text2:#9db3c4;--text3:#637d8e;--up:#22c55e;--dn:#ef4444;--nt:#eab308;--blue:#3b82f6;--purple:#a855f7;--orange:#f97316;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;padding:32px;max-width:1100px}
+.hdr{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.hdr h1{font-size:2rem;font-weight:800;margin-bottom:6px;line-height:1.3}
+.hdr h1 .e{font-size:2.1rem;margin-right:8px}.hdr h1 .hl{color:var(--accent2)}
+.hdr .sub{font-size:.9rem;color:var(--text2);line-height:1.8}
+.alert{border-radius:var(--r);padding:18px 22px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;border:1px solid;font-size:.88rem;line-height:1.7;color:var(--text2)}
+.alert strong{color:var(--text)}
+.alert .ai{font-size:1.4rem;flex-shrink:0}
+.alert.red{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)}
+.alert.blue{background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)}
+.alert.green{background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)}
+.alert.amber{background:rgba(234,179,8,.06);border-color:rgba(234,179,8,.2)}
+.alert.orange{background:rgba(249,115,22,.06);border-color:rgba(249,115,22,.2)}
+.alert.purple{background:rgba(168,85,247,.06);border-color:rgba(168,85,247,.2)}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border2)}
+.kpi.up::before{background:var(--up)}.kpi.dn::before{background:var(--dn)}.kpi.nt::before{background:var(--nt)}.kpi.bl::before{background:var(--blue)}.kpi.or::before{background:var(--orange)}.kpi.pu::before{background:var(--purple)}
+.kpi-lb{font-size:.7rem;text-transform:uppercase;letter-spacing:1.1px;color:var(--text3);margin-bottom:6px;font-weight:600}
+.kpi-val{font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.kpi-val.up{color:var(--up)}.kpi-val.dn{color:var(--dn)}.kpi-val.nt{color:var(--nt)}.kpi-val.bl{color:var(--blue)}
+.kpi-sub{font-size:.76rem;color:var(--text3);margin-top:3px}
+.co{border-radius:var(--r);padding:20px 24px;margin-bottom:18px;border-left:4px solid;font-size:.9rem;color:var(--text2);line-height:1.8}
+.co strong{color:var(--text)}
+.co.up{background:rgba(34,197,94,.05);border-color:var(--up)}.co.dn{background:rgba(239,68,68,.05);border-color:var(--dn)}.co.nt{background:rgba(234,179,8,.05);border-color:var(--nt)}.co.bl{background:rgba(59,130,246,.05);border-color:var(--blue)}.co.or{background:rgba(249,115,22,.05);border-color:var(--orange)}.co.pu{background:rgba(168,85,247,.05);border-color:var(--purple)}
+.co h4{font-size:1rem;font-weight:700;margin-bottom:8px}
+.co.up h4{color:var(--up)}.co.dn h4{color:var(--dn)}.co.nt h4{color:var(--nt)}.co.bl h4{color:var(--blue)}.co.or h4{color:var(--orange)}.co.pu h4{color:var(--purple)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px 26px;margin-bottom:18px}
+.card h3{font-size:1rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.sec-title .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.sec-title .icon.geo{background:linear-gradient(135deg,#1e40af,#3b82f6)}
+.sec-title .icon.dolar{background:linear-gradient(135deg,#059669,#34d399)}
+.sec-title .icon.oil{background:linear-gradient(135deg,#b45309,#f59e0b)}
+.sec-title .icon.red{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+.sec-title h2{font-size:1.3rem;font-weight:700}.sec-title h2 span{font-weight:400;color:var(--text2);font-size:.92rem}
+.dv{height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--accent),var(--border2),transparent);margin:32px 0}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin-bottom:14px}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead th{background:var(--bg3);padding:12px 14px;text-align:center;font-weight:600;color:var(--text2);font-size:.75rem;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid var(--border)}
+tbody td{padding:11px 14px;border-bottom:1px solid rgba(30,51,69,.4);text-align:center}
+tbody tr:hover{background:rgba(59,130,246,.04)}
+.thermo{margin:20px 0}
+.thermo h4{font-size:.92rem;color:var(--text2);margin-bottom:10px}
+.th-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--dn),var(--nt),var(--up));position:relative}
+.th-marker{position:absolute;top:-6px;width:3px;height:26px;background:#fff;border-radius:2px;transform:translateX(-50%)}
+.th-lb{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:5px}
+.opinion{background:linear-gradient(135deg,rgba(59,130,246,.1),rgba(59,130,246,.03));border:1px solid rgba(59,130,246,.2);border-radius:var(--r);padding:28px 30px;margin:24px 0}
+.opinion h3{font-size:1.15rem;font-weight:700;color:var(--accent2);margin-bottom:14px}
+.opinion p{font-size:.93rem;color:var(--text2);line-height:1.85;margin-bottom:12px}
+.opinion p strong{color:var(--text)}
+.opinion .sig{margin-top:16px;padding-top:12px;border-top:1px solid rgba(59,130,246,.15);font-size:.82rem;color:var(--text3);font-style:italic}
+.tag{display:inline-flex;align-items:center;padding:4px 12px;border-radius:6px;font-size:.76rem;font-weight:600}
+.tag-up{background:rgba(34,197,94,.1);color:var(--up)}.tag-dn{background:rgba(239,68,68,.1);color:var(--dn)}.tag-nt{background:rgba(234,179,8,.1);color:var(--nt)}.tag-bl{background:rgba(59,130,246,.1);color:var(--blue)}.tag-or{background:rgba(249,115,22,.1);color:var(--orange)}.tag-pu{background:rgba(168,85,247,.1);color:var(--purple)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:800px){.grid2{grid-template-columns:1fr}}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:18px}
+.chart-box h3{font-size:.93rem;color:var(--text2);margin-bottom:14px;font-weight:600}
+.chart-wrap{position:relative;height:300px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1><span class="e">🌍</span> Macro / Geo / Dólar — <span class="hl">Ormuz Reabriu! Petróleo Desaba 11%. Dólar Abaixo de R$ 5. Ibovespa ~200k.</span></h1>
+  <p class="sub">
+    Dólar 17/4: <strong style="color:var(--up)">R$ 4,976</strong> (abaixo de R$ 5 pela 1ª vez desde mar/2024!) &nbsp;|&nbsp;
+    Selic: <strong>14,75%</strong> → Focus fim 2026: <strong>12,50%</strong> &nbsp;|&nbsp;
+    IPCA mar: <strong style="color:var(--dn)">0,88%</strong> (acima do esperado!) &nbsp;|&nbsp;
+    Brent: <strong style="color:var(--dn)"><$90/bbl</strong> (−11% com reabertura) &nbsp;|&nbsp;
+    Ormuz: <strong style="color:var(--up)">REABERTO — tráfego retomado</strong> &nbsp;|&nbsp;
+    Ibovespa: <strong style="color:var(--up)">~200.000 pts RECORDE</strong>
+  </p>
+</div>
+
+<!-- ALERTAS -->
+<div class="alert green">
+  <span class="ai">✅</span>
+  <div><strong style="color:var(--up)">ORMUZ REABRIU!</strong> Em 17/abr, Irã anunciou liberação do tráfego comercial no Estreito de Ormuz durante o cessar-fogo. <strong>Petróleo Brent despencou 11%, caindo abaixo de US$ 90/bbl.</strong> Preço ainda chegou a superar $103 em 13/abr quando EUA ameaçaram bloquear o estreito. <strong>Goldman Sachs:</strong> projeta Brent a $80-82 no 2ºsem se trégua persistir, mas pode voltar a $100+ se negociações falharem.</div>
+</div>
+
+<div class="alert blue">
+  <span class="ai">💵</span>
+  <div><strong style="color:var(--blue)">Dólar rompeu R$ 5,00!</strong> Cotado a <strong>R$ 4,976</strong> em 17/abr — menor nível desde mar/2024. Na semana, caiu de R$ 5,01 para R$ 4,976 (−0,7%). No mês, acumula R$ 5,12 de média. <strong>Valor Investe:</strong> <em>"Dólar cai novamente; R$ 4,90 veio para ficar?"</em> <strong>Investing.com:</strong> <em>"Dólar a R$ 4,70? Três fatores que derrubaram a moeda americana abaixo de R$ 5."</em> Diferencial de juros, exportações fortes e trégua no Oriente Médio sustentam o real.</div>
+</div>
+
+<div class="alert amber">
+  <span class="ai">⚠️</span>
+  <div><strong style="color:var(--nt)">IPCA de março: 0,88% — ACIMA do esperado!</strong> Inflação acelerou. Alimentação no domicílio subiu forte. Focus projeta IPCA 2026 em 4,36% (teto: 4,50%). <strong>Atenção:</strong> IPCA alto = Copom pode frear corte de Selic. Se Selic ficar alta → dólar cai mais (diferencial juros). Mas custo de crédito rural segue pesado.</div>
+</div>
+
+<div class="alert purple">
+  <span class="ai">📈</span>
+  <div><strong style="color:var(--purple)">Ibovespa perto dos 200.000 pts — RECORDE!</strong> 9 pregões consecutivos de alta. Capital estrangeiro entrando forte (diferencial juros + commodities). <strong>Se romper 200k:</strong> sinal de otimismo que pode sustentar real forte → dólar baixo → pressão sobre receita agro.</div>
+</div>
+
+<!-- KPIs -->
+<div class="kpi-row">
+  <div class="kpi up"><div class="kpi-lb">Dólar Spot 17/4</div><div class="kpi-val up">R$ 4,976</div><div class="kpi-sub">Abaixo de R$ 5! Mín. 25 meses</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Selic Atual</div><div class="kpi-val dn">14,75%</div><div class="kpi-sub">Focus fim 2026: 12,50%</div></div>
+  <div class="kpi dn"><div class="kpi-lb">IPCA Mar/26</div><div class="kpi-val dn">0,88%</div><div class="kpi-sub">Acima do esperado! Focus: 4,36%</div></div>
+  <div class="kpi up"><div class="kpi-lb">Ibovespa</div><div class="kpi-val up">~200k pts</div><div class="kpi-sub">9 altas seguidas! Recorde</div></div>
+  <div class="kpi dn"><div class="kpi-lb">Brent (Petróleo)</div><div class="kpi-val dn"><$90/bbl</div><div class="kpi-sub">−11% com reabertura Ormuz</div></div>
+  <div class="kpi or"><div class="kpi-lb">Dólar Focus Fim 2026</div><div class="kpi-val" style="color:var(--orange)">R$ 5,40</div><div class="kpi-sub">Spot 4,98 vs Focus 5,40 = GAP 8,4%!</div></div>
+</div>
+
+<div class="dv"></div>
+
+<!-- CRONOLOGIA ORMUZ -->
+<div class="sec-title"><div class="icon oil">⛽</div><h2>Cronologia Ormuz — A Semana que Mudou Tudo <span>— Petróleo e Geopolítica</span></h2></div>
+
+<div class="card">
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Data</th><th>Evento</th><th>Brent</th><th>Impacto</th></tr></thead>
+  <tbody>
+    <tr><td>06/abr</td><td>Impasse EUA-Irã. Ormuz fechado</td><td style="color:var(--dn)">$109,77</td><td>Petróleo em alta</td></tr>
+    <tr><td>07/abr</td><td>Trump: ultimato às 21h p/ reabrir</td><td style="color:var(--dn)">$109,27</td><td>Volatilidade extrema</td></tr>
+    <tr><td>08/abr</td><td>Cessar-fogo 2 sem. Trégua frágil</td><td>$95-100</td><td>Petróleo cai forte</td></tr>
+    <tr><td>13/abr</td><td>EUA ameaçam bloquear Ormuz!</td><td style="color:var(--dn)">$102,25</td><td><strong>Brent +7%!</strong></td></tr>
+    <tr><td>14/abr</td><td>Trump: "pessoas certas querem acordo"</td><td>$90-95</td><td>Alívio parcial</td></tr>
+    <tr><td><strong>17/abr</strong></td><td><strong>Irã libera tráfego! Ormuz reaberto</strong></td><td style="color:var(--up)"><strong><$90</strong></td><td><strong>Brent −11%!</strong></td></tr>
+  </tbody>
+</table>
+</div>
+<p style="font-size:.85rem;color:var(--text2);margin-top:10px"><strong>Goldman Sachs (9/abr):</strong> Brent a US$ 80-82 no 2ºsem se cessar-fogo persistir. Acima de US$ 100 se Ormuz fechar novamente por mais 1 mês. <strong>O petróleo é o termômetro geopolítico #1 de 2026.</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- DÓLAR -->
+<div class="sec-title"><div class="icon dolar">💵</div><h2>Dólar — Abaixo de R$ 5 Pela 1ª Vez em 25 Meses <span>— Impacto no Agro</span></h2></div>
+
+<div class="grid2">
+  <div class="chart-box">
+    <h3>📉 Trajetória do Dólar 2026 (R$/USD)</h3>
+    <div class="chart-wrap"><canvas id="ch1"></canvas></div>
+  </div>
+  <div class="chart-box">
+    <h3>🌾 Impacto do Dólar no Agro (cada −R$ 0,10)</h3>
+    <div class="chart-wrap"><canvas id="ch2"></canvas></div>
+  </div>
+</div>
+
+<div class="co dn">
+  <h4>📉 Dólar a R$ 4,97 — Por que Caiu Tanto?</h4>
+  <p><strong>3 fatores derrubaram o dólar:</strong><br>
+  <strong>1. Diferencial de juros:</strong> Selic 14,75% vs Fed 4,25% = 10,5 pp → carry trade atrai dólar pro Brasil.<br>
+  <strong>2. Exportações recordes:</strong> Safra recorde 179,7 mi t soja + café + carne → dólar entra forte.<br>
+  <strong>3. Trégua Ormuz:</strong> Reduz aversão a risco global → mercados emergentes se beneficiam.<br><br>
+  <strong>Risco:</strong> Spot a R$ 4,97, Focus R$ 5,40 = gap de 8,4%. Mercado "exageradamente" short em dólar. <strong>Qualquer susto geopolítico → repique rápido para R$ 5,20+.</strong></p>
+</div>
+
+<div class="co or">
+  <h4>⚠️ Impacto Direto no Agro — Dólar Baixo = Receita Menor</h4>
+  <p><strong>Cada R$ 0,10 a menos no dólar:</strong><br>
+  🌱 Soja: <strong>−R$ 2-3/sc</strong> (receita cai R$ 5-8 bilhões safra)<br>
+  🌽 Milho: <strong>−R$ 1,50/sc</strong><br>
+  ☕ Café: <strong>−R$ 30-40/sc</strong><br>
+  🐂 Boi: <strong>Mais caro em dólar = MENOS competitivo na exportação</strong><br>
+  🧪 Insumos: <strong>+Baratos</strong> (compra em dólar) → fertilizante cai<br><br>
+  <strong>Soja caiu de R$ 124,91 (jan) para R$ 120,94 (10/abr). Se dólar for a R$ 4,80: pode bater R$ 115-117/sc.</strong></p>
+</div>
+
+<div class="dv"></div>
+
+<!-- INFLAÇÃO -->
+<div class="sec-title"><div class="icon red">📊</div><h2>IPCA 0,88% em Março — Alimentação Pressiona <span>— Impacto na Selic e no Crédito Rural</span></h2></div>
+
+<div class="co dn">
+  <h4>🔴 Inflação de Alimentos Subiu Forte</h4>
+  <p>IPCA de março acima do esperado. <strong>Alimentação no domicílio puxou.</strong> Café, carnes, ovos e leite ainda em patamares elevados. Focus: IPCA 2026 em 4,36% → a 0,14 pp do teto da meta (4,50%). <strong>Se romper o teto:</strong> BCB pode pausar cortes de Selic → crédito rural fica caro por mais tempo. <strong>Custeio safra 25/26:</strong> taxa média Selic+3% = <strong>17,75% a.a. — recorde!</strong></p>
+</div>
+
+<div class="card">
+<h3>📋 Painel Macro — Semana 14-17/Abr vs Semana Anterior</h3>
+<div class="tbl-wrap">
+<table>
+  <thead><tr><th>Indicador</th><th>Sem. Anterior (10/abr)</th><th>Esta Semana (17/abr)</th><th>Variação</th><th>Impacto Agro</th></tr></thead>
+  <tbody>
+    <tr><td style="text-align:left"><strong>Dólar</strong></td><td>R$ 5,01</td><td style="color:var(--up)"><strong>R$ 4,976</strong></td><td style="color:var(--up)">↓ −0,7%</td><td style="color:var(--dn)">Baixista p/ grãos</td></tr>
+    <tr><td style="text-align:left"><strong>Brent</strong></td><td>~$60/bbl</td><td><strong><$90/bbl</strong></td><td>Volátil</td><td>Diesel +/frete +</td></tr>
+    <tr><td style="text-align:left"><strong>Ibovespa</strong></td><td>~194k</td><td style="color:var(--up)"><strong>~200k</strong></td><td style="color:var(--up)">Recorde</td><td>Real forte</td></tr>
+    <tr><td style="text-align:left"><strong>IPCA mar</strong></td><td>—</td><td style="color:var(--dn)"><strong>0,88%</strong></td><td style="color:var(--dn)">Acima!</td><td>Selic fica alta</td></tr>
+    <tr><td style="text-align:left"><strong>Selic</strong></td><td>14,75%</td><td><strong>14,75%</strong></td><td>→</td><td>Crédito caro</td></tr>
+    <tr><td style="text-align:left"><strong>Focus Dólar 2026</strong></td><td>R$ 5,40</td><td><strong>R$ 5,40</strong></td><td>→</td><td>GAP com spot: 8,4%</td></tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="dv"></div>
+
+<!-- TERMÔMETROS -->
+<div class="grid2">
+  <div class="thermo">
+    <h4>🌡️ Dólar — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:30%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬇ QUEDA — Diferencial juros + trégua + fluxo recorde. Pode testar R$ 4,80-4,90.</p>
+  </div>
+  <div class="thermo">
+    <h4>🌡️ Petróleo — Tendência Curto Prazo</h4>
+    <div class="th-bar"><div class="th-marker" style="left:35%"></div></div>
+    <div class="th-lb"><span>Forte queda</span><span>Neutro</span><span>Forte alta</span></div>
+    <p style="font-size:.82rem;color:var(--up);margin-top:6px;font-weight:600">⬇ QUEDA — Ormuz reabriu. Mas trégua é frágil! Qualquer escalada → $100+ de novo.</p>
+  </div>
+</div>
+
+<div class="dv"></div>
+
+<!-- OPINIÃO -->
+<div class="opinion">
+  <h3>🎯 Opinião do Analista — O Mundo Mudou Nesta Semana</h3>
+  <p><strong>ORMUZ REABRIU.</strong> Essa é a notícia #1 da semana. Petróleo despencou 11% em um dia. Dólar rompeu R$ 5,00 pela primeira vez em 25 meses. Ibovespa flertou com 200k. O mundo saiu do modo "guerra" para o modo "negociação".</p>
+  <p><strong>Mas atenção:</strong> a trégua é frágil. Vance (vice-presidente EUA) disse explicitamente que "é frágil". Em 13/abr, Trump ameaçou BLOQUEAR Ormuz e o Brent saltou 7% para $102. Dois dias depois, caiu 11%. <strong>Volatilidade desse nível = impossível prever com certeza.</strong></p>
+  <p><strong>Para o agro brasileiro, a combinação é DESAFIADORA:</strong><br>
+  ▸ Dólar abaixo de R$ 5 = receita em reais cai (soja, milho, café, algodão, carnes)<br>
+  ▸ Petróleo mais barato = diesel pode aliviar (se Petrobras repassar)<br>
+  ▸ Fertilizantes = rota por Ormuz reaberta → potencial de alívio nos preços<br>
+  ▸ IPCA alto = Selic não cai tão rápido → crédito rural continua caro<br>
+  ▸ Ibovespa recorde = capital estrangeiro entrando → sustenta real forte</p>
+  <p><strong>O cenário base para as próximas semanas:</strong> dólar entre R$ 4,85-5,10. Petróleo entre $80-95. Se trégua romper: dólar salta para R$ 5,30+ e Brent para $110+ (cenário de risco). <strong>Monitore Ormuz diariamente. É O fator #1 de 2026.</strong></p>
+  <div class="sig">— Dr. Sidney Souza · Economista Agrícola · Rural IN · 17/Abr/2026</div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const gc='rgba(30,51,69,.35)';
+const tt={backgroundColor:'#111a22',borderColor:'#2a5068',borderWidth:1,titleFont:{size:12,weight:'700'},bodyFont:{size:11},padding:10,cornerRadius:8};
+
+// CHART 1: DÓLAR 2026
+new Chart(document.getElementById('ch1').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','1/4','7/4','10/4','14/4','17/4'],
+    datasets:[{
+      label:'Dólar R$/USD',
+      data:[5.34,5.20,5.23,5.21,5.15,5.02,4.99,4.976],
+      borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.06)',
+      borderWidth:3,fill:true,tension:.35,
+      pointRadius:[5,5,5,4,4,5,5,8],
+      pointBackgroundColor:['#eab308','#eab308','#eab308','#eab308','#eab308','#22c55e','#22c55e','#22c55e']
+    },{
+      label:'Focus Fim 2026',
+      data:[5.40,5.40,5.40,5.40,5.40,5.40,5.40,5.40],
+      borderColor:'rgba(239,68,68,.5)',borderWidth:2,borderDash:[6,4],
+      pointRadius:0,fill:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:12,font:{size:10}}},tooltip:tt,
+      annotation:{annotations:{
+        r5:{type:'line',yMin:5.0,yMax:5.0,borderColor:'rgba(234,179,8,.4)',borderWidth:2,borderDash:[4,3],
+          label:{display:true,content:'R$ 5,00',position:'start',backgroundColor:'rgba(234,179,8,.6)',font:{size:9}}},
+        now:{type:'label',xValue:7,yValue:4.85,content:['R$ 4,976 ✅','Mín. 25 meses!'],font:{size:10,weight:'bold'},color:'#22c55e'}
+      }}
+    },
+    scales:{
+      y:{min:4.7,max:5.55,grid:{color:gc},ticks:{callback:v=>'R$'+v.toFixed(2),font:{size:10,weight:'600'}}},
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'600'}}}
+    }
+  }
+});
+
+// CHART 2: IMPACTO DÓLAR NO AGRO
+new Chart(document.getElementById('ch2').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Soja\n(R$/sc)','Milho\n(R$/sc)','Café\n(R$/sc)','Algodão\n(¢/lp)','Boi\n(R$/@)'],
+    datasets:[{
+      label:'Perda por −R$0,10 no dólar',
+      data:[2.5,1.5,35,5,3],
+      backgroundColor:['rgba(239,68,68,.3)','rgba(239,68,68,.3)','rgba(239,68,68,.3)','rgba(239,68,68,.3)','rgba(239,68,68,.3)'],
+      borderColor:['#ef4444','#ef4444','#ef4444','#ef4444','#ef4444'],
+      borderWidth:2,borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:tt},
+    scales:{
+      x:{grid:{color:gc},ticks:{callback:v=>'−R$'+v,font:{size:10,weight:'600'}}},
+      y:{grid:{display:false},ticks:{font:{size:11,weight:'700'}}}
+    }
+  }
+});
+</script>
+</body>
+</html>
