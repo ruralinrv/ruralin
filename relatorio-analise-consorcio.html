@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Técnico — Análise de Consórcio Estruturado | Dr. Sidney Souza</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap');
+
+        :root {
+            --primary: #1a2744;
+            --primary-light: #2d4a7a;
+            --accent: #c8a45a;
+            --accent-light: #e8d5a0;
+            --danger: #c0392b;
+            --danger-light: #fdecea;
+            --danger-bg: #fff5f5;
+            --warning: #e67e22;
+            --warning-light: #fef5e7;
+            --success: #27ae60;
+            --success-light: #eafaf1;
+            --dark: #1a1a2e;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --bg: #ffffff;
+            --shadow: 0 2px 15px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--gray-100);
+            line-height: 1.7;
+            font-size: 15px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* HEADER */
+        .report-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #0f1a30 100%);
+            color: white;
+            padding: 50px 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .report-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(200,164,90,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .report-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(200,164,90,0.2);
+            border: 1px solid rgba(200,164,90,0.4);
+            color: var(--accent-light);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .header-subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 30px;
+        }
+
+        .header-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .meta-item {
+            font-size: 12px;
+        }
+
+        .meta-label {
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 10px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-value {
+            color: rgba(255,255,255,0.9);
+            font-weight: 400;
+        }
+
+        /* AUTHOR BAR */
+        .author-bar {
+            background: linear-gradient(135deg, #f8f6f0 0%, #f0ece0 100%);
+            padding: 25px 60px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .author-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .author-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent);
+        }
+
+        .author-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .author-info p {
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* CLASSIFICATION BANNER */
+        .classification-banner {
+            background: var(--danger);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 50px 60px;
+        }
+
+        /* SECTIONS */
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: var(--accent);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .section-divider {
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            margin-bottom: 25px;
+            border-radius: 2px;
+        }
+
+        .section p, .section li {
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        /* TABLES */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            background: var(--primary);
+            color: white;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        thead th:first-child {
+            border-radius: 11px 0 0 0;
+        }
+
+        thead th:last-child {
+            border-radius: 0 11px 0 0;
+        }
+
+        tbody td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        tbody tr:hover {
+            background: rgba(200,164,90,0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr.total-row {
+            background: var(--gray-100);
+            font-weight: 700;
+        }
+
+        tbody tr.total-row td {
+            border-top: 2px solid var(--primary);
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ALERT BOXES */
+        .alert {
+            padding: 18px 22px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger);
+            color: #7c1d1d;
+        }
+
+        .alert-warning {
+            background: var(--warning-light);
+            border-left: 4px solid var(--warning);
+            color: #7c4a10;
+        }
+
+        .alert-info {
+            background: #eef2ff;
+            border-left: 4px solid var(--primary-light);
+            color: var(--primary);
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* EVALUATION BADGES */
+        .eval-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .eval-ok { background: var(--success-light); color: var(--success); }
+        .eval-warn { background: var(--warning-light); color: var(--warning); }
+        .eval-danger { background: var(--danger-light); color: var(--danger); }
+
+        /* CHARTS */
+        .chart-container {
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* BAR CHART */
+        .bar-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bar-label {
+            width: 160px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .bar-track {
+            flex: 1;
+            height: 32px;
+            background: var(--gray-200);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            transition: width 1s ease;
+            min-width: fit-content;
+        }
+
+        .bar-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text);
+            width: 130px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* STACKED BAR */
+        .stacked-bar-container {
+            margin: 15px 0;
+        }
+
+        .stacked-bar-label {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+
+        .stacked-bar {
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 4px;
+        }
+
+        .stacked-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            min-width: 40px;
+        }
+
+        .stacked-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        /* DONUT CHART */
+        .donut-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .donut-chart {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-center .value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--danger);
+        }
+
+        .donut-center .label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .donut-legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .donut-legend-text {
+            font-size: 13px;
+        }
+
+        .donut-legend-text strong {
+            display: block;
+            color: var(--text);
+        }
+
+        .donut-legend-text span {
+            color: var(--text-light);
+            font-size: 11px;
+        }
+
+        /* RANKING CHART */
+        .ranking-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ranking-position {
+            width: 28px;
+            height: 28px;
+            background: var(--gray-200);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--gray-600);
+            flex-shrink: 0;
+        }
+
+        .ranking-item.highlight .ranking-position {
+            background: var(--danger);
+            color: white;
+        }
+
+        .ranking-name {
+            width: 140px;
+            font-size: 12px;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .ranking-item.highlight .ranking-name {
+            font-weight: 800;
+            color: var(--danger);
+        }
+
+        .ranking-bar-track {
+            flex: 1;
+            height: 24px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .ranking-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .ranking-item.highlight .ranking-bar-fill {
+            background: var(--danger) !important;
+        }
+
+        /* SCENARIO CARDS */
+        .scenarios-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .scenario-card {
+            border-radius: var(--radius);
+            padding: 22px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .scenario-card.danger {
+            border-color: #f5c6cb;
+            background: linear-gradient(135deg, #fff5f5 0%, #fff0f0 100%);
+        }
+
+        .scenario-card.warning {
+            border-color: #fde8c8;
+            background: linear-gradient(135deg, #fffcf5 0%, #fff8ed 100%);
+        }
+
+        .scenario-card.severe {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, #fdecea 0%, #fce4e4 100%);
+        }
+
+        .scenario-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .scenario-card.danger .scenario-letter,
+        .scenario-card.severe .scenario-letter {
+            background: var(--danger);
+            color: white;
+        }
+
+        .scenario-card.warning .scenario-letter {
+            background: var(--warning);
+            color: white;
+        }
+
+        .scenario-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .scenario-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .scenario-result {
+            font-size: 14px;
+            font-weight: 800;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .scenario-card.danger .scenario-result {
+            background: rgba(192,57,43,0.1);
+            color: var(--danger);
+        }
+
+        .scenario-card.warning .scenario-result {
+            background: rgba(230,126,34,0.1);
+            color: var(--warning);
+        }
+
+        .scenario-card.severe .scenario-result {
+            background: rgba(192,57,43,0.15);
+            color: var(--danger);
+        }
+
+        /* RISK MATRIX */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: 40px repeat(5, 1fr);
+            grid-template-rows: repeat(5, 50px) 30px;
+            gap: 3px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .risk-matrix-ylabel {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            grid-row: 1 / 6;
+        }
+
+        .risk-cell {
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: white;
+            position: relative;
+        }
+
+        .risk-cell.green { background: rgba(39,174,96,0.3); }
+        .risk-cell.yellow { background: rgba(241,196,15,0.3); }
+        .risk-cell.orange { background: rgba(230,126,34,0.4); }
+        .risk-cell.red { background: rgba(192,57,43,0.4); }
+        .risk-cell.darkred { background: rgba(150,30,20,0.5); }
+
+        .risk-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--danger);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(192,57,43,0.5);
+            border: 2px solid white;
+        }
+
+        .risk-xlabel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        /* COMPARISON TABLE */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            text-align: center;
+            border: 2px solid var(--gray-200);
+        }
+
+        .comparison-card.current {
+            border-color: var(--danger);
+            background: var(--danger-bg);
+        }
+
+        .comparison-card.better {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .comparison-card .comp-title {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .comparison-card.current .comp-title { color: var(--danger); border-color: rgba(192,57,43,0.2); }
+        .comparison-card.better .comp-title { color: var(--success); border-color: rgba(39,174,96,0.2); }
+
+        .comp-item {
+            margin-bottom: 10px;
+        }
+
+        .comp-item .comp-label {
+            font-size: 10px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comp-item .comp-value {
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .comparison-card.current .comp-value { color: var(--danger); }
+        .comparison-card.better .comp-value { color: var(--success); }
+
+        /* FLOW CHART */
+        .flow-container {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .flow-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gray-300);
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+
+        .flow-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+
+        .flow-item:nth-child(odd) { justify-content: flex-start; padding-right: 52%; }
+        .flow-item:nth-child(even) { justify-content: flex-end; padding-left: 52%; }
+
+        .flow-card {
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            padding: 16px;
+            max-width: 380px;
+            box-shadow: var(--shadow);
+        }
+
+        .flow-card.income { border-color: var(--success); }
+        .flow-card.expense { border-color: var(--danger); }
+
+        .flow-card .flow-period {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .flow-card.income .flow-period { color: var(--success); }
+        .flow-card.expense .flow-period { color: var(--danger); }
+
+        .flow-card .flow-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+
+        .flow-card .flow-amount {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .flow-card.income .flow-amount { color: var(--success); }
+        .flow-card.expense .flow-amount { color: var(--danger); }
+
+        /* RISK CARDS */
+        .risk-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .risk-card {
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .risk-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+        }
+
+        .risk-card.critical .risk-card-header { background: linear-gradient(135deg, #fdecea, #fef5f5); }
+        .risk-card.high .risk-card-header { background: linear-gradient(135deg, #fef5e7, #fffcf5); }
+
+        .risk-badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .risk-card.critical .risk-badge { background: var(--danger); color: white; }
+        .risk-card.high .risk-badge { background: var(--warning); color: white; }
+
+        .risk-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            flex: 1;
+        }
+
+        .risk-level-tag {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .risk-card-body {
+            padding: 16px 20px;
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.7;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .risk-card-body blockquote {
+            margin: 12px 0;
+            padding: 12px 16px;
+            background: var(--gray-100);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* LEGAL TABLE */
+        .legal-table td:first-child {
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            width: 240px;
+        }
+
+        /* RECOMMENDATION CARDS */
+        .rec-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .rec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px;
+            border-radius: var(--radius);
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+        }
+
+        .rec-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            flex-shrink: 0;
+            color: white;
+        }
+
+        .rec-urgent .rec-number { background: var(--danger); }
+        .rec-high .rec-number { background: var(--warning); }
+        .rec-medium .rec-number { background: var(--primary-light); }
+        .rec-permanent .rec-number { background: var(--gray-600); }
+
+        .rec-content {
+            flex: 1;
+        }
+
+        .rec-content strong {
+            font-size: 13px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .rec-content p {
+            font-size: 12px;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .rec-priority {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        .rec-urgent .rec-priority { background: var(--danger-light); color: var(--danger); }
+        .rec-high .rec-priority { background: var(--warning-light); color: var(--warning); }
+        .rec-medium .rec-priority { background: #eef2ff; color: var(--primary-light); }
+        .rec-permanent .rec-priority { background: var(--gray-200); color: var(--gray-600); }
+
+        /* VERDICT */
+        .verdict-box {
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 50%, #2d0000 100%);
+            border-radius: var(--radius);
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verdict-box::before {
+            content: '⚠';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.05;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .verdict-label {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .verdict-title {
+            font-family: 'Playfair Display', serif;
+            color: #ff4444;
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .verdict-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .verdict-reasons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .verdict-tag {
+            background: rgba(255,68,68,0.15);
+            border: 1px solid rgba(255,68,68,0.3);
+            color: #ff6b6b;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* BIG STAT */
+        .big-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .big-stat {
+            background: var(--gray-100);
+            border-radius: var(--radius);
+            padding: 24px 20px;
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .big-stat .stat-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .big-stat .stat-value {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .big-stat .stat-sub {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .big-stat.danger .stat-value { color: var(--danger); }
+        .big-stat.warning .stat-value { color: var(--warning); }
+        .big-stat.primary .stat-value { color: var(--primary); }
+
+        /* INCONSISTENCY */
+        .inconsistency-list {
+            margin: 15px 0;
+        }
+
+        .inconsistency-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--warning-light);
+            border: 1px solid rgba(230,126,34,0.2);
+        }
+
+        .inconsistency-item .inc-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .inconsistency-item .inc-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .inconsistency-item .inc-desc {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* FOOTER */
+        .report-footer {
+            background: var(--primary);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 60px;
+        }
+
+        .footer-note {
+            font-size: 11px;
+            line-height: 1.7;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .footer-author {
+            text-align: center;
+        }
+
+        .footer-author h4 {
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .footer-author p {
+            font-size: 12px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2px;
+        }
+
+        .footer-location {
+            margin-top: 16px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .footer-quote {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-style: italic;
+            font-size: 13px;
+            color: var(--accent-light);
+        }
+
+        /* NOTE BOX */
+        .note-box {
+            background: #fefce8;
+            border: 1px solid #fde68a;
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin: 15px 0;
+            font-size: 12px;
+            color: #92400e;
+        }
+
+        .note-box strong {
+            color: #78350f;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .report-header { padding: 30px 40px 25px; }
+            .content { padding: 30px 40px; }
+            .author-bar { padding: 15px 40px; }
+            .report-footer { padding: 25px 40px; }
+            .section { page-break-inside: avoid; }
+            .chart-container { page-break-inside: avoid; }
+        }
+
+        @media (max-width: 768px) {
+            .report-header { padding: 30px 25px 25px; }
+            .content { padding: 30px 25px; }
+            .author-bar { padding: 20px 25px; flex-direction: column; text-align: center; }
+            .report-footer { padding: 30px 25px; }
+            .header-meta { grid-template-columns: 1fr; }
+            .header-title { font-size: 24px; }
+            .scenarios-grid { grid-template-columns: 1fr; }
+            .comparison-grid { grid-template-columns: 1fr 1fr; }
+            .big-stat-grid { grid-template-columns: 1fr; }
+            .bar-label { width: 100px; font-size: 10px; }
+            .bar-value { width: 100px; font-size: 10px; }
+            .donut-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CLASSIFICATION BANNER -->
+    <div class="classification-banner">⚠ CONFIDENCIAL — USO EXCLUSIVO DO DESTINATÁRIO</div>
+
+    <!-- HEADER -->
+    <header class="report-header">
+        <div class="header-badge">Relatório Técnico de Análise Econômico-Financeira</div>
+        <h1 class="header-title">Análise da Operação de Consórcio Estruturado</h1>
+        <p class="header-subtitle">Evoy Administradora de Consórcio / Allianz Assessoria Empresarial Ltda</p>
+        <div class="header-meta">
+            <div class="meta-item">
+                <span class="meta-label">Destinatário</span>
+                <span class="meta-value">Sr. Fábio Cunha da Câmara</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">CPF</span>
+                <span class="meta-value">333.315.611-34</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Data do Relatório</span>
+                <span class="meta-value">23 de abril de 2026</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Classificação de Risco</span>
+                <span class="meta-value" style="color: #ff6b6b; font-weight:700;">🔴 MUITO ALTO</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- AUTHOR BAR -->
+    <div class="author-bar">
+        <div class="author-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="author-info">
+            <h3>Dr. Sidney Souza</h3>
+            <p>Economista e Administrador Agrícola · Estrategista Econômico do Produtor<br>
+            Especialista em Economia e Finanças do Agronegócio</p>
+        </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+        <!-- SECTION 1: OBJETIVO -->
+        <div class="section">
+            <div class="section-number">1</div>
+            <h2 class="section-title">Objetivo do Relatório</h2>
+            <div class="section-divider"></div>
+            <p>O presente relatório tem por finalidade apresentar <strong>análise técnica independente</strong> da operação de consórcio estruturado proposta ao Sr. Fábio Cunha da Câmara, contemplando:</p>
+            <ul style="margin: 15px 0 15px 20px;">
+                <li>Avaliação da idoneidade e reputação das empresas ofertantes;</li>
+                <li>Análise financeira das condições contratadas;</li>
+                <li>Mapeamento de riscos operacionais, jurídicos e financeiros;</li>
+                <li>Comparativo com alternativas de mercado;</li>
+                <li>Parecer conclusivo e recomendações.</li>
+            </ul>
+            <p>A análise foi conduzida com base nos documentos fornecidos (simulações de propostas, detalhamento operacional e termo de aceite), dados públicos e informações disponíveis junto a órgãos reguladores.</p>
+        </div>
+
+        <!-- SECTION 2: DESCRIÇÃO DA OPERAÇÃO -->
+        <div class="section">
+            <div class="section-number">2</div>
+            <h2 class="section-title">Descrição da Operação</h2>
+            <div class="section-divider"></div>
+
+            <p>A operação consiste na contratação de <strong>5 (cinco) cotas de consórcio</strong> junto à Evoy Administradora de Consórcio Ltda, intermediada pela Allianz Assessoria Empresarial Ltda, com promessa de contemplação via lance embutido de 30% na data de 27/04/2026.</p>
+
+            <!-- BIG STATS -->
+            <div class="big-stat-grid">
+                <div class="big-stat primary">
+                    <div class="stat-label">Crédito Total</div>
+                    <div class="stat-value">R$ 6,98 mi</div>
+                    <div class="stat-sub">5 cotas somadas</div>
+                </div>
+                <div class="big-stat danger">
+                    <div class="stat-label">Saldo Devedor</div>
+                    <div class="stat-value">R$ 7,11 mi</div>
+                    <div class="stat-sub">Excede o crédito em R$ 129 mil</div>
+                </div>
+                <div class="big-stat warning">
+                    <div class="stat-label">Resgate Líquido</div>
+                    <div class="stat-value">R$ 4,89 mi</div>
+                    <div class="stat-sub">Apenas 70% do crédito</div>
+                </div>
+            </div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 25px 0 15px;">2.1 Quadro Sintético das Cotas</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="text-center">Cota</th>
+                            <th class="text-right">Crédito Total</th>
+                            <th class="text-right">Lance Embutido</th>
+                            <th class="text-right">Resgate Líquido</th>
+                            <th class="text-right">Saldo Devedor</th>
+                            <th class="text-right">Parcela (6ª+)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-right">R$ 910.821,00</td>
+                            <td class="text-right">R$ 273.246,30</td>
+                            <td class="text-right">R$ 637.574,70</td>
+                            <td class="text-right">R$ 927.694,04</td>
+                            <td class="text-right">R$ 5.222,87</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td class="text-right">R$ 1.686.705,00</td>
+                            <td class="text-right">R$ 506.011,50</td>
+                            <td class="text-right">R$ 1.180.693,50</td>
+                            <td class="text-right">R$ 1.717.944,91</td>
+                            <td class="text-right">R$ 9.671,94</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td class="text-right">R$ 2.024.046,00</td>
+                            <td class="text-right">R$ 607.213,80</td>
+                            <td class="text-right">R$ 1.416.832,20</td>
+                            <td class="text-right">R$ 2.061.533,89</td>
+                            <td class="text-right">R$ 11.606,32</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">4</td>
+                            <td class="text-right">R$ 1.012.023,00</td>
+                            <td class="text-right">R$ 303.606,90</td>
+                            <td class="text-right">R$ 708.416,10</td>
+                            <td class="text-right">R$ 1.030.766,94</td>
+                            <td class="text-right">R$ 5.803,16</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">5</td>
+                            <td class="text-right">R$ 1.349.364,00</td>
+                            <td class="text-right">R$ 404.809,20</td>
+                            <td class="text-right">R$ 944.554,80</td>
+                            <td class="text-right">R$ 1.374.355,92</td>
+                            <td class="text-right">R$ 7.737,55</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td class="text-center"><strong>TOTAL</strong></td>
+                            <td class="text-right"><strong>R$ 6.982.959,00</strong></td>
+                            <td class="text-right"><strong>R$ 2.094.887,70</strong></td>
+                            <td class="text-right"><strong>R$ 4.888.071,30</strong></td>
+                            <td class="text-right"><strong>R$ 7.112.295,70</strong></td>
+                            <td class="text-right"><strong>R$ 40.041,84</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 25px 0 15px;">2.2 Resumo do Termo de Aceite</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-right">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Crédito (Termo de Aceite)</td><td class="text-right">R$ 961.422,00</td></tr>
+                        <tr><td>Crédito Líquido</td><td class="text-right">R$ 672.995,40</td></tr>
+                        <tr><td>1ª Parcela (adesão)</td><td class="text-right">R$ 325.870,44</td></tr>
+                        <tr><td>2ª a 5ª Parcelas</td><td class="text-right">R$ 60.215,19 cada</td></tr>
+                        <tr><td>Demais Parcelas</td><td class="text-right">R$ 36.809,83</td></tr>
+                        <tr><td>Saldo Devedor Final</td><td class="text-right">R$ 6.566.733,33</td></tr>
+                        <tr><td>Prazo</td><td class="text-right">168 meses (14 anos)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note-box">
+                <strong>⚠ Nota técnica:</strong> Observa-se divergência entre os valores consolidados das simulações e os valores constantes do Termo de Aceite, o que será detalhado na seção de riscos (item 9 — Inconsistências Documentais).
+            </div>
+        </div>
+
+        <!-- SECTION 3: EMPRESAS -->
+        <div class="section">
+            <div class="section-number">3</div>
+            <h2 class="section-title">Análise das Empresas Envolvidas</h2>
+            <div class="section-divider"></div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 20px 0 15px;">3.1 Evoy Administradora de Consórcio Ltda</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critério</th>
+                            <th>Informação</th>
+                            <th class="text-center">Avaliação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CNPJ</td><td>42.735.881/0001-39</td><td class="text-center">—</td></tr>
+                        <tr><td>Autorização BACEN</td><td>Autorizada</td><td class="text-center"><span class="eval-badge eval-ok">✅ OK</span></td></tr>
+                        <tr><td>Data de fundação</td><td>15/07/2021</td><td class="text-center"><span class="eval-badge eval-warn">⚠️ Recente</span></td></tr>
+                        <tr><td>Tempo de mercado</td><td>~4 anos e 9 meses</td><td class="text-center"><span class="eval-badge eval-warn">⚠️ Curto</span></td></tr>
+                        <tr><td>Capital social</td><td>R$ 1.500.000,00</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Baixo</span></td></tr>
+                        <tr><td>Ranking BACEN (reclamações)</td><td><strong>6ª pior do Brasil</strong> (índice 2.016,49)</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Crítico</span></td></tr>
+                        <tr><td>Endereço nos documentos</td><td>Mogi das Cruzes/SP</td><td class="text-center"><span class="eval-badge eval-warn">⚠️ Diverge</span></td></tr>
+                        <tr><td>Endereço na Receita Federal</td><td>Barueri/SP (Alphaville)</td><td class="text-center"><span class="eval-badge eval-warn">⚠️ Diverge</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- RANKING CHART -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Ranking BACEN — Top 10 Piores Administradoras (Índice de Reclamações)</div>
+                <div class="ranking-chart">
+                    <div class="ranking-item">
+                        <div class="ranking-position">1</div>
+                        <div class="ranking-name">Alpha</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:100%; background: #8B0000;">3.782</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">2</div>
+                        <div class="ranking-name">Reserva</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:69%; background: #B22222;">2.621</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">3</div>
+                        <div class="ranking-name">BP Administradora</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:60%; background: #CD3333;">2.257</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">4</div>
+                        <div class="ranking-name">Promove</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:56%; background: #DC3545;">2.117</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item highlight">
+                        <div class="ranking-position">5</div>
+                        <div class="ranking-name">► EVOY</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:53%;">2.016</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">6</div>
+                        <div class="ranking-name">Coop. Roma</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:41%; background: #E8804A;">1.563</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">7</div>
+                        <div class="ranking-name">CNP Consórcio</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:37%; background: #E8974A;">1.390</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">8</div>
+                        <div class="ranking-name">Simpala</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:36%; background: #E8A84A;">1.371</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">9</div>
+                        <div class="ranking-name">Kasinski</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:24%; background: #D4A84A;">915</div>
+                        </div>
+                    </div>
+                    <div class="ranking-item">
+                        <div class="ranking-position">10</div>
+                        <div class="ranking-name">Multimarcas</div>
+                        <div class="ranking-bar-track">
+                            <div class="ranking-bar-fill" style="width:18%; background: #C4B84A;">689</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 25px 0 15px;">3.2 Allianz Assessoria Empresarial Ltda</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critério</th>
+                            <th>Informação</th>
+                            <th class="text-center">Avaliação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>CNPJ</td><td>58.030.976/0001-97</td><td class="text-center">—</td></tr>
+                        <tr><td>Autorização BACEN</td><td><strong>NÃO possui</strong> — não é administradora</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Ausente</span></td></tr>
+                        <tr><td>Cadastro Reclame Aqui</td><td>Há apenas 2 meses</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Recente</span></td></tr>
+                        <tr><td>Reputação</td><td>Sem reputação definida</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Inexistente</span></td></tr>
+                        <tr><td>Reclamações registradas</td><td>"Promessa de contemplação não cumprida"</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Grave</span></td></tr>
+                        <tr><td>Vínculo com Allianz Seguros</td><td><strong>NENHUM</strong> — empresas totalmente distintas</td><td class="text-center"><span class="eval-badge eval-danger">🔴 Indução</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-danger">
+                <span class="alert-icon">🚨</span>
+                <div>
+                    <strong>ALERTA SOBRE O NOME "ALLIANZ"</strong>
+                    A Allianz Assessoria Empresarial Ltda <strong>NÃO possui qualquer vínculo</strong> com o grupo segurador alemão Allianz SE ou com a Allianz Seguros S.A. O uso do nome "Allianz" pode configurar <strong>indução ao erro</strong>, levando o consumidor a associar a intermediária a uma marca de reputação internacional. Já existe reclamação pública sobre promessa de contemplação não cumprida — exatamente o mesmo modelo da operação ora analisada.
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: ANÁLISE FINANCEIRA -->
+        <div class="section">
+            <div class="section-number">4</div>
+            <h2 class="section-title">Análise Financeira Detalhada</h2>
+            <div class="section-divider"></div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 20px 0 15px;">4.1 Composição do Crédito vs. Resgate por Cota</h3>
+            <p>Em todas as cotas, o cliente <strong>recebe apenas 70%</strong> do crédito contratado, porém fica obrigado ao pagamento de <strong>100% do saldo devedor</strong> acrescido de taxa administrativa.</p>
+
+            <!-- STACKED BAR CHART -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Crédito Contratado vs. Resgate Líquido (por cota)</div>
+
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar-label">Cota 1 — R$ 910.821</div>
+                    <div class="stacked-bar">
+                        <div class="stacked-segment" style="width:70%; background: var(--primary);">R$ 637.575</div>
+                        <div class="stacked-segment" style="width:30%; background: var(--danger);">R$ 273.246</div>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar-label">Cota 2 — R$ 1.686.705</div>
+                    <div class="stacked-bar">
+                        <div class="stacked-segment" style="width:70%; background: var(--primary);">R$ 1.180.694</div>
+                        <div class="stacked-segment" style="width:30%; background: var(--danger);">R$ 506.012</div>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar-label">Cota 3 — R$ 2.024.046</div>
+                    <div class="stacked-bar">
+                        <div class="stacked-segment" style="width:70%; background: var(--primary);">R$ 1.416.832</div>
+                        <div class="stacked-segment" style="width:30%; background: var(--danger);">R$ 607.214</div>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar-label">Cota 4 — R$ 1.012.023</div>
+                    <div class="stacked-bar">
+                        <div class="stacked-segment" style="width:70%; background: var(--primary);">R$ 708.416</div>
+                        <div class="stacked-segment" style="width:30%; background: var(--danger);">R$ 303.607</div>
+                    </div>
+                </div>
+
+                <div class="stacked-bar-container">
+                    <div class="stacked-bar-label">Cota 5 — R$ 1.349.364</div>
+                    <div class="stacked-bar">
+                        <div class="stacked-segment" style="width:70%; background: var(--primary);">R$ 944.555</div>
+                        <div class="stacked-segment" style="width:30%; background: var(--danger);">R$ 404.809</div>
+                    </div>
+                </div>
+
+                <div class="stacked-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--primary);"></div>Resgate Líquido (70% — o que o cliente recebe)</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:var(--danger);"></div>Lance Embutido (30% — deduzido do crédito)</div>
+                </div>
+            </div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 25px 0 15px;">4.2 Custo Efetivo Total da Operação</h3>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Cálculo</th>
+                            <th class="text-right">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1ª Parcela (adesão — 5 cotas)</td><td>Soma das adesões</td><td class="text-right">R$ 326.583,36</td></tr>
+                        <tr><td>2ª a 5ª Parcelas</td><td>4 × R$ 55.383,25</td><td class="text-right">R$ 221.533,00</td></tr>
+                        <tr><td>6ª a 168ª Parcelas</td><td>163 × R$ 40.041,84</td><td class="text-right">R$ 6.526.819,92</td></tr>
+                        <tr class="total-row"><td><strong>TOTAL DESEMBOLSADO</strong></td><td></td><td class="text-right"><strong>R$ 7.074.936,28</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- DONUT CHART - BALANÇO -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Balanço Econômico da Operação</div>
+                <div class="donut-container">
+                    <div class="donut-chart">
+                        <svg width="200" height="200" viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#e9ecef" stroke-width="25"/>
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#1a2744" stroke-width="25"
+                                stroke-dasharray="348 503" stroke-dashoffset="0"/>
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#c0392b" stroke-width="25"
+                                stroke-dasharray="155 503" stroke-dashoffset="-348"/>
+                        </svg>
+                        <div class="donut-center">
+                            <div class="value">44,7%</div>
+                            <div class="label">Custo sobre<br>o resgate</div>
+                        </div>
+                    </div>
+                    <div class="donut-legend">
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-color" style="background: var(--primary);"></div>
+                            <div class="donut-legend-text">
+                                <strong>R$ 4.888.071,30</strong>
+                                <span>Resgate Líquido (o que o cliente recebe)</span>
+                            </div>
+                        </div>
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-color" style="background: var(--danger);"></div>
+                            <div class="donut-legend-text">
+                                <strong>R$ 2.186.864,98</strong>
+                                <span>Custo da operação (o que o cliente perde)</span>
+                            </div>
+                        </div>
+                        <div class="donut-legend-item">
+                            <div class="donut-legend-color" style="background: var(--gray-300);"></div>
+                            <div class="donut-legend-text">
+                                <strong>R$ 7.074.936,28</strong>
+                                <span>Total desembolsado em 14 anos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-danger">
+                <span class="alert-icon">💸</span>
+                <div>
+                    <strong>Em termos práticos:</strong>
+                    Para cada <strong>R$ 1,00 recebido</strong>, o cliente pagará <strong>R$ 1,45</strong> ao longo de 14 anos. Trata-se de um custo efetivo extremamente elevado, superior à maioria das alternativas disponíveis no mercado.
+                </div>
+            </div>
+
+            <h3 style="font-size:16px; color:var(--primary); margin: 25px 0 15px;">4.3 Comparativo com Alternativas de Mercado</h3>
+
+            <div class="comparison-grid">
+                <div class="comparison-card current">
+                    <div class="comp-title">🔴 Consórcio Estruturado (Esta Proposta)</div>
+                    <div class="comp-item"><div class="comp-label">Custo Efetivo</div><div class="comp-value">~44,7%</div></div>
+                    <div class="comp-item"><div class="comp-label">Liberação</div><div class="comp-value">Incerta</div></div>
+                    <div class="comp-item"><div class="comp-label">Risco</div><div class="comp-value">ALTO</div></div>
+                    <div class="comp-item"><div class="comp-label">Garantia</div><div class="comp-value">Imóvel</div></div>
+                </div>
+                <div class="comparison-card better">
+                    <div class="comp-title">✅ Home Equity</div>
+                    <div class="comp-item"><div class="comp-label">Custo Efetivo</div><div class="comp-value">~18-22%</div></div>
+                    <div class="comp-item"><div class="comp-label">Liberação</div><div class="comp-value">Imediata</div></div>
+                    <div class="comp-item"><div class="comp-label">Risco</div><div class="comp-value">Nenhum</div></div>
+                    <div class="comp-item"><div class="comp-label">Garantia</div><div class="comp-value">Imóvel</div></div>
+                </div>
+                <div class="comparison-card better">
+                    <div class="comp-title">✅ Crédito Rural (FCO/BNDES)</div>
+                    <div class="comp-item"><div class="comp-label">Custo Efetivo</div><div class="comp-value">~10-15%</div></div>
+                    <div class="comp-item"><div class="comp-label">Liberação</div><div class="comp-value">30-60 dias</div></div>
+                    <div class="comp-item"><div class="comp-label">Risco</div><div class="comp-value">Nenhum</div></div>
+                    <div class="comp-item"><div class="comp-label">Garantia</div><div class="comp-value">Propriedade</div></div>
+                </div>
+                <div class="comparison-card better">
+                    <div class="comp-title">✅ Crédito Bancário PJ</div>
+                    <div class="comp-item"><div class="comp-label">Custo Efetivo</div><div class="comp-value">~25-35%</div></div>
+                    <div class="comp-item"><div class="comp-label">Liberação</div><div class="comp-value">15-30 dias</div></div>
+                    <div class="comp-item"><div class="comp-label">Risco</div><div class="comp-value">Nenhum</div></div>
+                    <div class="comp-item"><div class="comp-label">Garantia</div><div class="comp-value">Variável</div></div>
+                </div>
+            </div>
+
+            <!-- BAR CHART COMPARATIVO -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Custo Total Estimado por Modalidade (para ~R$ 4,9 mi líquidos)</div>
+                <div class="bar-chart">
+                    <div class="bar-item">
+                        <div class="bar-label">Consórcio Estruturado</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:100%; background: linear-gradient(90deg, #c0392b, #e74c3c);">R$ 7,07 mi</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Home Equity</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:82%; background: linear-gradient(90deg, #27ae60, #2ecc71);">R$ 5,80 mi</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Crédito Rural</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:76%; background: linear-gradient(90deg, #1a8a4a, #27ae60);">R$ 5,40 mi</div>
+                        </div>
+                    </div>
+                    <div class="bar-item">
+                        <div class="bar-label">Crédito Bancário PJ</div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width:90%; background: linear-gradient(90deg, #2980b9, #3498db);">R$ 6,40 mi</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size:11px; color:var(--text-light); margin-top:12px; text-align:center;">* Valores estimados para fins comparativos, sem considerar reajustes inflacionários</p>
+            </div>
+        </div>
+
+        <!-- SECTION 5: RISCOS -->
+        <div class="section">
+            <div class="section-number">5</div>
+            <h2 class="section-title">Mapeamento de Riscos</h2>
+            <div class="section-divider"></div>
+
+            <!-- RISK MATRIX VISUAL -->
+            <div class="chart-container">
+                <div class="chart-title">📊 Matriz de Riscos da Operação</div>
+                <div class="risk-matrix">
+                    <div class="risk-matrix-ylabel">IMPACTO</div>
+                    <!-- Row 1 - Muito Alto -->
+                    <div class="risk-cell orange"></div>
+                    <div class="risk-cell red"></div>
+                    <div class="risk-cell red"></div>
+                    <div class="risk-cell darkred"><div class="risk-dot">R5</div></div>
+                    <div class="risk-cell darkred"><div class="risk-dot">R1</div></div>
+                    <!-- Row 2 - Alto -->
+                    <div class="risk-cell yellow"></div>
+                    <div class="risk-cell orange"></div>
+                    <div class="risk-cell red"><div class="risk-dot">R3</div></div>
+                    <div class="risk-cell red"><div class="risk-dot">R6</div></div>
+                    <div class="risk-cell darkred"><div class="risk-dot">R2</div></div>
+                    <!-- Row 3 - Médio -->
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell yellow"></div>
+                    <div class="risk-cell orange"><div class="risk-dot">R4</div></div>
+                    <div class="risk-cell orange"><div class="risk-dot">R8</div></div>
+                    <div class="risk-cell red"></div>
+                    <!-- Row 4 - Baixo -->
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell yellow"><div class="risk-dot">R9</div></div>
+                    <div class="risk-cell orange"></div>
+                    <div class="risk-cell orange"><div class="risk-dot">R7</div></div>
+                    <!-- Row 5 - Muito Baixo -->
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell green"></div>
+                    <div class="risk-cell yellow"></div>
+                    <div class="risk-cell orange"></div>
+                    <!-- X Labels -->
+                    <div></div>
+                    <div class="risk-xlabel">Muito<br>Baixa</div>
+                    <div class="risk-xlabel">Baixa</div>
+                    <div class="risk-xlabel">Média</div>
+                    <div class="risk-xlabel">Alta</div>
+                    <div class="risk-xlabel">Muito<br>Alta</div>
+                </div>
+                <p style="text-align:center; font-size:11px; color:var(--text-light); margin-top:8px;">PROBABILIDADE →</p>
+            </div>
+
+            <!-- RISK CARDS -->
+            <div class="risk-cards">
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R1</span>
+                        <span class="risk-card-title">Risco de Não Contemplação</span>
+                        <span class="risk-level-tag">Prob: MUITO ALTA · Impacto: MUITO ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        O lance embutido de 30% <strong>não garante contemplação</strong>. Em assembleia, qualquer consorciado pode ofertar lance superior. Caso não contemplado, os R$ 326.583,36 da adesão <strong>não são devolvidos</strong> — ficam como crédito no grupo, e o cliente continuará pagando parcelas mensais <strong>sem receber recurso algum</strong>. A Lei nº 11.795/2008 (art. 22) é clara: não existe garantia de contemplação.
+                        <blockquote>"Não existe a possibilidade de prometer quando a contemplação ocorrerá, exceto a data de fim do grupo no qual o consorciado está." — Marcelo Lucindo, CEO da Evoy (abril/2026)</blockquote>
+                    </div>
+                </div>
+
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R2</span>
+                        <span class="risk-card-title">Desembolso Inicial Irreversível</span>
+                        <span class="risk-level-tag">Prob: CERTA · Impacto: MUITO ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        O valor de <strong>R$ 325.870,44</strong> deve ser pago <strong>no ato da assinatura</strong>, antes de qualquer contemplação. Não é reembolsável em caso de desistência imediata. Em caso de cancelamento, a devolução ocorre apenas ao <strong>término do grupo</strong> (até 14 anos), com descontos de multa, taxa administrativa e cláusula penal.
+                    </div>
+                </div>
+
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R3</span>
+                        <span class="risk-card-title">Ilegalidade da Promessa de Contemplação</span>
+                        <span class="risk-level-tag">Prob: ALTA · Impacto: ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        O Detalhamento Operacional afirma: <em>"No dia 27/04 será ofertado 30% do valor de cada contrato previsto como lance embutido."</em> Essa promessa contraria o <strong>art. 22 da Lei nº 11.795/2008</strong>, as Circulares do BACEN sobre consórcios, e pode configurar <strong>propaganda enganosa</strong> (art. 37 do CDC) e <strong>prática abusiva</strong> (art. 39 do CDC).
+                    </div>
+                </div>
+
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R4</span>
+                        <span class="risk-card-title">Alienação Fiduciária do Imóvel</span>
+                        <span class="risk-level-tag">Prob: ALTA · Impacto: ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        O contrato exige que um imóvel do cliente seja <strong>alienado como garantia fiduciária</strong>. Em caso de inadimplência, o imóvel pode ser levado a <strong>leilão extrajudicial</strong> (Lei nº 9.514/97). O cliente pode <strong>perder patrimônio real</strong> em decorrência de uma operação que sequer garantiu a liberação do crédito.
+                    </div>
+                </div>
+
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R5</span>
+                        <span class="risk-card-title">Saldo Devedor Superior ao Crédito</span>
+                        <span class="risk-level-tag">Prob: CERTA · Impacto: MUITO ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        <div class="bar-chart" style="margin: 10px 0;">
+                            <div class="bar-item">
+                                <div class="bar-label" style="width:100px;">Crédito</div>
+                                <div class="bar-track"><div class="bar-fill" style="width:98%; background:var(--primary);">R$ 6.982.959</div></div>
+                            </div>
+                            <div class="bar-item">
+                                <div class="bar-label" style="width:100px;">Saldo Devedor</div>
+                                <div class="bar-track"><div class="bar-fill" style="width:100%; background:var(--danger);">R$ 7.112.296 (+R$ 129.337)</div></div>
+                            </div>
+                        </div>
+                        O saldo devedor excede o crédito contratado em <strong>R$ 129.336,70</strong> desde o início. O cliente assume obrigação de pagamento superior ao benefício contratado.
+                    </div>
+                </div>
+
+                <div class="risk-card critical">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R6</span>
+                        <span class="risk-card-title">Reputação da Administradora</span>
+                        <span class="risk-level-tag">Prob: CONSUMADA · Impacto: ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        A Evoy figura na <strong>6ª posição entre as piores administradoras de consórcio do Brasil</strong> no ranking oficial do Banco Central, com índice de reclamações de <strong>2.016,49</strong> — mais de 3 vezes o índice médio do mercado. Conforme gráfico apresentado na seção 3.1.
+                    </div>
+                </div>
+
+                <div class="risk-card high">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R7</span>
+                        <span class="risk-card-title">Reajuste das Parcelas</span>
+                        <span class="risk-level-tag">Prob: CERTA · Impacto: MÉDIO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        As parcelas de consórcio são reajustadas anualmente (geralmente INPC). Em 14 anos, assumindo inflação média de 5% a.a., a parcela mensal consolidada pode passar de <strong>R$ 40.041,84</strong> para aproximadamente <strong>R$ 79.000,00</strong> ao final do contrato.
+                    </div>
+                </div>
+
+                <div class="risk-card high">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R8</span>
+                        <span class="risk-card-title">Intermediária Sem Regulação</span>
+                        <span class="risk-level-tag">Prob: ALTA · Impacto: MÉDIO-ALTO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        A Allianz Assessoria Empresarial Ltda não é regulada pelo BACEN, não se responsabiliza contratualmente pela contemplação e age como intermediária. A operação gera obrigações <strong>exclusivamente entre o cliente e a Evoy</strong>. Em caso de prejuízo, a responsabilização da intermediária é juridicamente complexa.
+                    </div>
+                </div>
+
+                <div class="risk-card high">
+                    <div class="risk-card-header">
+                        <span class="risk-badge">R9</span>
+                        <span class="risk-card-title">Inconsistências Documentais</span>
+                        <span class="risk-level-tag">Prob: CONSUMADA · Impacto: MÉDIO</span>
+                    </div>
+                    <div class="risk-card-body">
+                        <div class="inconsistency-list">
+                            <div class="inconsistency-item">
+                                <span class="inc-icon">⚠️</span>
+                                <div><div class="inc-title">CPF referido como "CNPJ"</div><div class="inc-desc">No Termo de Aceite, o CPF do Sr. Fábio aparece sob o campo "CNPJ"</div></div>
+                            </div>
+                            <div class="inconsistency-item">
+                                <span class="inc-icon">⚠️</span>
+                                <div><div class="inc-title">Valores divergentes</div><div class="inc-desc">Termo de Aceite menciona crédito de R$ 961.422 — não corresponde a nenhuma das 5 simulações</div></div>
+                            </div>
+                            <div class="inconsistency-item">
+                                <span class="inc-icon">⚠️</span>
+                                <div><div class="inc-title">Endereço divergente</div><div class="inc-desc">Documentos citam Mogi das Cruzes; Receita Federal indica Barueri/SP</div></div>
+                            </div>
+                            <div class="inconsistency-item">
+                                <span class="inc-icon">⚠️</span>
+                                <div><div class="inc-title">Resgate total inconsistente</div><div class="inc-desc">Detalhamento cita R$ 4.958.912,70; soma das simulações resulta em R$ 4.888.071,30</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: CENÁRIOS -->
+        <div class="section">
+            <div class="section-number">6</div>
+            <h2 class="section-title">Cenários de Resultado</h2>
+            <div class="section-divider"></div>
+
+            <div class="scenarios-grid">
+                <div class="scenario-card danger">
+                    <div class="scenario-letter">A</div>
+                    <div class="scenario-name">Contemplação no Prazo Prometido (27/04/2026)</div>
+                    <div class="scenario-desc">Recebe R$ 4.888.071 e paga R$ 7.074.936 ao longo de 14 anos. Equivalente a crédito com juros de ~1,6% a.m.</div>
+                    <div class="scenario-result">PREJUÍZO: -R$ 2.186.865 (44,7%)</div>
+                </div>
+                <div class="scenario-card warning">
+                    <div class="scenario-letter">B</div>
+                    <div class="scenario-name">Contemplação Tardia (após 2+ anos)</div>
+                    <div class="scenario-desc">Recebe o resgate com defasagem. Paga parcelas sem retorno por 24+ meses: ~R$ 960.000 desperdiçados.</div>
+                    <div class="scenario-result">PREJUÍZO AGRAVADO + custo de oportunidade</div>
+                </div>
+                <div class="scenario-card severe">
+                    <div class="scenario-letter">C</div>
+                    <div class="scenario-name">Não Contemplação (até o fim do grupo)</div>
+                    <div class="scenario-desc">Recebe R$ 0 durante até 14 anos. Paga R$ 7.074.936 + reajustes. Devolução somente ao final com descontos.</div>
+                    <div class="scenario-result">PERDA PATRIMONIAL SEVERA + risco do imóvel</div>
+                </div>
+                <div class="scenario-card severe">
+                    <div class="scenario-letter">D</div>
+                    <div class="scenario-name">Desistência Após Pagamento da Adesão</div>
+                    <div class="scenario-desc">Perde até 100% da adesão (R$ 325.870). Devolução parcial somente ao final do grupo (14 anos).</div>
+                    <div class="scenario-result">PERDA IMEDIATA: -R$ 325.870</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 7: FUNDAMENTAÇÃO LEGAL -->
+        <div class="section">
+            <div class="section-number">7</div>
+            <h2 class="section-title">Fundamentação Legal</h2>
+            <div class="section-divider"></div>
+
+            <div class="table-wrapper">
+                <table class="legal-table">
+                    <thead>
+                        <tr>
+                            <th>Dispositivo Legal</th>
+                            <th>Aplicação ao Caso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Lei nº 11.795/2008, art. 22</td><td>Contemplação ocorre exclusivamente por sorteio ou lance em assembleia — <strong>não pode ser prometida</strong></td></tr>
+                        <tr><td>Lei nº 11.795/2008, art. 30</td><td>Lance é oferta de antecipação, sujeita à concorrência — <strong>não garante contemplação</strong></td></tr>
+                        <tr><td>CDC, art. 37</td><td>Publicidade enganosa — prometer contemplação em data certa induz o consumidor a erro</td></tr>
+                        <tr><td>CDC, art. 39, IV</td><td>Prática abusiva — prevalência sobre a fraqueza ou ignorância do consumidor</td></tr>
+                        <tr><td>Circular BACEN nº 3.432/2009</td><td>Regras de funcionamento dos grupos de consórcio — administradora não pode assegurar contemplação</td></tr>
+                        <tr><td>Lei nº 9.514/1997</td><td>Alienação fiduciária de imóvel — possibilidade de execução extrajudicial em caso de inadimplência</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 8: PARECER -->
+        <div class="section">
+            <div class="section-number">8</div>
+            <h2 class="section-title">Parecer Conclusivo</h2>
+            <div class="section-divider"></div>
+
+            <div class="verdict-box">
+                <div class="verdict-label">Classificação Final</div>
+                <div class="verdict-title">🔴 OPERAÇÃO NÃO RECOMENDADA</div>
+                <div class="verdict-subtitle">Nível de Risco: MUITO ALTO</div>
+                <div class="verdict-reasons">
+                    <span class="verdict-tag">Promessa ilegal de contemplação</span>
+                    <span class="verdict-tag">Custo efetivo de ~44,7%</span>
+                    <span class="verdict-tag">6ª pior do ranking BACEN</span>
+                    <span class="verdict-tag">Intermediária sem regulação</span>
+                    <span class="verdict-tag">Alienação de imóvel</span>
+                    <span class="verdict-tag">Inconsistências documentais</span>
+                    <span class="verdict-tag">Desembolso irreversível</span>
+                </div>
+            </div>
+
+            <p>A operação apresenta <strong>características incompatíveis</strong> com uma estrutura financeira segura e transparente. O padrão de "consórcio estruturado com contemplação garantida" tem sido amplamente denunciado como uma das modalidades de fraude/abuso mais comuns no mercado financeiro brasileiro.</p>
+        </div>
+
+        <!-- SECTION 9: RECOMENDAÇÕES -->
+        <div class="section">
+            <div class="section-number">9</div>
+            <h2 class="section-title">Recomendações</h2>
+            <div class="section-divider"></div>
+
+            <div class="rec-grid">
+                <div class="rec-item rec-urgent">
+                    <div class="rec-number">1</div>
+                    <div class="rec-content">
+                        <strong>NÃO assinar contratos e NÃO efetuar pagamentos</strong>
+                        <p>Até a conclusão de análise jurídica especializada por advogado de confiança.</p>
+                    </div>
+                    <span class="rec-priority">URGENTE</span>
+                </div>
+                <div class="rec-item rec-urgent">
+                    <div class="rec-number">2</div>
+                    <div class="rec-content">
+                        <strong>Consultar advogado especializado</strong>
+                        <p>Em direito financeiro e do consumidor para avaliar a legalidade das promessas feitas.</p>
+                    </div>
+                    <span class="rec-priority">URGENTE</span>
+                </div>
+                <div class="rec-item rec-high">
+                    <div class="rec-number">3</div>
+                    <div class="rec-content">
+                        <strong>Verificar no site do BACEN (bcb.gov.br)</strong>
+                        <p>A situação atualizada dos grupos da Evoy e confirmar a autorização de funcionamento.</p>
+                    </div>
+                    <span class="rec-priority">ALTA</span>
+                </div>
+                <div class="rec-item rec-high">
+                    <div class="rec-number">4</div>
+                    <div class="rec-content">
+                        <strong>Avaliar alternativas — Home Equity</strong>
+                        <p>Crédito com garantia de imóvel junto a bancos tradicionais, com liberação imediata e custo muito inferior.</p>
+                    </div>
+                    <span class="rec-priority">ALTA</span>
+                </div>
+                <div class="rec-item rec-high">
+                    <div class="rec-number">5</div>
+                    <div class="rec-content">
+                        <strong>Consultar linhas de crédito rural (FCO, FNE, BNDES)</strong>
+                        <p>Condições muito mais vantajosas para produtores rurais, com taxas subsidiadas e carência.</p>
+                    </div>
+                    <span class="rec-priority">ALTA</span>
+                </div>
+                <div class="rec-item rec-medium">
+                    <div class="rec-number">6</div>
+                    <div class="rec-content">
+                        <strong>Registrar denúncia junto ao BACEN e PROCON</strong>
+                        <p>Caso já tenha sido pressionado ou efetuado algum pagamento antecipado.</p>
+                    </div>
+                    <span class="rec-priority">MÉDIA</span>
+                </div>
+                <div class="rec-item rec-permanent">
+                    <div class="rec-number">7</div>
+                    <div class="rec-content">
+                        <strong>Guardar toda documentação</strong>
+                        <p>Mensagens, áudios, e-mails e documentos trocados com os representantes da operação.</p>
+                    </div>
+                    <span class="rec-priority">PERMANENTE</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- end content -->
+
+    <!-- FOOTER -->
+    <footer class="report-footer">
+        <div class="footer-note">
+            Este relatório foi elaborado exclusivamente para fins de análise técnica e consultiva, com base em informações públicas e documentos fornecidos pelo cliente. As conclusões aqui apresentadas refletem a opinião profissional do analista e não constituem aconselhamento jurídico. Recomenda-se consulta a profissional habilitado para questões de ordem legal.
+        </div>
+        <div class="footer-author">
+            <h4>Dr. Sidney Souza</h4>
+            <p>Economista e Administrador Agrícola</p>
+            <p>Estrategista Econômico do Produtor</p>
+            <p>Especialista em Economia e Finanças do Agronegócio</p>
+            <div class="footer-location">Rio Verde — GO, 23 de abril de 2026</div>
+        </div>
+        <div class="footer-quote">
+            "A prudência na análise de uma operação financeira é o que separa o investimento do prejuízo."
+        </div>
+    </footer>
+
+</div><!-- end container -->
+
+</body>
+</html>
