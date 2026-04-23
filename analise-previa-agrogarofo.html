@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Consolidado de Dívidas — Fernanda Vilela Garofo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #1a237e;
+            --primary-light: #3949ab;
+            --danger: #c62828;
+            --danger-light: #ef5350;
+            --warning: #f57f17;
+            --warning-light: #ffb300;
+            --success: #2e7d32;
+            --success-light: #66bb6a;
+            --bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --text: #212121;
+            --text-light: #757575;
+            --border: #e0e0e0;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            opacity: 0.85;
+        }
+
+        .header .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-top: 14px;
+            font-size: 14px;
+        }
+
+        /* SUMMARY CARDS */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+            transition: transform 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .summary-card.danger {
+            border-left-color: var(--danger);
+        }
+
+        .summary-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .summary-card.success {
+            border-left-color: var(--success);
+        }
+
+        .summary-card .label {
+            font-size: 13px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .summary-card.danger .value {
+            color: var(--danger);
+        }
+
+        .summary-card.warning .value {
+            color: var(--warning);
+        }
+
+        .summary-card.success .value {
+            color: var(--success);
+        }
+
+        /* SECTIONS */
+        .section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--bg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .icon {
+            font-size: 24px;
+        }
+
+        /* TABLES */
+        .table-wrapper {
+            overflow-x: auto;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        thead th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        thead th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        tbody td {
+            padding: 11px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tbody tr:hover {
+            background: #f5f7ff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .total-row {
+            background: #e8eaf6 !important;
+            font-weight: 700;
+        }
+
+        .total-row td {
+            border-top: 2px solid var(--primary);
+        }
+
+        /* STATUS BADGES */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .badge-danger {
+            background: #ffebee;
+            color: var(--danger);
+        }
+
+        .badge-warning {
+            background: #fff8e1;
+            color: #e65100;
+        }
+
+        .badge-success {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .badge-info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        /* CHARTS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-height: 380px;
+        }
+
+        /* ALERTS */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            color: var(--danger);
+        }
+
+        .alert-warning {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #e65100;
+        }
+
+        .alert-info {
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #1565c0;
+        }
+
+        .alert .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* FIADORES */
+        .fiadores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        .fiador-card {
+            background: #f5f7ff;
+            border-radius: 10px;
+            padding: 14px 18px;
+            border: 1px solid #c5cae9;
+        }
+
+        .fiador-card .name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .fiador-card .detail {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* GARANTIAS */
+        .garantia-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #f5f7ff;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #c5cae9;
+        }
+
+        .garantia-item .tipo {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .garantia-item .valor {
+            font-weight: 700;
+            color: var(--danger);
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .footer .confidential {
+            display: inline-block;
+            background: #ffebee;
+            color: var(--danger);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* SICOOB DETAIL TABLE */
+        .sicoob-sub {
+            font-size: 12px;
+        }
+
+        .sicoob-sub thead th {
+            font-size: 11px;
+            padding: 8px 10px;
+        }
+
+        .sicoob-sub tbody td {
+            padding: 7px 10px;
+            font-size: 12px;
+        }
+
+        /* PRINT */
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0;
+            }
+            .section, .chart-card, .summary-card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+            .header {
+                background: var(--primary) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            .summary-card .value {
+                font-size: 20px;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            table {
+                font-size: 12px;
+            }
+            thead th, tbody td {
+                padding: 8px 10px;
+            }
+        }
+
+        .collapsible-toggle {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible-toggle:hover {
+            opacity: 0.85;
+        }
+
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(90deg);
+        }
+
+        .arrendamento-highlight {
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border: 1px solid #ffe082;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-top: 12px;
+        }
+
+        .arrendamento-highlight .value-big {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--warning);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background: #e0e0e0;
+            border-radius: 8px;
+            height: 24px;
+            overflow: hidden;
+            margin: 6px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+            transition: width 0.6s ease;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .nowrap {
+            white-space: nowrap;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📊 Relatório Consolidado de Dívidas</h1>
+            <div class="subtitle">Fernanda Vilela Garofo — CPF: 016.744.651-73</div>
+            <div class="subtitle" style="opacity:0.7; font-size:14px; margin-top:4px;">Agro Garofo Representações Agropecuárias Ltda</div>
+            <div class="date-badge">📅 Data-base: 25/02/2026 | Atualizado em: 23/04/2026</div>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="summary-grid">
+            <div class="summary-card danger">
+                <div class="label">Passivo Total Estimado</div>
+                <div class="value">R$ 18,38 Mi</div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Dívidas Fixas (Contratos)</div>
+                <div class="value">R$ 15,81 Mi</div>
+            </div>
+            <div class="summary-card warning">
+                <div class="label">Arrendamento (Restante)</div>
+                <div class="value">R$ 2,58 Mi</div>
+            </div>
+            <div class="summary-card danger">
+                <div class="label">Credores</div>
+                <div class="value">12</div>
+            </div>
+            <div class="summary-card danger">
+                <div class="label">Operações</div>
+                <div class="value">42+</div>
+            </div>
+            <div class="summary-card warning">
+                <div class="label">Fiadores Expostos</div>
+                <div class="value">8</div>
+            </div>
+            <div class="summary-card danger">
+                <div class="label">Negativações</div>
+                <div class="value">2</div>
+            </div>
+            <div class="summary-card danger">
+                <div class="label">Ações Judiciais</div>
+                <div class="value">1</div>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>📊 Composição do Endividamento por Credor</h3>
+                <div class="chart-container">
+                    <canvas id="chartPizza"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>📊 Endividamento por Categoria</h3>
+                <div class="chart-container">
+                    <canvas id="chartBarras"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>📅 Fluxo de Vencimentos — Sicoob</h3>
+                <div class="chart-container">
+                    <canvas id="chartFluxo"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>🚦 Status das Dívidas</h3>
+                <div class="chart-container">
+                    <canvas id="chartStatus"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUADRO CONSOLIDADO GERAL -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📋</span> Quadro Consolidado Geral
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Credor</th>
+                            <th>Tipo / Origem</th>
+                            <th class="text-right">Valor</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Mibasa Mineradora</strong></td>
+                            <td>Confissão de Dívida — Calcário (Pedido 431885)</td>
+                            <td class="text-right nowrap">R$ 260.647,80</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Iguaçu Máquinas</strong></td>
+                            <td>Confissão + NP — Peças e Serviços</td>
+                            <td class="text-right nowrap">R$ 267.235,21</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Nova Seeds</strong></td>
+                            <td>Confissão de Dívida — Insumos Agrícolas</td>
+                            <td class="text-right nowrap">R$ 2.936.293,43</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Parcela vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Via Capital Artemus FIDC</strong></td>
+                            <td>Cessão de crédito (título cedido pela Nova Seeds)</td>
+                            <td class="text-right nowrap">R$ 1.155.000,00</td>
+                            <td class="text-center"><span class="badge badge-warning">🟡 Vence 30/04/26</span></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Caixa Econômica (CRP)</strong></td>
+                            <td>Cédula Rural Pignoratícia</td>
+                            <td class="text-right nowrap">R$ 595.759,40</td>
+                            <td class="text-center"><span class="badge badge-warning">🟡 Prorrogada</span></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>Caixa Econômica (Cheque)</strong></td>
+                            <td>Cheque Especial</td>
+                            <td class="text-right nowrap">R$ 70.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Negativada/Ajuizada</span></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Sicoob (PF — Fernanda)</strong></td>
+                            <td>24 contratos diversos (crédito, reneg., repactuações)</td>
+                            <td class="text-right nowrap">R$ 6.445.236,46</td>
+                            <td class="text-center"><span class="badge badge-warning">🟡/🔴 Diversos</span></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>Sicoob (PJ — Agro Garofo)</strong></td>
+                            <td>4 contratos PJ</td>
+                            <td class="text-right nowrap">R$ 589.855,55</td>
+                            <td class="text-center"><span class="badge badge-warning">🟡/🔴 Diversos</span></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>Sicoob (Alienação Fiduciária)</strong></td>
+                            <td>Alienação fiduciária — avalistas: esposa e cunhada</td>
+                            <td class="text-right nowrap">R$ 850.000,00</td>
+                            <td class="text-center"><span class="badge badge-warning">🟡 Vence 09/2026</span></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>Alberto</strong> (PF)</td>
+                            <td>Dívida particular</td>
+                            <td class="text-right nowrap">R$ 320.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>11</td>
+                            <td><strong>Danilo</strong> (PF)</td>
+                            <td>Dívida particular</td>
+                            <td class="text-right nowrap">R$ 400.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><strong>Beto</strong> (PF)</td>
+                            <td>Dívida particular</td>
+                            <td class="text-right nowrap">R$ 700.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><strong>Nutrien</strong></td>
+                            <td>Revenda agrícola</td>
+                            <td class="text-right nowrap">R$ 150.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Negativada</span></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><strong>Plantec</strong></td>
+                            <td>Revenda agrícola — saldo negociado</td>
+                            <td class="text-right nowrap">R$ 110.000,00</td>
+                            <td class="text-center"><span class="badge badge-info">🟡 Negociado</span></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><strong>Rifertil</strong></td>
+                            <td>Revenda agrícola</td>
+                            <td class="text-right nowrap">R$ 880.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><strong>Renovar</strong></td>
+                            <td>Revenda agrícola</td>
+                            <td class="text-right nowrap">R$ 75.000,00</td>
+                            <td class="text-center"><span class="badge badge-danger">🔴 Vencida</span></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td><strong>Crismam Participação</strong></td>
+                            <td>Arrendamento rural — Faz. Chega Mais (6.950 sc soja/ano)</td>
+                            <td class="text-right nowrap">~R$ 757.550/ano</td>
+                            <td class="text-center"><span class="badge badge-info">🟡 Vigente até 09/2029</span></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>TOTAL DÍVIDAS FIXAS (CONTRATOS)</strong></td>
+                            <td class="text-right nowrap"><strong>R$ 15.805.027,85</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td colspan="3"><strong>ARRENDAMENTO RESTANTE (~3,4 anos)</strong></td>
+                            <td class="text-right nowrap"><strong>~R$ 2.575.670,00</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr class="total-row" style="background:#c5cae9;">
+                            <td colspan="3"><strong>🔴 PASSIVO TOTAL ESTIMADO</strong></td>
+                            <td class="text-right nowrap" style="font-size:18px;"><strong>~R$ 18.380.697,85</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- DETALHAMENTO SICOOB PF -->
+        <div class="section">
+            <div class="section-title collapsible-toggle" onclick="toggleSection('sicoobPF')">
+                <span class="icon">🏦</span> Sicoob — Fernanda Vilela Garofo (PF) — C/C 14.240-9
+                <span class="toggle-icon open" id="icon-sicoobPF">▶</span>
+            </div>
+            <div class="collapsible-content" id="sicoobPF" style="max-height: none;">
+                <div class="table-wrapper">
+                    <table class="sicoob-sub">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Linha</th>
+                                <th>Contrato</th>
+                                <th>Taxa</th>
+                                <th>Garantias</th>
+                                <th class="text-right">Valor Total</th>
+                                <th>Vencimentos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Credi-Frota Agrícola</td>
+                                <td>802598</td>
+                                <td>6% a.a.+CDI</td>
+                                <td>Alexandre M. Fonseca, Cecilia S.L. Lima + Penhor Maq. R$ 475K</td>
+                                <td class="text-right nowrap">R$ 148.160,20</td>
+                                <td>15/09/26 – 15/09/27</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Credi-Show Agrícola</td>
+                                <td>1044626</td>
+                                <td>5,99% a.a.+CDI</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima + Alienação Veículo R$ 530K</td>
+                                <td class="text-right nowrap">R$ 412.187,53</td>
+                                <td>12/05/26 – 12/05/27</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Credi-Show Agrícola</td>
+                                <td>1068391</td>
+                                <td>5,99% a.a.+CDI</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima + Penhor Maq. R$ 1.198K</td>
+                                <td class="text-right nowrap">R$ 521.102,66</td>
+                                <td>21/09/26 – 20/09/27</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Credi-Show Agrícola</td>
+                                <td>1095734</td>
+                                <td>5,99% a.a.+CDI</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima + Penhor Maq. R$ 1.598K</td>
+                                <td class="text-right nowrap">R$ 1.188.261,31</td>
+                                <td>02/02/26 – 01/02/28</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Repactuação</td>
+                                <td>1304148</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 243.296,14</td>
+                                <td>25/05/26</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Repactuação</td>
+                                <td>1304162</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 126.489,25</td>
+                                <td>25/05/26</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1304170</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 174.258,66</td>
+                                <td>25/05/26</td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Repactuação</td>
+                                <td>1354279</td>
+                                <td>2,19% a.m.</td>
+                                <td>—</td>
+                                <td class="text-right nowrap">R$ 360.647,96</td>
+                                <td>03/09/26 – 03/09/27</td>
+                            </tr>
+                            <tr>
+                                <td>9</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1396870</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 42.096,17</td>
+                                <td>14/12/26</td>
+                            </tr>
+                            <tr>
+                                <td>10</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1420178</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 591.783,04</td>
+                                <td>05/02/26 – 05/02/27</td>
+                            </tr>
+                            <tr>
+                                <td>11</td>
+                                <td>Repactuação</td>
+                                <td>1449600</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 71.223,98</td>
+                                <td>24/04/26 – 26/04/27</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>Repactuação</td>
+                                <td>1449649</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 88.763,90</td>
+                                <td>24/04/26 – 26/04/27</td>
+                            </tr>
+                            <tr>
+                                <td>13</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1449703</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 250.706,36</td>
+                                <td>22/05/26 – 24/05/27</td>
+                            </tr>
+                            <tr>
+                                <td>14</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1449853</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 130.341,80</td>
+                                <td>22/05/26 – 24/05/27</td>
+                            </tr>
+                            <tr>
+                                <td>15</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1449885</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 179.566,16</td>
+                                <td>22/05/26 – 24/05/27</td>
+                            </tr>
+                            <tr>
+                                <td>16</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1450089</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 332.470,98</td>
+                                <td>12/05/26 – 12/05/27</td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td>Repactuação</td>
+                                <td>1455396</td>
+                                <td>1,99% a.a.+CDI</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 143.268,03</td>
+                                <td>10/04/26 – 11/10/27</td>
+                            </tr>
+                            <tr>
+                                <td>18</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1497056</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 184.072,48</td>
+                                <td>16/03/26 – 15/09/27</td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1497063</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 355.051,82</td>
+                                <td>16/03/26</td>
+                            </tr>
+                            <tr>
+                                <td>20</td>
+                                <td>CAC-Pré-Fixado PF (Reneg.)</td>
+                                <td>1497135</td>
+                                <td>2,19% a.m.</td>
+                                <td>Alexandre M. Fonseca, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 121.686,32</td>
+                                <td>15/03/26 – 15/09/27</td>
+                            </tr>
+                            <tr>
+                                <td>21</td>
+                                <td>Repactuação</td>
+                                <td>1517265</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 538.839,81</td>
+                                <td>16/03/26 – 15/03/28</td>
+                            </tr>
+                            <tr>
+                                <td>22</td>
+                                <td>Repactuação</td>
+                                <td>1517312</td>
+                                <td>1,99% a.m.</td>
+                                <td>Alexandre M. Fonseca, Cecilia S.L. Lima</td>
+                                <td class="text-right nowrap">R$ 129.490,24</td>
+                                <td>16/03/26 – 15/03/27</td>
+                            </tr>
+                            <tr>
+                                <td>23</td>
+                                <td>Avais e Fianças — Cartões</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>Não possui</td>
+                                <td class="text-right nowrap">R$ 103.971,66</td>
+                                <td>02/12/25</td>
+                            </tr>
+                            <tr>
+                                <td>24</td>
+                                <td>AD + Encargos (C/C 14.240-9)</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td class="text-right nowrap">R$ 7.500,00</td>
+                                <td>À vista</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="5"><strong>TOTAL SICOOB PF — FERNANDA</strong></td>
+                                <td class="text-right nowrap"><strong>R$ 6.445.236,46</strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Fluxo Sicoob -->
+                <h4 style="margin: 20px 0 10px; color: var(--primary);">📅 Fluxo de Vencimentos Sicoob</h4>
+                <div class="table-wrapper">
+                    <table style="max-width: 500px;">
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Mês</th>
+                                <th class="text-right">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td rowspan="7"><strong>2026</strong></td><td>Fevereiro</td><td class="text-right nowrap">R$ 837.280,23</td></tr>
+                            <tr><td>Março</td><td class="text-right nowrap">R$ 822.697,99</td></tr>
+                            <tr><td>Abril</td><td class="text-right nowrap">R$ 128.474,15</td></tr>
+                            <tr><td>Maio</td><td class="text-right nowrap">R$ 1.226.554,23</td></tr>
+                            <tr><td>Setembro</td><td class="text-right nowrap">R$ 778.936,55</td></tr>
+                            <tr><td>Outubro</td><td class="text-right nowrap">R$ 132.633,65</td></tr>
+                            <tr><td>Dezembro</td><td class="text-right nowrap">R$ 42.096,17</td></tr>
+                            <tr class="total-row"><td colspan="2"><strong>Subtotal 2026</strong></td><td class="text-right nowrap"><strong>R$ 3.968.672,97</strong></td></tr>
+                            <tr><td rowspan="6"><strong>2027</strong></td><td>Fevereiro</td><td class="text-right nowrap">R$ 623.164,12</td></tr>
+                            <tr><td>Março</td><td class="text-right nowrap">R$ 501.500,70</td></tr>
+                            <tr><td>Abril</td><td class="text-right nowrap">R$ 111.589,88</td></tr>
+                            <tr><td>Maio</td><td class="text-right nowrap">R$ 622.762,65</td></tr>
+                            <tr><td>Setembro</td><td class="text-right nowrap">R$ 564.220,82</td></tr>
+                            <tr><td>Outubro</td><td class="text-right nowrap">R$ 31.595,94</td></tr>
+                            <tr class="total-row"><td colspan="2"><strong>Subtotal 2027</strong></td><td class="text-right nowrap"><strong>R$ 2.454.834,11</strong></td></tr>
+                            <tr><td rowspan="2"><strong>2028</strong></td><td>Fevereiro</td><td class="text-right nowrap">R$ 319.600,00</td></tr>
+                            <tr><td>Março</td><td class="text-right nowrap">R$ 179.613,27</td></tr>
+                            <tr class="total-row"><td colspan="2"><strong>Subtotal 2028</strong></td><td class="text-right nowrap"><strong>R$ 499.213,27</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- DETALHAMENTO SICOOB PJ -->
+        <div class="section">
+            <div class="section-title collapsible-toggle" onclick="toggleSection('sicoobPJ')">
+                <span class="icon">🏢</span> Sicoob — Agro Garofo Representações Agropecuárias Ltda — C/C 31.690-3
+                <span class="toggle-icon open" id="icon-sicoobPJ">▶</span>
+            </div>
+            <div class="collapsible-content" id="sicoobPJ" style="max-height: none;">
+                <div class="table-wrapper">
+                    <table class="sicoob-sub">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Linha</th>
+                                <th>Contrato</th>
+                                <th>Taxa</th>
+                                <th>Garantias</th>
+                                <th class="text-right">Valor Total</th>
+                                <th>Vencimentos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>CAC-Pré-Fixado PJ (Reneg.)</td>
+                                <td>1517200</td>
+                                <td>1,99% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima, Kamylla V. Garofo, Fernanda V. Garofo</td>
+                                <td class="text-right nowrap">R$ 327.550,69</td>
+                                <td>16/03/26 – 15/03/27</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>CAC-Pré-Fixado PJ (Reneg.)</td>
+                                <td>1368575</td>
+                                <td>2,19% a.m.</td>
+                                <td>Joel C. Lima, Cecilia S.L. Lima, Kamylla V. Garofo, Fernanda V. Garofo</td>
+                                <td class="text-right nowrap">R$ 101.037,71</td>
+                                <td>07/10/26</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Credi-Empresa</td>
+                                <td>1194270</td>
+                                <td>1,24% a.m.</td>
+                                <td>Kamylla V. Garofo, Fernanda V. Garofo</td>
+                                <td class="text-right nowrap">R$ 160.367,15</td>
+                                <td>21/09/26</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>AD + Encargos (C/C 31.690-3)</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td class="text-right nowrap">R$ 900,00</td>
+                                <td>À vista</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td colspan="5"><strong>TOTAL SICOOB PJ — AGRO GAROFO</strong></td>
+                                <td class="text-right nowrap"><strong>R$ 589.855,55</strong></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CESSÃO DE CRÉDITO FIDC -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📄</span> Cessão de Crédito — Via Capital Artemus FIDC
+            </div>
+            <div class="table-wrapper">
+                <table style="max-width: 700px;">
+                    <tbody>
+                        <tr><td><strong>Cedente</strong></td><td>Nova Seeds Comércio e Representação Ltda</td></tr>
+                        <tr><td><strong>Cessionária</strong></td><td>Via Capital Artemus FIDC</td></tr>
+                        <tr><td><strong>Nº do Título</strong></td><td>12202001</td></tr>
+                        <tr><td><strong>Sacado (Devedor)</strong></td><td>Sérgio Rubens Garofo Filho</td></tr>
+                        <tr><td><strong>Valor Bruto</strong></td><td>R$ 1.155.000,00</td></tr>
+                        <tr><td><strong>Valor Líquido</strong></td><td>R$ 989.837,70</td></tr>
+                        <tr><td><strong>Deságio</strong></td><td>R$ 165.162,30 (14,3%)</td></tr>
+                        <tr><td><strong>Vencimento</strong></td><td>30/04/2026</td></tr>
+                        <tr><td><strong>Índice de Atualização</strong></td><td>IGP-M/FGV</td></tr>
+                        <tr><td><strong>Coobrigação</strong></td><td>Sim — Nova Seeds permanece coobrigada</td></tr>
+                        <tr><td><strong>Signatário</strong></td><td>Alexandre Moni Fonseca</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="alert alert-warning" style="margin-top: 14px;">
+                <span class="alert-icon">⚠️</span>
+                <div>
+                    <strong>Possível dupla contagem!</strong>
+                    Este título pode estar incluído na confissão de dívida da Nova Seeds (R$ 2.936.293,43). Verificar para evitar duplicidade no passivo total.
+                </div>
+            </div>
+        </div>
+
+        <!-- ARRENDAMENTO RURAL -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🌾</span> Arrendamento Rural — Fazenda Chega Mais / Rio Doce
+            </div>
+            <div class="table-wrapper">
+                <table style="max-width: 700px;">
+                    <tbody>
+                        <tr><td><strong>Arrendante</strong></td><td>Crismam Participação e Administração Eireli (Cristina M. A. Monteiro)</td></tr>
+                        <tr><td><strong>Arrendatária</strong></td><td>Fernanda Vilela Garofo</td></tr>
+                        <tr><td><strong>Imóvel</strong></td><td>Fazenda Chega Mais / Rio Doce — Rio Verde/GO</td></tr>
+                        <tr><td><strong>Área arrendada</strong></td><td>62 alqueires</td></tr>
+                        <tr><td><strong>Vigência</strong></td><td>28/09/2024 a 27/09/2029 (5 anos)</td></tr>
+                        <tr><td><strong>Preço anual (terra)</strong></td><td>6.200 sacas de soja 60kg</td></tr>
+                        <tr><td><strong>Preço anual (benfeitorias)</strong></td><td>750 sacas de soja 60kg</td></tr>
+                        <tr><td><strong>Total anual</strong></td><td><strong>6.950 sacas de soja 60kg</strong></td></tr>
+                        <tr><td><strong>Vencimento</strong></td><td>30/09 de cada ano (antecipado)</td></tr>
+                        <tr><td><strong>Base de cotação</strong></td><td>Média Comigo, Cargill e Louis Dreyfus — Rio Verde/GO</td></tr>
+                        <tr><td><strong>Penalidade por atraso</strong></td><td>Multa 2% + juros de 1% a.m.</td></tr>
+                        <tr><td><strong>Cheque 1º ano (30/09/24)</strong></td><td>R$ 778.400,00 — Santander, Ag. 3656</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="arrendamento-highlight" style="margin-top: 16px;">
+                <div style="font-size:13px; color:#e65100; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">Custo anual estimado (cotação R$ 109/sc)</div>
+                <div class="value-big">R$ 757.550,00/ano</div>
+                <div style="font-size:13px; color:var(--text-light); margin-top:4px;">Restante do contrato (~3,4 anos): <strong>~R$ 2.575.670,00</strong></div>
+            </div>
+            <div class="alert alert-danger" style="margin-top: 14px;">
+                <span class="alert-icon">🚨</span>
+                <div>
+                    <strong>Risco de expansão forçada!</strong>
+                    Se a Raízen devolver os 1.620 ha, Fernanda é obrigada a arrendar a mesma área — custo adicional de até 162.000 sacas/ano (~R$ 17,6 milhões/ano).
+                </div>
+            </div>
+        </div>
+
+        <!-- GARANTIAS REAIS -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🔒</span> Garantias Reais Envolvidas
+            </div>
+            <div class="garantia-item">
+                <div>
+                    <div class="tipo">Penhor Maquinário</div>
+                    <div style="font-size:12px; color:var(--text-light);">Sicoob — Contratos 802598, 1068391, 1095734</div>
+                </div>
+                <div class="valor">~R$ 3.271.000,00</div>
+            </div>
+            <div class="garantia-item">
+                <div>
+                    <div class="tipo">Alienação Fiduciária (nova)</div>
+                    <div style="font-size:12px; color:var(--text-light);">Sicoob — Bem não identificado, esposa e cunhada</div>
+                </div>
+                <div class="valor">R$ 850.000,00</div>
+            </div>
+            <div class="garantia-item">
+                <div>
+                    <div class="tipo">Alienação de Veículo</div>
+                    <div style="font-size:12px; color:var(--text-light);">Sicoob — Contrato 1044626</div>
+                </div>
+                <div class="valor">R$ 530.000,00</div>
+            </div>
+            <div class="garantia-item">
+                <div>
+                    <div class="tipo">Penhor de Bovinos</div>
+                    <div style="font-size:12px; color:var(--text-light);">Caixa Econômica — CRP</div>
+                </div>
+                <div class="valor">R$ 595.759,40</div>
+            </div>
+        </div>
+
+        <!-- FIADORES -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">👥</span> Fiadores e Avalistas Expostos (8 pessoas)
+            </div>
+            <div class="fiadores-grid">
+                <div class="fiador-card">
+                    <div class="name">Joel Cruvinel de Lima</div>
+                    <div class="detail">Avalista em 20+ contratos Sicoob PF</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Cecilia Silva Leão Lima</div>
+                    <div class="detail">Avalista em 20+ contratos Sicoob PF + PJ</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Alexandre Moni Fonseca</div>
+                    <div class="detail">Sicoob + Via Capital FIDC</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Sérgio Rubens Garofo (pai)</div>
+                    <div class="detail">Fiador arrendamento + Nova Seeds + Mibasa</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Maria Aparecida Vilela Garofo (mãe)</div>
+                    <div class="detail">Fiadora arrendamento + Nova Seeds</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Sérgio Rubens Garofo Filho</div>
+                    <div class="detail">Fiador arrendamento + Nova Seeds + FIDC (sacado)</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Kamylla Vilela Garofo</div>
+                    <div class="detail">Sicoob PJ + Alienação fiduciária</div>
+                </div>
+                <div class="fiador-card">
+                    <div class="name">Leidimar Peixoto Borges</div>
+                    <div class="detail">Fiadora arrendamento + Alienação fiduciária (esposa Sérgio Filho)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ALERTAS CRÍTICOS -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">🚨</span> Alertas Críticos
+            </div>
+            <div class="alert alert-danger">
+                <span class="alert-icon">💥</span>
+                <div>
+                    <strong>Passivo total de ~R$ 18,4 milhões</strong>
+                    Situação extremamente delicada para produtores rurais. O endividamento compromete a capacidade produtiva e a viabilidade da operação agrícola.
+                </div>
+            </div>
+            <div class="alert alert-danger">
+                <span class="alert-icon">⏰</span>
+                <div>
+                    <strong>FIDC vence em 30/04/2026 (7 dias!)</strong>
+                    Título de R$ 1.155.000,00 cedido ao Via Capital Artemus FIDC com vencimento iminente. Urgência absoluta.
+                </div>
+            </div>
+            <div class="alert alert-danger">
+                <span class="alert-icon">🔴</span>
+                <div>
+                    <strong>Sicoob concentra ~50% do passivo (R$ 7,89 Mi)</strong>
+                    Joel Cruvinel de Lima e Cecilia Silva Leão Lima aparecem como avalistas em praticamente todas as operações — risco enorme para eles.
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <span class="alert-icon">🚫</span>
+                <div>
+                    <strong>Nutrien negativou</strong>
+                    Pode impedir a compra de insumos para a próxima safra, criando um ciclo vicioso de inadimplência.
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <span class="alert-icon">🏠</span>
+                <div>
+                    <strong>Alienação fiduciária (Sicoob R$ 850K)</strong>
+                    Risco de perda do bem alienado sem necessidade de processo judicial (retomada extrajudicial — Lei 9.514/97).
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <span class="alert-icon">🌾</span>
+                <div>
+                    <strong>Arrendamento com cláusula aleatória</strong>
+                    Se a Raízen devolver 1.620 ha, Fernanda será obrigada a assumir — custo potencial de R$ 17,6 Mi/ano. Risco catastrófico.
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <span class="alert-icon">📋</span>
+                <div>
+                    <strong>Dívidas com PF (R$ 1,42 Mi) sem garantia formal</strong>
+                    Alberto, Danilo e Beto podem ajuizar cobranças e gerar penhoras. Desgaste pessoal significativo.
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPOSIÇÃO POR CATEGORIA -->
+        <div class="section">
+            <div class="section-title">
+                <span class="icon">📊</span> Composição por Categoria
+            </div>
+            <div class="table-wrapper">
+                <table style="max-width: 650px;">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th class="text-right">Valor</th>
+                            <th class="text-right">%</th>
+                            <th style="width:200px;">Proporção</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sicoob (total)</strong></td>
+                            <td class="text-right nowrap">R$ 7.885.091,01</td>
+                            <td class="text-right">49,9%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 49.9%; background: #1a237e;">49,9%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nova Seeds</strong></td>
+                            <td class="text-right nowrap">R$ 2.936.293,43</td>
+                            <td class="text-right">18,6%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 18.6%; background: #c62828;">18,6%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Particulares (Alberto, Danilo, Beto)</strong></td>
+                            <td class="text-right nowrap">R$ 1.420.000,00</td>
+                            <td class="text-right">9,0%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 9%; background: #f57f17;">9,0%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Revendas Agrícolas</strong></td>
+                            <td class="text-right nowrap">R$ 1.215.000,00</td>
+                            <td class="text-right">7,7%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 7.7%; background: #e65100;">7,7%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Via Capital FIDC</strong></td>
+                            <td class="text-right nowrap">R$ 1.155.000,00</td>
+                            <td class="text-right">7,3%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 7.3%; background: #4527a0;">7,3%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caixa Econômica</strong></td>
+                            <td class="text-right nowrap">R$ 665.759,40</td>
+                            <td class="text-right">4,2%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 4.2%; background: #00695c;">4,2%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Confissões (Mibasa + Iguaçu)</strong></td>
+                            <td class="text-right nowrap">R$ 527.883,01</td>
+                            <td class="text-right">3,3%</td>
+                            <td>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" style="width: 3.3%; background: #37474f;">3,3%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>TOTAL</strong></td>
+                            <td class="text-right nowrap"><strong>R$ 15.805.027,85</strong></td>
+                            <td class="text-right"><strong>100%</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="confidential">🔒 CONFIDENCIAL — USO RESTRITO</div>
+            <p>Relatório gerado em 23/04/2026 • Dados consolidados com base nos documentos apresentados</p>
+            <p>Valores do Sicoob calculados para 25/02/2026 • Cotação da soja: R$ 109,00/sc (Rio Verde/GO — 20/04/2026)</p>
+            <p style="margin-top: 8px; font-style: italic;">Este relatório tem caráter informativo e não substitui parecer jurídico ou contábil.</p>
+        </div>
+
+    </div>
+
+    <!-- SCRIPTS DOS GRÁFICOS -->
+    <script>
+        // Toggle sections
+        function toggleSection(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (content.style.maxHeight === 'none' || content.style.maxHeight === '') {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                setTimeout(() => {
+                    content.style.maxHeight = '0px';
+                }, 10);
+                icon.classList.remove('open');
+            } else if (content.style.maxHeight === '0px') {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                icon.classList.add('open');
+                setTimeout(() => {
+                    content.style.maxHeight = 'none';
+                }, 350);
+            }
+        }
+
+        // Cores padronizadas
+        const cores = [
+            '#1a237e', '#c62828', '#f57f17', '#e65100',
+            '#4527a0', '#00695c', '#37474f', '#880e4f',
+            '#1b5e20', '#ff6f00', '#283593', '#4e342e'
+        ];
+
+        const coresTransparentes = cores.map(c => c + '33');
+
+        // GRÁFICO PIZZA — Composição por Credor
+        const ctxPizza = document.getElementById('chartPizza').getContext('2d');
+        new Chart(ctxPizza, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    'Sicoob (total)',
+                    'Nova Seeds',
+                    'Particulares',
+                    'Revendas Agrícolas',
+                    'Via Capital FIDC',
+                    'Caixa Econômica',
+                    'Mibasa + Iguaçu'
+                ],
+                datasets: [{
+                    data: [7885091, 2936293, 1420000, 1215000, 1155000, 665759, 527883],
+                    backgroundColor: cores.slice(0, 7),
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 14,
+                            font: { size: 12 },
+                            usePointStyle: true,
+                            pointStyleWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                let val = ctx.parsed;
+                                let total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                let pct = ((val / total) * 100).toFixed(1);
+                                return ctx.label + ': R$ ' + val.toLocaleString('pt-BR') + ' (' + pct + '%)';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // GRÁFICO BARRAS — Endividamento por Categoria
+        const ctxBarras = document.getElementById('chartBarras').getContext('2d');
+        new Chart(ctxBarras, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Sicoob',
+                    'Nova Seeds',
+                    'Particulares',
+                    'Revendas',
+                    'FIDC',
+                    'Caixa',
+                    'Confissões'
+                ],
+                datasets: [{
+                    label: 'Valor (R$)',
+                    data: [7885091, 2936293, 1420000, 1215000, 1155000, 665759, 527883],
+                    backgroundColor: cores.slice(0, 7),
+                    borderRadius: 6,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return 'R$ ' + ctx.parsed.x.toLocaleString('pt-BR');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            callback: function(val) {
+                                return 'R$ ' + (val / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: '#f0f0f0' }
+                    },
+                    y: {
+                        ticks: { font: { size: 12 } },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // GRÁFICO FLUXO — Vencimentos Sicoob
+        const ctxFluxo = document.getElementById('chartFluxo').getContext('2d');
+        new Chart(ctxFluxo, {
+            type: 'bar',
+            data: {
+                labels: ['2026', '2027', '2028'],
+                datasets: [{
+                    label: 'Vencimentos Sicoob',
+                    data: [3968673, 2454834, 499213],
+                    backgroundColor: ['#c62828', '#f57f17', '#2e7d32'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return 'R$ ' + ctx.parsed.y.toLocaleString('pt-BR');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function(val) {
+                                return 'R$ ' + (val / 1000000).toFixed(1) + 'M';
+                            }
+                        },
+                        grid: { color: '#f0f0f0' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 14, weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        // GRÁFICO STATUS
+        const ctxStatus = document.getElementById('chartStatus').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    '🔴 Vencidas',
+                    '🟡 A vencer / Vigentes',
+                    '🟡 Negociadas',
+                    '🔴 Negativadas / Ajuizadas'
+                ],
+                datasets: [{
+                    data: [
+                        5564176,  // vencidas: Mibasa+Iguaçu+Nova Seeds+Alberto+Danilo+Beto+Rifertil+Renovar
+                        9175401,  // a vencer: FIDC+Caixa CRP+Sicoob PF+Sicoob PJ+Alienação
+                        110000,   // negociadas: Plantec
+                        220000    // negativadas: Caixa cheque + Nutrien
+                    ],
+                    backgroundColor: ['#c62828', '#f57f17', '#2e7d32', '#4a148c'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 14,
+                            font: { size: 12 },
+                            usePointStyle: true,
+                            pointStyleWidth: 12
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(ctx) {
+                                return ctx.label + ': R$ ' + ctx.parsed.toLocaleString('pt-BR');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
