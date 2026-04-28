@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Comercial — RuralIn | Sr. Thiago Carvalho Matias</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --accent: #FF8F00;
+            --accent-light: #FFA726;
+            --dark: #1a1a2e;
+            --gray-900: #212121;
+            --gray-700: #616161;
+            --gray-500: #9E9E9E;
+            --gray-300: #E0E0E0;
+            --gray-100: #F5F5F5;
+            --white: #FFFFFF;
+            --success: #43A047;
+            --warning: #FB8C00;
+            --danger: #E53935;
+            --gradient-primary: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
+            --gradient-accent: linear-gradient(135deg, #E65100 0%, #FF8F00 50%, #FFA726 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========== HERO / CAPA ========== */
+        .hero {
+            background: var(--gradient-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(46, 125, 50, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, rgba(255, 143, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid rgba(46, 125, 50, 0.4);
+            color: var(--primary-light);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .hero-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+
+        .hero-logo span {
+            color: var(--primary-light);
+        }
+
+        .hero-tagline {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+
+        .hero-title strong {
+            font-weight: 700;
+            color: var(--accent-light);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-500);
+            margin-bottom: 40px;
+        }
+
+        .hero-client {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 40px;
+            display: inline-block;
+        }
+
+        .hero-client-label {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .hero-client-name {
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hero-client-farm {
+            color: var(--primary-light);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .hero-date {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+
+        .hero-validity {
+            color: var(--accent);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* ========== CONTAINER ========== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== SECTION ========== */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray-700);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========== APRESENTAÇÃO ========== */
+        .intro-section {
+            background: var(--white);
+            border-radius: 0;
+        }
+
+        .intro-letter {
+            max-width: 750px;
+            margin: 0 auto;
+            font-size: 1.05rem;
+            color: var(--gray-700);
+            line-height: 1.9;
+        }
+
+        .intro-letter p {
+            margin-bottom: 20px;
+        }
+
+        .intro-letter .greeting {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .intro-letter .highlight {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .intro-letter .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--gray-300);
+        }
+
+        .intro-letter .signature-name {
+            font-weight: 700;
+            color: var(--gray-900);
+            font-size: 1.1rem;
+        }
+
+        .intro-letter .signature-role {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .intro-letter .signature-detail {
+            color: var(--gray-500);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        .intro-letter .signature-contact {
+            color: var(--gray-500);
+            font-size: 0.85rem;
+            margin-top: 12px;
+        }
+
+        .intro-letter .signature-contact a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* ========== ESCOPO / SERVIÇOS ========== */
+        .services-section {
+            background: var(--white);
+        }
+
+        .service-item {
+            display: flex;
+            gap: 24px;
+            padding: 30px 0;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .service-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-icon {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+
+        .service-content {
+            flex: 1;
+        }
+
+        .service-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .service-desc {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        .service-tag {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+
+        .service-tag.optional {
+            background: rgba(255, 143, 0, 0.1);
+            color: var(--accent);
+        }
+
+        /* ========== BENEFÍCIOS ========== */
+        .economy-section {
+            background: var(--gradient-dark);
+            color: var(--white);
+            padding: 80px 0;
+        }
+
+        .economy-section .section-title {
+            color: var(--white);
+        }
+
+        .economy-section .section-subtitle {
+            color: var(--gray-500);
+        }
+
+        .economy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .economy-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+
+        .economy-card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .economy-card-title {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .economy-card-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-light);
+        }
+
+        .economy-card-desc {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 6px;
+        }
+
+        .economy-highlight {
+            background: rgba(46, 125, 50, 0.15);
+            border: 1px solid rgba(46, 125, 50, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .economy-highlight-label {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+
+        .economy-highlight-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-light);
+        }
+
+        .economy-highlight-desc {
+            font-size: 0.95rem;
+            color: var(--gray-300);
+            margin-top: 8px;
+        }
+
+        /* ========== INVESTIMENTO / PRICING ========== */
+        .pricing-section {
+            background: var(--white);
+            padding: 80px 0;
+        }
+
+        .pricing-card {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--gradient-dark);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: var(--white);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+
+        .pricing-plan-name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .pricing-plan-desc {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            margin-bottom: 30px;
+        }
+
+        .pricing-value {
+            margin-bottom: 20px;
+        }
+
+        .pricing-currency {
+            font-size: 1.2rem;
+            font-weight: 600;
+            vertical-align: super;
+            color: var(--gray-500);
+        }
+
+        .pricing-amount {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--accent-light);
+        }
+
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--gray-500);
+        }
+
+        .pricing-installments {
+            margin-bottom: 30px;
+        }
+
+        .pricing-installment-title {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .installment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .installment-box {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 16px 10px;
+        }
+
+        .installment-box.highlight-box {
+            border-color: var(--accent);
+            background: rgba(255, 143, 0, 0.1);
+        }
+
+        .installment-label {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .installment-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-light);
+        }
+
+        .installment-date {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+            margin-top: 30px;
+        }
+
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            color: var(--gray-300);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li .check {
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .pricing-features li .benefit-badge {
+            font-size: 0.7rem;
+            background: rgba(67, 160, 71, 0.2);
+            color: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .pricing-features li .optional-badge {
+            font-size: 0.7rem;
+            background: rgba(255, 143, 0, 0.2);
+            color: var(--accent-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .pricing-contract {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-top: 20px;
+        }
+
+        /* ========== CRONOGRAMA ========== */
+        .timeline-section {
+            background: var(--gray-100);
+        }
+
+        .timeline {
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--gray-300);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-dot {
+            flex-shrink: 0;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.85rem;
+            z-index: 2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-dot.accent {
+            background: var(--gradient-accent);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            flex: 1;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-content.highlight {
+            border: 2px solid var(--accent);
+            background: #FFF8E1;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        /* ========== ACEITE ========== */
+        .accept-section {
+            background: var(--white);
+            padding: 80px 0;
+        }
+
+        .accept-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .accept-card h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .accept-card .accept-desc {
+            text-align: center;
+            color: var(--gray-700);
+            font-size: 0.95rem;
+            margin-bottom: 36px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: var(--danger);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-divider {
+            border: none;
+            border-top: 2px dashed var(--gray-300);
+            margin: 30px 0;
+        }
+
+        .form-divider-label {
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .terms-box {
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+
+        .terms-box h4 {
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 20px;
+            padding: 16px;
+            background: #E8F5E9;
+            border-radius: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            color: var(--gray-900);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-accept {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-accept:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ========== MODAL SUCESSO ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 12px;
+        }
+
+        .modal-desc {
+            font-size: 1rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+
+        .modal-close {
+            margin-top: 30px;
+            padding: 14px 40px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--gradient-dark);
+            color: var(--gray-500);
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--primary-light);
+            text-decoration: none;
+        }
+
+        .footer-brand {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+
+        .footer-brand span {
+            color: var(--primary-light);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero-logo {
+                font-size: 2.8rem;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .economy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-amount {
+                font-size: 3rem;
+            }
+
+            .hero-client {
+                padding: 20px;
+            }
+
+            .accept-card {
+                padding: 30px 20px;
+            }
+
+            .pricing-card {
+                padding: 40px 24px;
+            }
+
+            .service-item {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .installment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HERO / CAPA ========== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Proposta Comercial</div>
+            <div class="hero-logo">Rural<span>In</span></div>
+            <div class="hero-tagline">Informação e Decisão</div>
+            
+            <h1 class="hero-title">Assessoria em <strong>Gestão Financeira</strong><br>e Estratégia Econômica para Grãos</h1>
+            <p class="hero-subtitle">Proposta personalizada de consultoria contínua</p>
+
+            <div class="hero-client">
+                <div class="hero-client-label">Proposta destinada a</div>
+                <div class="hero-client-name">Sr. Thiago Carvalho Matias</div>
+                <div class="hero-client-farm">Produção de Grãos — Soja e Milho | Doverlândia – GO</div>
+            </div>
+
+            <div class="hero-date">Emitida em 28 de Abril de 2026</div>
+            <div class="hero-validity">⏳ Validade: 15 dias úteis</div>
+        </div>
+    </section>
+
+    <!-- ========== APRESENTAÇÃO ========== -->
+    <section class="section intro-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Apresentação</h2>
+                <p class="section-subtitle">Uma proposta feita sob medida para a sua operação de grãos</p>
+            </div>
+
+            <div class="intro-letter">
+                <p class="greeting">Prezado Sr. Thiago Carvalho Matias,</p>
+                
+                <p>É com grande satisfação que apresentamos esta proposta de <span class="highlight">assessoria contínua em gestão financeira, estratégia econômica e inteligência de mercado</span> para a sua operação de grãos.</p>
+                
+                <p>A produção de soja e milho exige, além de excelência agronômica, uma <span class="highlight">gestão financeira robusta e decisões econômicas fundamentadas em dados</span>. Margens apertadas, volatilidade de preços, custos de insumos em constante variação e a complexidade do crédito rural tornam indispensável um acompanhamento técnico-financeiro profissional.</p>
+                
+                <p>A <span class="highlight">RuralIn</span> é uma consultoria especializada em gestão financeira e estratégia econômica para o agronegócio. Nosso diferencial está na combinação de <span class="highlight">expertise em economia agrícola, tecnologia proprietária (Software RuralIn)</span> e um modelo de acompanhamento próximo que transforma dados da fazenda em decisões econômicas inteligentes.</p>
+
+                <p>O que nos diferencia no mercado é a entrega de um <span class="highlight">departamento financeiro e administrativo completo</span>, eliminando a necessidade de escritório físico, contratação de pessoal administrativo e custos operacionais. Além disso, oferecemos <span class="highlight">assessoria jurídica especializada</span> para situações que exijam judicialização junto a bancos e fornecedores, protegendo seus interesses em todas as frentes.</p>
+
+                <p>Ajudamos produtores a entender se o mercado sustenta seu negócio e usamos dados da fazenda para simular risco e orientar decisões econômicas.</p>
+
+                <p>Nas próximas seções, apresentamos o escopo detalhado dos serviços, os benefícios e o investimento proposto.</p>
+
+                <div class="signature">
+                    <div class="signature-name">Dr. Sidney Souza</div>
+                    <div class="signature-role">Economista e Adm. Agrícola | Estrategista Econômico do Produtor</div>
+                    <div class="signature-detail">Transformamos dados da fazenda em decisões econômicas</div>
+                    <div class="signature-contact">
+                        📧 <a href="mailto:ruralin.ai@gmail.com">ruralin.ai@gmail.com</a> &nbsp;|&nbsp; 📱 WhatsApp: <a href="https://wa.me/5564992266886">(64) 99226-6886</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ESCOPO DOS SERVIÇOS ========== -->
+    <section class="section services-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Escopo dos Serviços</h2>
+                <p class="section-subtitle">Tudo o que está incluído no Plano Estratégico RuralIn</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📊</div>
+                <div class="service-content">
+                    <div class="service-name">Assessoria Financeira Completa e Contínua</div>
+                    <div class="service-desc">Gestão financeira integral da atividade de grãos: controle de receitas, despesas, contas a pagar e a receber, conciliação de fluxo de caixa e apuração de resultados por safra e cultura. Substituição completa de um departamento administrativo-financeiro, sem necessidade de estrutura física ou contratação de pessoal.</div>
+                    <span class="service-tag">Contínuo</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📈</div>
+                <div class="service-content">
+                    <div class="service-name">Indicadores Financeiros Avançados</div>
+                    <div class="service-desc">Construção e acompanhamento de painel de indicadores financeiros avançados: custo por hectare, custo por saca, margem operacional por cultura (soja e milho), EBITDA da atividade, ponto de equilíbrio, relação custo/receita por safra e benchmarking com mercado regional.</div>
+                    <span class="service-tag">Setup + Atualização Mensal</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📋</div>
+                <div class="service-content">
+                    <div class="service-name">Relatório Mensal Profissional de Fluxo de Caixa</div>
+                    <div class="service-desc">Emissão de relatório profissional mensal detalhando: fluxo de caixa operacional, investimentos, financiamentos, DRE da atividade de grãos, análise de desvios do planejado vs. realizado e recomendações de ajuste para o próximo ciclo.</div>
+                    <span class="service-tag">Mensal</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🌾</div>
+                <div class="service-content">
+                    <div class="service-name">Inteligência de Mercado — Boi, Soja e Milho</div>
+                    <div class="service-desc">Fornecimento contínuo de informações estratégicas sobre os mercados de boi, soja e milho: tendências de preço, janelas de comercialização, análise de basis, cotações futuras, cenários de oferta/demanda e alertas de oportunidade para tomada de decisão na venda e na fixação de preços.</div>
+                    <span class="service-tag">Contínuo</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🤝</div>
+                <div class="service-content">
+                    <div class="service-name">Reuniões Estratégicas Anuais</div>
+                    <div class="service-desc">3 reuniões estratégicas presenciais ou online ao longo do ano, unindo a RuralIn e o produtor para análise de resultados, definição de estratégias de comercialização, planejamento financeiro de safra e definição de ações para o próximo ciclo. Participação de gerente ou agrônomo como convidado opcional.</div>
+                    <span class="service-tag">3x por Ano</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">💻</div>
+                <div class="service-content">
+                    <div class="service-name">Software RuralIn (SaaS/Web) — Acesso Completo</div>
+                    <div class="service-desc">Acesso ao sistema RuralIn com dados da fazenda atualizados em tempo real. Consulte seus indicadores, fluxo de caixa, relatórios e painel estratégico de qualquer dispositivo, a qualquer momento. Inclui painel digital interativo com atualizações trimestrais.</div>
+                    <span class="service-tag">Acesso Ilimitado 24/7</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🏦</div>
+                <div class="service-content">
+                    <div class="service-name">Orientação em Captação de Crédito + Acompanhamento Bancário</div>
+                    <div class="service-desc">Orientação e assessoria na captação de crédito rural (FCO, Pronamp, BNDES, Plano Safra e outras linhas) para custeio, investimento e capital de giro. Inclui análise de viabilidade, orientação na montagem de projetos e acompanhamento bancário completo.</div>
+                    <span class="service-tag">Sob Demanda + Acompanhamento</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">⚖️</div>
+                <div class="service-content">
+                    <div class="service-name">Assessoria Jurídica — Judicialização junto a Bancos e Fornecedores</div>
+                    <div class="service-desc">Assessoria jurídica especializada na análise e judicialização de situações existentes junto a instituições financeiras e fornecedores. Revisão de contratos, negociação de condições, defesa de interesses e acompanhamento processual para regularização e proteção patrimonial do produtor.</div>
+                    <span class="service-tag">Sob Demanda + Acompanhamento</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📞</div>
+                <div class="service-content">
+                    <div class="service-name">Suporte Técnico-Financeiro Ilimitado</div>
+                    <div class="service-desc">Canal direto de comunicação via WhatsApp e telefone para dúvidas, consultas e apoio em decisões financeiras do dia a dia. Atendimento ilimitado sem restrição de horário comercial.</div>
+                    <span class="service-tag">Ilimitado</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== BENEFÍCIOS ========== -->
+    <section class="economy-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Por que a RuralIn?</h2>
+                <p class="section-subtitle">O que você ganha ao ter a RuralIn como parceira estratégica</p>
+            </div>
+
+            <div class="economy-grid">
+                <div class="economy-card">
+                    <div class="economy-card-icon">🏢</div>
+                    <div class="economy-card-title">Zero Escritório</div>
+                    <div class="economy-card-value">100%</div>
+                    <div class="economy-card-desc">Eliminação de custos com estrutura administrativa física</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">👤</div>
+                    <div class="economy-card-title">Zero Contratação</div>
+                    <div class="economy-card-value">CLT Free</div>
+                    <div class="economy-card-desc">Sem encargos trabalhistas com administrativo/financeiro</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">💻</div>
+                    <div class="economy-card-title">Tecnologia Incluída</div>
+                    <div class="economy-card-value">SaaS 24/7</div>
+                    <div class="economy-card-desc">Software de gestão completo incluso sem custo adicional</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">🌾</div>
+                    <div class="economy-card-title">Inteligência de Mercado</div>
+                    <div class="economy-card-value">Boi, Soja & Milho</div>
+                    <div class="economy-card-desc">Informações estratégicas para decisão de venda e fixação</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">⚖️</div>
+                    <div class="economy-card-title">Proteção Jurídica</div>
+                    <div class="economy-card-value">Inclusa</div>
+                    <div class="economy-card-desc">Assessoria jurídica para judicialização com bancos e fornecedores</div>
+                </div>
+                <div class="economy-card">
+                    <div class="economy-card-icon">📊</div>
+                    <div class="economy-card-title">Decisão com Dados</div>
+                    <div class="economy-card-value">100%</div>
+                    <div class="economy-card-desc">Relatórios, indicadores e simulações para cada decisão</div>
+                </div>
+            </div>
+
+            <div class="economy-highlight">
+                <div class="economy-highlight-label">O que a RuralIn entrega ao produtor de grãos</div>
+                <div class="economy-highlight-value">Clareza, Controle e Estratégia</div>
+                <div class="economy-highlight-desc">Usamos dados da fazenda para simular risco e orientar decisões econômicas — para você saber se o mercado sustenta seu negócio</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== INVESTIMENTO ========== -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Investimento</h2>
+                <p class="section-subtitle">Plano Estratégico — Assessoria completa para a operação de grãos</p>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-badge">⭐ Plano Estratégico</div>
+                <div class="pricing-plan-name">Assessoria Integral RuralIn</div>
+                <div class="pricing-plan-desc">Gestão financeira + Tecnologia + Inteligência de Mercado + Jurídico + Crédito</div>
+
+                <div class="pricing-value">
+                    <span class="pricing-currency">R$</span>
+                    <span class="pricing-amount">130.000</span>
+                    <span class="pricing-period">/ano</span>
+                </div>
+
+                <div class="pricing-installments">
+                    <div class="pricing-installment-title">Condições de Pagamento</div>
+                    <div class="installment-grid">
+                        <div class="installment-box highlight-box">
+                            <div class="installment-label">Entrada</div>
+                            <div class="installment-value">R$ 50.000</div>
+                            <div class="installment-date">Na assinatura</div>
+                        </div>
+                        <div class="installment-box">
+                            <div class="installment-label">2ª Parcela</div>
+                            <div class="installment-value">R$ 40.000</div>
+                            <div class="installment-date">30/09/2026</div>
+                        </div>
+                        <div class="installment-box">
+                            <div class="installment-label">3ª Parcela</div>
+                            <div class="installment-value">R$ 40.000</div>
+                            <div class="installment-date">30/03/2027</div>
+                        </div>
+                    </div>
+                </div>
+
+                <ul class="pricing-features">
+                    <li><span class="check">✓</span> Assessoria financeira completa e contínua</li>
+                    <li><span class="check">✓</span> Indicadores financeiros avançados</li>
+                    <li><span class="check">✓</span> Relatório mensal profissional de fluxo de caixa</li>
+                    <li><span class="check">✓</span> Informações de mercado: boi, soja e milho</li>
+                    <li><span class="check">✓</span> 3 reuniões estratégicas no ano (RuralIn + Produtor) <span class="optional-badge">GERENTE/AGRÔNOMO OPCIONAL</span></li>
+                    <li><span class="check">✓</span> Acesso completo ao Software RuralIn (SaaS/Web 24/7)</li>
+                    <li><span class="check">✓</span> Painel digital interativo com atualizações trimestrais</li>
+                    <li><span class="check">✓</span> Orientação em captação de crédito + acompanhamento bancário</li>
+                    <li><span class="check">✓</span> Suporte técnico-financeiro ilimitado (WhatsApp/telefone)</li>
+                    <li><span class="check">✓</span> Assessoria jurídica na judicialização junto a bancos e fornecedores</li>
+                    <li><span class="check">✓</span> Dispensa escritório, administrativo e custos de estrutura <span class="benefit-badge">BENEFÍCIO</span></li>
+                </ul>
+
+                <div class="pricing-contract">
+                    📄 Contrato de 12 meses | Pagamento conforme cronograma acima
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CRONOGRAMA ========== -->
+    <section class="section timeline-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Cronograma de Implantação</h2>
+                <p class="section-subtitle">Primeiros passos após o aceite da proposta</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot accent">S0</div>
+                    <div class="timeline-content highlight">
+                        <div class="timeline-title">⭐ Semana 0 — Diagnóstico Inicial em Campo</div>
+                        <div class="timeline-desc">Visita técnica à propriedade em Doverlândia para levantamento completo: análise de contratos existentes, dívidas, financiamentos, custos de produção, histórico de safras, situação junto a bancos e fornecedores. Mapeamento completo da realidade financeira e jurídica da operação.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 1 — Kick-off e Estruturação Financeira</div>
+                        <div class="timeline-desc">Reunião inicial de alinhamento, coleta de dados financeiros históricos, organização de receitas/despesas por cultura e safra, e configuração inicial do sistema RuralIn com os dados reais da operação.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 2 — Indicadores e Painel Estratégico</div>
+                        <div class="timeline-desc">Construção dos indicadores financeiros por cultura (soja e milho), configuração do painel digital interativo e definição de metas e benchmarks para a safra corrente.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot">S3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Semana 3 — Análise Jurídica e Plano de Ação</div>
+                        <div class="timeline-desc">Análise detalhada da situação junto a bancos e fornecedores, definição da estratégia jurídica, início do acompanhamento processual e elaboração do plano de ação financeiro integrado.</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot accent">S4</div>
+                    <div class="timeline-content highlight">
+                        <div class="timeline-title">🚀 Semana 4 — Operação em Regime Contínuo</div>
+                        <div class="timeline-desc">Início oficial da assessoria contínua: primeiro relatório mensal, monitoramento de mercado ativo, suporte ilimitado em operação e acompanhamento jurídico em andamento. A RuralIn passa a ser o departamento financeiro e estratégico da sua operação de grãos.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ACEITE ========== -->
+    <section class="accept-section">
+        <div class="container">
+            <div class="accept-card">
+                <h3>Aceite da Proposta</h3>
+                <p class="accept-desc">Preencha os dados abaixo para formalizar o aceite desta proposta comercial</p>
+
+                <form id="acceptForm" onsubmit="handleAccept(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo <span class="required">*</span></label>
+                            <input type="text" placeholder="Thiago Carvalho Matias" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CPF / CNPJ <span class="required">*</span></label>
+                            <input type="text" placeholder="000.000.000-00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>E-mail <span class="required">*</span></label>
+                            <input type="email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone / WhatsApp <span class="required">*</span></label>
+                            <input type="tel" placeholder="(64) 99999-9999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Nome da Propriedade / Fazenda</label>
+                            <input type="text" placeholder="Nome da fazenda">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Observações</label>
+                            <textarea placeholder="Observações ou dúvidas adicionais..."></textarea>
+                        </div>
+                    </div>
+
+                    <hr class="form-divider">
+                    <div class="form-divider-label">Termos e Condições</div>
+
+                    <div class="terms-box">
+                        <h4>Termos Gerais da Proposta</h4>
+                        <p><strong>1. Objeto:</strong> Prestação de serviços de assessoria financeira, inteligência de mercado, assessoria jurídica e gestão estratégica para atividade de produção de grãos (soja e milho), conforme escopo descrito nesta proposta.</p>
+                        <p><strong>2. Vigência:</strong> 12 meses a partir da assinatura do contrato, podendo ser renovado por mútuo acordo entre as partes.</p>
+                        <p><strong>3. Investimento:</strong> R$ 130.000,00 (cento e trinta mil reais) anuais, divididos em: R$ 50.000,00 na assinatura (entrada), R$ 40.000,00 em 30/09/2026 e R$ 40.000,00 em 30/03/2027.</p>
+                        <p><strong>4. Confidencialidade:</strong> Todos os dados financeiros, operacionais e estratégicos compartilhados pelo cliente são tratados com absoluto sigilo e não serão divulgados a terceiros sem autorização expressa.</p>
+                        <p><strong>5. Propriedade Intelectual:</strong> O Software RuralIn e seus relatórios são de propriedade exclusiva da RuralIn. O cliente tem direito de uso durante a vigência do contrato.</p>
+                        <p><strong>6. Rescisão:</strong> Qualquer das partes pode rescindir o contrato com aviso prévio de 30 dias, sem multa, desde que respeitadas as obrigações financeiras proporcionais ao período utilizado.</p>
+                        <p><strong>7. Validade:</strong> Esta proposta tem validade de 15 dias úteis a partir da data de emissão.</p>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termsCheck" required onchange="toggleButton()">
+                        <label for="termsCheck">Li e aceito os termos e condições descritos acima. Autorizo a RuralIn a iniciar os trabalhos de assessoria conforme o escopo apresentado nesta proposta comercial.</label>
+                    </div>
+
+                    <button type="submit" class="btn-accept" id="btnAccept" disabled>✅ Aceitar Proposta e Iniciar Parceria</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODAL SUCESSO ========== -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <div class="modal-title">Proposta Aceita com Sucesso!</div>
+            <div class="modal-desc">
+                Obrigado, Sr. Thiago! Sua decisão nos honra.<br><br>
+                Nossa equipe entrará em contato em até <strong>24 horas</strong> para agendar o diagnóstico inicial e dar início à parceria.<br><br>
+                📧 ruralin.ai@gmail.com<br>
+                📱 (64) 99226-6886
+            </div>
+            <button class="modal-close" onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-brand">Rural<span>In</span></div>
+        <p>Informação e Decisão | Transformamos dados da fazenda em decisões econômicas</p>
+        <p style="margin-top: 8px;">📧 <a href="mailto:ruralin.ai@gmail.com">ruralin.ai@gmail.com</a> &nbsp;|&nbsp; 📱 <a href="https://wa.me/5564992266886">(64) 99226-6886</a></p>
+        <p style="margin-top: 16px;">Dr. Sidney Souza — Economista e Adm. Agrícola | Estrategista Econômico do Produtor</p>
+        <p style="margin-top: 4px; font-style: italic;">Ajudamos produtores a entender se o mercado sustenta seu negócio</p>
+        <p style="margin-top: 16px;">© 2026 RuralIn — Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        function toggleButton() {
+            const check = document.getElementById('termsCheck');
+            const btn = document.getElementById('btnAccept');
+            btn.disabled = !check.checked;
+        }
+
+        function handleAccept(e) {
+            e.preventDefault();
+            document.getElementById('successModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>
