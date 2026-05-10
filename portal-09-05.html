@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal Rural IN | Central de Análises — Semana 04 a 08/05/2026</title>
+<style>
+  :root{
+    --verde-escuro:#0f4d22;
+    --verde:#1f7a3a;
+    --verde-claro:#34a853;
+    --dourado:#c9a227;
+    --dourado-claro:#f1c40f;
+    --azul:#1f4e79;
+    --marrom:#6b3410;
+    --marrom-claro:#a0522d;
+    --amarelo-milho:#e8a317;
+    --vermelho:#c0392b;
+    --cinza:#f4f6f9;
+    --cinza-medio:#e1e5ea;
+    --texto:#2c3e50;
+    --branco:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:linear-gradient(135deg,#eef5ef 0%,#f4f6f9 100%);
+    color:var(--texto);
+    line-height:1.6;
+    min-height:100vh;
+  }
+  .container{max-width:1200px;margin:0 auto;padding:24px 20px;}
+
+  /* HEADER */
+  header.hero{
+    background:linear-gradient(135deg,var(--verde-escuro) 0%,var(--verde) 60%,var(--verde-claro) 100%);
+    color:#fff;
+    padding:50px 30px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+    margin-bottom:30px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"🌾";
+    position:absolute;
+    font-size:22em;
+    right:-50px;top:-80px;
+    opacity:.06;
+    transform:rotate(-15deg);
+  }
+  header.hero::after{
+    content:"📊";
+    position:absolute;
+    font-size:14em;
+    left:-30px;bottom:-50px;
+    opacity:.05;
+    transform:rotate(10deg);
+  }
+  .logo-portal{
+    display:inline-flex;align-items:center;gap:12px;
+    background:#fff;color:var(--verde-escuro);
+    padding:12px 26px;border-radius:50px;
+    font-weight:800;font-size:1.5rem;letter-spacing:1px;
+    margin-bottom:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+    position:relative;z-index:2;
+  }
+  .logo-portal-icon{
+    width:38px;height:38px;
+    background:linear-gradient(135deg,var(--dourado),var(--dourado-claro));
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;
+  }
+  header.hero h1{
+    font-size:clamp(1.6rem,4vw,2.6rem);
+    margin-bottom:10px;
+    text-shadow:2px 2px 6px rgba(0,0,0,.3);
+    position:relative;z-index:2;
+  }
+  header.hero .subtitulo{
+    font-size:clamp(1rem,2.2vw,1.2rem);
+    opacity:.95;margin-bottom:18px;
+    position:relative;z-index:2;
+  }
+  .badge-semana{
+    display:inline-block;
+    background:var(--dourado);color:#1b1b1b;
+    padding:8px 20px;border-radius:25px;
+    font-weight:700;font-size:1rem;
+    margin-top:10px;
+    position:relative;z-index:2;
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
+  }
+
+  /* SEÇÃO RESUMO RÁPIDO */
+  .resumo-geral{
+    background:#fff;border-radius:16px;
+    padding:28px;margin-bottom:28px;
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+  }
+  .resumo-geral h2{
+    color:var(--verde-escuro);
+    font-size:1.5rem;margin-bottom:18px;
+    border-left:5px solid var(--dourado);
+    padding-left:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .resumo-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;
+  }
+  .resumo-mini{
+    background:linear-gradient(135deg,#fafafa,#f0f5f1);
+    border-radius:10px;padding:16px;
+    border-left:4px solid var(--verde);
+    text-align:center;
+    transition:transform .2s ease;
+  }
+  .resumo-mini:hover{transform:translateY(-3px);}
+  .resumo-mini .label{
+    font-size:.78rem;text-transform:uppercase;
+    color:#666;letter-spacing:.5px;font-weight:600;
+  }
+  .resumo-mini .valor{
+    font-size:1.4rem;font-weight:800;
+    color:var(--verde-escuro);margin:6px 0 4px;
+  }
+  .resumo-mini .var{font-size:.85rem;font-weight:700;}
+  .up{color:var(--verde-claro);}
+  .down{color:var(--vermelho);}
+  .neutro{color:#7f8c8d;}
+
+  /* SEÇÃO CARDS PRINCIPAIS */
+  .secao-titulo{
+    text-align:center;
+    color:var(--verde-escuro);
+    font-size:clamp(1.4rem,3vw,1.9rem);
+    margin:30px 0 8px;
+    font-weight:800;
+  }
+  .secao-subtitulo{
+    text-align:center;
+    color:#666;font-size:1rem;
+    margin-bottom:25px;
+  }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:22px;margin-bottom:30px;
+  }
+  .card-relatorio{
+    background:#fff;border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,.1);
+    transition:all .35s cubic-bezier(.4,0,.2,1);
+    cursor:pointer;
+    display:flex;flex-direction:column;
+    text-decoration:none;color:inherit;
+    border:2px solid transparent;
+  }
+  .card-relatorio:hover{
+    transform:translateY(-8px);
+    box-shadow:0 14px 32px rgba(0,0,0,.18);
+  }
+  .card-header{
+    padding:25px 22px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .card-header::before{
+    content:"";
+    position:absolute;
+    right:-30px;top:-30px;
+    width:140px;height:140px;
+    background:rgba(255,255,255,.1);
+    border-radius:50%;
+  }
+  .card-header.macro{background:linear-gradient(135deg,#1b3a1f,#2d5a35);}
+  .card-header.soja{background:linear-gradient(135deg,#0f4d22,#34a853);}
+  .card-header.milho{background:linear-gradient(135deg,#8a5a00,#e8a317);}
+  .card-header.boi{background:linear-gradient(135deg,#4a2410,#a0522d);}
+  .card-icone{
+    font-size:3rem;margin-bottom:8px;
+    position:relative;z-index:2;
+    display:block;
+  }
+  .card-titulo{
+    font-size:1.35rem;font-weight:800;
+    margin-bottom:4px;
+    position:relative;z-index:2;
+  }
+  .card-tag{
+    display:inline-block;
+    background:rgba(255,255,255,.22);
+    padding:3px 10px;border-radius:12px;
+    font-size:.78rem;font-weight:600;
+    position:relative;z-index:2;
+  }
+  .card-body{
+    padding:20px 22px;
+    flex:1;
+    display:flex;flex-direction:column;
+  }
+  .card-resumo{
+    font-size:.92rem;
+    color:#444;line-height:1.55;
+    margin-bottom:14px;
+    text-align:justify;
+  }
+  .card-destaques{
+    list-style:none;padding:0;margin:0 0 16px;
+  }
+  .card-destaques li{
+    padding:6px 0 6px 22px;
+    position:relative;
+    font-size:.88rem;
+    border-bottom:1px dashed #e8eef0;
+  }
+  .card-destaques li:last-child{border-bottom:none;}
+  .card-destaques li::before{
+    content:"▸";
+    position:absolute;left:6px;
+    color:var(--dourado);font-weight:bold;
+  }
+  .card-destaques strong{color:var(--verde-escuro);}
+  .card-cta{
+    margin-top:auto;
+    background:var(--verde-escuro);color:#fff;
+    padding:12px 18px;
+    border-radius:8px;
+    text-align:center;
+    font-weight:700;font-size:.95rem;
+    letter-spacing:.5px;
+    transition:background .25s;
+  }
+  .card-relatorio:hover .card-cta{background:var(--verde-claro);}
+  .card-cta::after{content:" →";}
+
+  /* DESTAQUES CRUZADOS */
+  .destaques-cross{
+    background:linear-gradient(135deg,#fff,#fafdfa);
+    border-radius:16px;padding:28px;
+    margin-bottom:28px;
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+    border-top:5px solid var(--dourado);
+  }
+  .destaques-cross h2{
+    color:var(--verde-escuro);
+    font-size:1.4rem;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .destaques-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px;margin-top:16px;
+  }
+  .destaque-item{
+    background:#f8faf8;
+    border-left:4px solid var(--verde);
+    padding:14px;border-radius:8px;
+    font-size:.92rem;
+  }
+  .destaque-item strong{
+    display:block;color:var(--verde-escuro);
+    margin-bottom:4px;font-size:1rem;
+  }
+  .destaque-item.alerta{
+    background:#fff8e1;border-color:var(--dourado);
+  }
+  .destaque-item.risco{
+    background:#fdecea;border-color:var(--vermelho);
+  }
+
+  /* AGENDA */
+  .agenda-box{
+    background:#fff;border-radius:16px;
+    padding:28px;margin-bottom:28px;
+    box-shadow:0 4px 18px rgba(0,0,0,.08);
+  }
+  .agenda-box h2{
+    color:var(--verde-escuro);
+    font-size:1.4rem;margin-bottom:18px;
+    border-left:5px solid var(--azul);
+    padding-left:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .agenda-tabela{
+    width:100%;border-collapse:collapse;
+    font-size:.92rem;
+  }
+  .agenda-tabela th{
+    background:var(--verde-escuro);color:#fff;
+    padding:11px 10px;text-align:left;
+  }
+  .agenda-tabela td{
+    padding:10px;border-bottom:1px solid #e8eef0;
+  }
+  .agenda-tabela tbody tr:nth-child(even){background:#f7faf7;}
+  .agenda-tabela .alta{color:var(--vermelho);font-weight:700;}
+  .agenda-tabela .media{color:var(--dourado);font-weight:700;}
+  .tabela-wrap{overflow-x:auto;}
+
+  /* INSTRUÇÕES DE USO */
+  .instrucoes{
+    background:linear-gradient(135deg,#e8f5e9,#dcefe0);
+    border-radius:14px;padding:22px 26px;
+    margin-bottom:28px;
+    border-left:5px solid var(--verde-claro);
+  }
+  .instrucoes h3{
+    color:var(--verde-escuro);
+    font-size:1.15rem;margin-bottom:8px;
+  }
+  .instrucoes p{font-size:.95rem;color:#333;}
+
+  /* FOOTER */
+  footer{
+    background:linear-gradient(135deg,var(--verde-escuro) 0%,var(--verde) 100%);
+    color:#fff;
+    padding:35px 28px;
+    border-radius:16px;
+    text-align:center;
+    margin-top:30px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+  }
+  footer .logo-portal{margin-bottom:14px;}
+  .credenciais{
+    background:rgba(255,255,255,.1);
+    padding:22px;border-radius:12px;
+    margin-top:16px;
+  }
+  .credenciais .nome{
+    font-size:1.3rem;font-weight:800;
+    color:var(--dourado);margin-bottom:6px;
+  }
+  .credenciais .titulo{
+    font-size:.95rem;opacity:.95;
+    margin-bottom:4px;
+  }
+  .frase-final{
+    font-style:italic;
+    border-top:1px solid rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,255,255,.3);
+    padding:14px 0;margin:18px 0;
+    font-size:1rem;color:var(--dourado);
+  }
+  .contatos{
+    display:flex;flex-wrap:wrap;
+    justify-content:center;gap:14px;
+    margin-top:14px;
+  }
+  .contatos span{
+    background:rgba(255,255,255,.15);
+    padding:8px 16px;border-radius:20px;
+    font-size:.9rem;
+  }
+  .contatos a{
+    color:#fff;text-decoration:none;
+    font-weight:600;
+  }
+  .contatos a:hover{text-decoration:underline;color:var(--dourado);}
+  .disclaimer{
+    margin-top:18px;font-size:.82rem;
+    opacity:.8;font-style:italic;
+  }
+
+  @media(max-width:600px){
+    .container{padding:14px 10px;}
+    header.hero{padding:35px 20px;}
+    .resumo-geral,.destaques-cross,.agenda-box{padding:20px 16px;}
+    .card-header{padding:20px 18px;}
+    .card-body{padding:16px 18px;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO HEADER -->
+  <header class="hero">
+    <div class="logo-portal">
+      <div class="logo-portal-icon">🌱</div>
+      RURAL <span style="color:var(--verde-claro)">IN</span>
+    </div>
+    <h1>📊 Central de Análises Semanais</h1>
+    <p class="subtitulo">Inteligência Econômica do Agro — Visão 360° do Mercado</p>
+    <span class="badge-semana">📅 Semana de 04 a 08 de Maio de 2026</span>
+  </header>
+
+  <!-- RESUMO RÁPIDO -->
+  <div class="resumo-geral">
+    <h2>⚡ Snapshot da Semana</h2>
+    <div class="resumo-cards">
+      <div class="resumo-mini">
+        <div class="label">Dólar Comercial</div>
+        <div class="valor">R$ 4,894</div>
+        <div class="var down">▼ -1,13%</div>
+      </div>
+      <div class="resumo-mini">
+        <div class="label">Ibovespa</div>
+        <div class="valor">184.108</div>
+        <div class="var down">▼ -1,71%</div>
+      </div>
+      <div class="resumo-mini">
+        <div class="label">Soja Jul/26</div>
+        <div class="valor">US$ 12,08</div>
+        <div class="var up">▲ +0,93%</div>
+      </div>
+      <div class="resumo-mini">
+        <div class="label">Milho Jul/26</div>
+        <div class="valor">US$ 4,71</div>
+        <div class="var down">▼ -1,87%</div>
+      </div>
+      <div class="resumo-mini">
+        <div class="label">Boi CEPEA/@</div>
+        <div class="valor">R$ 352,55</div>
+        <div class="var down">▼ -0,54%</div>
+      </div>
+      <div class="resumo-mini">
+        <div class="label">Brent</div>
+        <div class="valor">US$ 101,29</div>
+        <div class="var down">▼ -6,0%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTRUÇÕES -->
+  <div class="instrucoes">
+    <h3>👋 Olá, produtor!</h3>
+    <p>Esta semana preparamos <strong>4 análises completas</strong> para apoiar suas decisões econômicas. Clique em cada card abaixo para acessar o relatório detalhado com gráficos, leitura técnica, fundamentalista e recomendações estratégicas.</p>
+  </div>
+
+  <!-- TÍTULO DOS RELATÓRIOS -->
+  <h2 class="secao-titulo">📚 Relatórios da Semana</h2>
+  <p class="secao-subtitulo">Análise fundamentalista + leitura gráfica + cenários probabilísticos</p>
+
+  <!-- CARDS DE RELATÓRIOS -->
+  <div class="cards-grid">
+
+    <!-- CARD MACRO/GEOPOLÍTICA -->
+    <a href="radar-magro-geo-09-05.html" class="card-relatorio">
+      <div class="card-header macro">
+        <span class="card-icone">🌎</span>
+        <div class="card-titulo">Macro, Geopolítica & Câmbio</div>
+        <span class="card-tag">📈 Visão Estratégica</span>
+      </div>
+      <div class="card-body">
+        <p class="card-resumo">Semana marcada por <strong>extrema volatilidade geopolítica</strong> com tensão EUA × Irã no Estreito de Ormuz, mas terminou com forte apetite por risco após payroll americano surpreender.</p>
+        <ul class="card-destaques">
+          <li><strong>USD/BRL</strong> abaixo de R$ 4,90 pela 1ª vez em 28 meses</li>
+          <li><strong>S&P 500 e Nasdaq</strong> em recordes históricos</li>
+          <li><strong>Selic mantida</strong> em 14,50% — ata cautelosa</li>
+          <li>Cenários <strong>USD/BRL e Ibov</strong> para 11–15/05</li>
+        </ul>
+        <div class="card-cta">Acessar Análise Macro</div>
+      </div>
+    </a>
+
+    <!-- CARD SOJA -->
+    <a href="radar-soja-09-05.html" class="card-relatorio">
+      <div class="card-header soja">
+        <span class="card-icone">🌱</span>
+        <div class="card-titulo">Soja & Câmbio</div>
+        <span class="card-tag">🌾 Grãos</span>
+      </div>
+      <div class="card-body">
+        <p class="card-resumo">Forte volatilidade no complexo soja em Chicago. Contrato Jul/26 oscilou entre US$ 11,77 e US$ 12,07, fechando a sexta em <strong>US$ 12,08/bu (+1,32%)</strong>.</p>
+        <ul class="card-destaques">
+          <li>Rio Verde/GO em <strong>R$ 109,00/sc</strong> (pressão semanal)</li>
+          <li>Spread porto × interior chegou a <strong>R$ 21/sc</strong></li>
+          <li>Foco no <strong>USDA WASDE</strong> (12/05) e Trump × Xi (15/05)</li>
+          <li>Recomendação: travar 20–30% antes do USDA</li>
+        </ul>
+        <div class="card-cta">Acessar Análise Soja</div>
+      </div>
+    </a>
+
+    <!-- CARD MILHO -->
+    <a href="radar-milho-09-05.html" class="card-relatorio">
+      <div class="card-header milho">
+        <span class="card-icone">🌽</span>
+        <div class="card-titulo">Milho & Câmbio</div>
+        <span class="card-tag">🌾 Grãos</span>
+      </div>
+      <div class="card-body">
+        <p class="card-resumo">Volatilidade alta em Chicago. Milho Jul/26 fechou em <strong>US$ 4,71/bu (-1,87% na semana)</strong>, pressionado pelo plantio antecipado nos EUA (~40%) e colheita na Argentina.</p>
+        <ul class="card-destaques">
+          <li>Rio Verde/GO em <strong>R$ 55,58/sc</strong> com viés de baixa</li>
+          <li><strong>Agroconsult</strong> projeta -9,5% na safrinha BR</li>
+          <li>Entrega futura Rio Verde: <strong>R$ 42–46/sc</strong></li>
+          <li>Spread Sudeste × Norte MT: <strong>R$ 23,84/sc</strong></li>
+        </ul>
+        <div class="card-cta">Acessar Análise Milho</div>
+      </div>
+    </a>
+
+    <!-- CARD BOI GORDO -->
+    <a href="radar-boi-09-05.html" class="card-relatorio">
+      <div class="card-header boi">
+        <span class="card-icone">🐂</span>
+        <div class="card-titulo">Boi Gordo & Pecuária</div>
+        <span class="card-tag">🥩 Pecuária de Corte</span>
+      </div>
+      <div class="card-body">
+        <p class="card-resumo">Acomodação dos preços no físico após valorização do 1º trimestre. <strong>CEPEA fechou em R$ 352,55/@ (-0,54%)</strong>, com cota chinesa esgotada e oferta sazonal pressionando.</p>
+        <ul class="card-destaques">
+          <li>B3 BGIK26 em <strong>R$ 342/@</strong> (desconto físico)</li>
+          <li>Bezerro MS em <strong>R$ 3.424,97/cabeça</strong> (+0,48%)</li>
+          <li>2º semestre <strong>altista</strong>: Copa, eleições, retenção</li>
+          <li>Projeção: CEPEA pode testar <strong>R$ 380–400/@</strong> no fim do ano</li>
+        </ul>
+        <div class="card-cta">Acessar Análise Boi Gordo</div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- DESTAQUES CRUZADOS -->
+  <div class="destaques-cross">
+    <h2>🔗 Insights Cruzados — Conexões Entre os Mercados</h2>
+    <p>O que a leitura integrada dos 4 relatórios revela ao produtor:</p>
+    <div class="destaques-grid">
+      <div class="destaque-item">
+        <strong>💵 Câmbio é o fio condutor</strong>
+        Dólar abaixo de R$ 4,90 afeta TODOS os mercados: reduz prêmios FOB de soja/milho, comprime margem de exportação de carne e desidrata preço local.
+      </div>
+      <div class="destaque-item alerta">
+        <strong>📅 USDA + Trump × Xi</strong>
+        Os eventos de 12/05 (USDA WASDE) e 15/05 (Trump × Xi) vão definir o tom de soja, milho e até carne bovina. Atenção redobrada nestes dois dias.
+      </div>
+      <div class="destaque-item">
+        <strong>🌾 Janela tática para vendas</strong>
+        Para soja e milho disponível: aproveitar repiques antes do USDA. Para boi pronto em GO/MG/SP: não segurar — escalas longas pressionam.
+      </div>
+      <div class="destaque-item alerta">
+        <strong>🛢️ Petróleo em queda</strong>
+        Brent caiu 6% (US$ 114 → US$ 101). Bom para custos (diesel/fertilizantes) mas reduz suporte ao etanol e óleo de soja.
+      </div>
+      <div class="destaque-item">
+        <strong>🐂 Pecuária com 2 tempos</strong>
+        Curto prazo baixista (cota China esgotada + oferta sazonal); 2º semestre altista (Copa + retenção de fêmeas + oferta restrita).
+      </div>
+      <div class="destaque-item risco">
+        <strong>⚠️ Hedge é prioridade</strong>
+        Em mercado volátil, travar receita via B3, NDF, PEPRO ou opções não é luxo — é gestão. Escalonar vendas em tranches reduz risco.
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENDA UNIFICADA -->
+  <div class="agenda-box">
+    <h2>📅 Agenda Unificada — Semana de 12 a 16/05</h2>
+    <p style="margin-bottom:14px;">Eventos-chave que vão moldar todos os mercados na próxima semana:</p>
+    <div class="tabela-wrap">
+      <table class="agenda-tabela">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Evento</th>
+            <th>Mercados Impactados</th>
+            <th>Relevância</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>SEG 12/05</strong></td>
+            <td>🌾 USDA WASDE + Crop Progress | SECEX (Carne)</td>
+            <td>Soja, Milho, Boi</td>
+            <td class="alta">🔴 Altíssima</td>
+          </tr>
+          <tr>
+            <td><strong>TER 13/05</strong></td>
+            <td>🇧🇷 IPCA Brasil (Abril) | 🇺🇸 CPI EUA</td>
+            <td>Câmbio, Boi, Macro</td>
+            <td class="alta">🔴 Alta</td>
+          </tr>
+          <tr>
+            <td><strong>QUA 14/05</strong></td>
+            <td>🇺🇸 PPI EUA | Produção industrial BR</td>
+            <td>Câmbio, Macro</td>
+            <td class="media">🟡 Média</td>
+          </tr>
+          <tr>
+            <td><strong>QUI 15/05</strong></td>
+            <td>🤝 <strong>Encontro Trump × Xi</strong> | NOPA | Vendas no Varejo EUA | ABIEC</td>
+            <td>Soja, Milho, Boi, Câmbio</td>
+            <td class="alta">🔴 Altíssima</td>
+          </tr>
+          <tr>
+            <td><strong>SEX 16/05</strong></td>
+            <td>USDA Cattle Report | Export Sales | Univ. Michigan</td>
+            <td>Boi, Grãos, Macro</td>
+            <td class="media">🟡 Média</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo-portal">
+      <div class="logo-portal-icon">🌱</div>
+      RURAL <span style="color:var(--dourado)">IN</span>
+    </div>
+    <div style="font-size:.95rem;opacity:.9;margin-top:6px;">Inteligência Econômica do Agro</div>
+
+    <div class="credenciais">
+      <div style="font-size:.85rem;opacity:.85;margin-bottom:6px;">Análise e Construção</div>
+      <div class="nome">Dr. Sidney Souza</div>
+      <div class="titulo">Economista e Adm. Agrícola</div>
+      <div class="titulo">Estrategista Econômico do Produtor</div>
+      <div class="titulo">Especialista em economia da fazenda e gestão de risco no agro</div>
+
+      <div class="frase-final">
+        "Em mercado volátil, o produtor que <strong>planeja</strong> vence o produtor que <strong>aposta</strong>.<br>
+        Hedge não é luxo — é gestão."
+      </div>
+
+      <div class="contatos">
+        <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+        <span>📧 sidneyagro@gmail.com</span>
+        <span>📱 (64) 9 9226-6886</span>
+        <span>📸 @ruralin.ai</span>
+      </div>
+    </div>
+
+    <p class="disclaimer">
+      📅 Portal emitido em <strong>10 de maio de 2026</strong> — Conteúdo informativo, não constitui recomendação personalizada de investimento.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

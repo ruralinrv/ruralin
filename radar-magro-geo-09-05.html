@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Informativo Semanal Rural IN — 04 a 08 de Maio 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --verde-escuro: #1b3a1f;
+    --verde-medio: #2d5a35;
+    --verde-claro: #5a8f29;
+    --dourado: #c9a227;
+    --terra: #8b5a2b;
+    --vermelho: #c0392b;
+    --azul: #1e3c72;
+    --cinza-claro: #f4f6f9;
+    --cinza-medio: #e1e5ea;
+    --texto: #2c3e50;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--cinza-claro);
+    color: var(--texto);
+    line-height: 1.7;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px 15px; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
+    color: #fff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "🌾";
+    position: absolute;
+    font-size: 18em;
+    right: -40px;
+    top: -60px;
+    opacity: 0.07;
+    transform: rotate(-15deg);
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
+  }
+  .logo-circ {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dourado), #f1c40f);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    flex-shrink: 0;
+  }
+  .logo-text h2 { font-size: 1.5em; letter-spacing: 1px; }
+  .logo-text span { font-size: 0.95em; opacity: 0.85; }
+  header h1 {
+    font-size: clamp(1.5em, 4vw, 2.3em);
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    position: relative; z-index: 2;
+  }
+  header .subtitulo {
+    font-size: clamp(1em, 2.2vw, 1.15em);
+    opacity: 0.95;
+    position: relative; z-index: 2;
+  }
+  .badges-header {
+    margin-top: 15px;
+    display: flex; flex-wrap: wrap; gap: 10px;
+    position: relative; z-index: 2;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--dourado);
+    color: #1b1b1b;
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+  .badge.alerta { background: var(--vermelho); color: #fff; }
+  .badge.info { background: #2980b9; color: #fff; }
+
+  /* SEÇÕES */
+  section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 25px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  section h2 {
+    font-size: clamp(1.3em, 2.6vw, 1.7em);
+    color: var(--verde-escuro);
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--dourado);
+    display: flex; align-items: center; gap: 10px;
+  }
+  section h3 {
+    font-size: 1.15em;
+    color: var(--verde-medio);
+    margin: 18px 0 10px;
+  }
+  section p { margin-bottom: 12px; text-align: justify; }
+
+  /* RESUMO EXECUTIVO */
+  .resumo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+  }
+  .resumo-card {
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+    border-left: 5px solid var(--dourado);
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .resumo-card .valor {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: var(--verde-escuro);
+  }
+  .resumo-card .label {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    letter-spacing: 0.5px;
+  }
+  .resumo-card .var {
+    font-size: 0.95em;
+    margin-top: 4px;
+    font-weight: 600;
+  }
+  .var.up { color: #27ae60; }
+  .var.down { color: var(--vermelho); }
+
+  /* GRÁFICOS */
+  .chart-container {
+    background: #fafbfc;
+    border-radius: 10px;
+    padding: 20px 15px;
+    margin: 20px 0;
+    border: 1px solid var(--cinza-medio);
+  }
+  .chart-container h4 {
+    text-align: center;
+    color: var(--verde-escuro);
+    margin-bottom: 12px;
+    font-size: 1.05em;
+  }
+  .chart-wrapper {
+    position: relative;
+    height: 320px;
+    width: 100%;
+  }
+
+  /* TERMÔMETROS */
+  .termometros-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .termometro {
+    background: #fff;
+    border: 2px solid var(--cinza-medio);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .termometro h5 {
+    font-size: 0.95em;
+    color: var(--texto);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .barra-bg {
+    background: linear-gradient(90deg, #27ae60 0%, #f1c40f 50%, #c0392b 100%);
+    height: 14px;
+    border-radius: 8px;
+    position: relative;
+    margin: 10px 0;
+  }
+  .marcador {
+    position: absolute;
+    top: -6px;
+    width: 4px;
+    height: 26px;
+    background: #2c3e50;
+    border-radius: 2px;
+    box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,0.4);
+    transform: translateX(-50%);
+  }
+  .escala-tipo {
+    display: flex; justify-content: space-between;
+    font-size: 0.75em; color: #7f8c8d;
+    margin-top: 4px;
+  }
+  .termometro-status {
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.05em;
+  }
+  .status-positivo { color: #27ae60; }
+  .status-neutro { color: #d68910; }
+  .status-negativo { color: var(--vermelho); }
+
+  /* TABELAS */
+  .tabela-wrap { overflow-x: auto; margin: 15px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 500px;
+  }
+  th {
+    background: var(--verde-medio);
+    color: #fff;
+    padding: 12px 10px;
+    text-align: left;
+    font-size: 0.95em;
+  }
+  td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--cinza-medio);
+    font-size: 0.95em;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) { background: #f8f9fa; }
+  .pos { color: #27ae60; font-weight: 600; }
+  .neg { color: var(--vermelho); font-weight: 600; }
+
+  /* ALERTAS */
+  .box-info {
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 5px solid;
+  }
+  .box-info.alerta { background: #fdecea; border-color: var(--vermelho); }
+  .box-info.atencao { background: #fff8e1; border-color: var(--dourado); }
+  .box-info.positivo { background: #e8f5e9; border-color: #27ae60; }
+  .box-info.tecnico { background: #e3f2fd; border-color: #2980b9; }
+  .box-info strong { display: block; margin-bottom: 5px; }
+
+  /* CENÁRIOS */
+  .cenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 15px;
+    margin: 18px 0;
+  }
+  .cenario {
+    padding: 18px;
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  .cenario.otimista { background: linear-gradient(135deg, #27ae60, #229954); }
+  .cenario.base { background: linear-gradient(135deg, #2980b9, #1e3c72); }
+  .cenario.pessimista { background: linear-gradient(135deg, #c0392b, #6d1b1b); }
+  .cenario h4 { font-size: 1.1em; margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .cenario .prob {
+    background: rgba(255,255,255,0.25);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+  }
+  .cenario ul { margin-left: 18px; margin-top: 8px; font-size: 0.92em; }
+  .cenario ul li { margin-bottom: 4px; }
+
+  /* AGENDA */
+  .agenda-list { list-style: none; padding: 0; }
+  .agenda-list li {
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background: #f8f9fa;
+    border-left: 4px solid var(--azul);
+    border-radius: 6px;
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  }
+  .agenda-list li.alta { border-color: var(--vermelho); background: #fdecea; }
+  .agenda-list li.media { border-color: var(--dourado); background: #fff8e1; }
+  .agenda-list .dia {
+    font-weight: bold;
+    min-width: 110px;
+    color: var(--verde-escuro);
+  }
+  .agenda-list .impacto {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.78em;
+    font-weight: bold;
+    color: #fff;
+  }
+  .impacto.alto { background: var(--vermelho); }
+  .impacto.medio { background: var(--dourado); color: #1b1b1b; }
+  .impacto.baixo { background: #95a5a6; }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
+    color: #fff;
+    padding: 30px 25px;
+    border-radius: 14px;
+    margin-top: 25px;
+    text-align: center;
+  }
+  .credenciais {
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+  }
+  .credenciais h3 {
+    color: var(--dourado);
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  .credenciais p { margin: 4px 0; font-size: 0.95em; opacity: 0.95; }
+  .credenciais a { color: var(--dourado); text-decoration: none; word-break: break-all; }
+  .credenciais a:hover { text-decoration: underline; }
+  .contatos {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;
+    margin-top: 12px;
+  }
+  .contatos span {
+    background: rgba(255,255,255,0.12);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9em;
+  }
+  .frase-impacto {
+    font-style: italic;
+    font-size: 1.05em;
+    margin: 15px 0;
+    color: var(--dourado);
+    font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 12px 8px; }
+    section { padding: 18px 15px; }
+    header { padding: 22px 18px; }
+    .chart-wrapper { height: 260px; }
+    .agenda-list .dia { min-width: 90px; font-size: 0.9em; }
+    .agenda-list li { font-size: 0.9em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header>
+  <div class="logo-area">
+    <div class="logo-circ">🌱</div>
+    <div class="logo-text">
+      <h2>RURAL <span style="color:var(--dourado)">IN</span></h2>
+      <span>Inteligência Econômica do Agro</span>
+    </div>
+  </div>
+  <h1>📊 Informativo Semanal — Macro, Geopolítica e Câmbio</h1>
+  <p class="subtitulo">Semana de <strong>04 a 08 de maio de 2026</strong> | Análise fundamentalista + leitura técnica</p>
+  <div class="badges-header">
+    <span class="badge alerta">🔥 Tensão EUA × Irã</span>
+    <span class="badge">💵 USD/BRL abaixo de R$ 4,90</span>
+    <span class="badge info">📈 S&P 500 em recorde</span>
+  </div>
+</header>
+
+<!-- RESUMO EXECUTIVO -->
+<section>
+  <h2>⚡ Resumo Executivo da Semana</h2>
+  <p>A semana foi marcada por <strong>extrema volatilidade geopolítica</strong>, com o conflito entre EUA e Irã no Estreito de Ormuz dominando o noticiário, mas terminou com forte <strong>apetite por risco</strong> após o payroll americano surpreender positivamente. O <strong>real foi destaque</strong> entre as moedas emergentes, fechando abaixo de R$ 4,90 pela primeira vez em 28 meses.</p>
+
+  <div class="resumo-grid">
+    <div class="resumo-card">
+      <div class="label">Dólar (USD/BRL)</div>
+      <div class="valor">R$ 4,894</div>
+      <div class="var down">▼ -1,16% na semana</div>
+    </div>
+    <div class="resumo-card">
+      <div class="label">Ibovespa</div>
+      <div class="valor">184.108 pts</div>
+      <div class="var down">▼ -1,71% na semana</div>
+    </div>
+    <div class="resumo-card">
+      <div class="label">S&P 500</div>
+      <div class="valor">7.398,93</div>
+      <div class="var up">▲ +2,3% na semana</div>
+    </div>
+    <div class="resumo-card">
+      <div class="label">Petróleo Brent</div>
+      <div class="valor">US$ 101,29</div>
+      <div class="var down">▼ -6% na semana</div>
+    </div>
+    <div class="resumo-card">
+      <div class="label">DXY (Dólar global)</div>
+      <div class="valor">97,87</div>
+      <div class="var down">▼ -0,27% na semana</div>
+    </div>
+    <div class="resumo-card">
+      <div class="label">Selic</div>
+      <div class="valor">14,50%</div>
+      <div class="var" style="color:#7f8c8d">━ Mantida (ata cautelosa)</div>
+    </div>
+  </div>
+</section>
+
+<!-- GRÁFICO IBOVESPA -->
+<section>
+  <h2>📈 Comportamento dos Mercados — Dia a Dia</h2>
+
+  <div class="chart-container">
+    <h4>Ibovespa — Fechamento diário (pontos)</h4>
+    <div class="chart-wrapper"><canvas id="graficoIbov"></canvas></div>
+  </div>
+
+  <div class="chart-container">
+    <h4>USD/BRL — Trajetória da semana (R$)</h4>
+    <div class="chart-wrapper"><canvas id="graficoDolar"></canvas></div>
+  </div>
+
+  <div class="chart-container">
+    <h4>Bolsas Globais — Variação semanal (%)</h4>
+    <div class="chart-wrapper"><canvas id="graficoBolsasGlobais"></canvas></div>
+  </div>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr><th>Dia</th><th>Ibovespa</th><th>Var. %</th><th>USD/BRL</th><th>Brent</th><th>Evento-chave</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Seg 04/05</strong></td><td>185.600</td><td class="neg">-0,92%</td><td>R$ 4,968</td><td>US$ 114,44</td><td>Mísseis iranianos atingem EAU</td></tr>
+        <tr><td><strong>Ter 05/05</strong></td><td>186.754</td><td class="pos">+0,62%</td><td>R$ 4,945</td><td>US$ 109,87</td><td>Ata do Copom + Ambev dispara</td></tr>
+        <tr><td><strong>Qua 06/05</strong></td><td>187.691</td><td class="pos">+0,50%</td><td>R$ 4,925</td><td>US$ 105,20</td><td>Vale puxa índice / Petrobras cai</td></tr>
+        <tr><td><strong>Qui 07/05</strong></td><td>183.218</td><td class="neg">-2,38%</td><td>R$ 4,923</td><td>US$ 100,06</td><td>Bradesco decepciona / cautela</td></tr>
+        <tr><td><strong>Sex 08/05</strong></td><td>184.108</td><td class="pos">+0,49%</td><td>R$ 4,894</td><td>US$ 101,29</td><td>Payroll forte + alívio Oriente Médio</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ANÁLISE FUNDAMENTALISTA MACRO -->
+<section>
+  <h2>🌎 Análise Fundamentalista — Macroeconomia</h2>
+
+  <h3>🇺🇸 Estados Unidos: Payroll forte muda o jogo</h3>
+  <p>O <strong>payroll de abril surpreendeu</strong>, com criação de <strong>115 mil vagas</strong> contra expectativa de apenas 63 mil. A taxa de desemprego ficou estável em <strong>4,3%</strong>, e o salário médio subiu, porém abaixo do esperado — combinação <em>"goldilocks"</em> (mercado forte sem pressão inflacionária excessiva). Resultado: Wall Street comemorou com <strong>S&P 500 e Nasdaq em recordes históricos</strong>.</p>
+
+  <div class="box-info positivo">
+    <strong>📌 Leitura Rural IN:</strong>
+    O dado reforça a tese de que o Fed pode <strong>esperar antes de cortar juros</strong>, mas sem necessidade de novo aperto. Isso é <strong>positivo para emergentes</strong> (capital flui para risco) e neutraliza o medo de recessão americana.
+  </div>
+
+  <h3>🇧🇷 Brasil: Selic em 14,50% e ata do Copom cautelosa</h3>
+  <p>O Banco Central reduziu a Selic para <strong>14,50% ao ano</strong> na semana anterior, e a ata divulgada na <strong>terça (05/05)</strong> manteve tom <strong>cauteloso</strong> — ressaltando riscos da inflação, expectativas desancoradas e instabilidade externa. Isso significa que o ciclo de cortes deve ser <strong>gradual e dependente de dados</strong>.</p>
+
+  <h3>📉 Petróleo perde 6% mesmo com guerra</h3>
+  <p>O Brent começou a semana em <strong>US$ 114</strong> e fechou em <strong>US$ 101</strong>. Apesar dos ataques no Oriente Médio, o mercado precificou que <strong>o fluxo de petróleo não foi efetivamente interrompido</strong> — Centcom barrou navios, mas oferta global segue. A queda do petróleo é <strong>desinflacionária</strong> e ajuda emergentes importadores líquidos de combustível.</p>
+</section>
+
+<!-- TERMÔMETROS -->
+<section>
+  <h2>🌡️ Termômetros de Mercado</h2>
+  <p>Indicadores visuais consolidando a leitura Rural IN para o produtor rural:</p>
+
+  <div class="termometros-grid">
+    <div class="termometro">
+      <h5>Aversão a risco global</h5>
+      <div class="barra-bg"><div class="marcador" style="left:55%"></div></div>
+      <div class="escala-tipo"><span>Baixa</span><span>Alta</span></div>
+      <div class="termometro-status status-neutro">⚠️ Moderada-Alta</div>
+    </div>
+    <div class="termometro">
+      <h5>Pressão sobre o dólar</h5>
+      <div class="barra-bg"><div class="marcador" style="left:25%"></div></div>
+      <div class="escala-tipo"><span>Baixa</span><span>Alta</span></div>
+      <div class="termometro-status status-positivo">✓ Tendência de queda</div>
+    </div>
+    <div class="termometro">
+      <h5>Tensão geopolítica</h5>
+      <div class="barra-bg"><div class="marcador" style="left:78%"></div></div>
+      <div class="escala-tipo"><span>Calma</span><span>Crítica</span></div>
+      <div class="termometro-status status-negativo">🔥 Elevada</div>
+    </div>
+    <div class="termometro">
+      <h5>Apetite por emergentes</h5>
+      <div class="barra-bg"><div class="marcador" style="left:72%"></div></div>
+      <div class="escala-tipo" style="background:linear-gradient(90deg,#c0392b,#f1c40f,#27ae60);height:0;"><span>Fraco</span><span>Forte</span></div>
+      <div class="termometro-status status-positivo">✓ Forte</div>
+    </div>
+    <div class="termometro">
+      <h5>Inflação EUA (expectativa)</h5>
+      <div class="barra-bg"><div class="marcador" style="left:50%"></div></div>
+      <div class="escala-tipo"><span>Controlada</span><span>Alta</span></div>
+      <div class="termometro-status status-neutro">━ Neutra</div>
+    </div>
+    <div class="termometro">
+      <h5>Real ante pares emergentes</h5>
+      <div class="barra-bg"><div class="marcador" style="left:18%"></div></div>
+      <div class="escala-tipo"><span>Forte</span><span>Fraco</span></div>
+      <div class="termometro-status status-positivo">✓ Destaque</div>
+    </div>
+  </div>
+</section>
+
+<!-- GEOPOLÍTICA -->
+<section>
+  <h2>🌐 Geopolítica — Os Movimentos da Semana</h2>
+
+  <div class="box-info alerta">
+    <strong>🔴 Estreito de Ormuz no centro do tabuleiro</strong>
+    Na segunda-feira, o Irã lançou <strong>4 mísseis de cruzeiro</strong> contra os Emirados Árabes Unidos (3 interceptados, 1 caiu no mar). Na sexta, o Centcom (Comando Central dos EUA) impedia <strong>mais de 70 navios-tanque</strong> de entrar/sair de portos iranianos. Por Ormuz passa <strong>20% do petróleo mundial</strong> — qualquer fechamento real seria explosivo para inflação global.
+  </div>
+
+  <div class="box-info atencao">
+    <strong>🤝 Diplomacia em curso</strong>
+    O secretário de Estado dos EUA, Marco Rubio, anunciou na sexta que aguarda <strong>resposta iraniana à proposta de paz</strong>. Trump declarou que o cessar-fogo (vigente desde 7 de abril) <strong>permanece em vigor</strong>, apesar dos incidentes. O mercado precificou avanço diplomático — daí a queda do petróleo e do dólar global.
+  </div>
+
+  <div class="box-info tecnico">
+    <strong>🇧🇷🇺🇸 Lula × Trump na agenda</strong>
+    Encontro entre os presidentes brasileiro e americano esteve no radar dos investidores na quinta-feira. Pauta: <strong>tarifas de importação</strong> (Trump anunciou taxa recíproca mínima de 10% no "Dia da Libertação" em 2 de abril) e cooperação comercial. Desfecho ainda em construção — pode definir fluxo de exportações do agro brasileiro.
+  </div>
+</section>
+
+<!-- ANÁLISE TÉCNICA / GRÁFICA -->
+<section>
+  <h2>📐 Análise Técnica (Grafista)</h2>
+
+  <h3>📊 Ibovespa — Pivô em 184.300 pts</h3>
+  <p>O índice testou <strong>3 vezes</strong> a região de <strong>183.000 pontos</strong> e segurou. Segundo o Itaú BBA, enquanto o Ibovespa permanecer <strong>acima de 184.300 pontos</strong>, mantém tendência de alta no curto prazo. <strong>Perda desse nível</strong> abriria caminho para <strong>179.700 e 174.900 pontos</strong>. Para retomar fôlego comprador, precisa romper <strong>189.100 pontos</strong>.</p>
+
+  <div class="chart-container">
+    <h4>Ibovespa — Suportes e Resistências (zoom técnico)</h4>
+    <div class="chart-wrapper"><canvas id="graficoTecnico"></canvas></div>
+  </div>
+
+  <div class="box-info tecnico">
+    <strong>🎯 Níveis técnicos críticos:</strong>
+    <ul style="margin-left:20px; margin-top:6px;">
+      <li><strong>Resistência 1:</strong> 187.700 pts (máxima de quarta)</li>
+      <li><strong>Resistência forte:</strong> 189.100 pts (pivô de retomada)</li>
+      <li><strong>Suporte 1:</strong> 184.300 pts (linha de tendência)</li>
+      <li><strong>Suporte 2:</strong> 183.200 pts (mínima da semana)</li>
+      <li><strong>Suporte crítico:</strong> 179.700 pts (rompimento = correção mais ampla)</li>
+    </ul>
+  </div>
+
+  <h3>💵 USD/BRL — Quebra de R$ 4,90 é histórica</h3>
+  <p>O dólar rompeu o <strong>importante suporte psicológico de R$ 4,90</strong>, primeira vez desde 15 de janeiro de 2024. A média móvel de 200 dias e o fluxo de capital para emergentes formam um cenário <strong>técnico vendedor</strong>. Próximos suportes: <strong>R$ 4,86 e R$ 4,80</strong>. Resistência imediata em <strong>R$ 4,93 (ex-suporte virou resistência)</strong>.</p>
+
+  <div class="box-info positivo">
+    <strong>🟢 Leitura Rural IN para o produtor:</strong>
+    A queda do dólar comprime margens em reais nas exportações (soja, milho, café, carne). <strong>É hora de avaliar travas de venda e hedge</strong> — quem fixar agora ainda captura preços históricos, mas o vento mudou de direção. Veja seção de cenários abaixo.
+  </div>
+</section>
+
+<!-- CENÁRIOS -->
+<section>
+  <h2>🎯 Cenários para a Próxima Semana (11–15/Mai)</h2>
+  <p>Com base na agenda econômica, posicionamento técnico e leitura geopolítica, traçamos três cenários probabilísticos para o <strong>USD/BRL</strong> e o <strong>Ibovespa</strong>:</p>
+
+  <div class="cenarios-grid">
+    <div class="cenario otimista">
+      <h4>🟢 Otimista <span class="prob">25%</span></h4>
+      <p><strong>Gatilhos:</strong></p>
+      <ul>
+        <li>CPI dos EUA vem abaixo do esperado</li>
+        <li>Avanço concreto na paz EUA-Irã</li>
+        <li>Dados da China fortes</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>USD/BRL:</strong> R$ 4,80 – R$ 4,87<br><strong>Ibov:</strong> 187k – 191k</p>
+    </div>
+
+    <div class="cenario base">
+      <h4>🔵 Base <span class="prob">55%</span></h4>
+      <p><strong>Gatilhos:</strong></p>
+      <ul>
+        <li>CPI EUA em linha</li>
+        <li>Cessar-fogo mantido com tensão</li>
+        <li>Vendas no varejo dos EUA mistas</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>USD/BRL:</strong> R$ 4,87 – R$ 4,95<br><strong>Ibov:</strong> 183k – 187k</p>
+    </div>
+
+    <div class="cenario pessimista">
+      <h4>🔴 Pessimista <span class="prob">20%</span></h4>
+      <p><strong>Gatilhos:</strong></p>
+      <ul>
+        <li>CPI EUA acelera (Fed mais hawkish)</li>
+        <li>Escalada militar no Golfo</li>
+        <li>Petróleo volta a US$ 110+</li>
+      </ul>
+      <p style="margin-top:8px;"><strong>USD/BRL:</strong> R$ 4,95 – R$ 5,05<br><strong>Ibov:</strong> 178k – 183k</p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <h4>Distribuição de Probabilidades — Cenários USD/BRL</h4>
+    <div class="chart-wrapper"><canvas id="graficoCenarios"></canvas></div>
+  </div>
+</section>
+
+<!-- AGENDA SEMANA QUE VEM -->
+<section>
+  <h2>📅 Agenda Econômica — 11 a 15 de Maio</h2>
+  <p>Os principais eventos que vão moldar a semana e que <strong>todo produtor rural deve acompanhar</strong>:</p>
+
+  <ul class="agenda-list">
+    <li class="media">
+      <span class="dia">SEG 11/05</span>
+      <span>🇨🇳 CPI da China (abr) | 🇧🇷 Boletim Focus</span>
+      <span class="impacto medio">Médio</span>
+    </li>
+    <li class="alta">
+      <span class="dia">TER 12/05</span>
+      <span>🇺🇸 <strong>CPI dos EUA (abril)</strong> | 🇩🇪 CPI alemão | 🇧🇷 IPCA + WASDE/USDA</span>
+      <span class="impacto alto">Alto</span>
+    </li>
+    <li class="media">
+      <span class="dia">QUA 13/05</span>
+      <span>🇺🇸 PPI dos EUA | 🇧🇷 Produção industrial | Falas Fed</span>
+      <span class="impacto medio">Médio</span>
+    </li>
+    <li class="alta">
+      <span class="dia">QUI 14/05</span>
+      <span>🇺🇸 <strong>Vendas no varejo</strong> | 🇬🇧 PIB Reino Unido | Pedidos seguro-desemprego</span>
+      <span class="impacto alto">Alto</span>
+    </li>
+    <li class="alta">
+      <span class="dia">SEX 15/05</span>
+      <span>🇺🇸 Univ. Michigan | 🇪🇺 PIB Zona do Euro | 🤝 Trump–Xi (sinalizado)</span>
+      <span class="impacto alto">Alto</span>
+    </li>
+  </ul>
+
+  <div class="box-info atencao">
+    <strong>⭐ Evento da semana:</strong>
+    <strong>CPI dos EUA (terça, 12/05)</strong> — define o tom do Fed para a próxima reunião. Se vier acima de 0,3% mensal, dólar global pode reverter o movimento de queda. Se vier em linha ou abaixo, real e Ibov ganham combustível para nova perna positiva.
+  </div>
+</section>
+
+<!-- PERCEPÇÃO E RECOMENDAÇÕES -->
+<section>
+  <h2>🧭 Percepção Rural IN para a Próxima Semana</h2>
+
+  <h3>🔍 Visão consolidada do estrategista</h3>
+  <p>A semana que se encerra mostrou um <strong>mercado em xadrez geopolítico</strong>: começou com pânico (mísseis no Golfo) e terminou com euforia (payroll forte + diplomacia). Esse padrão de <strong>volatilidade alta com viés positivo</strong> tende a se manter na próxima semana.</p>
+
+  <p>O <strong>real está em momento técnico raro</strong> — fluxo de capital favorável, juros internos elevados (carry trade) e commodities resilientes formam tripé bullish para a moeda brasileira. Porém, o <strong>fundamento da fazenda muda</strong>: para quem exporta, cada centavo de queda do dólar é receita perdida.</p>
+
+  <h3>🌾 Recomendações práticas ao produtor rural</h3>
+  <div class="box-info positivo">
+    <strong>✅ Produtor de SOJA / MILHO / CAFÉ:</strong>
+    <ul style="margin-left:20px; margin-top:6px;">
+      <li>Considere <strong>fixar 20–30% adicional</strong> da safra em reais nos níveis atuais</li>
+      <li>Avalie <strong>compra de PUTs</strong> (opções de venda) sobre dólar futuro como hedge</li>
+      <li>Dólar abaixo de R$ 4,90 + commodities ainda firmes = <strong>janela tática de venda</strong></li>
+    </ul>
+  </div>
+
+  <div class="box-info atencao">
+    <strong>⚠️ Produtor de BOI GORDO / mercado interno:</strong>
+    <ul style="margin-left:20px; margin-top:6px;">
+      <li>Selic em 14,5% ainda <strong>encarece custeio</strong> — priorize fluxo de caixa</li>
+      <li>Petróleo em queda alivia diesel e fertilizantes nos próximos 30–60 dias</li>
+      <li>Fique atento ao IPCA de terça — se vier benigno, curva de juros cai e libera crédito</li>
+    </ul>
+  </div>
+
+  <div class="box-info alerta">
+    <strong>🚨 Riscos a monitorar:</strong>
+    <ul style="margin-left:20px; margin-top:6px;">
+      <li><strong>Reescalada Ormuz</strong> (petróleo volta a US$ 115+ → dólar global sobe → real perde força)</li>
+      <li><strong>CPI EUA acima do esperado</strong> (Fed mais conservador → emergentes sofrem)</li>
+      <li><strong>Frustração nas tratativas Lula–Trump</strong> (tarifas adicionais ao agro brasileiro)</li>
+    </ul>
+  </div>
+
+  <p class="frase-impacto" style="text-align:center; color:var(--verde-escuro)">
+    "Em mercado volátil, o produtor que <strong>planeja</strong> vence o produtor que <strong>aposta</strong>. Hedge não é luxo — é gestão."
+  </p>
+</section>
+
+<!-- FOOTER COM CREDENCIAIS -->
+<footer>
+  <div class="logo-area" style="justify-content:center;">
+    <div class="logo-circ">🌱</div>
+    <div class="logo-text">
+      <h2>RURAL <span style="color:var(--dourado)">IN</span></h2>
+      <span>Inteligência Econômica do Agro</span>
+    </div>
+  </div>
+
+  <div class="credenciais">
+    <h3>📍 Análise e Construção</h3>
+    <p><strong>Dr. Sidney Souza</strong></p>
+    <p>Economista e Adm. Agrícola — <em>Estrategista Econômico do Produtor</em></p>
+    <p>Especialista em economia da fazenda e gestão de risco no agro</p>
+    <p style="margin-top:10px; font-style:italic; color:var(--dourado);">"Transformamos dados da fazenda em decisões econômicas"</p>
+    <p style="font-style:italic;">Ajudamos produtores a entender se o mercado sustenta seu negócio</p>
+
+    <div class="contatos">
+      <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a></span>
+      <span>📧 sidneyagro@gmail.com</span>
+      <span>📱 (64) 9 9226-6886</span>
+      <span>📸 @ruralin.ai</span>
+    </div>
+  </div>
+
+  <p style="margin-top:18px; font-size:0.85em; opacity:0.8;">
+    📅 Informativo emitido em <strong>10 de maio de 2026</strong> — Conteúdo informativo, não constitui recomendação personalizada de investimento.
+  </p>
+</footer>
+
+</div>
+
+<!-- ============ SCRIPTS DOS GRÁFICOS ============ -->
+<script>
+const cores = {
+  verde: '#2d5a35',
+  dourado: '#c9a227',
+  vermelho: '#c0392b',
+  azul: '#1e3c72',
+  cinza: '#7f8c8d'
+};
+
+// === GRÁFICO IBOVESPA ===
+new Chart(document.getElementById('graficoIbov'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Ibovespa (pontos)',
+      data: [185600, 186754, 187691, 183218, 184108],
+      borderColor: cores.verde,
+      backgroundColor: 'rgba(45,90,53,0.15)',
+      borderWidth: 3,
+      tension: 0.3,
+      fill: true,
+      pointBackgroundColor: cores.dourado,
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { ticks: { callback: v => v.toLocaleString('pt-BR') } }
+    }
+  }
+});
+
+// === GRÁFICO DÓLAR ===
+new Chart(document.getElementById('graficoDolar'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'USD/BRL',
+      data: [4.968, 4.945, 4.925, 4.923, 4.894],
+      borderColor: cores.vermelho,
+      backgroundColor: 'rgba(192,57,43,0.15)',
+      borderWidth: 3,
+      tension: 0.3,
+      fill: true,
+      pointBackgroundColor: cores.dourado,
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: {
+        ticks: { callback: v => 'R$ ' + v.toFixed(3) }
+      }
+    }
+  }
+});
+
+// === BOLSAS GLOBAIS ===
+new Chart(document.getElementById('graficoBolsasGlobais'), {
+  type: 'bar',
+  data: {
+    labels: ['Nasdaq','S&P 500','Dow Jones','Ibovespa','Brent','DXY'],
+    datasets: [{
+      label: 'Variação semanal (%)',
+      data: [4.4, 2.3, 0.2, -1.71, -6.0, -0.27],
+      backgroundColor: ctx => {
+        const v = ctx.raw;
+        return v >= 0 ? '#27ae60' : cores.vermelho;
+      },
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { ticks: { callback: v => v + '%' } }
+    }
+  }
+});
+
+// === TÉCNICO IBOVESPA ===
+new Chart(document.getElementById('graficoTecnico'), {
+  type: 'line',
+  data: {
+    labels: ['Seg','Ter','Qua','Qui','Sex'],
+    datasets: [
+      {
+        label: 'Ibovespa',
+        data: [185600, 186754, 187691, 183218, 184108],
+        borderColor: cores.verde,
+        borderWidth: 3, tension: 0.3,
+        pointRadius: 5
+      },
+      {
+        label: 'Resistência 189.100',
+        data: [189100,189100,189100,189100,189100],
+        borderColor: cores.vermelho,
+        borderDash: [6,4], borderWidth: 2,
+        pointRadius: 0
+      },
+      {
+        label: 'Suporte 184.300',
+        data: [184300,184300,184300,184300,184300],
+        borderColor: cores.dourado,
+        borderDash: [6,4], borderWidth: 2,
+        pointRadius: 0
+      },
+      {
+        label: 'Suporte crítico 179.700',
+        data: [179700,179700,179700,179700,179700],
+        borderColor: cores.cinza,
+        borderDash: [3,3], borderWidth: 2,
+        pointRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: {
+      y: { ticks: { callback: v => v.toLocaleString('pt-BR') } }
+    }
+  }
+});
+
+// === CENÁRIOS PROBABILIDADE ===
+new Chart(document.getElementById('graficoCenarios'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Otimista (R$ 4,80–4,87)', 'Base (R$ 4,87–4,95)', 'Pessimista (R$ 4,95–5,05)'],
+    datasets: [{
+      data: [25, 55, 20],
+      backgroundColor: ['#27ae60', cores.azul, cores.vermelho],
+      borderWidth: 3,
+      borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: { label: ctx => ctx.label + ': ' + ctx.raw + '%' }
+      }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

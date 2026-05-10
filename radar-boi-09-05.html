@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar Agro Ruralin.AI | Boi Gordo & Câmbio — Semana 04 a 08/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root{
+    --verde:#1f7a3a;
+    --verde-claro:#34a853;
+    --verde-escuro:#0f4d22;
+    --amarelo:#f5b301;
+    --marrom:#6b3410;
+    --marrom-claro:#a0522d;
+    --bege:#d2b48c;
+    --laranja:#e67e22;
+    --vermelho:#c0392b;
+    --cinza:#f4f6f5;
+    --texto:#2c2c2c;
+    --branco:#ffffff;
+    --azul:#1f4e79;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:var(--cinza);
+    color:var(--texto);
+    line-height:1.6;
+    padding:0;
+  }
+  .container{max-width:1100px;margin:0 auto;padding:20px;}
+  header{
+    background:linear-gradient(135deg,#4a2410,var(--marrom-claro));
+    color:#fff;
+    padding:30px 20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+    margin-bottom:24px;
+  }
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    color:var(--verde-escuro);
+    padding:10px 22px;
+    border-radius:50px;
+    font-weight:800;
+    font-size:1.4rem;
+    letter-spacing:1px;
+    margin-bottom:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .logo svg{width:30px;height:30px;}
+  header h1{font-size:1.8rem;margin-bottom:6px;}
+  header p{font-size:1rem;opacity:.95;}
+  .badge{
+    display:inline-block;
+    background:var(--verde-escuro);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:.85rem;
+    font-weight:700;
+    margin-top:10px;
+  }
+  section{
+    background:#fff;
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  h2{
+    color:var(--marrom);
+    border-left:5px solid var(--marrom-claro);
+    padding-left:12px;
+    margin-bottom:16px;
+    font-size:1.4rem;
+  }
+  h3{color:var(--azul);margin:14px 0 8px;font-size:1.1rem;}
+  p{margin-bottom:10px;text-align:justify;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:768px){
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+    header h1{font-size:1.4rem;}
+    .container{padding:12px;}
+  }
+  .card{
+    background:linear-gradient(135deg,#fafafa,#f5e6d3);
+    border-radius:10px;
+    padding:16px;
+    border-left:4px solid var(--marrom-claro);
+    text-align:center;
+  }
+  .card .valor{font-size:1.6rem;font-weight:800;color:var(--marrom);}
+  .card .label{font-size:.85rem;color:#666;text-transform:uppercase;letter-spacing:.5px;}
+  .card .var{font-size:.9rem;font-weight:700;margin-top:4px;}
+  .up{color:var(--verde-claro);}
+  .down{color:var(--vermelho);}
+  .chart-box{
+    background:#fff;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #e3e8e4;
+    position:relative;
+    height:340px;
+  }
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.92rem;}
+  th,td{padding:10px;text-align:left;border-bottom:1px solid #e0e6e1;}
+  th{background:var(--marrom);color:#fff;}
+  tbody tr:nth-child(even){background:#f5e6d3;}
+  .termometro{
+    background:#fff;
+    border:1px solid #e0e6e1;
+    border-radius:10px;
+    padding:14px;
+    margin-top:10px;
+  }
+  .barra{
+    height:22px;
+    background:linear-gradient(90deg,#c0392b 0%,#f5b301 50%,#27ae60 100%);
+    border-radius:11px;
+    position:relative;
+    margin:6px 0 4px;
+  }
+  .ponteiro{
+    position:absolute;
+    top:-6px;
+    width:4px;
+    height:34px;
+    background:#000;
+    border-radius:2px;
+  }
+  .legenda-barra{display:flex;justify-content:space-between;font-size:.75rem;color:#555;}
+  .alerta{
+    background:#fff8e1;
+    border-left:4px solid var(--amarelo);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-vermelho{
+    background:#fdecea;
+    border-left:4px solid var(--vermelho);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-verde{
+    background:#e8f5e9;
+    border-left:4px solid var(--verde-claro);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  ul{padding-left:22px;margin-bottom:10px;}
+  ul li{margin-bottom:6px;}
+  footer{
+    background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+    color:#fff;
+    padding:26px 20px;
+    border-radius:12px;
+    text-align:center;
+    margin-top:30px;
+  }
+  footer .nome{font-size:1.25rem;font-weight:800;margin-bottom:4px;}
+  footer .titulo{font-size:.95rem;opacity:.95;margin-bottom:10px;}
+  footer .frase{
+    font-style:italic;
+    border-top:1px solid rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,255,255,.3);
+    padding:10px 0;
+    margin:14px 0;
+    font-size:.9rem;
+  }
+  footer a{color:#fff;text-decoration:none;font-weight:600;}
+  footer a:hover{text-decoration:underline;}
+  .contatos{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;font-size:.9rem;}
+  .scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+  @media(max-width:768px){.scenario-grid{grid-template-columns:1fr;}}
+  .scenario{
+    padding:14px;
+    border-radius:10px;
+    color:#fff;
+  }
+  .scen-bull{background:linear-gradient(135deg,#27ae60,#1e874b);}
+  .scen-neutral{background:linear-gradient(135deg,#f5b301,#c98f02);}
+  .scen-bear{background:linear-gradient(135deg,#c0392b,#8a2920);}
+  .scenario h4{margin-bottom:6px;font-size:1rem;}
+  .scenario p{font-size:.85rem;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--marrom-claro)">.IN</span>.AI
+    </div>
+    <h1>🐂 RADAR AGRO SEMANAL — BOI GORDO</h1>
+    <p>Análise Fundamentalista & Gráfica | Pecuária de Corte & Câmbio</p>
+    <span class="badge">Semana de 04 a 08 de Maio de 2026</span>
+  </header>
+
+  <!-- RESUMO EXECUTIVO -->
+  <section>
+    <h2>🎯 Resumo Executivo da Semana</h2>
+    <p>Semana de <strong>acomodação dos preços</strong> no mercado físico do boi gordo, em continuidade ao movimento de correção iniciado em meados de abril após a forte valorização do 1º trimestre. O <strong>Indicador CEPEA/Esalq</strong> abriu a semana em <strong>R$ 354,20/@</strong> e encerrou na sexta-feira (08/05) em <strong>R$ 352,55/@</strong>, com perda semanal de <strong>-0,54%</strong>. Nas praças de referência (Araçatuba e Barretos/SP), o boi gordo a prazo seguiu em <strong>R$ 355/@</strong>. O cenário é dominado pelo <strong>preenchimento da cota chinesa</strong> de 1,1 milhão de toneladas (esgotada no início de maio), maior oferta sazonal de gado em GO/MG/SP por desgaste de pastagens, e escalas de abate confortáveis (7 a 8 dias úteis). Na B3, o contrato <strong>BGIK26 (mai/26)</strong> liquidou em torno de <strong>R$ 342/@</strong>, indicando descolamento baixista do físico. Entretanto, as <strong>perspectivas para o 2º semestre seguem altistas</strong>: menor abate de fêmeas, demanda interna aquecida pela Copa do Mundo e ciclo de retenção de matrizes apontam para retomada das cotações.</p>
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="card">
+        <div class="label">Indicador CEPEA/@</div>
+        <div class="valor">R$ 352,55</div>
+        <div class="var down">▼ -0,54% semana</div>
+      </div>
+      <div class="card">
+        <div class="label">B3 BGIK26 (Mai/26)</div>
+        <div class="valor">R$ 342,00</div>
+        <div class="var down">▼ Desconto físico</div>
+      </div>
+      <div class="card">
+        <div class="label">Bezerro MS (cabeça)</div>
+        <div class="valor">R$ 3.424,97</div>
+        <div class="var up">▲ +0,48% mês</div>
+      </div>
+      <div class="card">
+        <div class="label">Dólar Comercial</div>
+        <div class="valor">R$ 4,8939</div>
+        <div class="var down">▼ -1,13% semana</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRÁFICO INDICADOR CEPEA -->
+  <section>
+    <h2>📈 Gráfico Diário — Indicador Boi Gordo CEPEA/Esalq</h2>
+    <p>Evolução diária do Indicador CEPEA/Esalq do boi gordo (R$/@ - 15kg) durante a semana:</p>
+    <div class="chart-box"><canvas id="graficoCepea"></canvas></div>
+    <h3>🔍 Leitura Técnica (Grafista)</h3>
+    <ul>
+      <li><strong>Suporte imediato:</strong> R$ 350/@ — perda abre espaço para R$ 345/@.</li>
+      <li><strong>Resistência:</strong> R$ 358/@ — rompimento sinaliza retomada altista rumo a R$ 365/@ (topo histórico).</li>
+      <li><strong>Padrão gráfico:</strong> consolidação lateral em "bandeira" entre R$ 352-355, dentro de tendência baixista de curtíssimo prazo.</li>
+      <li><strong>Indicador US$/@:</strong> US$ 72,04 na sexta — câmbio fraco mantém arroba dolarizada estável apesar da queda em reais.</li>
+      <li><strong>Médias móveis:</strong> preço perdeu MM5 e MM21 — viés de baixa de curto prazo confirmado.</li>
+      <li><strong>Spread B3 BGIK26 vs CEPEA:</strong> -R$ 10,55/@ — futuro precifica chegada de mais oferta no curto prazo.</li>
+    </ul>
+  </section>
+
+  <!-- GRÁFICO DÓLAR -->
+  <section>
+    <h2>💵 Gráfico Diário — Dólar Comercial (BRL)</h2>
+    <div class="chart-box"><canvas id="graficoDolar"></canvas></div>
+    <h3>🔍 Leitura Técnica do Câmbio</h3>
+    <ul>
+      <li><strong>Tendência:</strong> baixa firme — perda da marca psicológica de R$ 4,90 confirma força vendedora.</li>
+      <li><strong>Próximo suporte:</strong> R$ 4,86 (mínima de janeiro/2024).</li>
+      <li><strong>Resistência:</strong> R$ 4,95 — repique técnico não invalida tendência baixista.</li>
+      <li><strong>Drivers:</strong> diferencial de juros elevado (carry trade), payroll EUA forte e fluxo cambial positivo.</li>
+    </ul>
+    <div class="alerta-vermelho">
+      <strong>⚠️ Alerta ao Pecuarista:</strong> dólar abaixo de R$ 4,90 reduz a competitividade da carne brasileira no mercado externo. Após o esgotamento da cota chinesa, o câmbio fraco torna ainda mais difícil escoar as <strong>600 mil toneladas que não irão à China</strong>. Cada R$ 0,10 de queda no dólar reduz cerca de <strong>R$ 1,50/@ no equivalente FOB</strong> da arroba do boi.
+    </div>
+  </section>
+
+  <!-- PREÇOS BRASIL -->
+  <section>
+    <h2>🇧🇷 Preços do Boi Gordo nas Principais Praças (R$/@ - prazo)</h2>
+    <div class="chart-box"><canvas id="graficoBrasil"></canvas></div>
+    <table>
+      <thead>
+        <tr><th>Praça</th><th>Preço</th><th>Tendência</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Cuiabá / Norte MT</td><td>R$ 360,00</td><td class="up">▲ Pasto vigoroso</td></tr>
+        <tr><td>Araçatuba (SP) — Referência</td><td>R$ 355,00</td><td>● Estável</td></tr>
+        <tr><td>Barretos (SP) — Referência</td><td>R$ 355,00</td><td>● Estável</td></tr>
+        <tr><td>Três Lagoas (MS)</td><td>R$ 352,00</td><td class="down">▼ Leve queda</td></tr>
+        <tr><td><strong>Goiânia (GO) / Rio Verde</strong></td><td><strong>R$ 348,00</strong></td><td class="down">▼ Pastagem ruim</td></tr>
+        <tr><td>Belo Horizonte (MG)</td><td>R$ 345,00</td><td class="down">▼ Maior oferta</td></tr>
+        <tr><td>Marabá (PA)</td><td>R$ 340,00</td><td>● Lateral</td></tr>
+        <tr><td>Boi China (Araçatuba)</td><td>R$ 360,00</td><td>● Estável</td></tr>
+        <tr><td>Vaca gorda (Araçatuba)</td><td>R$ 323,00</td><td class="down">▼ -R$ 5</td></tr>
+        <tr><td>Novilha (Araçatuba)</td><td>R$ 337,00</td><td class="down">▼ -R$ 3</td></tr>
+      </tbody>
+    </table>
+    <div class="alerta">
+      <strong>📌 Observação Regional:</strong> spread entre <strong>Norte MT (R$ 360)</strong> e <strong>MG/GO (R$ 345-348)</strong> reflete o estado das pastagens. No Mato Grosso, Pará, Tocantins e Rondônia, o pasto está vigoroso, oferecendo capacidade de retenção. Já em <strong>Goiás, Minas Gerais e São Paulo</strong>, pastos desgastados forçam a antecipação do abate, ampliando a oferta e pressionando preços. <strong>Rio Verde (GO)</strong> opera em torno de R$ 348/@, R$ 12 abaixo do Norte MT.
+    </div>
+    <div class="alerta-verde">
+      <strong>💡 Mercado de Reposição:</strong> Indicador do bezerro CEPEA-MS em <strong>R$ 3.424,97/cabeça (+0,48% no mês)</strong>. Apesar da correção do boi gordo, o bezerro segue valorizado, sinalizando <strong>retenção de matrizes</strong> e ciclo pecuário em fase de recomposição do rebanho — fator estrutural altista para 2027/2028.
+    </div>
+  </section>
+
+  <!-- ANÁLISE FUNDAMENTALISTA -->
+  <section>
+    <h2>🌾 Análise Fundamentalista</h2>
+    <div class="grid-2">
+      <div>
+        <h3>🟢 Fatores de Alta (Bullish)</h3>
+        <ul>
+          <li><strong>Abate de fêmeas em queda:</strong> 43,9% em mar/26 vs 51% em mar/25 (Agrifatto/IBGE) — ciclo de retenção.</li>
+          <li>Bezerro em alta sustentada — sinal clássico de oferta restrita à frente.</li>
+          <li>Demanda interna aquecida — Copa do Mundo (jun/jul) e período eleitoral.</li>
+          <li>Menor disponibilidade estrutural de animais para abate no 2º semestre.</li>
+          <li>Recordes de exportação no 1º trimestre (>40% da cota China antes do esgotamento).</li>
+          <li>EUA com rebanho no menor nível em 70 anos — preço da carne em alta nos EUA pressiona mercado global.</li>
+          <li>Confinamento entrando no mercado em jul-set (oferta limitada e cara).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>🔴 Fatores de Baixa (Bearish)</h3>
+        <ul>
+          <li><strong>Cota China esgotada</strong> em maio — embarques caem fortemente após cota.</li>
+          <li>600 mil toneladas que iriam à China precisam de novo destino.</li>
+          <li>Tarifa fora da cota (55%) inviabiliza embarques adicionais à China.</li>
+          <li>Escalas de abate confortáveis (7-8 dias úteis) — frigoríficos com poder de barganha.</li>
+          <li>Pastagens desgastadas em GO/MG/SP forçam antecipação de abate.</li>
+          <li>Dólar abaixo de R$ 4,90 reduz competitividade FOB.</li>
+          <li>Vendas no atacado fracas — recuo no consumo doméstico de curto prazo.</li>
+          <li>Frigoríficos avaliando estratégias e ausentes de compras pontualmente.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>🌡️ Termômetro do Mercado</h3>
+    <div class="termometro">
+      <strong>Sentimento Físico Curto Prazo (mai-jun/26):</strong>
+      <div class="barra"><div class="ponteiro" style="left:35%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> baixista — pós-cota China + oferta sazonal pressionam o curto prazo.</p>
+    </div>
+    <div class="termometro">
+      <strong>Sentimento 2º Semestre 2026:</strong>
+      <div class="barra"><div class="ponteiro" style="left:72%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> altista — Copa, eleições, retenção de fêmeas e oferta restrita devem retomar o ciclo de alta.</p>
+    </div>
+    <div class="termometro">
+      <strong>Câmbio BRL:</strong>
+      <div class="barra"><div class="ponteiro" style="left:22%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> fortemente baixista — fluxo estrangeiro e carry trade mantêm dólar em queda.</p>
+    </div>
+  </section>
+
+  <!-- PRÓXIMA SEMANA -->
+  <section>
+    <h2>🔮 Cenários para a Próxima Semana (12 a 16/05)</h2>
+    <p>Construímos três cenários probabilísticos considerando oferta, exportações e câmbio:</p>
+    <div class="scenario-grid">
+      <div class="scenario scen-bull">
+        <h4>🟢 Otimista (20%)</h4>
+        <p>Gatilhos: anúncio de novos mercados (Japão/Coreia), encurtamento de escalas, retomada do varejo, dólar acima de R$ 4,95.</p>
+        <p>CEPEA: R$ 358-365/@</p>
+        <p>Impacto Rio Verde/GO: R$ 352-358/@</p>
+      </div>
+      <div class="scenario scen-neutral">
+        <h4>🟡 Base (55%)</h4>
+        <p>Gatilhos: oferta segue confortável, escalas mantidas em 7-8 dias, frigoríficos com barganha, sem catalisadores externos.</p>
+        <p>CEPEA: R$ 348-355/@</p>
+        <p>Impacto Rio Verde/GO: R$ 343-350/@</p>
+      </div>
+      <div class="scenario scen-bear">
+        <h4>🔴 Pessimista (25%)</h4>
+        <p>Gatilhos: dólar abaixo de R$ 4,85, queda forte das exportações pós-cota, oferta acelerada por seca de pasto, vacas pressionando.</p>
+        <p>CEPEA: R$ 340-348/@</p>
+        <p>Impacto Rio Verde/GO: R$ 335-343/@</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section>
+    <h2>📅 Agenda Setorial & Eventos-Chave</h2>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Evento</th><th>Relevância</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>12/05 (seg)</td><td>SECEX — Balança Comercial / Exportações Carne</td><td class="down">🔴 Alta</td></tr>
+        <tr><td>13/05 (ter)</td><td>IPCA Brasil — Abril (componente carnes)</td><td>🟡 Média</td></tr>
+        <tr><td>14/05 (qua)</td><td>Inflação EUA (CPI) — impacto câmbio</td><td>🟡 Média</td></tr>
+        <tr><td>15/05 (qui)</td><td>Encontro Trump x Xi — Pauta carnes/agro</td><td class="down">🔴 Altíssima</td></tr>
+        <tr><td>15/05 (qui)</td><td>Relatório ABIEC — embarques semanais</td><td class="down">🔴 Alta</td></tr>
+        <tr><td>16/05 (sex)</td><td>USDA Cattle Report (mensal)</td><td>🟡 Média</td></tr>
+        <tr><td>Semana</td><td>Acompanhamento de escalas — Scot/Safras</td><td class="down">🔴 Alta</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- VISÃO ESTRATÉGICA -->
+  <section>
+    <h2>🎯 Visão do Estrategista — Recomendações</h2>
+    <div class="alerta-verde">
+      <strong>Para o pecuarista com gado pronto para abate:</strong> em região de pasto desgastado (GO/MG/SP), <strong>NÃO segurar gado pronto</strong> — escalas longas e oferta sazonal pressionam preços nos próximos 60 dias. Negocie com 2-3 frigoríficos para forçar concorrência. Em MT/PA/TO, com pasto vigoroso, vale segurar para o repique do 2º semestre.
+    </div>
+    <div class="alerta">
+      <strong>Para o confinador (boiada de jul-set):</strong> trave preço de venda na <strong>B3 — contratos BGIV26 (out/26) ou BGIX26 (nov/26)</strong>, que precificam patamares mais altos que o físico atual. Cenário fundamentalista do 2º semestre é favorável: Copa do Mundo, demanda firme e oferta restrita.
+    </div>
+    <div class="alerta-vermelho">
+      <strong>Atenção ao mercado de reposição:</strong> bezerro a R$ 3.425/cabeça segue caro frente à arroba do boi pronto. <strong>Relação de troca boi/bezerro deteriorada</strong> — avalie cuidadosamente novas reposições. Se possível, priorize fêmeas em retenção e aproveitamento da pastagem própria.
+    </div>
+    <h3>💡 Próxima Semana — Movimento Esperado:</h3>
+    <p>Volatilidade <strong>moderada</strong>, com viés <strong>levemente baixista</strong> no físico de curto prazo. Tendência de manutenção do CEPEA na faixa <strong>R$ 348-355/@</strong>, com pressão maior em GO/MG/SP. <strong>Recomendação tática:</strong> escalonar vendas — 50% no spot agora (antes da pressão pós-cota se acentuar) e <strong>50% protegido em B3 com vencimentos de outubro/novembro</strong> para capturar a alta do 2º semestre.</p>
+    <div class="alerta-verde">
+      <strong>📊 Indicador-chave para acompanhar:</strong> tamanho das escalas de abate. Se cair abaixo de 5 dias úteis, significa que a oferta voltou a se ajustar — gatilho técnico para alta. Acompanhar também relatórios semanais ABIEC sobre destinos da carne pós-cota China.
+    </div>
+    <div class="alerta">
+      <strong>🐂 Visão de Médio Prazo (6-12 meses):</strong> ciclo pecuário em fase de retenção de matrizes (abate de fêmeas em queda) é o <strong>maior fator estrutural altista</strong>. Combinação de oferta restrita + Copa do Mundo + eleições + dólar potencialmente recuperando no 2º semestre cria ambiente para CEPEA testar <strong>R$ 380-400/@</strong> entre setembro e dezembro/2026.
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="logo" style="background:#fff;color:var(--verde-escuro);">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--marrom-claro)">.IN</span>.AI
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:.85rem;opacity:.85;">Análise e Construção</div>
+      <div class="nome">Dr. Sidney Souza</div>
+      <div class="titulo">Economista e Adm. Agrícola — Estrategista Econômico do Produtor</div>
+      <div class="titulo">Especialista em economia da fazenda e gestão de risco no agro</div>
+    </div>
+    <div class="frase">
+      "Transformamos dados da fazenda em decisões econômicas.<br>
+      Ajudamos pecuaristas a entender se o mercado sustenta seu negócio."
+    </div>
+    <div class="contatos">
+      <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+      <span>📧 sidneyagro@gmail.com</span>
+      <span>📱 (64) 9 9226-6886</span>
+      <span>📸 @ruralin.ai</span>
+    </div>
+  </footer>
+
+</div>
+<script>
+Chart.defaults.font.family = "'Segoe UI', Tahoma, Arial, sans-serif";
+Chart.defaults.color = '#444';
+
+// Gráfico CEPEA Boi Gordo
+new Chart(document.getElementById('graficoCepea'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Indicador CEPEA Boi Gordo (R$/@)',
+      data: [354.20, 353.80, 354.05, 353.75, 352.55],
+      borderColor: '#a0522d',
+      backgroundColor: 'rgba(160,82,45,.20)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#6b3410',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options: {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toFixed(2)+'/@'}}
+    },
+    scales:{
+      y:{min:350,max:357,ticks:{callback:v=>'R$ '+v.toFixed(2)}}
+    }
+  }
+});
+
+// Gráfico Dólar BRL
+new Chart(document.getElementById('graficoDolar'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Dólar BRL',
+      data: [4.951, 4.940, 4.928, 4.923, 4.894],
+      borderColor: '#1f4e79',
+      backgroundColor: 'rgba(31,78,121,.15)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#1f4e79',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toFixed(3)}}
+    },
+    scales:{
+      y:{min:4.85,max:5.0,ticks:{callback:v=>'R$ '+v.toFixed(2)}}
+    }
+  }
+});
+
+// Gráfico preços boi Brasil
+new Chart(document.getElementById('graficoBrasil'), {
+  type:'bar',
+  data:{
+    labels:['Cuiabá/MT','Araçatuba/SP','Barretos/SP','Três Lagoas/MS','Goiânia/GO','Belo Horizonte/MG','Marabá/PA'],
+    datasets:[{
+      label:'Boi Gordo R$/@',
+      data:[360.00,355.00,355.00,352.00,348.00,345.00,340.00],
+      backgroundColor:[
+        '#1f7a3a','#34a853','#34a853','#f5b301',
+        '#e67e22','#c0392b','#c0392b'
+      ],
+      borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.x.toFixed(2)+'/@'}}
+    },
+    scales:{
+      x:{min:335,max:365,ticks:{callback:v=>'R$ '+v}}
+    }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar Agro Ruralin.AI | Milho & Câmbio — Semana 04 a 08/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root{
+    --verde:#1f7a3a;
+    --verde-claro:#34a853;
+    --verde-escuro:#0f4d22;
+    --amarelo:#f5b301;
+    --amarelo-milho:#e8a317;
+    --laranja:#e67e22;
+    --vermelho:#c0392b;
+    --cinza:#f4f6f5;
+    --texto:#2c2c2c;
+    --branco:#ffffff;
+    --azul:#1f4e79;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:var(--cinza);
+    color:var(--texto);
+    line-height:1.6;
+    padding:0;
+  }
+  .container{max-width:1100px;margin:0 auto;padding:20px;}
+  header{
+    background:linear-gradient(135deg,#8a5a00,var(--amarelo-milho));
+    color:#fff;
+    padding:30px 20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+    margin-bottom:24px;
+  }
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    color:var(--verde-escuro);
+    padding:10px 22px;
+    border-radius:50px;
+    font-weight:800;
+    font-size:1.4rem;
+    letter-spacing:1px;
+    margin-bottom:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .logo svg{width:30px;height:30px;}
+  header h1{font-size:1.8rem;margin-bottom:6px;}
+  header p{font-size:1rem;opacity:.95;}
+  .badge{
+    display:inline-block;
+    background:var(--verde-escuro);
+    color:#fff;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:.85rem;
+    font-weight:700;
+    margin-top:10px;
+  }
+  section{
+    background:#fff;
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  h2{
+    color:#8a5a00;
+    border-left:5px solid var(--amarelo-milho);
+    padding-left:12px;
+    margin-bottom:16px;
+    font-size:1.4rem;
+  }
+  h3{color:var(--azul);margin:14px 0 8px;font-size:1.1rem;}
+  p{margin-bottom:10px;text-align:justify;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:768px){
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+    header h1{font-size:1.4rem;}
+    .container{padding:12px;}
+  }
+  .card{
+    background:linear-gradient(135deg,#fafafa,#fdf6e3);
+    border-radius:10px;
+    padding:16px;
+    border-left:4px solid var(--amarelo-milho);
+    text-align:center;
+  }
+  .card .valor{font-size:1.6rem;font-weight:800;color:#8a5a00;}
+  .card .label{font-size:.85rem;color:#666;text-transform:uppercase;letter-spacing:.5px;}
+  .card .var{font-size:.9rem;font-weight:700;margin-top:4px;}
+  .up{color:var(--verde-claro);}
+  .down{color:var(--vermelho);}
+  .chart-box{
+    background:#fff;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #e3e8e4;
+    position:relative;
+    height:340px;
+  }
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.92rem;}
+  th,td{padding:10px;text-align:left;border-bottom:1px solid #e0e6e1;}
+  th{background:#8a5a00;color:#fff;}
+  tbody tr:nth-child(even){background:#fdf6e3;}
+  .termometro{
+    background:#fff;
+    border:1px solid #e0e6e1;
+    border-radius:10px;
+    padding:14px;
+    margin-top:10px;
+  }
+  .barra{
+    height:22px;
+    background:linear-gradient(90deg,#c0392b 0%,#f5b301 50%,#27ae60 100%);
+    border-radius:11px;
+    position:relative;
+    margin:6px 0 4px;
+  }
+  .ponteiro{
+    position:absolute;
+    top:-6px;
+    width:4px;
+    height:34px;
+    background:#000;
+    border-radius:2px;
+  }
+  .legenda-barra{display:flex;justify-content:space-between;font-size:.75rem;color:#555;}
+  .alerta{
+    background:#fff8e1;
+    border-left:4px solid var(--amarelo);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-vermelho{
+    background:#fdecea;
+    border-left:4px solid var(--vermelho);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-verde{
+    background:#e8f5e9;
+    border-left:4px solid var(--verde-claro);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  ul{padding-left:22px;margin-bottom:10px;}
+  ul li{margin-bottom:6px;}
+  footer{
+    background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+    color:#fff;
+    padding:26px 20px;
+    border-radius:12px;
+    text-align:center;
+    margin-top:30px;
+  }
+  footer .nome{font-size:1.25rem;font-weight:800;margin-bottom:4px;}
+  footer .titulo{font-size:.95rem;opacity:.95;margin-bottom:10px;}
+  footer .frase{
+    font-style:italic;
+    border-top:1px solid rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,255,255,.3);
+    padding:10px 0;
+    margin:14px 0;
+    font-size:.9rem;
+  }
+  footer a{color:#fff;text-decoration:none;font-weight:600;}
+  footer a:hover{text-decoration:underline;}
+  .contatos{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;font-size:.9rem;}
+  .scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+  @media(max-width:768px){.scenario-grid{grid-template-columns:1fr;}}
+  .scenario{
+    padding:14px;
+    border-radius:10px;
+    color:#fff;
+  }
+  .scen-bull{background:linear-gradient(135deg,#27ae60,#1e874b);}
+  .scen-neutral{background:linear-gradient(135deg,#f5b301,#c98f02);}
+  .scen-bear{background:linear-gradient(135deg,#c0392b,#8a2920);}
+  .scenario h4{margin-bottom:6px;font-size:1rem;}
+  .scenario p{font-size:.85rem;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--verde-claro)">.IN</span>.AI
+    </div>
+    <h1>🌽 RADAR AGRO SEMANAL — MILHO</h1>
+    <p>Análise Fundamentalista & Gráfica | Milho & Câmbio</p>
+    <span class="badge">Semana de 04 a 08 de Maio de 2026</span>
+  </header>
+
+  <!-- RESUMO EXECUTIVO -->
+  <section>
+    <h2>🎯 Resumo Executivo da Semana</h2>
+    <p>Semana de <strong>volatilidade alta</strong> para o milho em Chicago. O contrato julho/26 abriu a semana próximo de <strong>US$ 4,79/bu</strong>, recuou fortemente na quarta (06/05) acompanhando a queda do petróleo Brent (-2% no dia) e fechou a sexta-feira em <strong>US$ 4,71/bu (+0,80% no dia)</strong>, mas com perda semanal de <strong>-1,87%</strong>. O cenário externo é pressionado pelo plantio antecipado nos EUA (~40% concluído, acima da média histórica) e pela colheita avançada na Argentina (28% colhida com produtividade média de 8.680 kg/ha). No Brasil, a <strong>safrinha enfrenta dúvidas de produtividade</strong> — Agroconsult projeta queda de 9,5% na 2ª safra — mas o câmbio em <strong>R$ 4,8939 (-1,13% na semana)</strong> pressiona prêmios e segura preços no interior. Em Rio Verde/GO, a saca está em <strong>R$ 55,58</strong> (disponível) com viés de baixa.</p>
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="card">
+        <div class="label">Milho Jul/26 (CBOT)</div>
+        <div class="valor">US$ 4,71</div>
+        <div class="var down">▼ -1,87% semana</div>
+      </div>
+      <div class="card">
+        <div class="label">Milho Dez/26 (CBOT)</div>
+        <div class="valor">US$ 4,89</div>
+        <div class="var down">▼ -1,2% semana</div>
+      </div>
+      <div class="card">
+        <div class="label">Dólar Comercial</div>
+        <div class="valor">R$ 4,8939</div>
+        <div class="var down">▼ -1,13% semana</div>
+      </div>
+      <div class="card">
+        <div class="label">Milho Rio Verde/GO</div>
+        <div class="valor">R$ 55,58</div>
+        <div class="var down">▼ pressão safrinha</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRÁFICO CBOT -->
+  <section>
+    <h2>📈 Gráfico Diário — Milho CBOT (Jul/26)</h2>
+    <p>Evolução intradiária dos contratos futuros de milho na Bolsa de Chicago durante a semana:</p>
+    <div class="chart-box"><canvas id="graficoCBOT"></canvas></div>
+    <h3>🔍 Leitura Técnica (Grafista)</h3>
+    <ul>
+      <li><strong>Suporte imediato:</strong> US$ 4,61/bu (mínima da quarta) — perda abre espaço para US$ 4,55.</li>
+      <li><strong>Resistência:</strong> US$ 4,80/bu — rompimento confirma retomada altista rumo a US$ 4,87.</li>
+      <li><strong>Padrão gráfico:</strong> formação de fundo duplo em US$ 4,61, com recuperação técnica na sexta-feira.</li>
+      <li><strong>Volume:</strong> 142 mil contratos na sexta — volume robusto confirma força compradora pontual.</li>
+      <li><strong>Médias móveis:</strong> preço perdeu MM9, mas se mantém acima da MM21 — viés neutro a levemente baixista.</li>
+      <li><strong>Spread Jul/Dez:</strong> -US$ 0,18/bu, confirmando carry positivo (mercado precificando safra cheia EUA).</li>
+    </ul>
+  </section>
+
+  <!-- GRÁFICO DÓLAR -->
+  <section>
+    <h2>💵 Gráfico Diário — Dólar Comercial (BRL)</h2>
+    <div class="chart-box"><canvas id="graficoDolar"></canvas></div>
+    <h3>🔍 Leitura Técnica do Câmbio</h3>
+    <ul>
+      <li><strong>Tendência:</strong> baixa firme — perda da marca psicológica de R$ 4,90 confirma força vendedora.</li>
+      <li><strong>Próximo suporte:</strong> R$ 4,86 (mínima de janeiro/2024).</li>
+      <li><strong>Resistência:</strong> R$ 4,95 — repique técnico não invalida tendência baixista.</li>
+      <li><strong>Drivers:</strong> diferencial de juros elevado (carry trade), payroll EUA forte e fluxo cambial positivo.</li>
+    </ul>
+    <div class="alerta-vermelho">
+      <strong>⚠️ Alerta ao Produtor de Milho:</strong> dólar abaixo de R$ 4,90 reduz a paridade de exportação. Cada R$ 0,10 de queda no dólar = aproximadamente <strong>R$ 1,00/saca a menos</strong> no FOB Paranaguá para milho.
+    </div>
+  </section>
+
+  <!-- PREÇOS BRASIL -->
+  <section>
+    <h2>🇧🇷 Preços Físicos do Milho no Brasil (R$/saca 60kg)</h2>
+    <div class="chart-box"><canvas id="graficoBrasil"></canvas></div>
+    <table>
+      <thead>
+        <tr><th>Praça</th><th>Preço</th><th>Tendência</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>São Paulo (SP) — Capital</td><td>R$ 68,76</td><td class="up">▲ Demanda industrial</td></tr>
+        <tr><td>Concórdia (SC) — Polo avícola</td><td>R$ 68,00</td><td class="up">▲ Firme</td></tr>
+        <tr><td>Paranaguá (PR) — Porto</td><td>R$ 65,50</td><td>● Lateral</td></tr>
+        <tr><td>Maringá / Campo Mourão (PR)</td><td>R$ 62,00</td><td>● Estável</td></tr>
+        <tr><td>Cristalina (GO)</td><td>R$ 56,48</td><td class="down">▼ Pressão safrinha</td></tr>
+        <tr><td><strong>Rio Verde (GO)</strong></td><td><strong>R$ 55,58</strong></td><td class="down">▼ Em queda</td></tr>
+        <tr><td>Rondonópolis (MT)</td><td>R$ 50,17</td><td class="down">▼ Logística</td></tr>
+        <tr><td>Sorriso (MT) — Norte MT</td><td>R$ 44,92</td><td class="down">▼ Início colheita</td></tr>
+      </tbody>
+    </table>
+    <div class="alerta">
+      <strong>📌 Observação Regional:</strong> spread Sudeste consumidor x Norte MT chegou a <strong>R$ 23,84/saca</strong>, refletindo a forte assimetria entre regiões deficitárias (SP/SC – avicultura e suinocultura) e o coração produtor do Centro-Oeste, onde a safrinha começa a chegar ao mercado. <strong>Rio Verde (GO)</strong> está R$ 13,18 abaixo de Paranaguá — frete + custo de armazenagem explicam o gap.
+    </div>
+    <div class="alerta-verde">
+      <strong>💡 Entrega Futura em Rio Verde:</strong> ofertas para colheita variando de <strong>R$ 42,35 a R$ 45,60/saca</strong> — muito abaixo do disponível, sinalizando expectativa de pressão com a chegada da safrinha (junho-agosto).
+    </div>
+  </section>
+
+  <!-- ANÁLISE FUNDAMENTALISTA -->
+  <section>
+    <h2>🌾 Análise Fundamentalista</h2>
+    <div class="grid-2">
+      <div>
+        <h3>🟢 Fatores de Alta (Bullish)</h3>
+        <ul>
+          <li><strong>Safrinha 2026 com problemas:</strong> Agroconsult projeta -9,5% na 2ª safra brasileira.</li>
+          <li>Demanda firme do etanol de milho nos EUA (recorde de moagem).</li>
+          <li>China voltou a comprar milho americano em volumes significativos.</li>
+          <li>Brent acima de US$ 100 sustenta etanol e demanda energética.</li>
+          <li>Atrasos pontuais no plantio do Meio-Oeste americano (chuvas).</li>
+          <li>Demanda doméstica brasileira firme (avicultura e suinocultura aquecidas).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>🔴 Fatores de Baixa (Bearish)</h3>
+        <ul>
+          <li>Plantio EUA antecipado: ~40% concluído, acima da média de 30%.</li>
+          <li>Argentina com colheita a 28% e safra firme em 61 mi t.</li>
+          <li>Relatório USDA (12/05): expectativa de aumento de estoques 26/27.</li>
+          <li>Dólar fraco no Brasil reduz prêmios FOB.</li>
+          <li>Mar Negro e Europa com ofertas competitivas no mercado físico.</li>
+          <li>Início da colheita da safrinha no Centro-Oeste (junho).</li>
+          <li>Realização de lucros de fundos especuladores em commodities.</li>
+        </ul>
+      </div>
+    </div>
+    <h3>🌡️ Termômetro do Mercado</h3>
+    <div class="termometro">
+      <strong>Sentimento CBOT (curto prazo):</strong>
+      <div class="barra"><div class="ponteiro" style="left:42%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> levemente baixista — plantio EUA acelerado e safra Argentina firme pressionam, mas USDA e clima podem reverter.</p>
+    </div>
+    <div class="termometro">
+      <strong>Sentimento milho físico Brasil:</strong>
+      <div class="barra"><div class="ponteiro" style="left:28%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> baixista — chegada da safrinha + câmbio fraco pressionam interior, apesar da demanda doméstica firme.</p>
+    </div>
+    <div class="termometro">
+      <strong>Câmbio BRL:</strong>
+      <div class="barra"><div class="ponteiro" style="left:22%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> fortemente baixista — fluxo estrangeiro e carry trade mantêm dólar em queda.</p>
+    </div>
+  </section>
+
+  <!-- PRÓXIMA SEMANA -->
+  <section>
+    <h2>🔮 Cenários para a Próxima Semana (12 a 16/05)</h2>
+    <p>Construímos três cenários probabilísticos considerando a agenda econômica, geopolítica e o avanço da safrinha:</p>
+    <div class="scenario-grid">
+      <div class="scenario scen-bull">
+        <h4>🟢 Otimista (25%)</h4>
+        <p>Gatilhos: USDA com estoques abaixo do esperado, confirmação de quebra na safrinha BR, compras chinesas, clima ruim no Meio-Oeste.</p>
+        <p>Objetivo CBOT: US$ 4,85–5,00/bu</p>
+        <p>Impacto Rio Verde: R$ 58–60/sc</p>
+      </div>
+      <div class="scenario scen-neutral">
+        <h4>🟡 Base (50%)</h4>
+        <p>Gatilhos: USDA em linha, plantio EUA mantém ritmo, safrinha BR começa a chegar ao mercado, câmbio R$ 4,85–4,95.</p>
+        <p>CBOT: US$ 4,65–4,80/bu</p>
+        <p>Impacto Rio Verde: R$ 54–57/sc lateral</p>
+      </div>
+      <div class="scenario scen-bear">
+        <h4>🔴 Pessimista (25%)</h4>
+        <p>Gatilhos: USDA com safra alta, dólar abaixo de R$ 4,85, colheita Argentina acelerada, fundos liquidando posições.</p>
+        <p>CBOT: US$ 4,50–4,60/bu</p>
+        <p>Impacto Rio Verde: R$ 50–53/sc</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section>
+    <h2>📅 Agenda Macroeconômica & Eventos-Chave</h2>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Evento</th><th>Relevância</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>12/05 (seg)</td><td>Relatório USDA WASDE — Estoques 26/27</td><td class="down">🔴 Altíssima</td></tr>
+        <tr><td>12/05 (seg)</td><td>USDA Crop Progress — plantio milho EUA</td><td class="down">🔴 Alta</td></tr>
+        <tr><td>13/05 (ter)</td><td>IPCA Brasil — Abril</td><td>🟡 Média</td></tr>
+        <tr><td>14/05 (qua)</td><td>Inflação EUA (CPI abril)</td><td>🟡 Média</td></tr>
+        <tr><td>15/05 (qui)</td><td>Encontro Trump x Xi — Pauta agro/etanol</td><td class="down">🔴 Altíssima</td></tr>
+        <tr><td>15/05 (qui)</td><td>Rally da Safra Agroconsult (início)</td><td class="down">🔴 Alta</td></tr>
+        <tr><td>16/05 (sex)</td><td>Exportações semanais USDA</td><td>🟡 Média</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- VISÃO ESTRATÉGICA -->
+  <section>
+    <h2>🎯 Visão do Estrategista — Recomendações</h2>
+    <div class="alerta-verde">
+      <strong>Para o produtor com milho disponível em estoque:</strong> aproveitar repiques acima de R$ 56/sc em Rio Verde para travar 30–40% da posição antes da chegada plena da safrinha. A janela até o final de maio tende a ser a melhor da temporada para vendas no spot.
+    </div>
+    <div class="alerta">
+      <strong>Para o produtor de safrinha (colheita junho/julho):</strong> os preços de entrega futura (R$ 42–46/sc) estão abaixo do custo de produção em muitas regiões. Avalie travar custo via PEPRO/PEP ou usar opções de venda (puts) em CBOT para piso de proteção. Não venda integralmente no balcão.
+    </div>
+    <div class="alerta-vermelho">
+      <strong>Atenção ao spread interno:</strong> com Rio Verde a R$ 55 e SP a R$ 68, há oportunidade logística — mas frete e armazenagem consomem boa parte. Avalie armazenar para venda em janeiro-março/2027, quando historicamente há repique de preços (entressafra).
+    </div>
+    <h3>💡 Próxima Semana — Movimento Esperado:</h3>
+    <p>Volatilidade <strong>elevada</strong> entre segunda (USDA) e quinta (Trump-Xi). Viés geral levemente baixista para o disponível no Centro-Oeste, com chance de repique externo se USDA surpreender. <strong>Recomendação tática:</strong> não aguardar topo — escalonar vendas em 3 tranches (35% antes do USDA / 35% após Trump-Xi / 30% para reserva estratégica).</p>
+    <div class="alerta-verde">
+      <strong>📊 Indicador-chave para acompanhar:</strong> Crop Progress USDA de segunda — se plantio passar de 50% concluído com clima estável, pressão baixista se intensifica. Se houver atraso por chuvas, abre janela de alta.
+    </div>
+  </section>
+
+  <!-- Rodapé -->
+  <footer>
+    <div class="logo" style="background:#fff;color:var(--verde-escuro);">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--verde-claro)">.IN</span>.AI
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:.85rem;opacity:.85;">Análise e Construção</div>
+      <div class="nome">Dr. Sidney Souza</div>
+      <div class="titulo">Economista e Adm. Agrícola — Estrategista Econômico do Produtor</div>
+      <div class="titulo">Especialista em economia da fazenda e gestão de risco no agro</div>
+    </div>
+    <div class="frase">
+      "Transformamos dados da fazenda em decisões econômicas.<br>
+      Ajudamos produtores a entender se o mercado sustenta seu negócio."
+    </div>
+    <div class="contatos">
+      <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+      <span>📧 sidneyagro@gmail.com</span>
+      <span>📱 (64) 9 9226-6886</span>
+      <span>📸 @ruralin.ai</span>
+    </div>
+  </footer>
+
+</div>
+<script>
+// Gráfico Milho CBOT (Jul/26)
+new Chart(document.getElementById('graficoCBOT'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Milho Jul/26 (US$/bu)',
+      data: [4.79, 4.74, 4.61, 4.67, 4.71],
+      borderColor: '#e8a317',
+      backgroundColor: 'rgba(232,163,23,.18)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#8a5a00',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options: {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'US$ '+c.parsed.y.toFixed(2)+'/bu'}}
+    },
+    scales:{
+      y:{min:4.50,max:4.90,ticks:{callback:v=>'US$ '+v.toFixed(2)}}
+    }
+  }
+});
+// Gráfico Dólar BRL
+new Chart(document.getElementById('graficoDolar'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Dólar BRL',
+      data: [4.951, 4.940, 4.928, 4.923, 4.894],
+      borderColor: '#1f4e79',
+      backgroundColor: 'rgba(31,78,121,.15)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#1f4e79',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toFixed(3)}}
+    },
+    scales:{
+      y:{min:4.85,max:5.0,ticks:{callback:v=>'R$ '+v.toFixed(2)}}
+    }
+  }
+});
+// Gráfico preços milho Brasil
+new Chart(document.getElementById('graficoBrasil'), {
+  type:'bar',
+  data:{
+    labels:['São Paulo/SP','Concórdia/SC','Paranaguá/PR','Maringá/PR','Cristalina/GO','Rio Verde/GO','Rondonópolis/MT','Sorriso/MT'],
+    datasets:[{
+      label:'Preço milho R$/saca',
+      data:[68.76,68.00,65.50,62.00,56.48,55.58,50.17,44.92],
+      backgroundColor:[
+        '#1f7a3a','#1f7a3a','#34a853','#34a853',
+        '#f5b301','#e67e22','#c0392b','#c0392b'
+      ],
+      borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.x.toFixed(2)+'/saca'}}
+    },
+    scales:{
+      x:{min:40,max:75,ticks:{callback:v=>'R$ '+v}}
+    }
+  }
+});
+</script>
+</body>
+</html>

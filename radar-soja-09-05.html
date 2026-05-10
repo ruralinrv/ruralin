@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar Agro Ruralin.AI | Soja & Câmbio — Semana 04 a 08/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root{
+    --verde:#1f7a3a;
+    --verde-claro:#34a853;
+    --verde-escuro:#0f4d22;
+    --amarelo:#f5b301;
+    --vermelho:#c0392b;
+    --cinza:#f4f6f5;
+    --texto:#2c2c2c;
+    --branco:#ffffff;
+    --azul:#1f4e79;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+    background:var(--cinza);
+    color:var(--texto);
+    line-height:1.6;
+    padding:0;
+  }
+  .container{max-width:1100px;margin:0 auto;padding:20px;}
+  header{
+    background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+    color:#fff;
+    padding:30px 20px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+    margin-bottom:24px;
+  }
+  .logo{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    color:var(--verde-escuro);
+    padding:10px 22px;
+    border-radius:50px;
+    font-weight:800;
+    font-size:1.4rem;
+    letter-spacing:1px;
+    margin-bottom:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .logo svg{width:30px;height:30px;}
+  header h1{font-size:1.8rem;margin-bottom:6px;}
+  header p{font-size:1rem;opacity:.95;}
+  .badge{
+    display:inline-block;
+    background:var(--amarelo);
+    color:#222;
+    padding:4px 12px;
+    border-radius:20px;
+    font-size:.85rem;
+    font-weight:700;
+    margin-top:10px;
+  }
+  section{
+    background:#fff;
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+  }
+  h2{
+    color:var(--verde-escuro);
+    border-left:5px solid var(--verde-claro);
+    padding-left:12px;
+    margin-bottom:16px;
+    font-size:1.4rem;
+  }
+  h3{color:var(--azul);margin:14px 0 8px;font-size:1.1rem;}
+  p{margin-bottom:10px;text-align:justify;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  @media(max-width:768px){
+    .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+    header h1{font-size:1.4rem;}
+    .container{padding:12px;}
+  }
+  .card{
+    background:linear-gradient(135deg,#fafafa,#eef5ef);
+    border-radius:10px;
+    padding:16px;
+    border-left:4px solid var(--verde);
+    text-align:center;
+  }
+  .card .valor{font-size:1.6rem;font-weight:800;color:var(--verde-escuro);}
+  .card .label{font-size:.85rem;color:#666;text-transform:uppercase;letter-spacing:.5px;}
+  .card .var{font-size:.9rem;font-weight:700;margin-top:4px;}
+  .up{color:var(--verde-claro);}
+  .down{color:var(--vermelho);}
+  .chart-box{
+    background:#fff;
+    padding:14px;
+    border-radius:10px;
+    border:1px solid #e3e8e4;
+    position:relative;
+    height:340px;
+  }
+  table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.92rem;}
+  th,td{padding:10px;text-align:left;border-bottom:1px solid #e0e6e1;}
+  th{background:var(--verde-escuro);color:#fff;}
+  tbody tr:nth-child(even){background:#f7faf7;}
+  /* Termômetro */
+  .termometro{
+    background:#fff;
+    border:1px solid #e0e6e1;
+    border-radius:10px;
+    padding:14px;
+    margin-top:10px;
+  }
+  .barra{
+    height:22px;
+    background:linear-gradient(90deg,#c0392b 0%,#f5b301 50%,#27ae60 100%);
+    border-radius:11px;
+    position:relative;
+    margin:6px 0 4px;
+  }
+  .ponteiro{
+    position:absolute;
+    top:-6px;
+    width:4px;
+    height:34px;
+    background:#000;
+    border-radius:2px;
+  }
+  .legenda-barra{display:flex;justify-content:space-between;font-size:.75rem;color:#555;}
+  .alerta{
+    background:#fff8e1;
+    border-left:4px solid var(--amarelo);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-vermelho{
+    background:#fdecea;
+    border-left:4px solid var(--vermelho);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  .alerta-verde{
+    background:#e8f5e9;
+    border-left:4px solid var(--verde-claro);
+    padding:12px;
+    border-radius:6px;
+    margin:12px 0;
+  }
+  ul{padding-left:22px;margin-bottom:10px;}
+  ul li{margin-bottom:6px;}
+  footer{
+    background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+    color:#fff;
+    padding:26px 20px;
+    border-radius:12px;
+    text-align:center;
+    margin-top:30px;
+  }
+  footer .nome{font-size:1.25rem;font-weight:800;margin-bottom:4px;}
+  footer .titulo{font-size:.95rem;opacity:.95;margin-bottom:10px;}
+  footer .frase{
+    font-style:italic;
+    border-top:1px solid rgba(255,255,255,.3);
+    border-bottom:1px solid rgba(255,255,255,.3);
+    padding:10px 0;
+    margin:14px 0;
+    font-size:.9rem;
+  }
+  footer a{color:#fff;text-decoration:none;font-weight:600;}
+  footer a:hover{text-decoration:underline;}
+  .contatos{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;font-size:.9rem;}
+  .scenario-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+  @media(max-width:768px){.scenario-grid{grid-template-columns:1fr;}}
+  .scenario{
+    padding:14px;
+    border-radius:10px;
+    color:#fff;
+  }
+  .scen-bull{background:linear-gradient(135deg,#27ae60,#1e874b);}
+  .scen-neutral{background:linear-gradient(135deg,#f5b301,#c98f02);}
+  .scen-bear{background:linear-gradient(135deg,#c0392b,#8a2920);}
+  .scenario h4{margin-bottom:6px;font-size:1rem;}
+  .scenario p{font-size:.85rem;}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--verde-claro)">.IN</span>.AI
+    </div>
+    <h1>📊 RADAR AGRO SEMANAL</h1>
+    <p>Análise Fundamentalista & Gráfica | Soja & Câmbio</p>
+    <span class="badge">Semana de 04 a 08 de Maio de 2026</span>
+  </header>
+
+  <!-- RESUMO EXECUTIVO -->
+  <section>
+    <h2>🎯 Resumo Executivo da Semana</h2>
+    <p>Semana marcada por <strong>forte volatilidade</strong> no complexo soja em Chicago, com o contrato julho/26 oscilando entre <strong>US$ 12,07</strong> (máxima na segunda) e <strong>US$ 11,77</strong> (mínima na quarta), antes de retomar fôlego e fechar a sexta-feira em <strong>US$ 12,08/bushel (+1,32%)</strong>. O motor da volatilidade foi a oscilação do petróleo Brent (US$ 120 → US$ 100 → US$ 101) em meio à tensão entre EUA e Irã no Estreito de Ormuz. No câmbio, o <strong>dólar fechou abaixo de R$ 4,90 pela 1ª vez em 28 meses</strong>, cotado a R$ 4,8939 (-1,13% na semana, -10,83% no ano).</p>
+
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="card">
+        <div class="label">Soja Jul/26 (CBOT)</div>
+        <div class="valor">US$ 12,08</div>
+        <div class="var up">▲ +0,93% sem.</div>
+      </div>
+      <div class="card">
+        <div class="label">Dólar Comercial</div>
+        <div class="valor">R$ 4,8939</div>
+        <div class="var up">▼ -1,13% sem.</div>
+      </div>
+      <div class="card">
+        <div class="label">Brent (petróleo)</div>
+        <div class="valor">US$ 101,29</div>
+        <div class="var down">▼ -6,1% sem.</div>
+      </div>
+      <div class="card">
+        <div class="label">Soja Rio Verde/GO</div>
+        <div class="valor">R$ 109,00</div>
+        <div class="var down">▼ Pressão semanal</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRÁFICO CBOT -->
+  <section>
+    <h2>📈 Gráfico Diário — Soja CBOT (Jul/26)</h2>
+    <p>Evolução intradiária dos contratos futuros de soja na Bolsa de Chicago durante a semana:</p>
+    <div class="chart-box"><canvas id="graficoCBOT"></canvas></div>
+
+    <h3>🔍 Leitura Técnica (Grafista)</h3>
+    <ul>
+      <li><strong>Suporte imediato:</strong> US$ 11,75/bu (mínima de quarta) — perda abre espaço para US$ 11,50.</li>
+      <li><strong>Resistência:</strong> US$ 12,15/bu — rompimento confirma retomada altista rumo a US$ 12,40.</li>
+      <li><strong>Padrão gráfico:</strong> formação de "V" com fechamento acima de US$ 12,00 sinaliza <em>reversão de curto prazo</em>.</li>
+      <li><strong>Volume:</strong> alta de sexta veio com volume crescente — <strong>confirmação técnica positiva</strong>.</li>
+      <li><strong>Médias móveis:</strong> preço retomou MM9 e testa MM21 — viés neutro a positivo.</li>
+    </ul>
+  </section>
+
+  <!-- GRÁFICO DÓLAR -->
+  <section>
+    <h2>💵 Gráfico Diário — Dólar Comercial (BRL)</h2>
+    <div class="chart-box"><canvas id="graficoDolar"></canvas></div>
+
+    <h3>🔍 Leitura Técnica do Câmbio</h3>
+    <ul>
+      <li><strong>Tendência:</strong> baixa firme — perda da marca psicológica de R$ 4,90 confirma força vendedora.</li>
+      <li><strong>Próximo suporte:</strong> R$ 4,86 (mínima de janeiro/2024).</li>
+      <li><strong>Resistência:</strong> R$ 4,95 — repique técnico não invalida tendência baixista.</li>
+      <li><strong>Drivers:</strong> diferencial de juros elevado (carry trade), payroll EUA forte e fluxo cambial positivo.</li>
+    </ul>
+
+    <div class="alerta-vermelho">
+      <strong>⚠️ Alerta ao Produtor:</strong> dólar abaixo de R$ 4,90 reduz o preço de paridade da soja no Brasil. Cada R$ 0,10 de queda no dólar = ~R$ 2,40/saca a menos no FOB Paranaguá.
+    </div>
+  </section>
+
+  <!-- PREÇOS BRASIL -->
+  <section>
+    <h2>🇧🇷 Preços Físicos no Brasil (R$/saca 60kg)</h2>
+    <div class="chart-box"><canvas id="graficoBrasil"></canvas></div>
+    <table>
+      <thead>
+        <tr><th>Praça</th><th>Preço</th><th>Tendência</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Rio Grande (RS) — Porto</td><td>R$ 128,50</td><td class="up">▲ Firme</td></tr>
+        <tr><td>Paranaguá (PR) — Porto</td><td>R$ 128,00</td><td class="up">▲ Firme</td></tr>
+        <tr><td>Santa Rosa (RS)</td><td>R$ 123,50</td><td class="up">▲ Estável</td></tr>
+        <tr><td>Passo Fundo (RS)</td><td>R$ 122,50</td><td>● Lateral</td></tr>
+        <tr><td>Cascavel (PR)</td><td>R$ 118,00</td><td class="down">▼ Em queda</td></tr>
+        <tr><td>Dourados (MS)</td><td>R$ 110,50</td><td class="down">▼ Pressão</td></tr>
+        <tr><td><strong>Rio Verde (GO)</strong></td><td><strong>R$ 109,00</strong></td><td class="down">▼ Em queda</td></tr>
+        <tr><td>Rondonópolis (MT)</td><td>R$ 107,50</td><td class="down">▼ Pressão logística</td></tr>
+      </tbody>
+    </table>
+    <div class="alerta">
+      <strong>📌 Observação Regional:</strong> spread Porto x Interior (Rondonópolis) chegou a <strong>R$ 21,00/saca</strong>, refletindo custo de frete elevado (Cascavel→Paranaguá a R$ 10,80/saca) e déficit de armazenagem no Centro-Oeste (~15,2 mi t no MS).
+    </div>
+  </section>
+
+  <!-- ANÁLISE FUNDAMENTALISTA -->
+  <section>
+    <h2>🌾 Análise Fundamentalista</h2>
+
+    <div class="grid-2">
+      <div>
+        <h3>🟢 Fatores de Alta (Bullish)</h3>
+        <ul>
+          <li><strong>Demanda chinesa:</strong> China precisa importar ~19 mi t até agosto/26.</li>
+          <li><strong>Esmagamento recorde nos EUA</strong> — consumo doméstico em pico histórico.</li>
+          <li><strong>Encontro Trump x Xi (15/05):</strong> expectativa de acordo comercial envolvendo soja.</li>
+          <li><strong>Chuvas no Meio-Oeste americano</strong> atrasam plantio em algumas regiões.</li>
+          <li><strong>Brent acima de US$ 100</strong> sustenta óleo de soja e biodiesel.</li>
+          <li><strong>Exportações Brasil:</strong> 16,2 mi t em abril (recorde), 70% para a China.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>🔴 Fatores de Baixa (Bearish)</h3>
+        <ul>
+          <li><strong>Plantio EUA adiantado:</strong> 33% até 03/05 vs. média histórica 23%.</li>
+          <li><strong>Relatório USDA (12/05):</strong> expectativa de aumento de produção/estoques 26/27.</li>
+          <li><strong>Dólar fraco no Brasil</strong> reduz prêmios FOB.</li>
+          <li><strong>Argentina:</strong> avança a colheita com safra robusta.</li>
+          <li><strong>Sinais de paz EUA-Irã</strong> retiram prêmio geopolítico do petróleo.</li>
+          <li><strong>Realização de lucros</strong> de fundos especuladores (CFTC).</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>🌡️ Termômetro do Mercado</h3>
+    <div class="termometro">
+      <strong>Sentimento Soja CBOT (curto prazo):</strong>
+      <div class="barra"><div class="ponteiro" style="left:58%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> levemente altista — dependente do USDA e do encontro Trump-Xi.</p>
+    </div>
+
+    <div class="termometro">
+      <strong>Sentimento Soja Brasil (físico):</strong>
+      <div class="barra"><div class="ponteiro" style="left:35%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> levemente baixista — câmbio fraco e logística pressionam interior.</p>
+    </div>
+
+    <div class="termometro">
+      <strong>Sentimento Dólar (BRL):</strong>
+      <div class="barra"><div class="ponteiro" style="left:22%;"></div></div>
+      <div class="legenda-barra"><span>Bearish</span><span>Neutro</span><span>Bullish</span></div>
+      <p style="margin-top:6px;font-size:.9rem;"><strong>Leitura:</strong> fortemente baixista — fluxo estrangeiro e carry trade pesam.</p>
+    </div>
+  </section>
+
+  <!-- CENÁRIOS PRÓXIMA SEMANA -->
+  <section>
+    <h2>🔮 Cenários para a Próxima Semana (12 a 16/05)</h2>
+    <p>Construímos três cenários probabilísticos para a soja CBOT (julho/26) considerando a agenda econômica e geopolítica:</p>
+
+    <div class="scenario-grid">
+      <div class="scenario scen-bull">
+        <h4>🟢 OTIMISTA (30%)</h4>
+        <p><strong>Gatilhos:</strong> USDA mais ajustado que o esperado + acordo Trump-Xi com compras chinesas anunciadas + tensão renovada no Oriente Médio.</p>
+        <p><strong>Alvo CBOT:</strong> US$ 12,40 – 12,60/bu</p>
+        <p><strong>Impacto Brasil:</strong> Rio Verde rumo a R$ 113-115/sc</p>
+      </div>
+      <div class="scenario scen-neutral">
+        <h4>🟡 BASE (50%)</h4>
+        <p><strong>Gatilhos:</strong> USDA em linha + reunião Trump-Xi sem novidade concreta + clima estável EUA + dólar entre R$ 4,85-4,95.</p>
+        <p><strong>Alvo CBOT:</strong> US$ 11,90 – 12,15/bu</p>
+        <p><strong>Impacto Brasil:</strong> Rio Verde lateral em R$ 108-111/sc</p>
+      </div>
+      <div class="scenario scen-bear">
+        <h4>🔴 PESSIMISTA (20%)</h4>
+        <p><strong>Gatilhos:</strong> USDA muito altista em produção 26/27 + tréplica diplomática EUA-Irã + dólar abaixo de R$ 4,85.</p>
+        <p><strong>Alvo CBOT:</strong> US$ 11,55 – 11,75/bu</p>
+        <p><strong>Impacto Brasil:</strong> Rio Verde para R$ 104-107/sc</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENDA -->
+  <section>
+    <h2>📅 Agenda Macroeconômica & Eventos-Chave</h2>
+    <table>
+      <thead>
+        <tr><th>Data</th><th>Evento</th><th>Relevância</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>12/05 (seg)</td><td>📊 Relatório USDA WASDE — primeira projeção 26/27</td><td class="down">🔴 Alta</td></tr>
+        <tr><td>13/05 (ter)</td><td>CPI EUA (inflação ao consumidor de abril)</td><td>🟡 Média</td></tr>
+        <tr><td>14/05 (qua)</td><td>IPCA Brasil — abril</td><td>🟡 Média</td></tr>
+        <tr><td>15/05 (qui)</td><td>🤝 <strong>Encontro Trump x Xi Jinping</strong> | Relatório NOPA (esmagamento EUA)</td><td class="down">🔴 Altíssima</td></tr>
+        <tr><td>16/05 (sex)</td><td>Export Sales USDA | Vencimento opções soja maio/26</td><td>🟡 Média</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- VISÃO ESTRATÉGICA -->
+  <section>
+    <h2>🎯 Visão do Estrategista — Recomendações</h2>
+    <div class="alerta-verde">
+      <strong>Para o Produtor com soja em estoque:</strong> aproveitar repiques acima de US$ 12,10/bu (≈ R$ 112+/sc no interior) para travar 20-30% do volume restante <strong>antes do USDA</strong>. Use opções de venda (puts) para proteger preço sem perder upside.
+    </div>
+    <div class="alerta">
+      <strong>Para o Produtor já vendido:</strong> monitorar <em>basis</em> e prêmios — janela de retomada de prêmios pode surgir caso o encontro Trump-Xi destrave compras chinesas dos EUA, deslocando temporariamente fluxo do Brasil.
+    </div>
+    <div class="alerta-vermelho">
+      <strong>Atenção ao câmbio:</strong> com dólar buscando R$ 4,85, considere <strong>NDF de venda futura</strong> ou contratos a termo para proteger receita em reais. A XP já revisou projeção de fim de ano para R$ 5,00 (antes R$ 5,30).
+    </div>
+
+    <h3>💡 Percepção para a Próxima Semana</h3>
+    <p>O <strong>cenário base</strong> aponta para uma semana de <em>volatilidade controlada</em>, com viés ligeiramente positivo até quarta (em função da expectativa pelo encontro Trump-Xi). O <strong>USDA de 12/05</strong> é o grande filtro: números acima de 4,3 bi bushels para a safra americana 26/27 derrubam o mercado; abaixo de 4,2 bi sustentam US$ 12+. No Brasil, <strong>o produtor vive um descompasso</strong>: Chicago se segura, mas câmbio desidrata o preço local. Quem souber ler a janela de oportunidade entre <strong>USDA e reunião Trump-Xi</strong> sairá na frente.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo" style="background:#fff;color:var(--verde-escuro);">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.2l7.5 3.75L12 11.7 4.5 7.95 12 4.2zM4 9.6l7 3.5v7.3l-7-3.5V9.6zm9 10.8v-7.3l7-3.5v7.3l-7 3.5z"/></svg>
+      RURAL<span style="color:var(--verde-claro)">.IN</span>.AI
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-size:.85rem;opacity:.85;">Análise e Construção</div>
+      <div class="nome">Dr. Sidney Souza</div>
+      <div class="titulo">Economista e Adm. Agrícola — Estrategista Econômico do Produtor</div>
+      <div class="titulo">Especialista em economia da fazenda e gestão de risco no agro</div>
+    </div>
+    <div class="frase">
+      "Transformamos dados da fazenda em decisões econômicas.<br>
+      Ajudamos produtores a entender se o mercado sustenta seu negócio."
+    </div>
+    <div class="contatos">
+      <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+      <span>📧 sidneyagro@gmail.com</span>
+      <span>📱 (64) 9 9226-6886</span>
+      <span>📸 @ruralin.ai</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// Configurações comuns
+Chart.defaults.font.family = "'Segoe UI', Tahoma, Arial, sans-serif";
+Chart.defaults.color = '#444';
+
+// Gráfico CBOT Soja
+new Chart(document.getElementById('graficoCBOT'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Soja Jul/26 (US$/bushel)',
+      data: [12.07, 11.95, 11.77, 11.92, 12.08],
+      borderColor: '#1f7a3a',
+      backgroundColor: 'rgba(52,168,83,.15)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#1f7a3a',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options: {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'US$ '+c.parsed.y.toFixed(2)+'/bu'}}
+    },
+    scales:{
+      y:{min:11.6,max:12.2,ticks:{callback:v=>'US$ '+v.toFixed(2)}}
+    }
+  }
+});
+
+// Gráfico Dólar
+new Chart(document.getElementById('graficoDolar'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 04/05','Ter 05/05','Qua 06/05','Qui 07/05','Sex 08/05'],
+    datasets: [{
+      label: 'Dólar Comercial (R$)',
+      data: [4.951, 4.940, 4.928, 4.923, 4.894],
+      borderColor: '#1f4e79',
+      backgroundColor: 'rgba(31,78,121,.15)',
+      borderWidth: 3,
+      tension: .35,
+      fill: true,
+      pointBackgroundColor: '#1f4e79',
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top'},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.y.toFixed(3)}}
+    },
+    scales:{
+      y:{min:4.85,max:5.0,ticks:{callback:v=>'R$ '+v.toFixed(2)}}
+    }
+  }
+});
+
+// Gráfico Praças Brasil
+new Chart(document.getElementById('graficoBrasil'), {
+  type:'bar',
+  data:{
+    labels:['Rio Grande/RS','Paranaguá/PR','Santa Rosa/RS','Passo Fundo/RS','Cascavel/PR','Dourados/MS','Rio Verde/GO','Rondonópolis/MT'],
+    datasets:[{
+      label:'Preço soja R$/saca',
+      data:[128.5,128.0,123.5,122.5,118.0,110.5,109.0,107.5],
+      backgroundColor:[
+        '#1f7a3a','#1f7a3a','#34a853','#34a853',
+        '#f5b301','#e67e22','#c0392b','#c0392b'
+      ],
+      borderRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    maintainAspectRatio:false,
+    indexAxis:'y',
+    plugins:{
+      legend:{display:false},
+      tooltip:{callbacks:{label:c=>'R$ '+c.parsed.x.toFixed(2)+'/saca'}}
+    },
+    scales:{
+      x:{min:100,max:135,ticks:{callback:v=>'R$ '+v}}
+    }
+  }
+});
+</script>
+</body>
+</html>
