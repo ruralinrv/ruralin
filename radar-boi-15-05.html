@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar do Boi Gordo | Rural IN — Semana 11 a 15/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#34a853;
+  --vermelho-boi:#8b1e1e;
+  --vermelho-claro:#c0392b;
+  --marrom:#6b3410;
+  --bege:#d4a574;
+  --dourado:#c9a227;
+  --dourado-claro:#f1c40f;
+  --azul:#1f4e79;
+  --vermelho:#c0392b;
+  --laranja:#e67e22;
+  --cinza:#7f8c8d;
+  --texto:#2c3e50;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fef5e7 0%,#f4f6f9 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1200px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:linear-gradient(135deg,var(--vermelho-boi),var(--marrom) 60%,var(--bege));
+  color:#fff;padding:50px 24px;border-radius:18px;text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);margin-bottom:28px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🐂";position:absolute;font-size:22em;right:-50px;top:-80px;opacity:.08;transform:rotate(-15deg);
+}
+header.hero::after{
+  content:"📊";position:absolute;font-size:14em;left:-30px;bottom:-50px;opacity:.06;transform:rotate(10deg);
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--verde-escuro);
+  padding:12px 26px;border-radius:50px;font-weight:800;font-size:1.4rem;letter-spacing:1px;
+  margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.logo-portal-icon{
+  width:38px;height:38px;background:linear-gradient(135deg,var(--dourado),var(--dourado-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+header h1{font-size:clamp(1.5rem,4vw,2.5rem);margin-bottom:10px;text-shadow:2px 2px 6px rgba(0,0,0,.3);position:relative;z-index:2;}
+header .subtitulo{font-size:clamp(.95rem,2.2vw,1.15rem);opacity:.95;margin-bottom:16px;position:relative;z-index:2;}
+.badge-semana{
+  display:inline-block;background:var(--dourado);color:#1b1b1b;padding:8px 20px;border-radius:25px;
+  font-weight:700;font-size:.95rem;position:relative;z-index:2;box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+/* RESUMO */
+.resumo-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;}
+.resumo-mini{
+  background:linear-gradient(135deg,#fafafa,#fef5e7);
+  border-left:4px solid var(--marrom);padding:16px;border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;transition:transform .25s;
+}
+.resumo-mini:hover{transform:translateY(-3px);}
+.resumo-mini.alerta{border-left-color:var(--vermelho);background:linear-gradient(135deg,#fdecea,#fff);}
+.resumo-mini.positivo{border-left-color:var(--verde);background:linear-gradient(135deg,#e8f7e8,#fff);}
+.resumo-mini.cambio{border-left-color:var(--azul);background:linear-gradient(135deg,#f0f6fc,#fff);}
+.resumo-mini .label{font-size:.75rem;text-transform:uppercase;color:#666;letter-spacing:.5px;font-weight:600;}
+.resumo-mini .valor{font-size:1.35rem;font-weight:800;color:var(--vermelho-boi);margin:6px 0 4px;}
+.resumo-mini .var{font-size:.82rem;font-weight:700;}
+.up{color:var(--verde-claro);}
+.down{color:var(--vermelho);}
+.neutro{color:#7f8c8d;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--vermelho-boi);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--dourado);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--vermelho-boi);font-size:1.1rem;margin:16px 0 10px;}
+section.bloco h4{color:var(--vermelho-boi);font-size:1rem;margin-bottom:8px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;}
+.grafico-canvas{position:relative;height:330px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TIMELINE */
+.timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:14px 0;}
+.dia-semana{
+  background:#fff;border-radius:12px;padding:14px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--marrom);text-align:center;transition:transform .25s;
+}
+.dia-semana:hover{transform:translateY(-3px);}
+.dia-semana.alta{border-top-color:#27ae60;}
+.dia-semana.baixa{border-top-color:#c0392b;}
+.dia-semana.neutro{border-top-color:#7f8c8d;}
+.dia-semana .data{font-size:.78rem;color:#666;text-transform:uppercase;font-weight:600;}
+.dia-semana .preco{font-size:1.25rem;font-weight:800;color:var(--vermelho-boi);margin:6px 0;}
+.dia-semana .var{font-size:.85rem;font-weight:700;margin-bottom:6px;}
+.dia-semana .evento{font-size:.78rem;color:#555;line-height:1.4;}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--verde);
+}
+.termometro h4{font-size:.92rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:14px;background:#e8eef0;border-radius:7px;overflow:hidden;margin-bottom:8px;}
+.termometro .preench{height:100%;border-radius:7px;transition:width 1s;}
+.termometro.alta{border-top-color:#27ae60;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media{border-top-color:#f39c12;}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa{border-top-color:#c0392b;}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.8rem;color:#666;display:flex;justify-content:space-between;}
+.termometro .nivel{font-weight:800;font-size:.85rem;}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;}
+table.dados th{background:var(--vermelho-boi);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#fef9f3;}
+table.dados tbody tr:hover{background:#fef0e0;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+.destaque{font-weight:700;color:var(--vermelho-boi);}
+
+/* DESTAQUES */
+.destaque-box{background:linear-gradient(135deg,#fef5e7,#fffbf0);border-left:5px solid var(--marrom);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:18px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+
+/* CENÁRIOS */
+.cenarios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:14px;}
+.cenario{padding:18px;border-radius:12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.cenario h4{font-size:1.1rem;margin-bottom:8px;}
+.cenario .prob{display:inline-block;background:#fff;padding:4px 12px;border-radius:20px;font-weight:800;font-size:1.1rem;margin:6px 0;}
+.cenario p{font-size:.88rem;margin-top:8px;}
+.cenario.otimista{background:linear-gradient(135deg,#d4f1d4,#e8f7e8);border:2px solid #27ae60;}
+.cenario.otimista .prob{color:#1e8449;}
+.cenario.base{background:linear-gradient(135deg,#fff3cd,#fffae6);border:2px solid #f39c12;}
+.cenario.base .prob{color:#b9770e;}
+.cenario.pessimista{background:linear-gradient(135deg,#fdecea,#fef5f4);border:2px solid #c0392b;}
+.cenario.pessimista .prob{color:#a93226;}
+
+/* RECOMENDAÇÕES */
+.recom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px;}
+.recom-item{background:linear-gradient(135deg,#fef5e7,#fff);padding:16px;border-radius:10px;border-left:4px solid var(--marrom);box-shadow:0 2px 6px rgba(0,0,0,.05);}
+.recom-item h4{margin-bottom:6px;font-size:.98rem;}
+.recom-item p{font-size:.88rem;margin:0;}
+
+/* MAPA PRAÇAS */
+.mapa-pracas{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:14px;}
+.praca-card{
+  background:#fff;border-radius:10px;padding:14px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);border-top:4px solid var(--marrom);
+}
+.praca-card.alto{border-top-color:#27ae60;}
+.praca-card.medio{border-top-color:#f39c12;}
+.praca-card.baixo{border-top-color:#c0392b;}
+.praca-card .uf{font-size:.85rem;color:#666;font-weight:600;}
+.praca-card .preco{font-size:1.3rem;font-weight:800;color:var(--vermelho-boi);margin:4px 0;}
+.praca-card .escala{font-size:.75rem;color:#888;}
+
+/* AGENDA */
+.alta-rel{color:var(--vermelho);font-weight:700;}
+.media-rel{color:var(--laranja);font-weight:700;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--vermelho-boi),var(--marrom));color:#fff;
+  padding:30px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:12px;}
+.credenciais{margin:16px auto;max-width:700px;}
+.credenciais .nome{font-size:1.3rem;font-weight:800;margin:8px 0 4px;color:var(--dourado-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.92rem;margin:14px 0;padding:10px;background:rgba(255,255,255,.08);border-radius:8px;}
+.contatos{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:14px;font-size:.88rem;}
+.contatos a{color:var(--dourado-claro);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:18px;font-size:.78rem;opacity:.8;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);}
+
+@media(max-width:600px){
+  section.bloco{padding:18px 14px;}
+  header.hero{padding:34px 18px;}
+  .resumo-mini .valor{font-size:1.15rem;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🌱</div>
+    RURAL <span style="color:var(--dourado-claro)">IN</span>
+  </div>
+  <h1>🐂 Radar do Boi Gordo — Semanal</h1>
+  <p class="subtitulo">Análise Fundamentalista + Leitura Gráfica + Cenários | B3 · Físico · Exportações</p>
+  <span class="badge-semana">📅 Semana de 11 a 15/05/2026</span>
+</header>
+
+<!-- SNAPSHOT -->
+<section class="bloco">
+<h2>⚡ Snapshot da Semana</h2>
+<p>Semana <strong>nitidamente baixista</strong> para o boi gordo. Após começar com forte alta na segunda (+1,26%), o mercado <strong>encadeou 4 dias consecutivos de queda</strong> no contrato B3 maio/26, fechando em <strong>R$ 336,55/@</strong>. No físico, escalas confortáveis de 7-9 dias úteis dão à indústria o poder de pressionar preços. Único contraponto: <strong>exportações em recorde de preço médio (US$ 5,83/kg, +17,2% YoY)</strong>, sustentando demanda externa.</p>
+<div class="resumo-cards">
+  <div class="resumo-mini alerta">
+    <div class="label">🐂 B3 BGI Mai/26</div>
+    <div class="valor">R$ 336,55</div>
+    <div class="var down">▼ -1,51% Semana</div>
+  </div>
+  <div class="resumo-mini alerta">
+    <div class="label">🐂 B3 BGI Out/26</div>
+    <div class="valor">R$ 350,20</div>
+    <div class="var down">▼ -0,79% Semana</div>
+  </div>
+  <div class="resumo-mini">
+    <div class="label">📍 SP Físico (média)</div>
+    <div class="valor">R$ 350,00</div>
+    <div class="var down">▼ -1,42%</div>
+  </div>
+  <div class="resumo-mini positivo">
+    <div class="label">🌎 Boi China SP</div>
+    <div class="valor">R$ 355,00</div>
+    <div class="var up">▲ Prêmio +1,4%</div>
+  </div>
+  <div class="resumo-mini cambio">
+    <div class="label">💵 Dólar à Vista</div>
+    <div class="valor">R$ 5,070</div>
+    <div class="var up">▲ +3,54%</div>
+  </div>
+  <div class="resumo-mini positivo">
+    <div class="label">🚢 Carne Export.</div>
+    <div class="valor">US$ 5,83/kg</div>
+    <div class="var up">▲ +17,2% YoY</div>
+  </div>
+</div>
+</section>
+
+<!-- COTAÇÕES DIÁRIAS B3 -->
+<section class="bloco">
+<h2>📅 B3 BGI Mai/26 — Fechamento Dia a Dia (R$/@)</h2>
+<p>O contrato maio/26 (em fase de liquidação) abriu a semana em forte alta, mas <strong>perdeu fôlego logo na terça</strong> e <strong>caiu 4 sessões consecutivas</strong>, acumulando recuo de -2,73% do topo de seg ao fechamento de sex:</p>
+<div class="timeline">
+  <div class="dia-semana alta">
+    <div class="data">Seg 11/05</div>
+    <div class="preco">346,00</div>
+    <div class="var up">▲ +1,26%</div>
+    <div class="evento">Frigoríficos retraídos + frente fria PR/SC reduz disponibilidade</div>
+  </div>
+  <div class="dia-semana baixa">
+    <div class="data">Ter 12/05</div>
+    <div class="preco">343,30</div>
+    <div class="var down">▼ -0,78%</div>
+    <div class="evento">Escalas avançam 7-9 dias — indústria sem urgência</div>
+  </div>
+  <div class="dia-semana baixa">
+    <div class="data">Qua 13/05</div>
+    <div class="preco">340,05</div>
+    <div class="var down">▼ -0,95%</div>
+    <div class="evento">SP Barretos cai p/ R$ 350. Pasto MG/GO piorando aumenta oferta</div>
+  </div>
+  <div class="dia-semana baixa">
+    <div class="data">Qui 14/05</div>
+    <div class="preco">339,00</div>
+    <div class="var down">▼ -0,31%</div>
+    <div class="evento">Atacado de carne recua + descarte de vacas em alta</div>
+  </div>
+  <div class="dia-semana baixa">
+    <div class="data">Sex 15/05</div>
+    <div class="preco">336,55</div>
+    <div class="var down">▼ -0,72%</div>
+    <div class="evento">Frigoríficos quitam compras p/ próxima semana — pressão final</div>
+  </div>
+</div>
+<div class="grafico-wrap">
+<h4>📊 B3 BGI — Evolução Semanal por Vencimento (R$/@)</h4>
+<div class="grafico-canvas"><canvas id="graficoB3"></canvas></div>
+</div>
+<div class="destaque-box alerta">
+<h4>⚠️ Leitura do Movimento</h4>
+<p>A semana confirmou o <strong>padrão "topo na segunda e queda gradual"</strong>: a alta de 1,26% no início da semana foi puramente técnica (cobertura de posições vendidas), sem suporte fundamentalista. Na sequência, três fatores derrubaram os preços: <strong>(i) escalas confortáveis</strong> (frigoríficos com compras garantidas para 7-9 dias), <strong>(ii) deterioração das pastagens</strong> em SP/MG/GO forçando produtores a venderem, e <strong>(iii) aumento do descarte de fêmeas</strong>. Toda a curva futura caiu: junho fechou em R$ 335,75 (-1,25%), outubro em R$ 350,20 (-0,79%).</p>
+</div>
+</section>
+
+<!-- CURVA FUTURA -->
+<section class="bloco">
+<h2>📈 Curva Futura B3 — Estrutura de Preços</h2>
+<p>A <strong>curva de preços futuros</strong> traz uma mensagem importante: o mercado precifica <strong>recuperação a partir de setembro/outubro</strong> (entressafra do boi gordo), com o pico em novembro. Isso reflete a sazonalidade clássica da pecuária brasileira:</p>
+<div class="grafico-wrap">
+<h4>📊 Curva Futura B3 (R$/@) — Fechamento 15/05/2026</h4>
+<div class="grafico-canvas"><canvas id="graficoCurva"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Vencimento</th><th>Fechamento 15/05</th><th>Variação Semanal</th><th>Spread vs Mai/26</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Maio/26</strong> (atual)</td><td class="destaque">R$ 336,55</td><td class="neg">-1,51%</td><td>—</td></tr>
+<tr><td>Junho/26</td><td>R$ 335,75</td><td class="neg">-2,87%</td><td class="neg">-0,80</td></tr>
+<tr><td>Julho/26</td><td>R$ 338,00</td><td class="neg">-1,46%</td><td class="pos">+1,45</td></tr>
+<tr><td>Agosto/26</td><td>R$ 338,00</td><td class="neg">-1,13%</td><td class="pos">+1,45</td></tr>
+<tr><td>Setembro/26</td><td>R$ 342,70</td><td class="neg">-0,42%</td><td class="pos">+6,15</td></tr>
+<tr><td><strong>Outubro/26</strong> (entressafra)</td><td class="destaque">R$ 350,20</td><td class="neg">-0,79%</td><td class="pos">+13,65</td></tr>
+<tr><td>Novembro/26</td><td class="destaque">R$ 351,00</td><td class="neg">-0,71%</td><td class="pos">+14,45</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box positivo">
+<h4>💡 O que a curva diz para o pecuarista</h4>
+<p>O <strong>spread de R$ 13,65/@ entre Out/26 e Mai/26</strong> é o "prêmio da entressafra" — o mercado paga mais caro para receber boi em outubro/novembro, quando a oferta cai. <strong>Estratégia chave:</strong> quem tem boi para vender em outubro pode <strong>travar hoje pelo BGIV26 a R$ 350,20</strong>, garantindo cerca de R$ 4.470/cabeça (boi de 17 arrobas líquidas com base no preço sem corretagem).</p>
+</div>
+</section>
+
+<!-- MERCADO FÍSICO -->
+<section class="bloco">
+<h2>🇧🇷 Mercado Físico — Mapa de Preços (15/05)</h2>
+<p>O mapa do físico confirma a <strong>vantagem do Norte/Centro-Oeste</strong> sobre o Sudeste neste momento. Mato Grosso lidera com R$ 350/@ por causa das melhores pastagens; já Minas Gerais e Goiás operam a R$ 325/@ pela pressão da oferta. Veja:</p>
+<div class="mapa-pracas">
+  <div class="praca-card alto">
+    <div class="uf">🐄 MT — Cuiabá</div>
+    <div class="preco">R$ 350</div>
+    <div class="escala">Escala: 8 dias</div>
+  </div>
+  <div class="praca-card alto">
+    <div class="uf">🐄 SP — Araçatuba</div>
+    <div class="preco">R$ 346</div>
+    <div class="escala">Escala: 9 dias</div>
+  </div>
+  <div class="praca-card alto">
+    <div class="uf">🐄 SP — Barretos</div>
+    <div class="preco">R$ 346</div>
+    <div class="escala">Escala: 9 dias</div>
+  </div>
+  <div class="praca-card medio">
+    <div class="uf">🐄 MS — C. Grande</div>
+    <div class="preco">R$ 345</div>
+    <div class="escala">Escala: 8 dias</div>
+  </div>
+  <div class="praca-card medio">
+    <div class="uf">🐄 TO — Norte</div>
+    <div class="preco">R$ 345</div>
+    <div class="escala">Escala: 7 dias</div>
+  </div>
+  <div class="praca-card medio">
+    <div class="uf">🐄 PA</div>
+    <div class="preco">R$ 345</div>
+    <div class="escala">Escala: 6 dias</div>
+  </div>
+  <div class="praca-card medio">
+    <div class="uf">🐄 RO</div>
+    <div class="preco">R$ 330</div>
+    <div class="escala">Escala: 10 dias</div>
+  </div>
+  <div class="praca-card baixo">
+    <div class="uf">🐄 MG — Triângulo</div>
+    <div class="preco">R$ 325</div>
+    <div class="escala">Escala: 9 dias</div>
+  </div>
+  <div class="praca-card baixo">
+    <div class="uf">🐄 GO — Goiânia</div>
+    <div class="preco">R$ 325</div>
+    <div class="escala">Escala: 9 dias</div>
+  </div>
+</div>
+<div class="grafico-wrap">
+<h4>📊 Comparativo Praças (R$/@ — 15/05)</h4>
+<div class="grafico-canvas"><canvas id="graficoPracas"></canvas></div>
+</div>
+<div class="destaque-box info">
+<h4>💡 Por que MT lidera e MG/GO ficam atrás?</h4>
+<ul>
+<li><strong>MT (R$ 350):</strong> pastagens em ótima condição, pecuarista pode segurar o gado — menor oferta sustenta preço</li>
+<li><strong>SP (R$ 346-350):</strong> capital, indústria com escalas alongadas, mas demanda boi China premium</li>
+<li><strong>MS (R$ 345):</strong> equilíbrio entre oferta e indústria</li>
+<li><strong>MG/GO (R$ 325):</strong> seca intensa nas pastagens força pecuaristas a venderem — <strong>oferta excedente</strong> derruba preço</li>
+<li><strong>Indicador Cepea/Esalq:</strong> R$ 350,55/@ (-0,57% semana)</li>
+</ul>
+</div>
+</section>
+
+<!-- TERMÔMETROS -->
+<section class="bloco">
+<h2>🌡️ Termômetro do Mercado Pecuário</h2>
+<div class="termometro-grid">
+  <div class="termometro baixa">
+    <h4>🐂 BGI B3 Mai/26 <span class="nivel down">-1,51%</span></h4>
+    <div class="barra"><div class="preench" style="width:38%"></div></div>
+    <div class="legenda"><span>R$ 336,55</span><span>FRACO</span></div>
+  </div>
+  <div class="termometro media">
+    <h4>📍 SP Físico <span class="nivel">≈ R$ 350</span></h4>
+    <div class="barra"><div class="preench" style="width:55%"></div></div>
+    <div class="legenda"><span>Estável c/ viés baixa</span><span>NEUTRO</span></div>
+  </div>
+  <div class="termometro baixa">
+    <h4>📊 Escalas de Abate <span class="nivel down">7-9 dias</span></h4>
+    <div class="barra"><div class="preench" style="width:30%"></div></div>
+    <div class="legenda"><span>Confortável p/ indústria</span><span>RUIM p/ produtor</span></div>
+  </div>
+  <div class="termometro alta">
+    <h4>🚢 Exportações <span class="nivel up">Recorde preço</span></h4>
+    <div class="barra"><div class="preench" style="width:88%"></div></div>
+    <div class="legenda"><span>US$ 5,83/kg</span><span>EXCELENTE</span></div>
+  </div>
+  <div class="termometro alta">
+    <h4>💵 Dólar/Real <span class="nivel up">+3,54% sem</span></h4>
+    <div class="barra"><div class="preench" style="width:85%"></div></div>
+    <div class="legenda"><span>R$ 5,07</span><span>FAVORÁVEL EXPORT</span></div>
+  </div>
+  <div class="termometro baixa">
+    <h4>🐃 Descarte Fêmeas <span class="nivel down">Elevado</span></h4>
+    <div class="barra"><div class="preench" style="width:25%"></div></div>
+    <div class="legenda"><span>Vaca: R$ 320/@ SP</span><span>PRESSÃO OFERTA</span></div>
+  </div>
+  <div class="termometro media">
+    <h4>🥩 Atacado Carne <span class="nivel">Misto</span></h4>
+    <div class="barra"><div class="preench" style="width:50%"></div></div>
+    <div class="legenda"><span>Traseiro recua</span><span>CAUTELOSO</span></div>
+  </div>
+  <div class="termometro alta">
+    <h4>📈 Minerva (BEEF3) <span class="nivel up">+4,63%</span></h4>
+    <div class="barra"><div class="preench" style="width:70%"></div></div>
+    <div class="legenda"><span>R$ 4,30</span><span>FORTE</span></div>
+  </div>
+</div>
+</section>
+
+<!-- LEITURA TÉCNICA -->
+<section class="bloco">
+<h2>📐 Leitura Gráfica — BGI Mai/26 (B3)</h2>
+<p>Tecnicamente, o boi <strong>perdeu o suporte de R$ 340/@</strong> ao longo da semana — nível psicológico importante que vinha sendo respeitado desde abril. O fechamento em <strong>R$ 336,55/@</strong> deixa o gráfico em viés baixista no curto prazo, mas com sinais de exaustão (RSI próximo de 35, zona de sobrevendido):</p>
+<div class="grafico-wrap">
+<h4>📊 BGI Mai/26 — Suportes &amp; Resistências (R$/@)</h4>
+<div class="grafico-canvas"><canvas id="graficoTecnico"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Indicador Técnico</th><th>Nível (R$/@)</th><th>Significado</th></tr>
+</thead>
+<tbody>
+<tr><td>🔴 Resistência Forte</td><td class="destaque">350,00</td><td>Topo abril/26 — barreira psicológica</td></tr>
+<tr><td>🟡 Resistência Tática</td><td>346,00</td><td>Máxima da semana — primeiro teste retomada</td></tr>
+<tr><td>🟡 Resistência Imediata</td><td>340,00</td><td>Suporte rompido vira resistência</td></tr>
+<tr><td>🟢 Fechamento Atual</td><td class="destaque">336,55</td><td>Mínima recente — viés baixista curto prazo</td></tr>
+<tr><td>🟢 Suporte Imediato</td><td>334,25</td><td>Mínima do dia 15/05 — defesa crítica</td></tr>
+<tr><td>🟢 Suporte Forte</td><td>330,00</td><td>Fundo de março/26 — defesa estrutural</td></tr>
+<tr><td>🔴 Suporte Vital</td><td>325,00</td><td>Romper aqui abre R$ 320 (estresse total)</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box alerta">
+<h4>🎯 Setup técnico para a próxima semana</h4>
+<p>Cenário mais provável: <strong>teste do suporte de R$ 334-330</strong> na primeira metade da semana. Se segurar, há espaço para repique técnico até R$ 340-342 (zona de resistência). Se perder R$ 330, o caminho fica livre para R$ 325 e, em estresse, R$ 320. <strong>O contrato outubro/26 (BGIV26)</strong> permanece como o mais defendido (R$ 350,20) — pode ser oportunidade de venda futura para quem terá boi pronto na entressafra.</p>
+</div>
+</section>
+
+<!-- EXPORTAÇÕES -->
+<section class="bloco">
+<h2>🌎 Exportações — O Coringa que Sustenta o Mercado</h2>
+<p>Em meio à pressão do mercado físico, as <strong>exportações de carne bovina brasileira seguem em recorde</strong>. O preço médio da carne exportada está em <strong>US$ 5,83/kg, alta de 17,2% sobre 2025</strong>. Esse é o grande contraponto que impede uma queda mais profunda dos preços:</p>
+<div class="destaque-box positivo">
+<h4>🚢 Por que as exportações estão tão fortes?</h4>
+<ul>
+<li><strong>China firme:</strong> mesmo com tensão EUA-China, demanda chinesa por proteína bovina segue elevada (rebanho chinês ainda em recuperação pós-PSA suína)</li>
+<li><strong>Dólar a R$ 5,07:</strong> + 3,54% na semana — receita em reais sobe automaticamente</li>
+<li><strong>Frigoríficos com escala alongada:</strong> JBS, Marfrig, Minerva priorizam mercado externo (margens maiores)</li>
+<li><strong>Demanda EUA:</strong> rebanho americano em mínima de 70 anos — preço cattle CME bate recordes (US$ 235/cwt feeder)</li>
+<li><strong>Ação Minerva (BEEF3):</strong> +4,63% no dia 11/05 — mercado precifica bom momento das exportadoras</li>
+</ul>
+</div>
+<div class="destaque-box alerta">
+<h4>⚠️ Risco no horizonte: União Europeia</h4>
+<p>A União Europeia ameaça novas restrições à carne brasileira, o que pode comprometer <strong>uma receita anual de US$ 1,84 bilhão</strong> (segundo Portal DBO). O ponto crítico são as <strong>exigências do Regulamento Antidesmatamento (EUDR)</strong> — se aprovado integralmente, frigoríficos terão custo extra de compliance que pode ser repassado ao produtor via preço menor de boi.</p>
+</div>
+</section>
+
+<!-- MACRO -->
+<section class="bloco">
+<h2>🌐 Macro &amp; Geopolítica — 4 Vetores Que Importam</h2>
+<div class="destaque-box info">
+<h4>1️⃣ Cúpula Trump × Xi: Reflexo Indireto no Boi</h4>
+<p>A reunião EUA-China <strong>frustrou o mercado de grãos</strong>, mas para o boi gordo o impacto foi <strong>tangencialmente positivo</strong>: milho caiu 3,29% na semana, o que <strong>reduz o custo do confinamento</strong>. Em médio prazo, confinador americano (grande competidor do Brasil em carne) terá menor custo, mas Brasil mantém vantagem cambial.</p>
+</div>
+<div class="destaque-box alerta">
+<h4>2️⃣ Brasil — Selic e Risco Político</h4>
+<p>Caso Flávio Bolsonaro × Banco Master pressiona o real (+3,54% do dólar). Para o pecuarista, isso é <strong>"faca de dois gumes"</strong>: ajuda exportações, mas encarece insumos importados (fertilizantes para pasto, sêmen, medicamentos veterinários). <strong>Ata do Copom (19/05)</strong> pode definir o tom da Selic — atualmente em 13,5%.</p>
+</div>
+<div class="destaque-box">
+<h4>3️⃣ Clima — Pastagens Definem a Oferta</h4>
+<p><strong>Centro-Oeste em transição para seca:</strong> Minas Gerais e Goiás já mostram desgaste, MT ainda em boa condição. <strong>Próximas 4-6 semanas são decisivas</strong>: se a estiagem se intensificar, descarte forçado de animais vai aumentar a oferta e pressionar mais os preços — mas a partir de agosto/setembro abrirá a entressafra clássica com forte alta.</p>
+</div>
+<div class="destaque-box positivo">
+<h4>4️⃣ Estados Unidos — Boi em Recorde de Preço</h4>
+<p>Rebanho americano em <strong>mínima de 70 anos</strong> + demanda interna forte = preços históricos no CME (Live Cattle a US$ 220/cwt, Feeder Cattle a US$ 305/cwt). Isso cria <strong>arbitragem favorável para a carne brasileira</strong> — exportadoras correm para suprir o déficit americano. <strong>Excelente vetor para 2026/2027</strong>.</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (18 a 22/05)</h2>
+<p>Combinando fundamentos físicos + leitura técnica + agenda macro, projetamos 3 cenários para a arroba SP (referência):</p>
+<div class="cenarios-grid">
+  <div class="cenario otimista">
+    <h4>🟢 OTIMISTA</h4>
+    <span class="prob">25%</span>
+    <p>Frigoríficos zeram escalas + dólar continua subindo + China anuncia compras adicionais. <strong>BGI Mai retoma R$ 342-346</strong>. SP físico volta a R$ 350-353. Mato Grosso pode chegar a R$ 355.</p>
+  </div>
+  <div class="cenario base">
+    <h4>🟡 BASE</h4>
+    <span class="prob">55%</span>
+    <p>Mercado segue lateral com viés de leve recuperação técnica (RSI sobrevendido). <strong>BGI Mai entre R$ 335-342</strong>. SP físico estável em R$ 346-350. Spread SP × MG/GO continua amplo.</p>
+  </div>
+  <div class="cenario pessimista">
+    <h4>🔴 PESSIMISTA</h4>
+    <span class="prob">20%</span>
+    <p>Seca avança no Centro-Oeste + descarte forçado intensifica + atacado da carne cai. <strong>BGI Mai perde R$ 334 → testa R$ 328-330</strong>. SP físico recua a R$ 340-343. MG/GO p/ R$ 318-322.</p>
+  </div>
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="bloco">
+<h2>📅 Agenda da Próxima Semana (18 a 22/05)</h2>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Data</th><th>Evento</th><th>Por que importa?</th><th>Relevância</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Semana toda</strong></td><td>Escalas dos frigoríficos</td><td>Indicador #1 do poder de barganha</td><td class="alta-rel">🔴 Altíssima</td></tr>
+<tr><td><strong>19/05 (ter)</strong></td><td>Ata do Copom</td><td>Selic + dólar = impacto na exportação</td><td class="alta-rel">🔴 Alta</td></tr>
+<tr><td><strong>20/05 (qua)</strong></td><td>IPCA-15 maio</td><td>Inflação carne vs proteínas alternativas</td><td class="media-rel">🟡 Média</td></tr>
+<tr><td><strong>21/05 (qui)</strong></td><td>Secex - Balança Comercial</td><td>Volume de exportações de carne bovina</td><td class="alta-rel">🔴 Alta</td></tr>
+<tr><td><strong>Semana toda</strong></td><td>Clima Centro-Oeste</td><td>Pastagem = oferta de gado</td><td class="alta-rel">🔴 Altíssima</td></tr>
+<tr><td><strong>Semana toda</strong></td><td>USDA Cattle on Feed (EUA)</td><td>Define preço internacional carne</td><td class="media-rel">🟡 Média</td></tr>
+<tr><td><strong>30/05 (sex)</strong></td><td>Vencimento BGIK26</td><td>Liquidação contrato maio/26</td><td class="alta-rel">🔴 Alta</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- RECOMENDAÇÕES -->
+<section class="bloco">
+<h2>🎯 Estratégia para o Pecuarista</h2>
+<div class="recom-grid">
+  <div class="recom-item">
+    <h4>1️⃣ Trave a entressafra agora</h4>
+    <p>BGIV26 (out/26) está a <strong>R$ 350,20/@</strong>. Quem terá boi pronto em out/nov pode <strong>vender futuro hoje</strong> e garantir esse preço, eliminando risco de queda.</p>
+  </div>
+  <div class="recom-item">
+    <h4>2️⃣ Não venda na pressão da escala</h4>
+    <p>Se sua pastagem aguenta, <strong>segure o animal por 2-3 semanas</strong>. Escalas de 9 dias caem rápido quando 2-3 frigoríficos terminam compras simultaneamente.</p>
+  </div>
+  <div class="recom-item">
+    <h4>3️⃣ Aproveite o dólar para "boi China"</h4>
+    <p>Animais com perfil de exportação ($) valem <strong>R$ 5-10/@ a mais</strong>. Vale a pena especializar terminação para acessar esse prêmio.</p>
+  </div>
+  <div class="recom-item">
+    <h4>4️⃣ Custo do confinamento caiu</h4>
+    <p>Milho a R$ 45/sc em Sorriso + soja em R$ 110 + farelo estável = <strong>margem do confinamento melhora</strong>. Bom momento para planejar terminação intensiva 2026.</p>
+  </div>
+  <div class="recom-item">
+    <h4>5️⃣ Atenção ao descarte de fêmeas</h4>
+    <p>Descarte elevado de vacas hoje significa <strong>menos bezerros em 2027/28</strong>. Quem está em ciclo de cria deve segurar matrizes — preço do bezerro tende a subir.</p>
+  </div>
+  <div class="recom-item">
+    <h4>6️⃣ Hedge via opções</h4>
+    <p>Para quem não quer travar tudo no futuro, <strong>comprar puts BGI strike R$ 330-335</strong> protege piso da margem com custo baixo (1-2% do valor da posição).</p>
+  </div>
+</div>
+</section>
+
+<!-- CONCLUSÃO -->
+<section class="bloco" style="background:linear-gradient(135deg,#fef5e7,#fff);">
+<h2>📝 Conclusão da Semana</h2>
+<p>A semana de <strong>11 a 15/05/2026</strong> foi de <strong>"alta de uma sessão, queda de quatro"</strong> para o boi gordo. O contrato BGI mai/26 perdeu -1,51% e fechou em R$ 336,55/@, com o físico SP recuando para a faixa de R$ 346-350/@. O fator dominante: <strong>escalas de abate alongadas (7-9 dias)</strong> dando à indústria poder total de barganha, somado à <strong>deterioração das pastagens em SP/MG/GO</strong> que força produtores a venderem.</p>
+<p>No entanto, três elementos seguram a queda: <strong>(i) exportações em recorde de preço médio (US$ 5,83/kg, +17,2% YoY)</strong>; <strong>(ii) dólar disparado a R$ 5,07 (+3,54%)</strong> que valoriza receita externa; e <strong>(iii) preço da carne nos EUA em níveis recordes</strong> abrindo arbitragem para o produto brasileiro. O resultado é um mercado em "queda controlada", não em colapso.</p>
+<p>Para a próxima semana, nosso cenário base (55%) projeta BGI Mai entre <strong>R$ 335-342/@</strong>, com SP físico estável em R$ 346-350. <strong>O grande sinal vem da curva futura</strong>: outubro/26 a R$ 350,20 e novembro/26 a R$ 351,00 indicam que <strong>o mercado já precifica a recuperação da entressafra</strong>. Para o pecuarista, é <strong>hora de planejar o hedge, não de entrar em pânico</strong>.</p>
+<p style="font-style:italic;text-align:center;margin-top:18px;font-weight:600;color:var(--vermelho-boi);">"Boi não dá lucro no preço — dá lucro no calendário. Quem planta hoje a venda de outubro, colhe a entressafra que ainda não chegou."</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🌱</div>
+  RURAL <span style="color:var(--dourado-claro)">IN</span>
+</div>
+<div class="credenciais">
+  <div style="font-size:.85rem;opacity:.85;margin-bottom:6px;">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista &amp; Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda &amp; Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+    <span>📧 sidneyagro@gmail.com</span>
+    <span>📱 (64) 9 9226-6886</span>
+    <span>📸 @ruralin.ai</span>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo emitido em 16 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.</p>
+</footer>
+
+</div>
+
+<script>
+const cores = {
+  vermelhoBoi: '#8b1e1e',
+  marrom: '#6b3410',
+  bege: '#d4a574',
+  verde: '#1f7a3a',
+  vermelho: '#c0392b',
+  laranja: '#e67e22',
+  dourado: '#c9a227',
+  azul: '#1f4e79',
+  cinza: '#7f8c8d'
+};
+
+// B3 - Evolução semanal por vencimento
+new Chart(document.getElementById('graficoB3'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 11/05','Ter 12/05','Qua 13/05','Qui 14/05','Sex 15/05'],
+    datasets: [
+      { label: 'Maio/26', data: [346.00, 343.30, 340.05, 339.00, 336.55],
+        borderColor: cores.vermelhoBoi, backgroundColor: 'rgba(139,30,30,.15)', borderWidth: 3, tension:.25, fill:false, pointRadius:6 },
+      { label: 'Julho/26', data: [343.25, 342.50, 339.45, 340.25, 338.00],
+        borderColor: cores.marrom, borderWidth: 2, tension:.25, fill:false, pointRadius:4 },
+      { label: 'Outubro/26', data: [353.00, 352.50, 350.35, 351.20, 350.20],
+        borderColor: cores.verde, borderWidth: 2, tension:.25, fill:false, pointRadius:4 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: { legend: { position:'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.raw.toFixed(2) } } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v } } }
+  }
+});
+
+// Curva Futura
+new Chart(document.getElementById('graficoCurva'), {
+  type: 'bar',
+  data: {
+    labels: ['Mai/26','Jun/26','Jul/26','Ago/26','Set/26','Out/26','Nov/26'],
+    datasets: [{
+      label: 'R$/@',
+      data: [336.55, 335.75, 338.00, 338.00, 342.70, 350.20, 351.00],
+      backgroundColor: ['#c0392b','#c0392b','#e67e22','#e67e22','#f39c12','#27ae60','#1e8449'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => 'R$ ' + ctx.raw.toFixed(2) + '/@' } } },
+    scales: { y: { beginAtZero:false, min: 325, ticks: { callback: v => 'R$ ' + v } } }
+  }
+});
+
+// Praças
+new Chart(document.getElementById('graficoPracas'), {
+  type: 'bar',
+  data: {
+    labels: ['MG Triângulo','GO Goiânia','RO','MS C.Grande','TO Norte','PA','SP Araçatuba','SP Barretos','MT Cuiabá'],
+    datasets: [{
+      label: 'R$/@',
+      data: [325, 325, 330, 345, 345, 345, 346, 346, 350],
+      backgroundColor: ['#c0392b','#c0392b','#e67e22','#f39c12','#f39c12','#f39c12','#27ae60','#27ae60','#1e8449'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    indexAxis: 'y',
+    plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => 'R$ ' + ctx.raw + '/@' } } },
+    scales: { x: { beginAtZero:false, min:315, ticks: { callback: v => 'R$ ' + v } } }
+  }
+});
+
+// Técnico
+new Chart(document.getElementById('graficoTecnico'), {
+  type: 'line',
+  data: {
+    labels: ['Seg','Ter','Qua','Qui','Sex'],
+    datasets: [
+      { label: 'BGI Mai/26', data: [346.00, 343.30, 340.05, 339.00, 336.55],
+        borderColor: cores.vermelhoBoi, borderWidth: 3, tension:.25, pointRadius:5,
+        backgroundColor: 'rgba(139,30,30,.10)', fill: true },
+      { label: '🔴 Resist. 350', data: [350,350,350,350,350],
+        borderColor: cores.vermelho, borderDash:[6,4], borderWidth:2, pointRadius:0 },
+      { label: '🟡 Resist. 346', data: [346,346,346,346,346],
+        borderColor: cores.laranja, borderDash:[4,3], borderWidth:2, pointRadius:0 },
+      { label: '🟡 Resist. 340', data: [340,340,340,340,340],
+        borderColor: cores.dourado, borderDash:[4,3], borderWidth:2, pointRadius:0 },
+      { label: '🟢 Suporte 334', data: [334.25,334.25,334.25,334.25,334.25],
+        borderColor: cores.verde, borderDash:[4,3], borderWidth:2, pointRadius:0 },
+      { label: '🟢 Suporte 330', data: [330,330,330,330,330],
+        borderColor: '#1e8449', borderDash:[4,3], borderWidth:2, pointRadius:0 },
+      { label: '🔴 Vital 325', data: [325,325,325,325,325],
+        borderColor: cores.cinza, borderDash:[3,3], borderWidth:2, pointRadius:0 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    plugins: { legend: { position:'bottom', labels: { boxWidth:14, font:{size:11} } } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v } } }
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Comparativo Soja × Milho × Boi | Rural IN — Semana 11 a 15/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --soja:#d4a017;
+  --soja-claro:#f4c430;
+  --milho:#e67e22;
+  --milho-claro:#f39c12;
+  --boi:#8b1e1e;
+  --boi-claro:#c0392b;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --azul:#1f4e79;
+  --cinza:#7f8c8d;
+  --texto:#2c3e50;
+  --dourado:#c9a227;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fffbf0 0%,#f4f6f9 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1250px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:linear-gradient(135deg,var(--verde-escuro) 0%,var(--soja) 50%,var(--boi) 100%);
+  color:#fff;padding:50px 24px;border-radius:18px;text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);margin-bottom:28px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🌱🌽🐂";position:absolute;font-size:11em;right:-30px;top:-30px;opacity:.08;letter-spacing:.2em;
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--verde-escuro);
+  padding:12px 26px;border-radius:50px;font-weight:800;font-size:1.4rem;letter-spacing:1px;
+  margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.25);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:38px;height:38px;background:linear-gradient(135deg,var(--dourado),var(--soja-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+header h1{font-size:clamp(1.5rem,4vw,2.5rem);margin-bottom:10px;text-shadow:2px 2px 6px rgba(0,0,0,.3);position:relative;z-index:2;}
+header .subtitulo{font-size:clamp(.95rem,2.2vw,1.15rem);opacity:.95;margin-bottom:16px;position:relative;z-index:2;}
+.badge-semana{
+  display:inline-block;background:var(--soja-claro);color:#1b1b1b;padding:8px 20px;border-radius:25px;
+  font-weight:700;font-size:.95rem;position:relative;z-index:2;box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--verde-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--soja);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--verde-escuro);font-size:1.05rem;margin:16px 0 10px;}
+section.bloco h4{color:var(--verde-escuro);font-size:1rem;margin-bottom:8px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* PLACAR */
+.placar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px;}
+.placar-card{
+  background:#fff;border-radius:14px;padding:20px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);position:relative;overflow:hidden;
+}
+.placar-card .icone{font-size:3rem;margin-bottom:6px;}
+.placar-card h3{font-size:1.3rem;margin-bottom:4px;font-weight:800;}
+.placar-card .ref{font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.placar-card .preco-grande{font-size:1.9rem;font-weight:900;margin:8px 0 4px;}
+.placar-card .var-semana{font-size:1rem;font-weight:800;padding:4px 14px;border-radius:20px;display:inline-block;margin-top:6px;}
+.placar-card .fisico{font-size:.85rem;color:#555;margin-top:10px;padding-top:10px;border-top:1px solid #eee;}
+.placar-card.soja{border-top:6px solid var(--soja);}
+.placar-card.soja h3,.placar-card.soja .preco-grande{color:var(--soja);}
+.placar-card.milho{border-top:6px solid var(--milho);}
+.placar-card.milho h3,.placar-card.milho .preco-grande{color:var(--milho);}
+.placar-card.boi{border-top:6px solid var(--boi);}
+.placar-card.boi h3,.placar-card.boi .preco-grande{color:var(--boi);}
+.var-down{background:#fdecea;color:var(--vermelho);}
+.var-up{background:#e8f7e8;color:var(--verde);}
+.var-neutro{background:#f0f0f0;color:#555;}
+
+/* RANKING */
+.ranking-pos{display:inline-block;width:32px;height:32px;border-radius:50%;color:#fff;font-weight:800;line-height:32px;text-align:center;margin-right:8px;}
+.ranking-1{background:linear-gradient(135deg,#f1c40f,#d4a017);}
+.ranking-2{background:linear-gradient(135deg,#bdc3c7,#7f8c8d);}
+.ranking-3{background:linear-gradient(135deg,#cd7f32,#8b4513);}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;}
+.grafico-canvas{position:relative;height:340px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;min-width:600px;}
+table.dados th{background:var(--verde-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#faf9f5;}
+table.dados tbody tr:hover{background:#fef9e7;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+.destaque{font-weight:700;color:var(--verde-escuro);}
+.cell-soja{background:rgba(244,196,48,.10);}
+.cell-milho{background:rgba(230,126,34,.08);}
+.cell-boi{background:rgba(139,30,30,.06);}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+}
+.termometro.soja{border-top:4px solid var(--soja);}
+.termometro.milho{border-top:4px solid var(--milho);}
+.termometro.boi{border-top:4px solid var(--boi);}
+.termometro h4{font-size:1rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+.termometro .barra{width:100%;height:16px;background:#e8eef0;border-radius:8px;overflow:hidden;margin-bottom:10px;}
+.termometro .preench{height:100%;border-radius:8px;transition:width 1s;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:.7rem;color:#fff;font-weight:700;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.82rem;color:#666;}
+.termometro .nivel{font-weight:800;font-size:.85rem;padding:3px 10px;border-radius:12px;}
+.nivel-forte{background:#e8f7e8;color:var(--verde);}
+.nivel-fraco{background:#fdecea;color:var(--vermelho);}
+.nivel-neutro{background:#f0f0f0;color:#555;}
+
+/* DESTAQUES */
+.destaque-box{background:linear-gradient(135deg,#fffbf0,#fff);border-left:5px solid var(--soja);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:20px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+
+/* CORRELAÇÃO */
+.correlacao-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px;}
+.corr-card{
+  background:linear-gradient(135deg,#fff,#fafafa);padding:16px;border-radius:12px;
+  text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06);border:2px solid #eee;
+}
+.corr-card h4{font-size:.95rem;margin-bottom:8px;color:var(--verde-escuro);}
+.corr-valor{font-size:2rem;font-weight:900;}
+.corr-card .desc{font-size:.8rem;color:#555;margin-top:6px;}
+.corr-positiva{color:var(--verde);}
+.corr-negativa{color:var(--vermelho);}
+.corr-neutra{color:#7f8c8d;}
+
+/* RECOMENDAÇÕES */
+.recom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px;}
+.recom-item{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);border-top:4px solid var(--dourado);}
+.recom-item.soja{border-top-color:var(--soja);}
+.recom-item.milho{border-top-color:var(--milho);}
+.recom-item.boi{border-top-color:var(--boi);}
+.recom-item h4{margin-bottom:8px;font-size:1rem;}
+.recom-item p{font-size:.88rem;margin:0;}
+
+/* PERFIL CARDS */
+.perfil-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;}
+.perfil-card{padding:18px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);background:#fff;}
+.perfil-card h4{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.perfil-card ul{padding-left:20px;}
+.perfil-card li{font-size:.88rem;margin-bottom:5px;}
+.perfil-card.soja{border-top:4px solid var(--soja);}
+.perfil-card.milho{border-top:4px solid var(--milho);}
+.perfil-card.boi{border-top:4px solid var(--boi);}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:30px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:12px;}
+.credenciais{margin:16px auto;max-width:700px;}
+.credenciais .nome{font-size:1.3rem;font-weight:800;margin:8px 0 4px;color:var(--soja-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.92rem;margin:14px 0;padding:10px;background:rgba(255,255,255,.08);border-radius:8px;}
+.contatos{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:14px;font-size:.88rem;}
+.contatos a{color:var(--soja-claro);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:18px;font-size:.78rem;opacity:.8;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);}
+
+@media(max-width:600px){
+  section.bloco{padding:18px 14px;}
+  header.hero{padding:34px 18px;}
+  .placar-card .preco-grande{font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🌱</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>⚖️ Comparativo Semanal — Soja × Milho × Boi</h1>
+  <p class="subtitulo">Análise Cross-Commodity | Performance · Fundamentos · Estratégias · Cenários</p>
+  <span class="badge-semana">📅 Semana de 11 a 15/05/2026</span>
+</header>
+
+<!-- PLACAR SEMANAL -->
+<section class="bloco">
+<h2>🏆 Placar da Semana — Quem Ganhou, Quem Perdeu?</h2>
+<p>Semana <strong>vermelha para as três commodities</strong>, com diferentes intensidades. A frustração na cúpula Trump × Xi pesou principalmente sobre os grãos. O boi gordo caiu por fundamentos próprios (escalas alongadas + descarte de fêmeas). <strong>Dólar (+3,54%) foi o único amortecedor</strong> em todos os mercados, sustentando preços internos:</p>
+<div class="placar-grid">
+  <div class="placar-card soja">
+    <div class="icone">🌱</div>
+    <h3>SOJA</h3>
+    <div class="ref">CBOT Jul/26</div>
+    <div class="preco-grande">US$ 11,77</div>
+    <div class="var-semana var-down">▼ -2,57% sem</div>
+    <div class="fisico">
+      <strong>Rio Verde/GO:</strong> R$ 110/sc<br>
+      <strong>Paranaguá:</strong> R$ 129/sc
+    </div>
+  </div>
+  <div class="placar-card milho">
+    <div class="icone">🌽</div>
+    <h3>MILHO</h3>
+    <div class="ref">CBOT Jul/26</div>
+    <div class="preco-grande">US$ 4,55</div>
+    <div class="var-semana var-down">▼ -3,29% sem</div>
+    <div class="fisico">
+      <strong>Rio Verde/GO:</strong> R$ 48/sc<br>
+      <strong>Sorriso/MT:</strong> R$ 45/sc
+    </div>
+  </div>
+  <div class="placar-card boi">
+    <div class="icone">🐂</div>
+    <h3>BOI GORDO</h3>
+    <div class="ref">B3 BGI Mai/26</div>
+    <div class="preco-grande">R$ 336,55</div>
+    <div class="var-semana var-down">▼ -1,51% sem</div>
+    <div class="fisico">
+      <strong>SP médio:</strong> R$ 350/@<br>
+      <strong>MT:</strong> R$ 350/@
+    </div>
+  </div>
+</div>
+
+<h3 style="margin-top:24px;">🥇 Ranking de Performance Semanal</h3>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Posição</th><th>Commodity</th><th>Var. Semanal</th><th>Vetor Dominante</th><th>Sentimento</th></tr>
+</thead>
+<tbody>
+<tr class="cell-boi"><td><span class="ranking-pos ranking-1">1</span></td><td><strong>🐂 Boi Gordo</strong></td><td class="neg">-1,51%</td><td>Pressão de escalas + fundamentos internos</td><td>🟡 Lateral baixista</td></tr>
+<tr class="cell-soja"><td><span class="ranking-pos ranking-2">2</span></td><td><strong>🌱 Soja</strong></td><td class="neg">-2,57%</td><td>Frustração Trump-Xi + safra recorde BR (180 mi t)</td><td>🔴 Baixista CP</td></tr>
+<tr class="cell-milho"><td><span class="ranking-pos ranking-3">3</span></td><td><strong>🌽 Milho</strong></td><td class="neg">-3,29%</td><td>Topo formado + sem compras China + safrinha BR</td><td>🔴 Baixista</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- EVOLUÇÃO DIÁRIA -->
+<section class="bloco">
+<h2>📊 Evolução Diária — Performance Normalizada (Base 100 = Seg)</h2>
+<p>Para comparar movimentos com escalas diferentes (US$/bu, R$/sc, R$/@), normalizamos todos os preços com <strong>segunda-feira = 100</strong>. Veja como cada commodity se comportou:</p>
+<div class="grafico-wrap">
+<h4>📈 Evolução Semanal Normalizada — Soja × Milho × Boi (Base 100)</h4>
+<div class="grafico-canvas"><canvas id="graficoComparativo"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Dia</th><th class="cell-soja">🌱 Soja CBOT (US$/bu)</th><th class="cell-milho">🌽 Milho CBOT (US$/bu)</th><th class="cell-boi">🐂 Boi B3 (R$/@)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Seg 11/05</strong></td><td class="cell-soja">12,08</td><td class="cell-milho">4,75</td><td class="cell-boi">346,00</td></tr>
+<tr><td><strong>Ter 12/05</strong></td><td class="cell-soja">12,19 <span class="pos">▲</span></td><td class="cell-milho">4,80 <span class="pos">▲</span></td><td class="cell-boi">343,30 <span class="neg">▼</span></td></tr>
+<tr><td><strong>Qua 13/05</strong></td><td class="cell-soja">12,27 <span class="pos">▲</span></td><td class="cell-milho">4,81 <span class="pos">▲</span></td><td class="cell-boi">340,05 <span class="neg">▼</span></td></tr>
+<tr><td><strong>Qui 14/05</strong></td><td class="cell-soja">11,93 <span class="neg">▼</span></td><td class="cell-milho">4,68 <span class="neg">▼</span></td><td class="cell-boi">339,00 <span class="neg">▼</span></td></tr>
+<tr><td><strong>Sex 15/05</strong></td><td class="cell-soja"><strong>11,77</strong> <span class="neg">▼</span></td><td class="cell-milho"><strong>4,55</strong> <span class="neg">▼</span></td><td class="cell-boi"><strong>336,55</strong> <span class="neg">▼</span></td></tr>
+<tr style="background:#fef9e7;"><td><strong>Δ Semana</strong></td><td class="cell-soja neg">-2,57%</td><td class="cell-milho neg">-3,29%</td><td class="cell-boi neg">-1,51%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box info">
+<h4>🔍 Padrões observados</h4>
+<ul>
+<li><strong>Grãos (soja+milho):</strong> formaram topo na quarta-feira (13/05) após relatório USDA WASDE, despencaram qui-sex com a frustração da cúpula EUA-China</li>
+<li><strong>Boi gordo:</strong> trajetória descendente <strong>desde o início da semana</strong> — fundamentos próprios (escalas, descarte fêmeas, pastagens piorando)</li>
+<li><strong>Correlação invertida boi × grãos no início:</strong> enquanto grãos subiam até quarta, boi já caía. Isso reflete que o boi <strong>independe da pauta China-EUA</strong> no curto prazo</li>
+<li><strong>Convergência na sexta:</strong> dia ruim para os 3, com risk-off generalizado pós-cúpula</li>
+</ul>
+</div>
+</section>
+
+<!-- PREÇOS FÍSICOS RIO VERDE/GO — VERSÃO CORRIGIDA -->
+<section class="bloco">
+<h2>📍 Foco Rio Verde/GO — A Realidade Crua da Fazenda (Custos Reais)</h2>
+<p>Cruzando os três mercados para a praça de <strong>Rio Verde/GO</strong>, principal hub agrícola do Sudoeste Goiano, com <strong>custos operacionais reais 2026</strong> (insumos importados em alta, fertilizantes em dólar firme, mão de obra e diesel pressionados). O resultado é alarmante: <strong>soja e milho operam no zero a zero ou negativo; só o boi mantém margem confortável.</strong></p>
+<div class="grafico-wrap">
+<h4>💰 Comparativo de Margem por Hectare — Rio Verde/GO (custos corrigidos)</h4>
+<div class="grafico-canvas"><canvas id="graficoReceita"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Indicador</th><th class="cell-soja">🌱 Soja</th><th class="cell-milho">🌽 Milho Safrinha</th><th class="cell-boi">🐂 Boi Gordo (GO)</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Preço atual</strong></td><td class="cell-soja">R$ 110/sc</td><td class="cell-milho">R$ 48/sc</td><td class="cell-boi">R$ 325/@</td></tr>
+<tr><td><strong>Produtividade média</strong></td><td class="cell-soja">62 sc/ha</td><td class="cell-milho">95 sc/ha</td><td class="cell-boi">7,5 @/ha/ano*</td></tr>
+<tr><td><strong>Receita bruta/ha</strong></td><td class="cell-soja destaque">R$ 6.820</td><td class="cell-milho destaque">R$ 4.560</td><td class="cell-boi destaque">R$ 2.437</td></tr>
+<tr><td><strong>Custo TOTAL real/ha (2026)</strong></td><td class="cell-soja">R$ 6.750</td><td class="cell-milho">R$ 4.680</td><td class="cell-boi">R$ 1.580</td></tr>
+<tr><td><strong>Margem líquida/ha</strong></td><td class="cell-soja pos">R$ 70</td><td class="cell-milho neg">– R$ 120</td><td class="cell-boi pos">R$ 857</td></tr>
+<tr><td><strong>Margem %</strong></td><td class="cell-soja pos">1,0%</td><td class="cell-milho neg">– 2,6%</td><td class="cell-boi pos">35,2%</td></tr>
+<tr><td><strong>Preço de equilíbrio (break-even)</strong></td><td class="cell-soja">R$ 108,87/sc</td><td class="cell-milho">R$ 49,26/sc</td><td class="cell-boi">R$ 210,67/@</td></tr>
+</tbody>
+</table>
+<p style="font-size:.8rem;color:#777;margin-top:8px;">*Pecuária extensiva c/ 1,2 UA/ha. Custos reais 2026 atualizados: incluem fertilizantes (NPK ~R$ 4.500/t), defensivos, sementes, diesel, mão de obra, depreciação, arrendamento e custo financeiro. Fonte: levantamento Rural IN com produtores da região.</p>
+</div>
+<div class="destaque-box alerta">
+<h4>🚨 Diagnóstico da realidade — leitura sem maquiagem</h4>
+<ul>
+<li><strong>🌱 SOJA:</strong> margem líquida de <strong>apenas R$ 70/ha (1,0%)</strong> — qualquer queda adicional de 1% no preço joga o produtor no vermelho. Vender soja a R$ 110/sc hoje é <strong>vender no fundo do poço</strong>.</li>
+<li><strong>🌽 MILHO:</strong> <strong>PREJUÍZO de R$ 120/ha (-2,6%)</strong> — o produtor que colhe e vende imediatamente paga para trabalhar. Armazenar e esperar a entressafra é <strong>questão de sobrevivência</strong>, não de estratégia.</li>
+<li><strong>🐂 BOI:</strong> margem líquida robusta de <strong>R$ 857/ha (35,2%)</strong>. Com break-even em R$ 210/@, o pecuarista tem <strong>colchão de R$ 115/@</strong> contra o preço atual. É o único que dorme tranquilo.</li>
+<li><strong>📌 Conclusão dura:</strong> a "rentabilidade da lavoura" desta safra está sendo <strong>subsidiada pelo dólar alto</strong>. Sem o câmbio a R$ 5,07, soja e milho estariam em prejuízo aberto.</li>
+</ul>
+</div>
+<div class="destaque-box positivo">
+<h4>💡 O que o produtor inteligente faz neste cenário?</h4>
+<p><strong>1) NÃO vende soja/milho no fundo:</strong> programa venda na entressafra (out/26 a jan/27) onde a curva futura precifica recuperação. <strong>2) Hedge defensivo obrigatório:</strong> trava preço de equilíbrio + custo de carrego. <strong>3) Migra parte da área para ILP (integração lavoura-pecuária):</strong> o boi está pagando a conta da fazenda em 2026. <strong>4) Renegocia insumos com barter</strong> (soja física por fertilizante) só se a relação de troca for favorável — atualmente está <strong>pior que a média histórica</strong>.</p>
+</div>
+</section>
+
+<!-- TERMÔMETROS COMPARATIVOS -->
+<section class="bloco">
+<h2>🌡️ Termômetro Cross-Commodity</h2>
+<p>Avaliação consolidada de força/fraqueza de cada commodity em 3 dimensões: momentum, demanda externa e câmbio:</p>
+<div class="termometro-grid">
+  <div class="termometro soja baixa">
+    <h4>🌱 SOJA — Momentum <span class="nivel nivel-fraco">FRACO</span></h4>
+    <div class="barra"><div class="preench" style="width:35%">35%</div></div>
+    <div class="legenda">Topo formado, sem compras China, safra BR recorde 180 mi t</div>
+  </div>
+  <div class="termometro milho baixa">
+    <h4>🌽 MILHO — Momentum <span class="nivel nivel-fraco">FRACO</span></h4>
+    <div class="barra"><div class="preench" style="width:28%">28%</div></div>
+    <div class="legenda">Pior performer da semana, safrinha BR 109 mi t pressiona</div>
+  </div>
+  <div class="termometro boi media">
+    <h4>🐂 BOI — Momentum <span class="nivel nivel-neutro">NEUTRO</span></h4>
+    <div class="barra"><div class="preench" style="width:48%">48%</div></div>
+    <div class="legenda">Físico pressionado, mas curva futura defendida</div>
+  </div>
+  <div class="termometro soja media">
+    <h4>🌱 SOJA — Demanda Externa <span class="nivel nivel-neutro">NEUTRO</span></h4>
+    <div class="barra"><div class="preench" style="width:55%">55%</div></div>
+    <div class="legenda">China cautelosa, mas biodiesel EUA sustenta óleo</div>
+  </div>
+  <div class="termometro milho baixa">
+    <h4>🌽 MILHO — Demanda Externa <span class="nivel nivel-fraco">FRACO</span></h4>
+    <div class="barra"><div class="preench" style="width:38%">38%</div></div>
+    <div class="legenda">Estoques EUA confortáveis, sem novos pedidos</div>
+  </div>
+  <div class="termometro boi alta">
+    <h4>🐂 BOI — Demanda Externa <span class="nivel nivel-forte">FORTE</span></h4>
+    <div class="barra"><div class="preench" style="width:88%">88%</div></div>
+    <div class="legenda">Recorde US$ 5,83/kg (+17,2%), rebanho EUA em mínima</div>
+  </div>
+  <div class="termometro soja alta">
+    <h4>🌱 SOJA — Câmbio (R$ 5,07) <span class="nivel nivel-forte">FAVORÁVEL</span></h4>
+    <div class="barra"><div class="preench" style="width:85%">85%</div></div>
+    <div class="legenda">Dólar +3,54% sustenta preço interno em R$</div>
+  </div>
+  <div class="termometro milho alta">
+    <h4>🌽 MILHO — Câmbio <span class="nivel nivel-forte">FAVORÁVEL</span></h4>
+    <div class="barra"><div class="preench" style="width:82%">82%</div></div>
+    <div class="legenda">Exportação BR ganha competitividade</div>
+  </div>
+  <div class="termometro boi alta">
+    <h4>🐂 BOI — Câmbio <span class="nivel nivel-forte">FAVORÁVEL</span></h4>
+    <div class="barra"><div class="preench" style="width:85%">85%</div></div>
+    <div class="legenda">Receita exportadores em R$ dispara</div>
+  </div>
+</div>
+</section>
+
+<!-- MATRIZ DE CORRELAÇÃO -->
+<section class="bloco">
+<h2>🔗 Matriz de Correlação &amp; Inter-relações</h2>
+<p>As três commodities <strong>não andam isoladas</strong>. Veja como elas se influenciam mutuamente:</p>
+<div class="correlacao-grid">
+  <div class="corr-card">
+    <h4>🌱 Soja ↔ 🌽 Milho</h4>
+    <div class="corr-valor corr-positiva">+0,78</div>
+    <div class="desc">Correlação <strong>forte positiva</strong>: andam juntos por compartilharem demanda externa (China) e área plantada</div>
+  </div>
+  <div class="corr-card">
+    <h4>🌽 Milho ↔ 🐂 Boi</h4>
+    <div class="corr-valor corr-negativa">-0,42</div>
+    <div class="desc">Correlação <strong>negativa moderada</strong>: milho barato = confinamento barato = mais oferta de boi = preço boi cai</div>
+  </div>
+  <div class="corr-card">
+    <h4>🌱 Soja ↔ 🐂 Boi</h4>
+    <div class="corr-valor corr-neutra">+0,15</div>
+    <div class="desc">Correlação <strong>fraca</strong>: relacionam-se via farelo (ração) e câmbio, mas dinâmicas próprias</div>
+  </div>
+  <div class="corr-card">
+    <h4>💵 Dólar ↔ Todas</h4>
+    <div class="corr-valor corr-positiva">+0,85</div>
+    <div class="desc">Correlação <strong>fortíssima positiva</strong> com preço interno em R$ das três commodities</div>
+  </div>
+</div>
+<div class="destaque-box info">
+<h4>🧠 O que isso significa na prática?</h4>
+<ul>
+<li><strong>Milho cai → boi tende a sofrer no médio prazo:</strong> confinadores compram boi magro mais barato, terminam mais animais, aumentam oferta de boi gordo em 90-120 dias</li>
+<li><strong>Soja e milho juntos:</strong> ambos sofrem com China e clima EUA — quem está vendido em soja deveria ter atenção redobrada com milho</li>
+<li><strong>Dólar é o "Coringa":</strong> uma alta de R$ 0,20 no câmbio pode <strong>compensar uma queda de 3-4% em Chicago</strong> no preço interno — e está literalmente segurando a margem da soja em 2026</li>
+<li><strong>Boi é o "ativo defensivo":</strong> menor correlação com choques externos, depende mais de fundamentos brasileiros (pastagens, escalas, descarte) — e <strong>é o que paga as contas da fazenda esta safra</strong></li>
+</ul>
+</div>
+</section>
+
+<!-- PERFIL DE CADA -->
+<section class="bloco">
+<h2>🎭 Perfil Estratégico — Quem É Cada Commodity?</h2>
+<div class="perfil-grid">
+  <div class="perfil-card soja">
+    <h4>🌱 SOJA — "A Globalizada"</h4>
+    <ul>
+      <li><strong>Volatilidade:</strong> Alta</li>
+      <li><strong>Driver #1:</strong> China (60% do destino)</li>
+      <li><strong>Sazonalidade BR:</strong> colheita fev-mai</li>
+      <li><strong>Risco maior:</strong> geopolítica EUA-China</li>
+      <li><strong>Alavanca positiva:</strong> biodiesel + óleo</li>
+      <li><strong>Hedge:</strong> CBOT + BM&amp;F + balcão</li>
+      <li><strong>Margem real 2026:</strong> ~1% (no fio da navalha)</li>
+      <li><strong>Cenário 2026:</strong> safra global recorde, preço sob teto</li>
+    </ul>
+  </div>
+  <div class="perfil-card milho">
+    <h4>🌽 MILHO — "O Doméstico"</h4>
+    <ul>
+      <li><strong>Volatilidade:</strong> Média-alta</li>
+      <li><strong>Driver #1:</strong> safrinha BR + etanol/ração interna</li>
+      <li><strong>Sazonalidade BR:</strong> safrinha jun-ago</li>
+      <li><strong>Risco maior:</strong> clima Centro-Oeste</li>
+      <li><strong>Alavanca positiva:</strong> etanol de milho, exportação</li>
+      <li><strong>Hedge:</strong> B3 (CCM) — pouco líquido fora do Brasil</li>
+      <li><strong>Margem real 2026:</strong> NEGATIVA (-2,6%)</li>
+      <li><strong>Cenário 2026:</strong> oferta abundante, preço lateralizado baixo — armazenar é essencial</li>
+    </ul>
+  </div>
+  <div class="perfil-card boi">
+    <h4>🐂 BOI GORDO — "O Resiliente"</h4>
+    <ul>
+      <li><strong>Volatilidade:</strong> Baixa-média</li>
+      <li><strong>Driver #1:</strong> escalas de abate + ciclo pecuário</li>
+      <li><strong>Sazonalidade:</strong> entressafra ago-nov (alta)</li>
+      <li><strong>Risco maior:</strong> embargos sanitários (UE, EUDR)</li>
+      <li><strong>Alavanca positiva:</strong> rebanho EUA mín. 70 anos</li>
+      <li><strong>Hedge:</strong> B3 (BGI) + opções líquidas</li>
+      <li><strong>Margem real 2026:</strong> 35% — folgada</li>
+      <li><strong>Cenário 2026:</strong> recuperação na entressafra, exportações fortes</li>
+    </ul>
+  </div>
+</div>
+</section>
+
+<!-- CENÁRIOS PRÓXIMA SEMANA -->
+<section class="bloco">
+<h2>🔮 Cenários Cruzados Para a Próxima Semana (18-22/05)</h2>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Cenário</th><th>Prob.</th><th class="cell-soja">🌱 Soja CBOT</th><th class="cell-milho">🌽 Milho CBOT</th><th class="cell-boi">🐂 Boi BGI Mai</th><th>Trigger</th></tr>
+</thead>
+<tbody>
+<tr style="background:#e8f7e8;">
+<td><strong>🟢 OTIMISTA</strong></td><td>20%</td>
+<td class="cell-soja pos">US$ 11,90-12,15</td>
+<td class="cell-milho pos">US$ 4,65-4,80</td>
+<td class="cell-boi pos">R$ 340-345</td>
+<td>China anuncia compras + clima EUA piora</td>
+</tr>
+<tr style="background:#fff3cd;">
+<td><strong>🟡 BASE</strong></td><td>55%</td>
+<td class="cell-soja">US$ 11,60-11,85</td>
+<td class="cell-milho">US$ 4,45-4,60</td>
+<td class="cell-boi">R$ 335-342</td>
+<td>Lateral, ajustes técnicos, dólar firme</td>
+</tr>
+<tr style="background:#fdecea;">
+<td><strong>🔴 PESSIMISTA</strong></td><td>25%</td>
+<td class="cell-soja neg">US$ 11,30-11,55</td>
+<td class="cell-milho neg">US$ 4,20-4,40</td>
+<td class="cell-boi neg">R$ 328-334</td>
+<td>Tensão China escala + clima EUA bom + escalas BR alongam</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="grafico-wrap">
+<h4>📊 Distribuição de Probabilidades — Cenários Cruzados</h4>
+<div class="grafico-canvas"><canvas id="graficoCenarios"></canvas></div>
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="bloco">
+<h2>📅 Agenda Compartilhada — Eventos Que Afetam os 3 Mercados</h2>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Data</th><th>Evento</th><th class="cell-soja">Soja</th><th class="cell-milho">Milho</th><th class="cell-boi">Boi</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>19/05 (ter)</strong></td><td>Ata do Copom (BR)</td><td class="cell-soja">🟡 Médio</td><td class="cell-milho">🟡 Médio</td><td class="cell-boi">🔴 Alto</td></tr>
+<tr><td><strong>19/05 (seg-ter)</strong></td><td>Crop Progress USDA (EUA)</td><td class="cell-soja">🔴 Alto</td><td class="cell-milho">🔴 Alto</td><td class="cell-boi">🟢 Baixo</td></tr>
+<tr><td><strong>20/05 (qua)</strong></td><td>IPCA-15 maio (BR)</td><td class="cell-soja">🟡 Médio</td><td class="cell-milho">🟡 Médio</td><td class="cell-boi">🟡 Médio</td></tr>
+<tr><td><strong>21/05 (qui)</strong></td><td>Export Sales (EUA)</td><td class="cell-soja">🔴 Alto</td><td class="cell-milho">🔴 Alto</td><td class="cell-boi">🟢 Baixo</td></tr>
+<tr><td><strong>21/05 (qui)</strong></td><td>Secex - Balança Comercial</td><td class="cell-soja">🟡 Médio</td><td class="cell-milho">🟡 Médio</td><td class="cell-boi">🔴 Alto</td></tr>
+<tr><td><strong>22/05 (sex)</strong></td><td>USDA Cattle on Feed</td><td class="cell-soja">🟢 Baixo</td><td class="cell-milho">🟡 Médio</td><td class="cell-boi">🔴 Alto</td></tr>
+<tr><td><strong>Semana toda</strong></td><td>Clima EUA + Centro-Oeste BR</td><td class="cell-soja">🔴 Alto</td><td class="cell-milho">🔴 Alto</td><td class="cell-boi">🔴 Alto</td></tr>
+<tr><td><strong>Semana toda</strong></td><td>Tensão EUA-China (acordo agro)</td><td class="cell-soja">🔴 Alto</td><td class="cell-milho">🔴 Alto</td><td class="cell-boi">🟡 Médio</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- ESTRATÉGIAS -->
+<section class="bloco">
+<h2>🎯 Estratégias Recomendadas — Com Custos Reais na Mesa</h2>
+<div class="recom-grid">
+  <div class="recom-item soja">
+    <h4>🌱 SOJA — NÃO Venda no Fundo</h4>
+    <p>Margem real de apenas 1%. <strong>Vender a R$ 110/sc é trabalhar de graça</strong>. Armazene 60-70%, trave CBOT Jul/27 acima de US$ 11,50 e mire vendas físicas em R$ 118+/sc. Use puts US$ 11,00 como seguro.</p>
+  </div>
+  <div class="recom-item milho">
+    <h4>🌽 MILHO — Sobrevivência É Armazenar</h4>
+    <p>Vendendo agora a R$ 48: <strong>prejuízo de R$ 120/ha</strong>. Break-even é R$ 49,26. <strong>Armazenagem deixou de ser estratégia, virou obrigação</strong>. Mire vender entre out/26-jan/27 a R$ 60+/sc na entressafra.</p>
+  </div>
+  <div class="recom-item boi">
+    <h4>🐂 BOI — Trave o Lucro Atual</h4>
+    <p>Margem de 35% e break-even em R$ 210/@ = colchão de R$ 115/@. <strong>BGIV26 (out/26) a R$ 350,20 é oportunidade rara</strong>. Venda futuro 30-40% do gado pronto out/nov. É o ativo que está pagando a fazenda.</p>
+  </div>
+  <div class="recom-item">
+    <h4>💵 CÂMBIO — Trave Em Camadas</h4>
+    <p>Dólar a R$ 5,07 (+3,54%) está sustentando 100% da margem de soja. <strong>Se cair para R$ 4,80, a soja vira prejuízo</strong>. Trave NDF 90d em 3 partes: 1/3 agora, 1/3 se subir 2%, 1/3 se subir 5%.</p>
+  </div>
+  <div class="recom-item">
+    <h4>🔄 DIVERSIFICAÇÃO — ILP Salva a Fazenda</h4>
+    <p>Em 2026, <strong>quem é só lavoura está no zero; quem tem boi está lucrando</strong>. ILP (integração lavoura-pecuária) capta o melhor dos dois mundos. Avalie converter 20-30% da área para pastagem rotacionada.</p>
+  </div>
+  <div class="recom-item">
+    <h4>📦 INSUMOS 26/27 — Cuidado com Barter</h4>
+    <p>Relação de troca soja×fertilizante <strong>pior que a média histórica</strong>. Só feche barter se a equivalência for soja a R$ 118+/sc. Senão, prefira financiamento bancário (Plano Safra) ou compras parciais à vista.</p>
+  </div>
+</div>
+</section>
+
+<!-- INSIGHT FINAL -->
+<section class="bloco" style="background:linear-gradient(135deg,#fffbf0,#fff);">
+<h2>🧭 Insight Cross-Commodity — O Quadro Geral Sem Maquiagem</h2>
+<p>A semana de <strong>11 a 15/05/2026</strong> trouxe um cenário <strong>uniforme de queda</strong> nas três commodities. Mas, mais importante que a queda semanal, é <strong>o que ela revela quando colocamos os custos reais na mesa</strong>:</p>
+<ul style="padding-left:20px;margin-bottom:12px;">
+<li><strong>🌽 Milho (-3,29%):</strong> pior performer + <strong>margem REAL negativa de -2,6%/ha</strong> = quem vende hoje paga para trabalhar. Estoques EUA, sem pedidos chineses, safrinha BR recorde de 109 mi t.</li>
+<li><strong>🌱 Soja (-2,57%):</strong> Trump-Xi sem compras + safra BR recorde (180 mi t) + plantio EUA acelerado. <strong>Margem REAL de apenas 1% — uma queda de R$ 1,50/sc apaga o lucro inteiro</strong>.</li>
+<li><strong>🐂 Boi (-1,51%):</strong> melhor entre os ruins, com <strong>margem REAL de 35,2%/ha</strong>. Sustentado por exportações em recorde (US$ 5,83/kg, +17,2%) e rebanho EUA em mínima de 70 anos.</li>
+</ul>
+<p>O <strong>dólar a R$ 5,07 (+3,54%)</strong> não foi apenas amortecedor — em 2026, <strong>ele é o que separa a soja do prejuízo</strong>. Sem o câmbio firme, a margem da soja em Rio Verde seria negativa. Para o produtor com perfil <strong>diversificado (lavoura + pecuária)</strong>, a semana foi de "queda controlada" — quem é só lavoura, está apenas sobrevivendo.</p>
+<p>A <strong>tese central para a próxima semana:</strong> grãos sob pressão técnica e fundamentalista no curto prazo, com risco de novos suportes serem testados; boi gordo lateralizado, com curva futura precificando recuperação para outubro/novembro (entressafra) — spread BGIV26 vs BGIK26 de <strong>R$ 13,65/@</strong> abre janela rara de hedge. <strong>Dólar e clima EUA</strong> serão os grandes definidores do tom dos grãos.</p>
+<p style="font-style:italic;text-align:center;margin-top:18px;font-weight:600;color:var(--verde-escuro);font-size:1.08rem;">"O produtor inteligente <strong>não vende no fundo</strong>. Ele programa a venda na entressafra, trava câmbio em camadas, usa hedge defensivo — e em 2026 tem o boi pagando a fazenda enquanto a lavoura espera o ciclo virar. <strong>Quem planta soja, colhe milho e termina boi tem três tesourarias — e três escudos.</strong>"</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🌱</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div style="font-size:.85rem;opacity:.85;margin-bottom:6px;">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista &amp; Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda &amp; Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+    <span>📧 sidneyagro@gmail.com</span>
+    <span>📱 (64) 9 9226-6886</span>
+    <span>📸 @ruralin.ai</span>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo emitido em 16 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.</p>
+</footer>
+
+</div>
+
+<script>
+const cores = {
+  soja: '#d4a017',
+  milho: '#e67e22',
+  boi: '#8b1e1e',
+  verde: '#1f7a3a',
+  vermelho: '#c0392b',
+  azul: '#1f4e79'
+};
+
+// Gráfico Comparativo Normalizado (base 100)
+const sojaPrice = [12.08, 12.19, 12.27, 11.93, 11.77];
+const milhoPrice = [4.7525, 4.80, 4.8075, 4.6750, 4.5575];
+const boiPrice = [346.00, 343.30, 340.05, 339.00, 336.55];
+
+const sojaNorm = sojaPrice.map(p => (p / sojaPrice[0] * 100));
+const milhoNorm = milhoPrice.map(p => (p / milhoPrice[0] * 100));
+const boiNorm = boiPrice.map(p => (p / boiPrice[0] * 100));
+
+new Chart(document.getElementById('graficoComparativo'), {
+  type: 'line',
+  data: {
+    labels: ['Seg 11/05','Ter 12/05','Qua 13/05','Qui 14/05','Sex 15/05'],
+    datasets: [
+      { label: '🌱 Soja (CBOT)', data: sojaNorm, borderColor: cores.soja, backgroundColor: 'rgba(212,160,23,.10)', borderWidth: 3, tension: .25, pointRadius: 6, fill: false },
+      { label: '🌽 Milho (CBOT)', data: milhoNorm, borderColor: cores.milho, backgroundColor: 'rgba(230,126,34,.10)', borderWidth: 3, tension: .25, pointRadius: 6, fill: false },
+      { label: '🐂 Boi (B3)', data: boiNorm, borderColor: cores.boi, backgroundColor: 'rgba(139,30,30,.10)', borderWidth: 3, tension: .25, pointRadius: 6, fill: false },
+      { label: 'Base 100', data: [100,100,100,100,100], borderColor: '#95a5a6', borderDash:[5,5], borderWidth: 1.5, pointRadius: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toFixed(2) } } },
+    scales: { y: { ticks: { callback: v => v.toFixed(1) }, title: { display: true, text: 'Índice (Seg = 100)' } } }
+  }
+});
+
+// Receita por hectare Rio Verde — VALORES CORRIGIDOS
+new Chart(document.getElementById('graficoReceita'), {
+  type: 'bar',
+  data: {
+    labels: ['🌱 Soja','🌽 Milho Safrinha','🐂 Boi Gordo (extens.)'],
+    datasets: [
+      { label: 'Receita Bruta R$/ha', data: [6820, 4560, 2437], backgroundColor: [cores.soja, cores.milho, cores.boi], borderRadius: 6 },
+      { label: 'Custo Total Real R$/ha', data: [6750, 4680, 1580], backgroundColor: ['rgba(212,160,23,.4)','rgba(230,126,34,.4)','rgba(139,30,30,.4)'], borderRadius: 6 },
+      { label: 'Margem Líquida R$/ha', data: [70, -120, 857], backgroundColor: ['#27ae60', '#c0392b', '#27ae60'], borderRadius: 6 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.raw.toLocaleString('pt-BR') } } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toLocaleString('pt-BR') } } }
+  }
+});
+
+// Cenários
+new Chart(document.getElementById('graficoCenarios'), {
+  type: 'bar',
+  data: {
+    labels: ['🟢 Otimista','🟡 Base','🔴 Pessimista'],
+    datasets: [
+      { label: 'Probabilidade (%)', data: [20, 55, 25], backgroundColor: ['#27ae60','#f39c12','#c0392b'], borderRadius: 8 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ctx.raw + '%' } } },
+    scales: { y: { beginAtZero: true, max: 70, ticks: { callback: v => v + '%' } } }
+  }
+});
+</script>
+</body>
+</html>

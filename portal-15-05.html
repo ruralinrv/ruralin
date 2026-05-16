@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal Rural IN | Radares Semanais — 11 a 15/05/2026</title>
+<meta name="description" content="Portal Rural IN — Análises semanais de Soja, Milho, Boi, Leite e Comparativo Cross-Commodity. Inteligência de mercado para o produtor rural." />
+<style>
+:root{
+  --soja:#d4a017;
+  --soja-claro:#f4c430;
+  --milho:#e67e22;
+  --milho-claro:#f39c12;
+  --boi:#8b1e1e;
+  --boi-claro:#c0392b;
+  --leite:#3498db;
+  --leite-claro:#5dade2;
+  --comp:#6c3483;
+  --comp-claro:#8e44ad;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --azul:#1f4e79;
+  --texto:#2c3e50;
+  --dourado:#c9a227;
+  --cinza-claro:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fffbf0 0%,#f4f6f9 50%,#fffbf0 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER PRINCIPAL */
+header.hero{
+  background:
+    linear-gradient(135deg,rgba(15,77,34,.95) 0%,rgba(212,160,23,.85) 50%,rgba(139,30,30,.95) 100%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.1) 0%,transparent 50%);
+  color:#fff;padding:60px 24px;border-radius:20px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.20);margin-bottom:30px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🌱🌽🐂🥛📊";position:absolute;font-size:9em;right:-40px;top:-20px;
+  opacity:.07;letter-spacing:.15em;pointer-events:none;
+}
+header.hero::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
+  background:linear-gradient(90deg,var(--soja),var(--milho),var(--boi),var(--leite),var(--comp));
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--verde-escuro);
+  padding:14px 30px;border-radius:50px;font-weight:800;font-size:1.6rem;letter-spacing:1px;
+  margin-bottom:18px;box-shadow:0 6px 18px rgba(0,0,0,.30);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:44px;height:44px;background:linear-gradient(135deg,var(--dourado),var(--soja-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.15);
+}
+header h1{
+  font-size:clamp(1.7rem,4.5vw,2.8rem);margin-bottom:12px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.35);position:relative;z-index:2;font-weight:800;
+}
+header .subtitulo{
+  font-size:clamp(1rem,2.4vw,1.25rem);opacity:.96;margin-bottom:20px;
+  position:relative;z-index:2;max-width:780px;margin-left:auto;margin-right:auto;
+}
+.badge-semana{
+  display:inline-block;background:var(--soja-claro);color:#1b1b1b;padding:10px 24px;
+  border-radius:30px;font-weight:800;font-size:1rem;position:relative;z-index:2;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+
+/* BARRA DE NAVEGAÇÃO RÁPIDA */
+.quick-nav{
+  background:#fff;border-radius:16px;padding:16px 20px;margin-bottom:24px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);display:flex;flex-wrap:wrap;gap:12px;
+  justify-content:center;align-items:center;
+}
+.quick-nav .label{font-weight:700;color:var(--verde-escuro);font-size:.95rem;}
+.quick-nav a{
+  text-decoration:none;color:var(--texto);background:var(--cinza-claro);
+  padding:8px 16px;border-radius:25px;font-size:.9rem;font-weight:600;
+  transition:all .25s ease;display:inline-flex;align-items:center;gap:6px;
+}
+.quick-nav a:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.15);}
+.quick-nav a.soja:hover{background:var(--soja);color:#fff;}
+.quick-nav a.milho:hover{background:var(--milho);color:#fff;}
+.quick-nav a.boi:hover{background:var(--boi);color:#fff;}
+.quick-nav a.leite:hover{background:var(--leite);color:#fff;}
+.quick-nav a.comp:hover{background:var(--comp);color:#fff;}
+
+/* DESTAQUE DA SEMANA */
+.destaque-semana{
+  background:linear-gradient(135deg,#fff,#fffbf0);border-radius:16px;padding:24px;
+  margin-bottom:28px;box-shadow:0 4px 18px rgba(0,0,0,.08);border-left:6px solid var(--soja);
+}
+.destaque-semana h2{
+  color:var(--verde-escuro);font-size:1.3rem;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.destaque-resumo{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:14px;
+}
+.mini-card{
+  background:#fff;padding:14px;border-radius:10px;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);border-top:3px solid var(--soja);
+}
+.mini-card.soja{border-top-color:var(--soja);}
+.mini-card.milho{border-top-color:var(--milho);}
+.mini-card.boi{border-top-color:var(--boi);}
+.mini-card.leite{border-top-color:var(--leite);}
+.mini-card .mc-icone{font-size:1.8rem;margin-bottom:4px;}
+.mini-card .mc-nome{font-weight:800;font-size:.9rem;color:var(--verde-escuro);}
+.mini-card .mc-valor{font-size:1.15rem;font-weight:900;margin:4px 0;}
+.mini-card.soja .mc-valor{color:var(--soja);}
+.mini-card.milho .mc-valor{color:var(--milho);}
+.mini-card.boi .mc-valor{color:var(--boi);}
+.mini-card.leite .mc-valor{color:var(--leite);}
+.mini-card .mc-var{font-size:.82rem;font-weight:700;padding:2px 8px;border-radius:12px;display:inline-block;}
+.mc-down{background:#fdecea;color:var(--vermelho);}
+.mc-up{background:#e8f7e8;color:var(--verde);}
+
+/* GRID DE RADARES */
+section.radares{margin-bottom:30px;}
+section.radares h2{
+  color:var(--verde-escuro);font-size:clamp(1.3rem,2.6vw,1.7rem);margin-bottom:18px;
+  border-left:5px solid var(--soja);padding-left:14px;display:flex;align-items:center;gap:10px;
+}
+.radar-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;
+}
+.radar-card{
+  background:#fff;border-radius:16px;overflow:hidden;
+  box-shadow:0 6px 20px rgba(0,0,0,.10);transition:all .35s ease;
+  display:flex;flex-direction:column;position:relative;
+}
+.radar-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.18);}
+.radar-card .card-header{
+  padding:24px 20px;color:#fff;text-align:center;position:relative;overflow:hidden;
+}
+.radar-card .card-header::before{
+  content:"";position:absolute;right:-20px;top:-20px;font-size:6rem;opacity:.15;
+}
+.radar-card.soja .card-header{background:linear-gradient(135deg,var(--soja),var(--soja-claro));}
+.radar-card.soja .card-header::before{content:"🌱";}
+.radar-card.milho .card-header{background:linear-gradient(135deg,var(--milho),var(--milho-claro));}
+.radar-card.milho .card-header::before{content:"🌽";}
+.radar-card.boi .card-header{background:linear-gradient(135deg,var(--boi),var(--boi-claro));}
+.radar-card.boi .card-header::before{content:"🐂";}
+.radar-card.leite .card-header{background:linear-gradient(135deg,var(--leite),var(--leite-claro));}
+.radar-card.leite .card-header::before{content:"🥛";}
+.radar-card.comp .card-header{background:linear-gradient(135deg,var(--comp),var(--comp-claro));}
+.radar-card.comp .card-header::before{content:"📊";}
+.radar-card .card-icone-grande{font-size:3.2rem;margin-bottom:6px;position:relative;z-index:2;}
+.radar-card .card-titulo{font-size:1.4rem;font-weight:800;letter-spacing:1px;position:relative;z-index:2;}
+.radar-card .card-sub{font-size:.85rem;opacity:.92;margin-top:2px;position:relative;z-index:2;}
+.radar-card .card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
+.radar-card .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.tag{
+  font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:12px;
+  background:var(--cinza-claro);color:var(--texto);
+}
+.tag.live{background:#e8f7e8;color:var(--verde);}
+.tag.new{background:#fff3cd;color:#856404;}
+.radar-card .card-desc{font-size:.92rem;color:#555;flex:1;margin-bottom:14px;}
+.radar-card .card-stats{
+  display:flex;justify-content:space-between;padding:10px;background:#fafdfa;
+  border-radius:8px;margin-bottom:14px;font-size:.82rem;
+}
+.radar-card .card-stats div{text-align:center;flex:1;}
+.radar-card .card-stats strong{display:block;color:var(--verde-escuro);font-size:.95rem;}
+.radar-card .btn-acesso{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px;border-radius:10px;color:#fff;text-decoration:none;
+  font-weight:800;font-size:.95rem;letter-spacing:.5px;
+  transition:all .25s ease;text-transform:uppercase;
+}
+.radar-card.soja .btn-acesso{background:linear-gradient(135deg,var(--soja),var(--soja-claro));}
+.radar-card.milho .btn-acesso{background:linear-gradient(135deg,var(--milho),var(--milho-claro));}
+.radar-card.boi .btn-acesso{background:linear-gradient(135deg,var(--boi),var(--boi-claro));}
+.radar-card.leite .btn-acesso{background:linear-gradient(135deg,var(--leite),var(--leite-claro));}
+.radar-card.comp .btn-acesso{background:linear-gradient(135deg,var(--comp),var(--comp-claro));}
+.btn-acesso:hover{filter:brightness(1.1);transform:scale(1.02);}
+
+/* RECURSOS / O QUE VOCÊ ENCONTRA */
+.recursos{
+  background:#fff;border-radius:16px;padding:24px;margin-bottom:28px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08);
+}
+.recursos h2{
+  color:var(--verde-escuro);font-size:1.4rem;margin-bottom:16px;
+  border-left:5px solid var(--soja);padding-left:14px;
+}
+.recursos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.recurso-item{
+  padding:16px;background:linear-gradient(135deg,#fffbf0,#fff);border-radius:12px;
+  border-left:4px solid var(--soja);
+}
+.recurso-item:nth-child(2){border-left-color:var(--milho);background:linear-gradient(135deg,#fef5ed,#fff);}
+.recurso-item:nth-child(3){border-left-color:var(--boi);background:linear-gradient(135deg,#fdecea,#fff);}
+.recurso-item:nth-child(4){border-left-color:var(--leite);background:linear-gradient(135deg,#e8f4f8,#fff);}
+.recurso-item:nth-child(5){border-left-color:var(--comp);background:linear-gradient(135deg,#f3e8f8,#fff);}
+.recurso-item:nth-child(6){border-left-color:var(--verde);background:linear-gradient(135deg,#e8f7e8,#fff);}
+.recurso-item .ri-icone{font-size:1.8rem;margin-bottom:6px;}
+.recurso-item h4{color:var(--verde-escuro);font-size:1rem;margin-bottom:6px;}
+.recurso-item p{font-size:.88rem;color:#555;}
+
+/* CTA WHATSAPP */
+.cta-whatsapp{
+  background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;border-radius:16px;
+  padding:30px 24px;text-align:center;margin-bottom:28px;
+  box-shadow:0 6px 20px rgba(37,211,102,.30);
+}
+.cta-whatsapp h2{font-size:1.5rem;margin-bottom:8px;}
+.cta-whatsapp p{font-size:1rem;margin-bottom:18px;opacity:.95;}
+.btn-whatsapp{
+  display:inline-flex;align-items:center;gap:10px;background:#fff;color:#128c7e;
+  padding:14px 30px;border-radius:30px;text-decoration:none;font-weight:800;
+  font-size:1.05rem;box-shadow:0 4px 14px rgba(0,0,0,.20);transition:all .25s ease;
+}
+.btn-whatsapp:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,0,0,.30);}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:36px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:14px;}
+.credenciais{margin:18px auto;max-width:720px;}
+.credenciais .nome{font-size:1.4rem;font-weight:800;margin:8px 0 4px;color:var(--soja-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.95rem;margin:16px 0;padding:12px;background:rgba(255,255,255,.10);border-radius:10px;}
+.contatos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;font-size:.92rem;}
+.contatos a{color:var(--soja-claro);text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:20px;font-size:.78rem;opacity:.8;padding-top:16px;border-top:1px solid rgba(255,255,255,.20);}
+
+@media(max-width:600px){
+  header.hero{padding:40px 18px;}
+  .radar-card .card-titulo{font-size:1.2rem;}
+  .quick-nav{padding:12px;gap:8px;}
+  .quick-nav a{font-size:.82rem;padding:6px 12px;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🌱</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>📡 Portal de Análises Semanais</h1>
+  <p class="subtitulo">Inteligência de mercado para o produtor rural — radares de Soja, Milho, Boi, Leite e o Comparativo Cross-Commodity, todos em um só lugar.</p>
+  <span class="badge-semana">📅 Semana de 11 a 15 de Maio de 2026</span>
+</header>
+
+<!-- NAVEGAÇÃO RÁPIDA -->
+<nav class="quick-nav">
+  <span class="label">⚡ Acesso rápido:</span>
+  <a class="soja" href="#soja">🌱 Soja</a>
+  <a class="milho" href="#milho">🌽 Milho</a>
+  <a class="boi" href="#boi">🐂 Boi</a>
+  <a class="leite" href="#leite">🥛 Leite</a>
+  <a class="comp" href="#comparativo">📊 Comparativo</a>
+</nav>
+
+<!-- DESTAQUE DA SEMANA -->
+<div class="destaque-semana">
+  <h2>📍 Resumo da Semana — Performance das Commodities</h2>
+  <p>Semana <strong>vermelha generalizada</strong> nos grãos e na proteína animal, com a frustração da cúpula EUA-China pesando sobre soja e milho. O dólar (+3,54%) foi o único amortecedor de todos os mercados. Veja o placar:</p>
+  <div class="destaque-resumo">
+    <div class="mini-card soja">
+      <div class="mc-icone">🌱</div>
+      <div class="mc-nome">SOJA</div>
+      <div class="mc-valor">US$ 11,77</div>
+      <span class="mc-var mc-down">▼ -2,57%</span>
+    </div>
+    <div class="mini-card milho">
+      <div class="mc-icone">🌽</div>
+      <div class="mc-nome">MILHO</div>
+      <div class="mc-valor">US$ 4,55</div>
+      <span class="mc-var mc-down">▼ -3,29%</span>
+    </div>
+    <div class="mini-card boi">
+      <div class="mc-icone">🐂</div>
+      <div class="mc-nome">BOI</div>
+      <div class="mc-valor">R$ 336,55</div>
+      <span class="mc-var mc-down">▼ -1,51%</span>
+    </div>
+    <div class="mini-card leite">
+      <div class="mc-icone">🥛</div>
+      <div class="mc-nome">LEITE</div>
+      <div class="mc-valor">R$ 2,85/L</div>
+      <span class="mc-var mc-up">▲ Estável</span>
+    </div>
+  </div>
+</div>
+
+<!-- GRID DE RADARES -->
+<section class="radares">
+<h2>📂 Radares Semanais Disponíveis</h2>
+<p style="margin-bottom:18px;color:#555;">Clique em cada commodity para acessar a análise completa, com gráficos, fundamentos, cenários e estratégias recomendadas.</p>
+
+<div class="radar-grid">
+
+  <!-- SOJA -->
+  <div class="radar-card soja" id="soja">
+    <div class="card-header">
+      <div class="card-icone-grande">🌱</div>
+      <div class="card-titulo">RADAR SOJA</div>
+      <div class="card-sub">CBOT · Paranaguá · Rio Verde/GO</div>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag live">🔴 Atualizado</span>
+        <span class="tag">CBOT Jul/26</span>
+        <span class="tag">Físico BR</span>
+      </div>
+      <p class="card-desc">Análise completa do mercado de soja: preços CBOT e físicos, impactos da cúpula Trump-Xi, safra brasileira recorde de 180 mi t e cenários para a próxima semana.</p>
+      <div class="card-stats">
+        <div><strong>US$ 11,77</strong>CBOT Jul/26</div>
+        <div><strong>R$ 110</strong>Rio Verde/sc</div>
+        <div><strong>-2,57%</strong>Semanal</div>
+      </div>
+      <a class="btn-acesso" href="radar-soja-15-05.html">📖 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- MILHO -->
+  <div class="radar-card milho" id="milho">
+    <div class="card-header">
+      <div class="card-icone-grande">🌽</div>
+      <div class="card-titulo">RADAR MILHO</div>
+      <div class="card-sub">CBOT · Sorriso · Rio Verde/GO</div>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag live">🔴 Atualizado</span>
+        <span class="tag">CBOT Jul/26</span>
+        <span class="tag">Safrinha</span>
+      </div>
+      <p class="card-desc">Cenário do milho com safrinha brasileira recorde de 109 mi t, pressão de estoques EUA, ausência de compras chinesas e estratégias de armazenagem para a entressafra.</p>
+      <div class="card-stats">
+        <div><strong>US$ 4,55</strong>CBOT Jul/26</div>
+        <div><strong>R$ 48</strong>Rio Verde/sc</div>
+        <div><strong>-3,29%</strong>Semanal</div>
+      </div>
+      <a class="btn-acesso" href="radar-milho-15-05.html">📖 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- BOI -->
+  <div class="radar-card boi" id="boi">
+    <div class="card-header">
+      <div class="card-icone-grande">🐂</div>
+      <div class="card-titulo">RADAR BOI</div>
+      <div class="card-sub">B3 BGI · SP · MT · GO</div>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag live">🔴 Atualizado</span>
+        <span class="tag">BGI Mai/26</span>
+        <span class="tag">Exportação</span>
+      </div>
+      <p class="card-desc">Pecuária de corte com fundamentos próprios: escalas alongadas, descarte de fêmeas, exportação em recorde (US$ 5,83/kg) e rebanho EUA na mínima de 70 anos.</p>
+      <div class="card-stats">
+        <div><strong>R$ 336,55</strong>B3 BGI Mai</div>
+        <div><strong>R$ 350</strong>SP físico/@</div>
+        <div><strong>-1,51%</strong>Semanal</div>
+      </div>
+      <a class="btn-acesso" href="radar-boi-15-05.html">📖 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- LEITE -->
+  <div class="radar-card leite" id="leite">
+    <div class="card-header">
+      <div class="card-icone-grande">🥛</div>
+      <div class="card-titulo">RADAR LEITE</div>
+      <div class="card-sub">Captação · Spot · Indústria</div>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag live">🔴 Atualizado</span>
+        <span class="tag">Cepea/Esalq</span>
+        <span class="tag">Spot MG</span>
+      </div>
+      <p class="card-desc">Análise do mercado leiteiro: preço de captação, leite spot, custo de produção, importações de Mercosul e cenário para o segundo semestre de 2026.</p>
+      <div class="card-stats">
+        <div><strong>R$ 2,85</strong>Captação/L</div>
+        <div><strong>R$ 3,10</strong>Spot MG/L</div>
+        <div><strong>Estável</strong>Semanal</div>
+      </div>
+      <a class="btn-acesso" href="radar-leite-15-05.html">📖 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- COMPARATIVO -->
+  <div class="radar-card comp" id="comparativo">
+    <div class="card-header">
+      <div class="card-icone-grande">📊</div>
+      <div class="card-titulo">COMPARATIVO</div>
+      <div class="card-sub">Soja × Milho × Boi · Cross-Commodity</div>
+    </div>
+    <div class="card-body">
+      <div class="card-tags">
+        <span class="tag new">⭐ Premium</span>
+        <span class="tag live">🔴 Atualizado</span>
+        <span class="tag">Cross-Analysis</span>
+      </div>
+      <p class="card-desc">Visão integrada das três commodities: ranking semanal, correlações, margens reais por hectare em Rio Verde/GO, cenários cruzados e estratégias de diversificação.</p>
+      <div class="card-stats">
+        <div><strong>3</strong>Commodities</div>
+        <div><strong>9</strong>Seções</div>
+        <div><strong>+12</strong>Gráficos</div>
+      </div>
+      <a class="btn-acesso" href="radar-caparativo-15-05.html">📖 Acessar Radar →</a>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<!-- O QUE VOCÊ ENCONTRA -->
+<section class="recursos">
+<h2>💡 O Que Você Encontra Em Cada Radar</h2>
+<div class="recursos-grid">
+  <div class="recurso-item">
+    <div class="ri-icone">📈</div>
+    <h4>Evolução Diária</h4>
+    <p>Preços de seg a sex, gráficos normalizados e padrões observados durante a semana.</p>
+  </div>
+  <div class="recurso-item">
+    <div class="ri-icone">🌡️</div>
+    <h4>Termômetro de Mercado</h4>
+    <p>Avaliação visual do momentum, demanda externa e câmbio para cada commodity.</p>
+  </div>
+  <div class="recurso-item">
+    <div class="ri-icone">💰</div>
+    <h4>Margens Reais</h4>
+    <p>Receita, custo e margem por hectare em Rio Verde/GO, com break-even calculado.</p>
+  </div>
+  <div class="recurso-item">
+    <div class="ri-icone">🔮</div>
+    <h4>Cenários da Semana</h4>
+    <p>Probabilidades para otimista, base e pessimista com triggers de cada cenário.</p>
+  </div>
+  <div class="recurso-item">
+    <div class="ri-icone">🎯</div>
+    <h4>Estratégias Práticas</h4>
+    <p>Recomendações de hedge, armazenagem, câmbio e diversificação para o produtor.</p>
+  </div>
+  <div class="recurso-item">
+    <div class="ri-icone">📅</div>
+    <h4>Agenda da Semana</h4>
+    <p>Eventos econômicos, relatórios USDA, IPCA, Copom e outros gatilhos de mercado.</p>
+  </div>
+</div>
+</section>
+
+<!-- CTA WHATSAPP -->
+<div class="cta-whatsapp">
+  <h2>📱 Receba os Radares no Seu WhatsApp</h2>
+  <p>Toda sexta-feira, às 18h, envio o pacote completo de análises da semana direto para seu celular.</p>
+  <a class="btn-whatsapp" href="https://wa.me/5564992266886?text=Ol%C3%A1%20Sidney%2C%20quero%20receber%20os%20radares%20Rural%20IN%20no%20meu%20WhatsApp%21" target="_blank">
+    💬 Quero Receber os Radares
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🌱</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div style="font-size:.85rem;opacity:.85;margin-bottom:6px;">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista &amp; Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda &amp; Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">🌐 ruralin-site</a>
+    <a href="mailto:sidneyagro@gmail.com">📧 sidneyagro@gmail.com</a>
+    <a href="https://wa.me/5564992266886" target="_blank">📱 (64) 9 9226-6886</a>
+    <a href="https://instagram.com/ruralin.ai" target="_blank">📸 @ruralin.ai</a>
+  </div>
+</div>
+<p class="disclaimer">📅 Portal atualizado em 16 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.<br>© Rural IN — Todos os direitos reservados.</p>
+</footer>
+
+</div>
+</body>
+</html>

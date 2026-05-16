@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Radar do Leite | Rural IN — Semana 11 a 15/05/2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#34a853;
+  --dourado:#c9a227;
+  --dourado-claro:#f1c40f;
+  --azul:#1f4e79;
+  --leite:#f5f5f0;
+  --vermelho:#c0392b;
+  --laranja:#e67e22;
+  --cinza:#f4f6f9;
+  --texto:#2c3e50;
+  --branco:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#eef5ef 0%,#f4f6f9 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1200px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+  color:#fff;padding:50px 24px;border-radius:18px;text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);margin-bottom:28px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🥛";position:absolute;font-size:22em;right:-50px;top:-80px;opacity:.07;transform:rotate(-15deg);
+}
+header.hero::after{
+  content:"🐄";position:absolute;font-size:14em;left:-30px;bottom:-50px;opacity:.06;transform:rotate(10deg);
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:12px;background:#fff;color:var(--verde-escuro);
+  padding:12px 26px;border-radius:50px;font-weight:800;font-size:1.4rem;letter-spacing:1px;
+  margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.logo-portal-icon{
+  width:38px;height:38px;background:linear-gradient(135deg,var(--dourado),var(--dourado-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+}
+header h1{font-size:clamp(1.5rem,4vw,2.5rem);margin-bottom:10px;text-shadow:2px 2px 6px rgba(0,0,0,.3);position:relative;z-index:2;}
+header .subtitulo{font-size:clamp(.95rem,2.2vw,1.15rem);opacity:.95;margin-bottom:16px;position:relative;z-index:2;}
+.badge-semana{
+  display:inline-block;background:var(--dourado);color:#1b1b1b;padding:8px 20px;border-radius:25px;
+  font-weight:700;font-size:.95rem;position:relative;z-index:2;box-shadow:0 3px 10px rgba(0,0,0,.2);
+}
+
+/* RESUMO CARDS */
+.resumo-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;}
+.resumo-mini{
+  background:linear-gradient(135deg,#fafafa,#f0f5f1);
+  border-left:4px solid var(--verde);padding:16px;border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center;transition:transform .25s;
+}
+.resumo-mini:hover{transform:translateY(-3px);}
+.resumo-mini.mg{border-left-color:var(--azul);background:linear-gradient(135deg,#f0f6fc,#fff);}
+.resumo-mini.go{border-left-color:var(--dourado);background:linear-gradient(135deg,#fff9e6,#fff);}
+.resumo-mini .label{font-size:.75rem;text-transform:uppercase;color:#666;letter-spacing:.5px;font-weight:600;}
+.resumo-mini .valor{font-size:1.35rem;font-weight:800;color:var(--verde-escuro);margin:6px 0 4px;}
+.resumo-mini .var{font-size:.82rem;font-weight:700;}
+.up{color:var(--verde-claro);}
+.down{color:var(--vermelho);}
+.neutro{color:#7f8c8d;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--verde-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--dourado);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--verde-escuro);font-size:1.1rem;margin:16px 0 10px;}
+section.bloco h4{color:var(--verde-escuro);font-size:1rem;margin-bottom:8px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;}
+.grafico-canvas{position:relative;height:320px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--verde);
+}
+.termometro h4{font-size:.92rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:14px;background:#e8eef0;border-radius:7px;overflow:hidden;margin-bottom:8px;}
+.termometro .preench{height:100%;border-radius:7px;background:linear-gradient(90deg,#27ae60,#2ecc71);transition:width 1s;}
+.termometro.alta{border-top-color:#27ae60;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media{border-top-color:#f39c12;}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa{border-top-color:#c0392b;}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.8rem;color:#666;display:flex;justify-content:space-between;}
+.termometro .nivel{font-weight:800;font-size:.85rem;}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+table.dados th{background:var(--verde-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#f7faf7;}
+table.dados tbody tr:hover{background:#eef7f0;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+.destaque{font-weight:700;color:var(--verde-escuro);}
+
+/* CARDS REGIONAIS */
+.regionais-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:14px 0;}
+.card-regional{border-radius:14px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.1);background:#fff;}
+.card-regional .head{padding:18px;color:#fff;position:relative;overflow:hidden;}
+.card-regional.mg .head{background:linear-gradient(135deg,#1f4e79,#2a6ba8);}
+.card-regional.go .head{background:linear-gradient(135deg,#c9a227,#e0b94a);}
+.card-regional .head h3{color:#fff;font-size:1.25rem;margin:0;position:relative;z-index:2;}
+.card-regional .head .icone{font-size:2.5rem;display:block;margin-bottom:6px;position:relative;z-index:2;}
+.card-regional .body{padding:18px;}
+.card-regional .preco-grande{font-size:2rem;font-weight:800;color:var(--verde-escuro);text-align:center;margin:8px 0;}
+.card-regional ul{margin:10px 0;padding-left:18px;}
+.card-regional ul li{margin-bottom:6px;font-size:.9rem;}
+
+/* DESTAQUES */
+.destaque-box{background:linear-gradient(135deg,#fff9e6,#fffbf0);border-left:5px solid var(--dourado);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box ul{margin:8px 0;padding-left:18px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+
+/* CENÁRIOS */
+.cenarios-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:14px;}
+.cenario{padding:18px;border-radius:12px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.08);position:relative;}
+.cenario h4{font-size:1.1rem;margin-bottom:8px;}
+.cenario .prob{display:inline-block;background:#fff;padding:4px 12px;border-radius:20px;font-weight:800;font-size:1.1rem;margin:6px 0;}
+.cenario p{font-size:.88rem;margin-top:8px;}
+.cenario.otimista{background:linear-gradient(135deg,#d4f1d4,#e8f7e8);border:2px solid #27ae60;}
+.cenario.otimista .prob{color:#1e8449;}
+.cenario.base{background:linear-gradient(135deg,#fff3cd,#fffae6);border:2px solid #f39c12;}
+.cenario.base .prob{color:#b9770e;}
+.cenario.pessimista{background:linear-gradient(135deg,#fdecea,#fef5f4);border:2px solid #c0392b;}
+.cenario.pessimista .prob{color:#a93226;}
+
+/* RECOMENDAÇÕES */
+.recom-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px;}
+.recom-item{background:linear-gradient(135deg,#f0f8f0,#fff);padding:16px;border-radius:10px;border-left:4px solid var(--verde);box-shadow:0 2px 6px rgba(0,0,0,.05);}
+.recom-item h4{margin-bottom:6px;font-size:.98rem;}
+.recom-item p{font-size:.88rem;margin:0;}
+
+/* AGENDA */
+.agenda-tabela .alta{color:var(--vermelho);font-weight:700;}
+.agenda-tabela .media{color:var(--laranja);font-weight:700;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:30px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:12px;}
+.credenciais{margin:16px auto;max-width:700px;}
+.credenciais .nome{font-size:1.3rem;font-weight:800;margin:8px 0 4px;color:var(--dourado-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.92rem;margin:14px 0;padding:10px;background:rgba(255,255,255,.08);border-radius:8px;}
+.contatos{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:14px;font-size:.88rem;}
+.contatos a{color:var(--dourado-claro);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:18px;font-size:.78rem;opacity:.8;padding-top:14px;border-top:1px solid rgba(255,255,255,.2);}
+
+@media (max-width:600px){
+  section.bloco{padding:18px 14px;}
+  header.hero{padding:34px 18px;}
+  .resumo-mini .valor{font-size:1.15rem;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🌱</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>🥛 Radar do Leite — Semanal</h1>
+  <p class="subtitulo">Análise Fundamentalista + Leitura Gráfica + Cenários | Foco GO &amp; MG</p>
+  <span class="badge-semana">📅 Semana de 11 a 15/05/2026</span>
+</header>
+
+<!-- SNAPSHOT -->
+<section class="bloco">
+<h2>⚡ Snapshot da Semana</h2>
+<p>Semana de <strong>consolidação do rali</strong> no leite: a inflação de abril confirmou o repasse ao consumidor (IPCA do leite longa vida saltou <strong>+13,66%</strong>), os Conseleites projetam novas altas em maio, mas o spot segue em <strong>movimento de acomodação</strong>. Mercado ainda comprador, porém com sinais de fadiga no varejo.</p>
+<div class="resumo-cards">
+  <div class="resumo-mini">
+    <div class="label">Leite Produtor (Abr/Pago Mai)</div>
+    <div class="valor">R$ 2,68/L</div>
+    <div class="var up">▲ +11,46% Mês</div>
+  </div>
+  <div class="resumo-mini mg">
+    <div class="label">🏔️ Leite MG (CEPEA)</div>
+    <div class="valor">R$ 2,45/L</div>
+    <div class="var up">▲ +11,58% Mês</div>
+  </div>
+  <div class="resumo-mini go">
+    <div class="label">🌾 Leite GO (CEPEA)</div>
+    <div class="valor">R$ 2,38/L</div>
+    <div class="var up">▲ +10,9% Mês</div>
+  </div>
+  <div class="resumo-mini">
+    <div class="label">Spot Média Brasil 1ªQ Mai</div>
+    <div class="valor">R$ 2,970/L</div>
+    <div class="var down">▼ -R$ 0,315</div>
+  </div>
+  <div class="resumo-mini">
+    <div class="label">IPCA Leite Longa Vida Abr</div>
+    <div class="valor">+13,66%</div>
+    <div class="var up">▲ Maior peso do mês</div>
+  </div>
+  <div class="resumo-mini">
+    <div class="label">GDT 403 (LPI)</div>
+    <div class="valor">US$ 3.741/t</div>
+    <div class="var up">▲ +2,2%</div>
+  </div>
+</div>
+</section>
+
+<!-- LEITE PRODUTOR -->
+<section class="bloco">
+<h2>📈 Leite ao Produtor — Recuperação Consolidada</h2>
+<p>O preço pago ao produtor (CEPEA Média Brasil, leite captado em abril e pago em maio) atingiu <strong>R$ 2,68/L</strong>, consolidando a <strong>4ª alta mensal consecutiva em 2026</strong>. Esse é o maior salto mensal desde 2022. Ainda assim, comparado a maio/25, o valor segue cerca de <strong>15% abaixo em termos reais</strong>, o que indica que há espaço para continuidade do ajuste — desde que a oferta permaneça contida.</p>
+<div class="grafico-wrap">
+<h4>📊 Evolução Mensal — Leite ao Produtor (CEPEA Média Brasil)</h4>
+<div class="grafico-canvas"><canvas id="graficoProdutor"></canvas></div>
+</div>
+<div class="destaque-box info">
+<h4>🔍 Por que segue subindo?</h4>
+<ul>
+<li><strong>1) Oferta restrita:</strong> ICAP-L acumula queda de <strong>-11,1% no 1º tri/26</strong> (-3,87% só em março). Entressafra severa no Sudeste/Centro-Oeste.</li>
+<li><strong>2) Competição industrial:</strong> laticínios disputam matéria-prima, sobretudo plantas de queijo e UHT, que reagiram fortemente no atacado.</li>
+<li><strong>3) Repasse ao varejo confirmado:</strong> leite longa vida foi o item de <strong>maior impacto no IPCA de abril</strong> (+13,66%), abrindo espaço para a indústria sustentar pagamento ao produtor.</li>
+<li><strong>4) Conseleite/MG projeta +9,3%</strong> para o leite de abril pago em maio; Conseleite/PR projeta <strong>+19,3%</strong>. Sinal disseminado.</li>
+</ul>
+</div>
+</section>
+
+<!-- FOCO GO/MG -->
+<section class="bloco">
+<h2>🎯 Foco Estratégico — Goiás &amp; Minas Gerais</h2>
+<p>As duas principais bacias do Centro-Sul apresentaram <strong>magnitude de alta semelhante</strong>, mas com <strong>fundamentos distintos</strong>. Veja a leitura específica:</p>
+<div class="regionais-grid">
+  <div class="card-regional mg">
+    <div class="head">
+      <span class="icone">🏔️</span>
+      <h3>MINAS GERAIS</h3>
+      <small style="opacity:.9;">Maior bacia leiteira do Brasil</small>
+    </div>
+    <div class="body">
+      <div class="preco-grande">R$ 2,45/L</div>
+      <p style="text-align:center;font-size:.85rem;color:#666;">CEPEA — Abr/Pago Mai · <span class="up" style="font-weight:700;">▲ +11,58%</span></p>
+      <ul>
+        <li><strong>Spot 1ªQ Mai:</strong> R$ 2,986/L (queda de -R$ 0,308)</li>
+        <li><strong>Conseleite/MG:</strong> projeta <strong>+9,3%</strong> de alta para o leite entregue em abril/pago em maio</li>
+        <li><strong>Captação:</strong> ICAP-MG em queda; rebanho ainda em recuperação após 9 quedas seguidas em 2025</li>
+        <li><strong>Motor da alta:</strong> recuperação da mussarela (+5,9%), UHT (+19% YoY) e leite em pó</li>
+        <li><strong>Tendência:</strong> firmeza no curto prazo, com aprofundamento da entressafra em jun/jul</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card-regional go">
+    <div class="head">
+      <span class="icone">🌾</span>
+      <h3>GOIÁS</h3>
+      <small style="opacity:.9;">Bacia em forte recomposição</small>
+    </div>
+    <div class="body">
+      <div class="preco-grande">R$ 2,38/L</div>
+      <p style="text-align:center;font-size:.85rem;color:#666;">CEPEA — Abr/Pago Mai · <span class="up" style="font-weight:700;">▲ +10,9%</span></p>
+      <ul>
+        <li><strong>Spot 1ªQ Mai:</strong> R$ 2,881/L (queda de -R$ 0,320 — <span class="down" style="font-weight:700;">maior do país</span>)</li>
+        <li><strong>SEAPA-GO:</strong> dado de fev/26 confirma reversão dos -23% acumulados no 2º sem/25</li>
+        <li><strong>Captação:</strong> queda forte no ICAP-GO; entressafra é a mais severa do Centro-Oeste</li>
+        <li><strong>Exportações GO 2025:</strong> US$ 1,5 mi (creme de leite, leite condensado para América do Sul)</li>
+        <li><strong>Atenção produtor de Rio Verde:</strong> momento favorável para travar contratos de 60–90 dias com cooperativas e indústrias regionais</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="grafico-wrap">
+<h4>📊 Comparativo Quinzenal Spot — GO × MG × Média Brasil (R$/L)</h4>
+<div class="grafico-canvas"><canvas id="graficoSpotRegional"></canvas></div>
+</div>
+</section>
+
+<!-- LEITE SPOT -->
+<section class="bloco">
+<h2>📉 Leite Spot — Acomodação Tática (11 a 15/05)</h2>
+<p>O <strong>spot</strong> é o termômetro de curto prazo do mercado lácteo. Na 1ª quinzena de maio fechou em <strong>R$ 2,970/L na média Brasil</strong>, queda de R$ 0,315 frente à quinzena anterior. <strong>Goiás liderou a queda</strong> (-R$ 0,320), refletindo arrefecimento das compras emergenciais das indústrias.</p>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Estado</th><th>Spot 1ªQ Mai (R$/L)</th><th>Variação Quinzenal</th><th>Posição</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>São Paulo</strong></td><td class="destaque">R$ 3,232</td><td class="neg">▼ -R$ 0,262</td><td>1º (mais alto)</td></tr>
+<tr><td>Santa Catarina</td><td>R$ 3,046</td><td class="neg">▼ -R$ 0,329</td><td>2º</td></tr>
+<tr><td>Paraná</td><td>R$ 2,990</td><td class="neg">▼ -R$ 0,310</td><td>3º</td></tr>
+<tr><td><strong>Minas Gerais</strong> 🏔️</td><td class="destaque">R$ 2,986</td><td class="neg">▼ -R$ 0,308</td><td>4º</td></tr>
+<tr><td>Rio Grande do Sul</td><td>R$ 2,902</td><td class="neg">▼ -R$ 0,318</td><td>5º</td></tr>
+<tr><td><strong>Goiás</strong> 🌾</td><td class="destaque">R$ 2,881</td><td class="neg">▼ -R$ 0,320</td><td>6º (maior queda)</td></tr>
+<tr style="background:#eef7f0 !important;font-weight:700;"><td>MÉDIA BRASIL</td><td>R$ 2,970</td><td class="neg">▼ -R$ 0,315 (-9,6%)</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box alerta">
+<h4>⚠️ Leitura Técnica do Movimento</h4>
+<p>A queda do spot tipicamente <strong>antecipa o teto do ciclo de alta</strong>. Quando o spot recua, mostra que: (i) os derivados não conseguem repassar mais aumento ao varejo; (ii) a indústria reduz compras emergenciais; (iii) o "pânico por matéria-prima" se dissipa. Ainda <strong>não é mudança estrutural</strong> — a entressafra ainda ajuda — mas é um <strong>sinal claro de fadiga do rali</strong>. Atenção redobrada na 2ª quinzena de maio.</p>
+</div>
+</section>
+
+<!-- DERIVADOS -->
+<section class="bloco">
+<h2>🧀 Derivados — Atacado x Varejo</h2>
+<p>No atacado, repasse forte (UHT, mussarela, creme de leite). No varejo, o IPCA confirmou que <strong>o leite longa vida foi o produto que mais pressionou a inflação de abril (+13,66%)</strong>, sendo o maior impacto individual no índice. Em alguns mercados (Piracicaba/USP-Esalq), o leite integral chegou a R$ 5,52 — maior valor em 1 ano.</p>
+<div class="grafico-wrap">
+<h4>📊 Variação dos Derivados — Atacado SP (Mês)</h4>
+<div class="grafico-canvas"><canvas id="graficoDerivados"></canvas></div>
+</div>
+<div class="termometro-grid">
+  <div class="termometro alta">
+    <h4>🥛 UHT <span class="nivel up">+13,66% IPCA</span></h4>
+    <div class="barra"><div class="preench" style="width:92%"></div></div>
+    <div class="legenda"><span>R$ 4,94/L atacado SP</span><span>MUITO FORTE</span></div>
+  </div>
+  <div class="termometro alta">
+    <h4>🧀 Mussarela <span class="nivel up">+5,9%</span></h4>
+    <div class="barra"><div class="preench" style="width:78%"></div></div>
+    <div class="legenda"><span>R$ 31,1/kg</span><span>ALTA</span></div>
+  </div>
+  <div class="termometro alta">
+    <h4>🥛 Creme de Leite <span class="nivel up">+3,6%</span></h4>
+    <div class="barra"><div class="preench" style="width:70%"></div></div>
+    <div class="legenda"><span>Atacado SP</span><span>ALTA</span></div>
+  </div>
+  <div class="termometro media">
+    <h4>🥄 Leite em Pó <span class="nivel">+0,7%</span></h4>
+    <div class="barra"><div class="preench" style="width:50%"></div></div>
+    <div class="legenda"><span>R$ 29,8/kg</span><span>NEUTRO</span></div>
+  </div>
+  <div class="termometro media">
+    <h4>🧈 Manteiga <span class="nivel">+0,7%</span></h4>
+    <div class="barra"><div class="preench" style="width:48%"></div></div>
+    <div class="legenda"><span>Atacado SP</span><span>NEUTRO</span></div>
+  </div>
+  <div class="termometro baixa">
+    <h4>🛒 Varejo Geral <span class="nivel">+0,1% sem</span></h4>
+    <div class="barra"><div class="preench" style="width:25%"></div></div>
+    <div class="legenda"><span>Supermercados SP</span><span>FRACO</span></div>
+  </div>
+</div>
+<div class="destaque-box">
+<h4>💡 Insight: o "gargalo do varejo"</h4>
+<p>O atacado subiu firme no mês, mas o varejo já começa a sentir <strong>queda de procura</strong> (relato de supermercadistas: leite passou de R$ 5/L e consumidor recuou). Esse é o limite natural do rali: se a demanda final não absorver, a indústria reduz repasse ao produtor. Próximas 4 semanas são decisivas.</p>
+</div>
+</section>
+
+<!-- GDT -->
+<section class="bloco">
+<h2>🌍 GDT e Cenário Internacional</h2>
+<p>O <strong>GDT 403 (05/05/2026)</strong> subiu <strong>+1,5%</strong>, interrompendo a sequência de quedas. Preço médio em US$ 4.127/t com 167 participantes. Movimento seletivo: <strong>leites em pó em alta</strong> (LPI +2,2%; LPD +3,0%), enquanto manteiga e queijos seguiram pressionados.</p>
+<div class="grafico-wrap">
+<h4>📊 GDT — Últimos 4 Eventos (US$/t)</h4>
+<div class="grafico-canvas"><canvas id="graficoGDT"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Produto</th><th>GDT 403 (US$/t)</th><th>Variação</th><th>Impacto BR</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Leite em Pó Integral (LPI)</strong></td><td>3.741</td><td class="pos">▲ +2,2%</td><td>🟢 Positivo</td></tr>
+<tr><td>Leite em Pó Desnatado (LPD)</td><td>3.547</td><td class="pos">▲ +3,0%</td><td>🟢 Positivo</td></tr>
+<tr><td>Leitelho em Pó</td><td>3.467</td><td class="pos">▲ +9,0%</td><td>🟢 Muito Forte</td></tr>
+<tr><td>Manteiga</td><td>5.702</td><td class="neg">▼ -2,6%</td><td>🟡 Neutro</td></tr>
+<tr><td>Cheddar</td><td>~4.800</td><td class="neg">▼ -3,6%</td><td>🟡 Neutro</td></tr>
+<tr><td>Mussarela</td><td>3.850</td><td class="neg">▼ -3,1%</td><td>🔴 Pressiona MG</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box info">
+<h4>🌐 O que isso significa para o produtor BR?</h4>
+<p>Brasil ampliou em <strong>33% as importações de lácteos em mar/26</strong>, com déficit de US$ 95 mi na balança setorial. O LPI internacional subindo torna a importação mais cara, <strong>protegendo o preço interno</strong>. Porém, a queda de mussarela e cheddar no GDT cria <strong>risco de oferta de queijos importados</strong> (especialmente argentinos/uruguaios), o que pode pressionar MG. Atenção ao GDT Pulse na quinta (15/05).</p>
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="bloco">
+<h2>📅 Agenda Econômica — 11 a 15/05/2026</h2>
+<p>A semana tem agenda pesada: IPCA já confirmou o repasse do leite, e o boletim CEPEA + GDT Pulse trarão pistas decisivas para a próxima quinzena.</p>
+<div class="tabela-wrap">
+<table class="dados agenda-tabela">
+<thead>
+<tr><th>Data</th><th>Evento</th><th>Por que importa para o Leite?</th><th>Relevância</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>12/05 (ter)</strong></td><td>USDA WASDE + Crop Progress EUA</td><td>Milho/soja afetam custo de ração — entrada da safrinha</td><td class="alta">🔴 Alta</td></tr>
+<tr><td><strong>13/05 (qua)</strong></td><td>IPCA Brasil (abr) ✅ Já saiu: leite +13,66%</td><td>Confirma repasse ao varejo — limite do rali</td><td class="alta">🔴 Altíssima</td></tr>
+<tr><td><strong>14/05 (qui)</strong></td><td>Boletim CEPEA do Leite (mai) + CPI EUA</td><td>Confirma preço de abril/pago em maio — câmbio</td><td class="alta">🔴 Altíssima</td></tr>
+<tr><td><strong>15/05 (qui-sex)</strong></td><td>GDT Pulse + Conseleites estaduais</td><td>Tendência internacional + projeção maio</td><td class="alta">🔴 Alta</td></tr>
+<tr><td><strong>16/05 (sex)</strong></td><td>SECEX — Importações de lácteos (abr)</td><td>Pressão de importados (mussarela/queijos)</td><td class="media">🟡 Média</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- LEITURA GRÁFICA -->
+<section class="bloco">
+<h2>📐 Leitura Gráfica — Suportes e Resistências</h2>
+<p>Como o leite não possui contrato futuro líquido no Brasil, trabalhamos a <strong>série CEPEA Média Brasil</strong> como referência técnica. A análise abaixo identifica os <strong>níveis críticos</strong> para o produtor.</p>
+<div class="grafico-wrap">
+<h4>📊 Leite ao Produtor — Suportes &amp; Resistências (R$/L)</h4>
+<div class="grafico-canvas"><canvas id="graficoTecnico"></canvas></div>
+</div>
+<div class="tabela-wrap">
+<table class="dados">
+<thead>
+<tr><th>Indicador</th><th>Nível (R$/L)</th><th>Significado</th></tr>
+</thead>
+<tbody>
+<tr><td>🔴 Resistência Forte</td><td class="destaque">2,80</td><td>Topo de jul/25 — romper abre caminho para R$ 3,00+</td></tr>
+<tr><td>🟡 Resistência Tática</td><td>2,72</td><td>Teste imediato — alvo de jun/26</td></tr>
+<tr><td>🟢 Cotação Atual</td><td class="destaque">2,68</td><td>Maio/26 — viés de alta moderada</td></tr>
+<tr><td>🟢 Suporte Imediato</td><td>2,50</td><td>Média móvel — defesa de curto prazo</td></tr>
+<tr><td>🟢 Suporte Forte</td><td>2,38</td><td>Mínima de mar/26 — defesa estrutural</td></tr>
+</tbody>
+</table>
+</div>
+<div class="destaque-box">
+<h4>📌 Leitura do Estrategista</h4>
+<p>A tendência é de <strong>alta moderada</strong> até o fim da entressafra (julho). Cenário mais provável: teste de R$ 2,72 nas próximas 2 semanas, com objetivo em R$ 2,80 em jun/jul. Se o spot continuar caindo abaixo de R$ 2,90 nas próximas quinzenas, atenção: pode antecipar reversão.</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (18 a 22/05)</h2>
+<p>Com base na agenda econômica, no spot em queda controlada e na entressafra em avanço, estimamos três cenários:</p>
+<div class="cenarios-grid">
+  <div class="cenario otimista">
+    <h4>🟢 OTIMISTA</h4>
+    <span class="prob">25%</span>
+    <p><strong>GDT Pulse positivo</strong> + entressafra severa + dólar acima R$ 5,00. Boletim CEPEA confirmando +9% mai. Spot estabiliza em R$ 3,00/L. <strong>Produtor: R$ 2,75–2,85/L</strong></p>
+  </div>
+  <div class="cenario base">
+    <h4>🟡 BASE</h4>
+    <span class="prob">55%</span>
+    <p>Spot lateral em R$ 2,90–3,00/L. Derivados estáveis. Varejo limita repasse. Conseleite/MG confirma +9,3%. <strong>Produtor: R$ 2,68–2,75/L</strong> (alta moderada)</p>
+  </div>
+  <div class="cenario pessimista">
+    <h4>🔴 PESSIMISTA</h4>
+    <span class="prob">20%</span>
+    <p>Spot rompe R$ 2,90 para baixo, dólar &lt; R$ 4,80, importação argentina/uruguaia aumenta. Varejo trava repasse. <strong>Produtor: R$ 2,60–2,68/L</strong> (pausa no rali)</p>
+  </div>
+</div>
+</section>
+
+<!-- MACRO E GEOPOLÍTICA -->
+<section class="bloco">
+<h2>🌎 Macroeconomia &amp; Geopolítica</h2>
+<div class="destaque-box info">
+<h4>💱 Câmbio &amp; Inflação</h4>
+<ul>
+<li><strong>IPCA abr/26:</strong> leite longa vida +13,66% — maior impacto individual no índice. Banco Central monitorando.</li>
+<li><strong>Dólar:</strong> oscilando em torno de R$ 4,90–5,00 — patamar que sustenta paridade de importação dos lácteos.</li>
+<li><strong>Selic:</strong> ciclo de afrouxamento monetário ainda lento — limita poder de compra das famílias para lácteos premium.</li>
+</ul>
+</div>
+<div class="destaque-box alerta">
+<h4>🌐 Geopolítica &amp; Comércio Externo</h4>
+<ul>
+<li><strong>Mercosul:</strong> Argentina e Uruguai com safra forte de leite — risco crescente de oferta de queijos a preços competitivos no Brasil.</li>
+<li><strong>China:</strong> mercado de leite cru chinês estabilizando em RMB 3,02/kg — menor pressão importadora global no curto prazo.</li>
+<li><strong>EUA × Mundo:</strong> tarifas comerciais e tensões podem mexer com dólar, afetando a paridade de importação BR.</li>
+<li><strong>Oriente Médio:</strong> tensões no Estreito de Ormuz seguem como risco para frete marítimo de lácteos.</li>
+</ul>
+</div>
+</section>
+
+<!-- RECOMENDAÇÕES -->
+<section class="bloco">
+<h2>🎯 Estratégia para o Produtor de Leite</h2>
+<div class="recom-grid">
+  <div class="recom-item">
+    <h4>1️⃣ Trave contratos longos</h4>
+    <p>Conseleite/MG projeta +9,3% em maio. Negocie contratos de 60–90 dias próximos a R$ 2,75–2,80/L com sua cooperativa.</p>
+  </div>
+  <div class="recom-item">
+    <h4>2️⃣ Aproveite milho em baixa</h4>
+    <p>Milho safrinha entrando — compre concentrados para 60–90 dias e reduza o COE (que subiu +2,11% no 1º tri).</p>
+  </div>
+  <div class="recom-item">
+    <h4>3️⃣ Cautela com euforia</h4>
+    <p>Spot caiu R$ 0,32/L. Projete fluxo conservador com produtor a R$ 2,50/L para o 2º semestre.</p>
+  </div>
+  <div class="recom-item">
+    <h4>4️⃣ Aposte na qualidade</h4>
+    <p>Mussarela a R$ 31/kg e UHT em alta valorizam sólidos. Bonificação por CCS/CPP pode somar +26%.</p>
+  </div>
+  <div class="recom-item">
+    <h4>5️⃣ Monitore importações</h4>
+    <p>SECEX 16/05 trará dados de abril — queijos argentinos/uruguaios são o principal risco para MG/GO.</p>
+  </div>
+  <div class="recom-item">
+    <h4>6️⃣ Reforce caixa</h4>
+    <p>Junho/julho são os meses mais severos da entressafra. Use a alta de maio para fortalecer capital de giro.</p>
+  </div>
+</div>
+</section>
+
+<!-- CONCLUSÃO -->
+<section class="bloco" style="background:linear-gradient(135deg,#f0f8f0,#fff);">
+<h2>📝 Conclusão da Semana</h2>
+<p>A semana de <strong>11 a 15/05/2026</strong> marcou a <strong>consolidação do rali</strong> no mercado lácteo brasileiro, com confirmação do repasse ao consumidor (IPCA leite UHT +13,66%) e projeções altistas dos Conseleites estaduais. Minas Gerais (+11,58%) e Goiás (+10,9%) lideram a recuperação no campo, mas o spot em queda alerta para a <strong>fadiga do ciclo</strong>.</p>
+<p>Para a próxima semana (18 a 22/05), nosso cenário <strong>base (55%)</strong> indica alta moderada do leite ao produtor (R$ 2,68–2,75/L), com atenção ao GDT Pulse, ao boletim CEPEA e à SECEX. O <strong>produtor goiano e mineiro</strong> deve aproveitar essa janela para <strong>travar contratos longos</strong>, reduzir custos de alimentação com milho em baixa e reforçar caixa para a entressafra severa de jun/jul.</p>
+<p style="font-style:italic;text-align:center;margin-top:18px;font-weight:600;color:var(--verde-escuro);">"No mercado de leite, quem planeja vence quem aposta — e quem acompanha os sinais sai na frente."</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🌱</div>
+  RURAL <span style="color:var(--dourado-claro)">IN</span>
+</div>
+<div class="credenciais">
+  <div style="font-size:.85rem;opacity:.85;margin-bottom:6px;">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista &amp; Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda &amp; Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <span>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin-site</a></span>
+    <span>📧 sidneyagro@gmail.com</span>
+    <span>📱 (64) 9 9226-6886</span>
+    <span>📸 @ruralin.ai</span>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo emitido em 16 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.</p>
+</footer>
+
+</div>
+
+<script>
+const cores = {
+  verde: '#1f7a3a',
+  verdeEscuro: '#0f4d22',
+  dourado: '#c9a227',
+  douradoClaro: '#f1c40f',
+  vermelho: '#c0392b',
+  laranja: '#e67e22',
+  azul: '#1f4e79',
+  cinza: '#7f8c8d'
+};
+
+// Leite ao Produtor - Evolução Mensal
+new Chart(document.getElementById('graficoProdutor'), {
+  type: 'line',
+  data: {
+    labels: ['Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'],
+    datasets: [{
+      label: 'Leite Produtor (R$/L)',
+      data: [2.00, 1.88, 2.02, 2.15, 2.39, 2.41, 2.68],
+      borderColor: cores.verde,
+      backgroundColor: 'rgba(31,122,58,.15)',
+      borderWidth: 3, tension: .35, fill: true,
+      pointBackgroundColor: cores.dourado, pointRadius: 6, pointHoverRadius: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toFixed(2) }, title:{display:true, text:'R$/Litro'} } }
+  }
+});
+
+// Spot Regional Comparativo
+new Chart(document.getElementById('graficoSpotRegional'), {
+  type: 'line',
+  data: {
+    labels: ['1ªQ Mar','2ªQ Mar','1ªQ Abr','2ªQ Abr','1ªQ Mai'],
+    datasets: [
+      { label: 'Média Brasil', data: [3.41, 3.45, 3.533, 3.285, 2.970],
+        borderColor: cores.verde, backgroundColor: 'rgba(31,122,58,.1)',
+        borderWidth: 3, tension: .3, pointRadius: 5 },
+      { label: 'MG 🏔️', data: [3.40, 3.46, 3.55, 3.294, 2.986],
+        borderColor: cores.azul, borderWidth: 3, tension: .3, pointRadius: 5, borderDash:[6,3] },
+      { label: 'GO 🌾', data: [3.30, 3.36, 3.45, 3.201, 2.881],
+        borderColor: cores.dourado, borderWidth: 3, tension: .3, pointRadius: 5, borderDash:[3,3] }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toFixed(2) } } }
+  }
+});
+
+// Derivados Atacado
+new Chart(document.getElementById('graficoDerivados'), {
+  type: 'bar',
+  data: {
+    labels: ['UHT','Mussarela','Creme Leite','Manteiga','Pó','Varejo'],
+    datasets: [{
+      label: 'Variação %',
+      data: [13.66, 5.9, 3.6, 0.7, 0.7, 0.1],
+      backgroundColor: ['#27ae60','#27ae60','#27ae60','#f39c12','#f39c12','#bdc3c7'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { ticks: { callback: v => v + '%' } } }
+  }
+});
+
+// GDT Histórico
+new Chart(document.getElementById('graficoGDT'), {
+  type: 'line',
+  data: {
+    labels: ['GDT 400','GDT 401','GDT 402','GDT 403'],
+    datasets: [{
+      label: 'US$/t',
+      data: [4374, 4228, 4067, 4127],
+      borderColor: cores.azul, backgroundColor: 'rgba(31,78,121,.15)',
+      borderWidth: 3, tension: .3, fill: true,
+      pointBackgroundColor: cores.dourado, pointRadius: 7, pointHoverRadius: 9
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => 'US$ ' + ctx.raw + '/t' } } },
+    scales: { y: { ticks: { callback: v => 'US$ ' + v } } }
+  }
+});
+
+// Gráfico Técnico - Suportes e Resistências
+new Chart(document.getElementById('graficoTecnico'), {
+  type: 'line',
+  data: {
+    labels: ['Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'],
+    datasets: [
+      { label: 'Leite Produtor', data: [2.00,1.88,2.02,2.15,2.39,2.41,2.68],
+        borderColor: cores.verde, borderWidth: 3, tension: .35, pointRadius: 5,
+        backgroundColor: 'rgba(31,122,58,.08)', fill: true },
+      { label: 'Resistência Forte 2,80', data: [2.80,2.80,2.80,2.80,2.80,2.80,2.80],
+        borderColor: cores.vermelho, borderDash:[6,4], borderWidth: 2, pointRadius: 0 },
+      { label: 'Resistência Tática 2,72', data: [2.72,2.72,2.72,2.72,2.72,2.72,2.72],
+        borderColor: cores.laranja, borderDash:[4,3], borderWidth: 2, pointRadius: 0 },
+      { label: 'Suporte 2,50', data: [2.50,2.50,2.50,2.50,2.50,2.50,2.50],
+        borderColor: cores.dourado, borderDash:[4,3], borderWidth: 2, pointRadius: 0 },
+      { label: 'Suporte Forte 2,38', data: [2.38,2.38,2.38,2.38,2.38,2.38,2.38],
+        borderColor: cores.cinza, borderDash:[3,3], borderWidth: 2, pointRadius: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toFixed(2) } } }
+  }
+});
+</script>
+</body>
+</html>
