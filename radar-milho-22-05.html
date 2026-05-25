@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rural IN | Informativo Semanal Milho — 18 a 22/05/2026</title>
+<meta name="description" content="Análise fundamentalista e técnica do mercado de milho — semana de 18 a 22 de maio de 2026. CBOT, B3, físico Brasil, cenários e agenda da próxima semana." />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --milho:#f1c40f;
+  --milho-claro:#f9d71c;
+  --milho-escuro:#b8860b;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --vermelho-claro:#e74c3c;
+  --azul:#1f4e79;
+  --azul-claro:#3498db;
+  --texto:#2c3e50;
+  --dourado:#daa520;
+  --cinza-claro:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fffdf0 0%,#f4f6f9 50%,#fffdf0 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:
+    linear-gradient(135deg,rgba(15,77,34,.95) 0%,rgba(241,196,15,.92) 60%,rgba(184,134,11,.95) 100%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.1) 0%,transparent 50%);
+  color:#fff;padding:60px 24px;border-radius:20px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.20);margin-bottom:30px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🌽";position:absolute;font-size:14em;right:-30px;top:-40px;
+  opacity:.10;pointer-events:none;
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--verde-escuro);
+  padding:14px 30px;border-radius:50px;font-weight:800;font-size:1.6rem;letter-spacing:1px;
+  margin-bottom:18px;box-shadow:0 6px 18px rgba(0,0,0,.30);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:44px;height:44px;background:linear-gradient(135deg,var(--dourado),var(--milho-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.15);
+}
+header h1{
+  font-size:clamp(1.7rem,4.5vw,2.8rem);margin-bottom:12px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.35);position:relative;z-index:2;font-weight:800;
+}
+header .subtitulo{
+  font-size:clamp(1rem,2.4vw,1.25rem);opacity:.96;margin-bottom:20px;
+  position:relative;z-index:2;max-width:780px;margin-left:auto;margin-right:auto;
+}
+.badges-header{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.badge{
+  background:var(--milho-claro);color:#1b1b1b;padding:10px 22px;
+  border-radius:30px;font-weight:800;font-size:.95rem;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.badge.tecnico{background:#fff;color:var(--verde-escuro);}
+.badge.fundamental{background:var(--vermelho-claro);color:#fff;}
+
+/* RESUMO */
+.resumo-exec{
+  background:linear-gradient(135deg,#fff,#fffdf0);border-left:6px solid var(--milho);
+  padding:24px;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.resumo-exec h2{color:var(--verde-escuro);margin-bottom:14px;font-size:1.4rem;}
+.resumo-exec p{font-size:.98rem;margin-bottom:10px;}
+.tag-resumo{display:inline-block;background:var(--milho-escuro);color:#fff;padding:3px 12px;border-radius:14px;font-size:.78rem;font-weight:700;margin-right:6px;}
+
+/* PLACAR */
+.placar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0;}
+.placar-card{
+  background:#fff;border-radius:14px;padding:18px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);border-top:5px solid var(--milho);
+}
+.placar-card .ref{font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.placar-card .preco{font-size:1.7rem;font-weight:900;color:var(--milho-escuro);margin:8px 0 4px;}
+.placar-card .var{font-size:.95rem;font-weight:800;padding:4px 12px;border-radius:18px;display:inline-block;}
+.var-down{background:#fdecea;color:var(--vermelho);}
+.var-up{background:#e8f7e8;color:var(--verde);}
+.var-neutro{background:#f0f0f0;color:#555;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--verde-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--milho);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--verde-escuro);font-size:1.1rem;margin:18px 0 10px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;color:var(--verde-escuro);}
+.grafico-canvas{position:relative;height:340px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;min-width:520px;}
+table.dados th{background:var(--verde-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#fafbf5;}
+table.dados tbody tr:hover{background:#fef9e7;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--milho);
+}
+.termometro h4{font-size:.98rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:18px;background:#e8eef0;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.termometro .preench{height:100%;border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.72rem;color:#fff;font-weight:700;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.85rem;color:#555;}
+.nivel{font-weight:800;font-size:.78rem;padding:3px 10px;border-radius:12px;}
+.nivel-forte{background:#e8f7e8;color:var(--verde);}
+.nivel-fraco{background:#fdecea;color:var(--vermelho);}
+.nivel-neutro{background:#fff3cd;color:#856404;}
+
+/* CAIXAS */
+.destaque-box{background:linear-gradient(135deg,#fffdf0,#fff);border-left:5px solid var(--milho);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:20px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+.destaque-box h4{color:var(--verde-escuro);margin-bottom:8px;}
+
+/* CENÁRIOS */
+.cenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+.cenario-card{padding:18px;border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08);position:relative;}
+.cenario-card.otim{border-top:5px solid var(--verde);}
+.cenario-card.base{border-top:5px solid var(--milho);}
+.cenario-card.pess{border-top:5px solid var(--vermelho);}
+.cenario-card .prob{position:absolute;top:14px;right:14px;background:var(--verde-escuro);color:#fff;padding:4px 10px;border-radius:14px;font-size:.78rem;font-weight:800;}
+.cenario-card h4{margin-bottom:10px;color:var(--verde-escuro);}
+.cenario-card .preco-cen{font-size:1.4rem;font-weight:900;margin:8px 0;color:var(--milho-escuro);}
+.cenario-card ul{padding-left:18px;font-size:.86rem;}
+.cenario-card li{margin-bottom:5px;}
+
+/* AGENDA */
+.agenda-list{list-style:none;}
+.agenda-list li{
+  background:#fafdfa;padding:14px;border-radius:10px;margin-bottom:10px;
+  border-left:4px solid var(--milho);display:flex;gap:14px;align-items:flex-start;
+}
+.agenda-data{
+  background:var(--verde-escuro);color:#fff;padding:8px 12px;border-radius:8px;
+  font-weight:800;font-size:.85rem;min-width:90px;text-align:center;
+}
+.agenda-conteudo h5{color:var(--verde-escuro);margin-bottom:4px;font-size:.95rem;}
+.agenda-conteudo p{font-size:.85rem;margin:0;color:#555;}
+.agenda-impacto{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;margin-top:4px;}
+.impacto-alto{background:#fdecea;color:var(--vermelho);}
+.impacto-medio{background:#fff3cd;color:#856404;}
+.impacto-baixo{background:#e8f4f8;color:var(--azul);}
+
+/* O QUE ESPERAR */
+.esperar-box{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+  color:#fff;padding:30px;border-radius:16px;margin:20px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.esperar-box h2{color:#fff;border-left-color:var(--milho-claro);margin-bottom:18px;}
+.esperar-box p{color:#fff;}
+.esperar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;}
+.esperar-item{background:rgba(255,255,255,.12);padding:16px;border-radius:10px;backdrop-filter:blur(10px);}
+.esperar-item h4{color:var(--milho-claro);margin-bottom:8px;font-size:1rem;}
+.esperar-item p{font-size:.88rem;margin:0;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:36px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:14px;}
+.credenciais{margin:18px auto;max-width:720px;}
+.credenciais .label-cred{font-size:.85rem;opacity:.85;margin-bottom:6px;}
+.credenciais .nome{font-size:1.4rem;font-weight:800;margin:8px 0 4px;color:var(--milho-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.95rem;margin:16px 0;padding:12px;background:rgba(255,255,255,.10);border-radius:10px;}
+.contatos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;font-size:.92rem;}
+.contatos a{color:var(--milho-claro);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:20px;font-size:.78rem;opacity:.8;padding-top:16px;border-top:1px solid rgba(255,255,255,.20);}
+
+@media(max-width:600px){
+  header.hero{padding:40px 18px;}
+  .container{padding:14px 10px;}
+  section.bloco{padding:18px;}
+  .cenario-card .prob{position:static;display:inline-block;margin-bottom:10px;}
+  .agenda-list li{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🌽</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>🌽 Informativo Semanal — MILHO</h1>
+  <p class="subtitulo">Análise fundamentalista e técnica do mercado de milho, com leitura de cenários, gráficos e perspectivas para a próxima semana.</p>
+  <div class="badges-header">
+    <span class="badge">📅 18 a 22 de Maio de 2026</span>
+    <span class="badge fundamental">📊 Fundamentalista</span>
+    <span class="badge tecnico">📈 Técnica</span>
+  </div>
+</header>
+
+<!-- RESUMO -->
+<div class="resumo-exec">
+  <h2>📍 Resumo Executivo da Semana</h2>
+  <p><span class="tag-resumo">FUNDAMENTO</span> A semana começou com <strong>disparo de quase 5% na segunda-feira</strong> em Chicago após o anúncio da Casa Branca sobre compra de US$ 17 bi em produtos agrícolas pela China. O entusiasmo se desfez ao longo dos dias com a ausência de confirmação chinesa, queda do petróleo (após sinalização de cessar-fogo Irã-EUA) e exportações fortes apenas para o México.</p>
+  <p><span class="tag-resumo">TÉCNICO</span> O contrato CBOT Jul/26 partiu de US$ 4,77 (máxima de segunda) e fechou a sexta em <strong>US$ 4,6325/bu</strong>, com saldo semanal positivo de <strong>+1,64%</strong> ante o fechamento da semana anterior (US$ 4,5575). B3 Jul/26 fechou estável em <strong>R$ 67,25/sc</strong>.</p>
+  <p><span class="tag-resumo">DESTAQUE BR</span> <strong>Quebra de safra confirmada em Goiás (-5 mi t)</strong> e Minas Gerais. Veeries projeta produção total abaixo da Conab (140,2 mi t). Início pontual de colheita da safrinha. Físico ainda pressionado por estoques de passagem elevados, mas com <strong>viés altista estrutural</strong> a partir do 2º semestre.</p>
+</div>
+
+<!-- PLACAR DA SEMANA -->
+<section class="bloco">
+<h2>🎯 Placar da Semana — Principais Indicadores</h2>
+<div class="placar-grid">
+  <div class="placar-card">
+    <div class="ref">CBOT Jul/26</div>
+    <div class="preco">US$ 4,63</div>
+    <span class="var var-up">▲ +1,64% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">CBOT Dez/26 (nova safra)</div>
+    <div class="preco">US$ 4,87</div>
+    <span class="var var-up">▲ +1,14% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">B3 Jul/26</div>
+    <div class="preco">R$ 67,25</div>
+    <span class="var var-neutro">● Estável</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Rio Verde/GO (físico)</div>
+    <div class="preco">R$ 46-50</div>
+    <span class="var var-down">▼ Pressionado</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Dólar Comercial</div>
+    <div class="preco">R$ 5,03</div>
+    <span class="var var-neutro">● Lateralizado</span>
+  </div>
+</div>
+</section>
+
+<!-- GRÁFICO DIÁRIO CBOT -->
+<section class="bloco">
+<h2>📈 Análise Técnica — Evolução Diária CBOT Jul/26</h2>
+<p>A semana foi marcada por <strong>"foguete na segunda e correção até quinta"</strong>. O gap de alta de 21,25 cents (+4,66%) na segunda foi sustentado parcialmente por dois dias estáveis e devolvido na quarta (-2%) e quinta (-0,75%). Sexta teve leve recuperação por cobertura técnica pré-feriado.</p>
+
+<div class="grafico-wrap">
+  <h4>Milho CBOT Jul/26 — Fechamentos Diários (US$/bushel)</h4>
+  <div class="grafico-canvas"><canvas id="graficoMilhoDia"></canvas></div>
+</div>
+
+<div class="destaque-box">
+  <h4>🔍 Leitura Técnica (Grafista)</h4>
+  <ul>
+    <li><strong>Pico semanal:</strong> US$ 4,77 (segunda) — maior cotação desde 25/abr/2025. Resistência forte que precisa ser rompida com volume para retomar tendência altista.</li>
+    <li><strong>Suporte testado:</strong> US$ 4,62 (quinta) atuou como piso. Perda dessa zona abre caminho para US$ 4,55 (mínima da semana anterior).</li>
+    <li><strong>Formato gráfico:</strong> "Spike de alta" seguido de pullback — padrão clássico de movimento impulsionado por notícia única sem follow-through fundamental.</li>
+    <li><strong>Amplitude semanal:</strong> 14,75 cents (~3,1%) — volatilidade média, mercado nervoso e sensível a geopolítica.</li>
+    <li><strong>Spread Jul/Dez:</strong> -23 cents (carry de safra). Mercado precifica safra americana confortável até Dez/26.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TABELA DIÁRIA -->
+<section class="bloco">
+<h2>📋 Tabela Completa — Fechamentos Diários CBOT</h2>
+<div class="tabela-wrap">
+<table class="dados">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Dia</th>
+      <th>Jul/26 (US$/bu)</th>
+      <th>Var. cents</th>
+      <th>Var. %</th>
+      <th>Driver Principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>18/05</td><td>Segunda</td><td>4,7700</td><td class="pos">+21,25</td><td class="pos">+4,66%</td><td>🚀 Anúncio China US$ 17 bi (Casa Branca)</td></tr>
+    <tr><td>19/05</td><td>Terça</td><td>4,7525</td><td class="neg">-1,75</td><td class="neg">-0,37%</td><td>Realização parcial; B3 em alta</td></tr>
+    <tr><td>20/05</td><td>Quarta</td><td>4,6575</td><td class="neg">-9,50</td><td class="neg">-2,00%</td><td>📉 Tombo petróleo (-5%) + realização</td></tr>
+    <tr><td>21/05</td><td>Quinta</td><td>4,6225</td><td class="neg">-3,50</td><td class="neg">-0,75%</td><td>Rumor cessar-fogo Irã-EUA; trigo -2%</td></tr>
+    <tr><td>22/05</td><td>Sexta</td><td>4,6325</td><td class="pos">+1,00</td><td class="pos">+0,22%</td><td>Cobertura técnica + exports fortes (México)</td></tr>
+    <tr style="background:#fff3cd;font-weight:700;"><td colspan="2">FECHAMENTO SEMANAL</td><td>4,6325</td><td class="pos">+7,50</td><td class="pos">+1,64%</td><td>Geopolítica volátil</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- FUNDAMENTOS -->
+<section class="bloco">
+<h2>🌍 Análise Fundamentalista — Drivers da Semana</h2>
+
+<h3>🇺🇸 EUA — Plantio Acelerado e Exportações Robustas</h3>
+<div class="destaque-box alerta">
+  <ul>
+    <li><strong>Plantio:</strong> 76% concluído até 17/05 (vs. 70% na média histórica) — ritmo recorde.</li>
+    <li><strong>Germinação:</strong> 39% das lavouras emergidas (vs. 37% média).</li>
+    <li><strong>Exportações sem.:</strong> 2.125.316 t (safra antiga) — <strong>acima da expectativa</strong>. Nova safra: 281.430 t.</li>
+    <li><strong>Vendas privadas (sex):</strong> 493.700 t para o México + 110.000 t destinos não informados.</li>
+    <li><strong>Clima:</strong> Commodity Weather Group prevê chuvas favoráveis no Corn Belt nas próximas semanas — bearish para preços.</li>
+  </ul>
+</div>
+
+<h3>🇨🇳 China — O "Acordo Fantasma"</h3>
+<p>A semana abriu com euforia após a Casa Branca anunciar que a China compraria <strong>US$ 17 bi/ano em produtos agrícolas</strong>. O detalhe que esfriou o mercado: o volume <strong>não inclui as 12 mi t já adquiridas</strong> na safra 25/26. Sem confirmação oficial de Pequim, a euforia da segunda virou correção até quinta.</p>
+
+<h3>🇧🇷 Brasil — Quebra Confirmada na Safrinha</h3>
+<div class="destaque-box info">
+  <h4>⚠️ Quebra de Safra — Goiás como Epicentro</h4>
+  <ul>
+    <li><strong>Conab (maio):</strong> Produção total 2025/26 ajustada para <strong>140,2 mi t</strong> (vs. 141,2 mi t safra anterior, -1 mi t).</li>
+    <li><strong>1ª safra:</strong> 28,46 mi t (+14% vs. ciclo anterior, +2% vs. relatório de abril).</li>
+    <li><strong>2ª safra (safrinha):</strong> 109,11 mi t na estimativa Conab, mas <strong>Veeries projeta números ainda menores</strong>.</li>
+    <li><strong>Quebra em GO:</strong> Fabio Meneghin (Veeries) estima <strong>redução de 5 mi t apenas em Goiás</strong> por estiagem em março e abril.</li>
+    <li><strong>Outras áreas afetadas:</strong> Triângulo Mineiro e Unaí (MG) também sofreram com tempo seco.</li>
+    <li><strong>Área plantada:</strong> Recorde de 18,2 milhões de hectares — produtividade frustrou.</li>
+    <li><strong>Geadas no Sul:</strong> Não afetaram safrinha em escala relevante (até o momento).</li>
+  </ul>
+</div>
+
+<h3>🇧🇷 Físico Brasileiro — Cenário Misto por Região</h3>
+<div class="destaque-box">
+  <h4>📍 Preços por Praça (semana 18-22/05)</h4>
+  <ul>
+    <li><strong>Indicador ESALQ/B3 (Campinas):</strong> Próximo a R$ 65-67/sc</li>
+    <li><strong>Porto de Paranaguá (CIF):</strong> R$ 68,00/sc</li>
+    <li><strong>Porto de Santos (CIF):</strong> R$ 65,00/sc</li>
+    <li><strong>Rio Grande do Sul:</strong> R$ 56-65/sc (média R$ 58,24)</li>
+    <li><strong>Santa Catarina:</strong> R$ 70 (oferta) vs. R$ 65 (demanda) — spread trava negócios</li>
+    <li><strong>Paraná:</strong> R$ 65 (oferta) vs. R$ 60 (demanda)</li>
+    <li><strong>Mato Grosso (Campo Novo do Parecis):</strong> R$ 46,00/sc — <strong>mais pressionado</strong></li>
+    <li><strong>Rio Verde/GO (estimativa):</strong> R$ 46-50/sc — mercado retraído pré-colheita</li>
+  </ul>
+</div>
+
+<h3>💵 Câmbio — Suporte Moderado</h3>
+<p>O dólar fechou a sexta em <strong>R$ 5,03</strong>, com leve baixa frente ao início da semana. Em níveis próximos de R$ 5,00, o câmbio <strong>limita os ganhos da B3</strong> mesmo quando Chicago dispara, como ocorreu na segunda. Para o produtor no Centro-Oeste, o câmbio é fator decisivo entre vender com prejuízo ou armazenar.</p>
+
+<h3>⚔️ Geopolítica — Petróleo Movendo o Milho</h3>
+<p>O milho tem correlação significativa com o petróleo via mercado de etanol. A queda forte do petróleo na quarta (-5%) e quinta arrastou o milho junto. Qualquer reversão na narrativa do Oriente Médio impacta diretamente o cereal.</p>
+</section>
+
+<!-- TERMÔMETROS -->
+<section class="bloco">
+<h2>🌡️ Termômetro de Mercado — Milho</h2>
+<div class="termometro-grid">
+
+  <div class="termometro media">
+    <h4>Momentum Técnico <span class="nivel nivel-neutro">NEUTRO</span></h4>
+    <div class="barra"><div class="preench" style="width:50%">50%</div></div>
+    <p class="legenda">Pico em US$ 4,77 não sustentou. Mercado lateral US$ 4,60-4,70.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Oferta BR (Safrinha) <span class="nivel nivel-forte">ALTISTA</span></h4>
+    <div class="barra"><div class="preench" style="width:75%">75%</div></div>
+    <p class="legenda">Quebra confirmada em GO/MG. Veeries projeta abaixo da Conab.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Oferta EUA <span class="nivel nivel-fraco">BAIXISTA</span></h4>
+    <div class="barra"><div class="preench" style="width:25%">25%</div></div>
+    <p class="legenda">Plantio 76% (recorde), clima favorável, área grande.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Demanda Chinesa <span class="nivel nivel-neutro">INCERTA</span></h4>
+    <div class="barra"><div class="preench" style="width:50%">50%</div></div>
+    <p class="legenda">US$ 17 bi anunciado, mas sem confirmação de Pequim.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Câmbio (Suporte) <span class="nivel nivel-neutro">MODERADO</span></h4>
+    <div class="barra"><div class="preench" style="width:55%">55%</div></div>
+    <p class="legenda">R$ 5,03 limita ganhos da B3. Abaixo de R$ 5,00 pressiona.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Físico BR (curto prazo) <span class="nivel nivel-fraco">PRESSIONADO</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">Estoques de passagem altos + colheita verão recorde.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Físico BR (2º semestre) <span class="nivel nivel-forte">ALTISTA</span></h4>
+    <div class="barra"><div class="preench" style="width:78%">78%</div></div>
+    <p class="legenda">Quebra na safrinha + demanda etanol/ração sustentam alta.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Petróleo / Etanol <span class="nivel nivel-neutro">VOLÁTIL</span></h4>
+    <div class="barra"><div class="preench" style="width:50%">50%</div></div>
+    <p class="legenda">Correlação direta. Cessar-fogo no Irã derrubaria preços.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- COMPARATIVO CBOT x B3 -->
+<section class="bloco">
+<h2>📊 Comparativo — CBOT × B3 (Jul/26)</h2>
+<p>O gráfico mostra como a B3 amorteceu o pico de Chicago: enquanto CBOT subiu 4,66% na segunda, a B3 ganhou apenas 0,1% a 0,4% no mesmo dia, em função da baixa do dólar (-1%). O descolamento se mantém ao longo da semana.</p>
+
+<div class="grafico-wrap">
+  <h4>Milho CBOT Jul/26 (US$/bu) vs. B3 Jul/26 (R$/sc)</h4>
+  <div class="grafico-canvas"><canvas id="graficoComparativo"></canvas></div>
+</div>
+
+<div class="destaque-box positivo">
+  <h4>💡 Insight do Analista</h4>
+  <p>"A B3 atua como amortecedor: quando Chicago dispara, o dólar tende a cair, neutralizando ganhos em reais. Quando Chicago cai, o produtor brasileiro encontra refúgio na quebra da safrinha. Esse 'colchão duplo' explica a estabilidade do milho B3 entre R$ 67-68/sc."</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (25 a 29/05)</h2>
+<p>Considerando agenda econômica, status climático nos EUA, posição dos fundos e o cenário geopolítico, projetamos três cenários:</p>
+
+<div class="cenario-grid">
+
+  <div class="cenario-card otim">
+    <span class="prob">25%</span>
+    <h4>🟢 OTIMISTA</h4>
+    <div class="preco-cen">CBOT US$ 4,75 – 4,90</div>
+    <ul>
+      <li>China confirma compras concretas de milho americano</li>
+      <li>Chuvas em excesso atrapalham germinação EUA</li>
+      <li>Escalada geopolítica eleva petróleo → etanol</li>
+      <li>Veeries divulga novo corte na safrinha BR</li>
+      <li><strong>B3 Jul/26:</strong> R$ 69-72/sc</li>
+      <li><strong>Físico GO:</strong> R$ 52-56/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card base">
+    <span class="prob">50%</span>
+    <h4>🟡 BASE (mais provável)</h4>
+    <div class="preco-cen">CBOT US$ 4,55 – 4,72</div>
+    <ul>
+      <li>Mercado lateralizado, sem catalisadores</li>
+      <li>Memorial Day reduz volume na segunda</li>
+      <li>Clima EUA segue favorável</li>
+      <li>Sem novidades de Pequim</li>
+      <li><strong>B3 Jul/26:</strong> R$ 66-69/sc</li>
+      <li><strong>Físico GO:</strong> R$ 46-50/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card pess">
+    <span class="prob">25%</span>
+    <h4>🔴 PESSIMISTA</h4>
+    <div class="preco-cen">CBOT US$ 4,40 – 4,55</div>
+    <ul>
+      <li>Plantio EUA atinge 90% com clima ideal</li>
+      <li>Cessar-fogo no Oriente Médio (petróleo cai)</li>
+      <li>Dólar recua para R$ 4,90-4,95</li>
+      <li>Colheita safrinha BR acelera oferta</li>
+      <li><strong>B3 Jul/26:</strong> R$ 62-65/sc</li>
+      <li><strong>Físico GO:</strong> R$ 42-46/sc</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+
+<!-- AGENDA ECONÔMICA -->
+<section class="bloco">
+<h2>📅 Agenda Econômica — Semana de 25 a 29/05/2026</h2>
+<ul class="agenda-list">
+
+  <li>
+    <div class="agenda-data">SEG<br>25/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Memorial Day — Feriado nos EUA</h5>
+      <p>Bolsa de Chicago FECHADA. Liquidez global reduzida. Mercado brasileiro abre sem referência externa.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">TER<br>26/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Crop Progress (USDA) — Plantio de Milho</h5>
+      <p>Liberado às 17h (BR). Expectativa: plantio acima de 88%. Atraso ou estresse climático seria suporte aos preços.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUA<br>27/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 IPCA-15 de Maio</h5>
+      <p>Expectativa: 0,30-0,40%. Impacto indireto via expectativa de juros/Copom de junho e câmbio.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Export Sales Weekly (USDA) — MILHO</h5>
+      <p>Relatório-chave da semana. Atenção a vendas para destinos "desconhecidos" (proxy China). Vendas fortes = altista.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PIB EUA (2ª prévia 1T26)</h5>
+      <p>Impacto no dólar global e juros americanos. Dado forte = DXY sobe = pressão sobre commodities em dólar.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PCE — Inflação preferida do FED</h5>
+      <p>Indicador-chave de inflação americana. Define ritmo de cortes de juros. Volatilidade no dólar e commodities.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🌎 Commitment of Traders (CFTC)</h5>
+      <p>Posição dos fundos em milho. Atenção a posição vendida líquida em níveis altos = risco de short-covering.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEM<br>25-29</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 Acompanhamento da Colheita Safrinha</h5>
+      <p>Início pontual da colheita em MT e GO. Novos números da Conab/AgRural podem ajustar projeções.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+</ul>
+</section>
+
+<!-- O QUE ESPERAR -->
+<div class="esperar-box">
+  <h2>🎯 O Que Esperar Desta Próxima Semana</h2>
+  <p style="font-size:1.05rem;margin-bottom:14px;">A semana de 25 a 29/05 começa com <strong>liquidez reduzida pelo Memorial Day</strong> e traz dados de alto impacto a partir de terça. Nossa leitura integrada para o milho:</p>
+
+  <div class="esperar-grid">
+
+    <div class="esperar-item">
+      <h4>📊 1. CBOT em consolidação</h4>
+      <p>Cenário-base aponta <strong>US$ 4,55 a 4,72/bu</strong>. Sem catalisador chinês ou choque climático, o pico de US$ 4,77 dificilmente será reconquistado nesta semana.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🌧️ 2. Clima EUA = principal driver</h4>
+      <p>Com geopolítica em pausa, o <strong>clima no Corn Belt vira protagonista</strong>. Janeiro de 2026 começou seco e chuvas previstas podem definir tendência das próximas 4 semanas.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇨🇳 3. China no radar (mas sem fé)</h4>
+      <p>Mercado descrê do anúncio dos US$ 17 bi enquanto não houver compra confirmada. <strong>Monitore "destinos desconhecidos"</strong> no Export Sales de quinta.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇧🇷 4. Safrinha brasileira é o trunfo</h4>
+      <p>Quebra em GO/MG já está parcialmente precificada na B3. <strong>Novos cortes de produção</strong> (Veeries, AgRural) podem destravar nova rodada de alta.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>💵 5. Dólar = nível crítico R$ 5,00</h4>
+      <p>Câmbio em R$ 5,03 é frágil. Romper R$ 5,00 para baixo <strong>amplifica pressão</strong> sobre B3 e físico; acima de R$ 5,05 retoma suporte.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🛢️ 6. Petróleo dita curto prazo</h4>
+      <p>Correlação positiva com milho via etanol. Cessar-fogo Irã-EUA derrubaria milho; escalada sustentaria.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>📉 7. Físico GO/MT: ponto de virada</h4>
+      <p>Início da colheita pressiona oferta, <strong>mas quebra reduz volume final</strong>. Curva de preços tende a fazer o "fundo" entre junho e julho.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>⚖️ 8. Equilíbrio delicado</h4>
+      <p>Brasil bullish (quebra) + EUA bearish (safra cheia) = mercado lateralizado. Difícil ter movimento direcional forte sem novo fato.</p>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(255,255,255,.15);padding:16px;border-radius:10px;margin-top:18px;">
+    <strong style="color:var(--milho-claro);">🎯 RECOMENDAÇÃO ESTRATÉGICA RURAL IN:</strong>
+    <p style="margin-top:8px;font-size:.95rem;">Para o <strong>produtor em GO (Rio Verde e região)</strong>: com físico em R$ 46-50/sc e custo de produção próximo de R$ 55-60/sc, vender agora é <strong>realizar prejuízo</strong>. A recomendação é <strong>armazenar e aguardar a janela de agosto-novembro</strong>, quando a quebra da safrinha deve elevar os preços. Para quem tem fluxo de caixa apertado, considerar <strong>barter</strong> ou venda parcial (20-30%) apenas para honrar compromissos imediatos. Para hedge: travar parte da safra 26/27 em B3 Nov/26 acima de R$ 72/sc é estratégico, pois protege contra o cenário pessimista. <strong>Atenção redobrada ao câmbio</strong> — dólar abaixo de R$ 5,00 muda toda a equação de margem em Rio Verde.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🌽</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div class="label-cred">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista & Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda & Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">🌐 ruralin-site</a>
+    <a href="mailto:sidneyagro@gmail.com">📧 sidneyagro@gmail.com</a>
+    <a href="https://wa.me/5564992266886" target="_blank">📱 (64) 9 9226-6886</a>
+    <a href="https://instagram.com/ruralin.ai" target="_blank">📸 @ruralin.ai</a>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo publicado em 24 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.<br>© Rural IN — Todos os direitos reservados.</p>
+</footer>
+
+</div>
+
+<script>
+// GRÁFICO 1 - Evolução Diária CBOT Milho
+const ctxDia = document.getElementById('graficoMilhoDia').getContext('2d');
+new Chart(ctxDia, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [{
+      label: 'CBOT Jul/26 (US$/bushel)',
+      data: [4.77, 4.7525, 4.6575, 4.6225, 4.6325],
+      borderColor: '#b8860b',
+      backgroundColor: 'rgba(241,196,15,0.20)',
+      borderWidth: 3,
+      tension: 0.3,
+      pointBackgroundColor: '#b8860b',
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return 'US$ ' + context.parsed.y.toFixed(4) + '/bu';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 4.55,
+        max: 4.82,
+        ticks: { callback: function(value) { return 'US$ ' + value.toFixed(2); } },
+        grid: { color: 'rgba(0,0,0,0.05)' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 2 - Comparativo CBOT x B3
+const ctxComp = document.getElementById('graficoComparativo').getContext('2d');
+new Chart(ctxComp, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'CBOT Jul/26 (US$/bu)',
+        data: [4.77, 4.7525, 4.6575, 4.6225, 4.6325],
+        borderColor: '#b8860b',
+        backgroundColor: 'rgba(241,196,15,0.1)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y',
+        pointRadius: 5
+      },
+      {
+        label: 'B3 Jul/26 (R$/sc)',
+        data: [67.07, 67.40, 67.10, 67.25, 67.25],
+        borderColor: '#0f4d22',
+        backgroundColor: 'rgba(15,77,34,0.1)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y1',
+        pointRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        type: 'linear', position: 'left',
+        title: { display: true, text: 'CBOT (US$/bu)' },
+        ticks: { callback: v => 'US$ ' + v.toFixed(2) }
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        title: { display: true, text: 'B3 (R$/sc)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(2) },
+        grid: { drawOnChartArea: false }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

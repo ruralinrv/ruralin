@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rural IN | Informativo Semanal Algodão — 18 a 22/05/2026</title>
+<meta name="description" content="Análise fundamentalista e técnica do mercado de algodão — semana de 18 a 22 de maio de 2026. ICE Futures, Cepea, exportações Brasil, cenários e agenda da próxima semana." />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --algodao:#e8e4d8;
+  --algodao-claro:#f5f1e8;
+  --algodao-escuro:#a89968;
+  --branco-pluma:#fafafa;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --vermelho-claro:#e74c3c;
+  --azul:#1f4e79;
+  --azul-claro:#3498db;
+  --texto:#2c3e50;
+  --dourado:#c9a227;
+  --cinza-claro:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fafaf5 0%,#f4f6f9 50%,#fafaf5 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:
+    linear-gradient(135deg,rgba(15,77,34,.95) 0%,rgba(168,153,104,.85) 60%,rgba(201,162,39,.90) 100%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.1) 0%,transparent 50%);
+  color:#fff;padding:60px 24px;border-radius:20px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.20);margin-bottom:30px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"☁️";position:absolute;font-size:14em;right:-30px;top:-40px;
+  opacity:.08;pointer-events:none;
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--verde-escuro);
+  padding:14px 30px;border-radius:50px;font-weight:800;font-size:1.6rem;letter-spacing:1px;
+  margin-bottom:18px;box-shadow:0 6px 18px rgba(0,0,0,.30);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:44px;height:44px;background:linear-gradient(135deg,var(--dourado),var(--algodao-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.15);
+}
+header h1{
+  font-size:clamp(1.7rem,4.5vw,2.8rem);margin-bottom:12px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.35);position:relative;z-index:2;font-weight:800;
+}
+header .subtitulo{
+  font-size:clamp(1rem,2.4vw,1.25rem);opacity:.96;margin-bottom:20px;
+  position:relative;z-index:2;max-width:780px;margin-left:auto;margin-right:auto;
+}
+.badges-header{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.badge{
+  background:var(--algodao-claro);color:var(--verde-escuro);padding:10px 22px;
+  border-radius:30px;font-weight:800;font-size:.95rem;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.badge.tecnico{background:#fff;color:var(--verde-escuro);}
+.badge.fundamental{background:var(--vermelho-claro);color:#fff;}
+
+/* RESUMO */
+.resumo-exec{
+  background:linear-gradient(135deg,#fff,var(--algodao-claro));border-left:6px solid var(--algodao-escuro);
+  padding:24px;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.resumo-exec h2{color:var(--verde-escuro);margin-bottom:14px;font-size:1.4rem;}
+.resumo-exec p{font-size:.98rem;margin-bottom:10px;}
+.tag-resumo{display:inline-block;background:var(--algodao-escuro);color:#fff;padding:3px 12px;border-radius:14px;font-size:.78rem;font-weight:700;margin-right:6px;}
+
+/* PLACAR */
+.placar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0;}
+.placar-card{
+  background:#fff;border-radius:14px;padding:18px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);border-top:5px solid var(--algodao-escuro);
+}
+.placar-card .ref{font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.placar-card .preco{font-size:1.7rem;font-weight:900;color:var(--algodao-escuro);margin:8px 0 4px;}
+.placar-card .var{font-size:.95rem;font-weight:800;padding:4px 12px;border-radius:18px;display:inline-block;}
+.var-down{background:#fdecea;color:var(--vermelho);}
+.var-up{background:#e8f7e8;color:var(--verde);}
+.var-neutro{background:#f0f0f0;color:#555;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--verde-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--algodao-escuro);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--verde-escuro);font-size:1.1rem;margin:18px 0 10px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;color:var(--verde-escuro);}
+.grafico-canvas{position:relative;height:340px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;min-width:520px;}
+table.dados th{background:var(--verde-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#fafbf5;}
+table.dados tbody tr:hover{background:#fef9e7;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--algodao-escuro);
+}
+.termometro h4{font-size:.98rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:18px;background:#e8eef0;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.termometro .preench{height:100%;border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.72rem;color:#fff;font-weight:700;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.85rem;color:#555;}
+.nivel{font-weight:800;font-size:.78rem;padding:3px 10px;border-radius:12px;}
+.nivel-forte{background:#e8f7e8;color:var(--verde);}
+.nivel-fraco{background:#fdecea;color:var(--vermelho);}
+.nivel-neutro{background:#fff3cd;color:#856404;}
+
+/* CAIXAS */
+.destaque-box{background:linear-gradient(135deg,var(--algodao-claro),#fff);border-left:5px solid var(--algodao-escuro);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:20px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+.destaque-box h4{color:var(--verde-escuro);margin-bottom:8px;}
+
+/* CENÁRIOS */
+.cenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+.cenario-card{padding:18px;border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08);position:relative;}
+.cenario-card.otim{border-top:5px solid var(--verde);}
+.cenario-card.base{border-top:5px solid var(--algodao-escuro);}
+.cenario-card.pess{border-top:5px solid var(--vermelho);}
+.cenario-card .prob{position:absolute;top:14px;right:14px;background:var(--verde-escuro);color:#fff;padding:4px 10px;border-radius:14px;font-size:.78rem;font-weight:800;}
+.cenario-card h4{margin-bottom:10px;color:var(--verde-escuro);}
+.cenario-card .preco-cen{font-size:1.4rem;font-weight:900;margin:8px 0;color:var(--algodao-escuro);}
+.cenario-card ul{padding-left:18px;font-size:.86rem;}
+.cenario-card li{margin-bottom:5px;}
+
+/* AGENDA */
+.agenda-list{list-style:none;}
+.agenda-list li{
+  background:#fafdfa;padding:14px;border-radius:10px;margin-bottom:10px;
+  border-left:4px solid var(--algodao-escuro);display:flex;gap:14px;align-items:flex-start;
+}
+.agenda-data{
+  background:var(--verde-escuro);color:#fff;padding:8px 12px;border-radius:8px;
+  font-weight:800;font-size:.85rem;min-width:90px;text-align:center;
+}
+.agenda-conteudo h5{color:var(--verde-escuro);margin-bottom:4px;font-size:.95rem;}
+.agenda-conteudo p{font-size:.85rem;margin:0;color:#555;}
+.agenda-impacto{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;margin-top:4px;}
+.impacto-alto{background:#fdecea;color:var(--vermelho);}
+.impacto-medio{background:#fff3cd;color:#856404;}
+.impacto-baixo{background:#e8f4f8;color:var(--azul);}
+
+/* O QUE ESPERAR */
+.esperar-box{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));
+  color:#fff;padding:30px;border-radius:16px;margin:20px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.esperar-box h2{color:#fff;border-left-color:var(--algodao-claro);margin-bottom:18px;}
+.esperar-box p{color:#fff;}
+.esperar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;}
+.esperar-item{background:rgba(255,255,255,.12);padding:16px;border-radius:10px;backdrop-filter:blur(10px);}
+.esperar-item h4{color:var(--algodao-claro);margin-bottom:8px;font-size:1rem;}
+.esperar-item p{font-size:.88rem;margin:0;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:36px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:14px;}
+.credenciais{margin:18px auto;max-width:720px;}
+.credenciais .label-cred{font-size:.85rem;opacity:.85;margin-bottom:6px;}
+.credenciais .nome{font-size:1.4rem;font-weight:800;margin:8px 0 4px;color:var(--algodao-claro);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.95rem;margin:16px 0;padding:12px;background:rgba(255,255,255,.10);border-radius:10px;}
+.contatos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;font-size:.92rem;}
+.contatos a{color:var(--algodao-claro);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:20px;font-size:.78rem;opacity:.8;padding-top:16px;border-top:1px solid rgba(255,255,255,.20);}
+
+@media(max-width:600px){
+  header.hero{padding:40px 18px;}
+  .container{padding:14px 10px;}
+  section.bloco{padding:18px;}
+  .cenario-card .prob{position:static;display:inline-block;margin-bottom:10px;}
+  .agenda-list li{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">☁️</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>☁️ Informativo Semanal — ALGODÃO</h1>
+  <p class="subtitulo">Análise fundamentalista e técnica do mercado de algodão, com leitura de cenários, gráficos e perspectivas para a próxima semana.</p>
+  <div class="badges-header">
+    <span class="badge">📅 18 a 22 de Maio de 2026</span>
+    <span class="badge fundamental">📊 Fundamentalista</span>
+    <span class="badge tecnico">📈 Técnica</span>
+  </div>
+</header>
+
+<!-- RESUMO -->
+<div class="resumo-exec">
+  <h2>📍 Resumo Executivo da Semana</h2>
+  <p><span class="tag-resumo">FUNDAMENTO</span> A semana abriu com forte alta (+3,83% na segunda) impulsionada pelo anúncio de US$ 17 bi/ano em compras agrícolas pela China (2026-2028). Sem confirmação concreta de compras chinesas (nem por traders, nem pela Reserva do Estado), o mercado <strong>desabou na quinta (-4,44%)</strong>, fechando a semana com perdas superiores a 2%.</p>
+  <p><span class="tag-resumo">TÉCNICO</span> O contrato ICE Jul/26 saiu de 83,70 ¢/lp (seg) para <strong>77,42 ¢/lp (sex)</strong>, com perda semanal de <strong>-3,62%</strong> (vs. fechamento de 14/05). Dez/26 (nova safra) fechou a <strong>79,33 ¢/lp (-2,85%)</strong>. Padrão clássico de "fade rally" — alta sem follow-through.</p>
+  <p><span class="tag-resumo">BRASIL</span> Indicador Cepea/ESALQ a <strong>R$ 4,2214/lp</strong> (19/05), ainda +1,91% no acumulado de maio. <strong>Exportações em ritmo histórico</strong>: 159,6 mil t nas duas primeiras semanas de maio (+74,4% na média diária vs. 2025). IMEA projeta <strong>oferta MT 25/26 em -3,92%</strong> e produção em <strong>-15,91%</strong>.</p>
+</div>
+
+<!-- PLACAR -->
+<section class="bloco">
+<h2>🎯 Placar da Semana — Principais Indicadores</h2>
+<div class="placar-grid">
+  <div class="placar-card">
+    <div class="ref">ICE Jul/26</div>
+    <div class="preco">77,42 ¢</div>
+    <span class="var var-down">▼ -3,62% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">ICE Dez/26 (nova safra)</div>
+    <div class="preco">79,33 ¢</div>
+    <span class="var var-down">▼ -2,85% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Cepea/ESALQ (BR)</div>
+    <div class="preco">R$ 4,22</div>
+    <span class="var var-up">▲ +1,91% mês</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Rondonópolis/MT</div>
+    <div class="preco">R$ 3,97</div>
+    <span class="var var-neutro">● Firme</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Dólar Comercial</div>
+    <div class="preco">R$ 5,03</div>
+    <span class="var var-neutro">● Lateralizado</span>
+  </div>
+</div>
+</section>
+
+<!-- GRÁFICO DIÁRIO ICE -->
+<section class="bloco">
+<h2>📈 Análise Técnica — Evolução Diária ICE Jul/26</h2>
+<p>A semana teve <strong>"V invertido" perfeito</strong>: alta forte na abertura, dois dias de erosão e <strong>colapso na quinta-feira</strong> com queda de 4,44% — maior perda diária em meses. A correção devolveu praticamente todo o ganho acumulado nos 45 dias anteriores (~15% de alta).</p>
+
+<div class="grafico-wrap">
+  <h4>Algodão ICE Jul/26 — Fechamentos Diários (¢/libra-peso)</h4>
+  <div class="grafico-canvas"><canvas id="graficoAlgodaoDia"></canvas></div>
+</div>
+
+<div class="destaque-box">
+  <h4>🔍 Leitura Técnica (Grafista)</h4>
+  <ul>
+    <li><strong>Topo da semana:</strong> 83,70 ¢ (segunda) — resistência forte. Atualmente, distância de 6,28 ¢ até o topo (~8% para recuperar).</li>
+    <li><strong>Suporte crítico:</strong> 77,00 ¢ — perda dessa zona abre caminho para 75,00 ¢ e até 72,00 ¢ (suporte histórico).</li>
+    <li><strong>Padrão:</strong> "Bull trap" clássico — alta sem confirmação de demanda real (China não comprou). Sinal vendedor de curto prazo.</li>
+    <li><strong>Spread Jul/Dez:</strong> -1,91 ¢ — contango leve, sinalizando que o mercado precifica oferta ampla na nova safra.</li>
+    <li><strong>Amplitude semanal:</strong> 6,28 ¢ (~7,5%) — volatilidade muito acima da média histórica recente.</li>
+    <li><strong>Volume:</strong> Pico na quinta indica capitulação de posições compradas — possível esgotamento de vendedores no curto prazo.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TABELA DIÁRIA -->
+<section class="bloco">
+<h2>📋 Tabela Completa — Fechamentos Diários ICE Futures</h2>
+<div class="tabela-wrap">
+<table class="dados">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Dia</th>
+      <th>Jul/26 (¢/lp)</th>
+      <th>Var. cents</th>
+      <th>Var. %</th>
+      <th>Driver Principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>18/05</td><td>Segunda</td><td>83,70</td><td class="pos">+3,09</td><td class="pos">+3,83%</td><td>🚀 Anúncio China US$ 17 bi + petróleo alta</td></tr>
+    <tr><td>19/05</td><td>Terça</td><td>82,33</td><td class="neg">-1,37</td><td class="neg">-1,60%</td><td>Dólar firme + plantio EUA 41% (média 40%)</td></tr>
+    <tr><td>20/05</td><td>Quarta</td><td>81,60</td><td class="neg">-0,73</td><td class="neg">-0,89%</td><td>Pressão externa, indústrias ofertam menos</td></tr>
+    <tr><td>21/05</td><td>Quinta</td><td>77,98</td><td class="neg">-3,62</td><td class="neg">-4,44%</td><td>💥 Colapso: petróleo -5%, sem compras China</td></tr>
+    <tr><td>22/05</td><td>Sexta</td><td>77,42</td><td class="neg">-0,56</td><td class="neg">-0,72%</td><td>Continuação do movimento + pré-feriado</td></tr>
+    <tr style="background:#fdecea;font-weight:700;"><td colspan="2">FECHAMENTO SEMANAL</td><td>77,42</td><td class="neg">-2,91</td><td class="neg">-3,62%</td><td>Frustração com China + petróleo</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- FUNDAMENTOS -->
+<section class="bloco">
+<h2>🌍 Análise Fundamentalista — Drivers da Semana</h2>
+
+<h3>🇺🇸 EUA — Plantio Avança Acima da Média</h3>
+<div class="destaque-box alerta">
+  <ul>
+    <li><strong>Plantio:</strong> 41% concluído até 17/05 (vs. 38% no ano passado e 40% na média 5 anos).</li>
+    <li><strong>Vendas semanais (até 14/05):</strong> 131.792 fardos (safra 25/26) — maior em 3 semanas e +7,86% vs. ano anterior.</li>
+    <li><strong>Vendas nova safra (26/27):</strong> 215.962 fardos — <strong>maior volume da temporada</strong>.</li>
+    <li><strong>Embarques:</strong> 289.351 fardos — menor em 9 semanas (sinal de desaceleração).</li>
+    <li><strong>Compromissos totais de exportação:</strong> 10,994 milhões de fardos = <strong>98% da projeção USDA</strong>, ainda <strong>abaixo da média histórica (106%)</strong>.</li>
+    <li><strong>Clima:</strong> Previsões de chuva nas regiões produtoras americanas pesaram sobre o mercado.</li>
+  </ul>
+</div>
+
+<h3>🇨🇳 China — A Decepção da Semana</h3>
+<div class="destaque-box alerta">
+  <h4>⚠️ Por que o algodão caiu tanto?</h4>
+  <ul>
+    <li><strong>Acordo de US$ 17 bi:</strong> Anunciado no domingo (17/05) pela Casa Branca, ANIMOU o mercado na segunda.</li>
+    <li><strong>O problema:</strong> A semana inteira passou <strong>sem qualquer confirmação concreta de compras chinesas</strong>.</li>
+    <li><strong>Reserva do Estado chinesa:</strong> Rumores indicavam que o governo de Pequim faria compras estratégicas — não houve anúncio.</li>
+    <li><strong>Algodão perdeu catalisador positivo próprio</strong> e foi arrastado pela queda da soja, milho e petróleo.</li>
+    <li>Fonte: Boletim Abrapa 22/05/2026.</li>
+  </ul>
+</div>
+
+<h3>🇧🇷 Brasil — Forte Demanda Externa Sustenta Físico</h3>
+<div class="destaque-box positivo">
+  <h4>🏆 Exportações em Ritmo Recorde</h4>
+  <ul>
+    <li><strong>Maio (1ªs 2 semanas):</strong> 159,6 mil toneladas embarcadas — média diária <strong>+74,4% vs. maio/2025</strong>.</li>
+    <li><strong>Abril/2026:</strong> 370,4 mil t (recorde para o mês), +6,5% vs. março e +54,9% vs. abril/2025.</li>
+    <li><strong>Basis Ásia:</strong> 765 pts para embarque Mai/Jun-26 (Middling 1-1/8") — competitividade do BR mantida.</li>
+    <li><strong>Indicador Cepea/ESALQ:</strong> R$ 4,2214/lp (19/05) — +1,91% no mês, ainda em alta apesar das quedas externas.</li>
+    <li><strong>Paridade de exportação:</strong> Em abril, mercado interno ficou 6,6% acima da paridade (maior vantagem desde ago/2025).</li>
+  </ul>
+</div>
+
+<h3>🌱 Safra Brasileira 2025/26 — Mato Grosso (IMEA)</h3>
+<div class="destaque-box info">
+  <ul>
+    <li><strong>Área MT:</strong> 1,38 mi de hectares — <strong>-11,11% vs. 24/25</strong> (margens menos atrativas).</li>
+    <li><strong>Produção MT:</strong> 2,52 mi de toneladas — <strong>-15,91% vs. ciclo anterior</strong>.</li>
+    <li><strong>Oferta total MT:</strong> 3,45 mi t — -3,92%.</li>
+    <li><strong>Demanda projetada:</strong> 2,69 mi t (+1,02%), puxada por exportação (2,04 mi t).</li>
+    <li><strong>Estoques finais 25/26:</strong> 762,92 mil t — <strong>-18,07%</strong>.</li>
+    <li><strong>Caroço de algodão MT:</strong> R$ 910,77/t — +1,26% sem.</li>
+  </ul>
+</div>
+
+<h3>💵 Câmbio & Petróleo — Vetores Bearish</h3>
+<p>O <strong>dólar firme</strong> (DXY em alta de 6 semanas) e a <strong>queda do petróleo (-4,4% na semana)</strong> formaram um combo bearish para o algodão. Lembre-se: como fibra natural, o algodão compete com fibras sintéticas derivadas do petróleo — petróleo barato torna sintéticos mais competitivos e pressiona a pluma.</p>
+</section>
+
+<!-- TERMÔMETROS -->
+<section class="bloco">
+<h2>🌡️ Termômetro de Mercado — Algodão</h2>
+<div class="termometro-grid">
+
+  <div class="termometro baixa">
+    <h4>Momentum Técnico <span class="nivel nivel-fraco">BAIXISTA</span></h4>
+    <div class="barra"><div class="preench" style="width:25%">25%</div></div>
+    <p class="legenda">Bull trap claro. Suporte 77 ¢ sob teste.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Exportações BR <span class="nivel nivel-forte">RECORDE</span></h4>
+    <div class="barra"><div class="preench" style="width:85%">85%</div></div>
+    <p class="legenda">+74,4% na média diária vs. mai/25. Rumo a novo recorde.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Oferta BR 25/26 <span class="nivel nivel-forte">RESTRITA</span></h4>
+    <div class="barra"><div class="preench" style="width:72%">72%</div></div>
+    <p class="legenda">MT: produção -15,91%, estoques finais -18,07%.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Demanda Chinesa <span class="nivel nivel-fraco">DECEPCIONANTE</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">Acordo US$ 17 bi sem efeitos práticos. Sem compras.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Petróleo (correlação) <span class="nivel nivel-fraco">PRESSIONANDO</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">-4,4% na semana. Sintéticos ganham competitividade.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Câmbio (Suporte BR) <span class="nivel nivel-neutro">MODERADO</span></h4>
+    <div class="barra"><div class="preench" style="width:55%">55%</div></div>
+    <p class="legenda">R$ 5,03 sustenta paridade de exportação favorável.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Indústria Têxtil <span class="nivel nivel-neutro">FRACA</span></h4>
+    <div class="barra"><div class="preench" style="width:40%">40%</div></div>
+    <p class="legenda">Juros altos, varejo enfraquecido, dificuldade de repasse.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Físico BR (curto prazo) <span class="nivel nivel-forte">FIRME</span></h4>
+    <div class="barra"><div class="preench" style="width:70%">70%</div></div>
+    <p class="legenda">Entressafra + exportações fortes sustentam Cepea.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- COMPARATIVO ICE x CEPEA -->
+<section class="bloco">
+<h2>📊 Comparativo — ICE NY × Cepea Brasil</h2>
+<p>Apesar da forte queda na ICE, o <strong>Cepea/ESALQ resistiu</strong> graças à demanda externa robusta e oferta brasileira restrita. O Brasil "desacopla" parcialmente de NY no curto prazo, mas pressões externas tendem a chegar com atraso.</p>
+
+<div class="grafico-wrap">
+  <h4>Algodão ICE Jul/26 (¢/lp) vs. Cepea/ESALQ (R$/lp)</h4>
+  <div class="grafico-canvas"><canvas id="graficoComparativo"></canvas></div>
+</div>
+
+<div class="destaque-box positivo">
+  <h4>💡 Insight do Analista</h4>
+  <p>"O mercado interno brasileiro vive um momento ímpar: <strong>oferta restrita (estoques -18%) + demanda externa recorde (+74% nas exportações)</strong>. Esse 'efeito tesoura' positivo justifica a resistência do Cepea mesmo com ICE em queda. Porém, se ICE perder os 75 ¢, a pressão chega ao físico via paridade — atenção redobrada na próxima semana."</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (25 a 29/05)</h2>
+<p>Considerando agenda econômica, geopolítica, posição dos fundos e fundamentos brasileiros, projetamos três cenários:</p>
+
+<div class="cenario-grid">
+
+  <div class="cenario-card otim">
+    <span class="prob">25%</span>
+    <h4>🟢 OTIMISTA</h4>
+    <div class="preco-cen">ICE 79,00 – 83,00 ¢</div>
+    <ul>
+      <li>China anuncia compras concretas de algodão americano</li>
+      <li>Petróleo recupera com escalada no Oriente Médio</li>
+      <li>Plantio EUA com atraso por chuvas excessivas</li>
+      <li>Short-covering técnico após capitulação</li>
+      <li><strong>Cepea:</strong> R$ 4,25-4,35/lp</li>
+      <li><strong>MT (Rondonópolis):</strong> R$ 4,00-4,10/lp</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card base">
+    <span class="prob">50%</span>
+    <h4>🟡 BASE (mais provável)</h4>
+    <div class="preco-cen">ICE 75,00 – 79,00 ¢</div>
+    <ul>
+      <li>Mercado lateralizado em busca de novo equilíbrio</li>
+      <li>Memorial Day reduz volume na segunda</li>
+      <li>Sem novidades concretas de China</li>
+      <li>Cepea resiste sustentado por exportações</li>
+      <li><strong>Cepea:</strong> R$ 4,18-4,25/lp</li>
+      <li><strong>MT (Rondonópolis):</strong> R$ 3,90-4,00/lp</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card pess">
+    <span class="prob">25%</span>
+    <h4>🔴 PESSIMISTA</h4>
+    <div class="preco-cen">ICE 72,00 – 75,00 ¢</div>
+    <ul>
+      <li>Perda do suporte de 77 ¢ ativa stops técnicos</li>
+      <li>Cessar-fogo no Oriente Médio derruba petróleo</li>
+      <li>Dólar firme reduz competitividade externa</li>
+      <li>Indústria têxtil mundial segue fraca</li>
+      <li><strong>Cepea:</strong> R$ 4,05-4,18/lp</li>
+      <li><strong>MT (Rondonópolis):</strong> R$ 3,75-3,90/lp</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+
+<!-- AGENDA ECONÔMICA -->
+<section class="bloco">
+<h2>📅 Agenda Econômica — Semana de 25 a 29/05/2026</h2>
+<ul class="agenda-list">
+
+  <li>
+    <div class="agenda-data">SEG<br>25/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Memorial Day — Feriado nos EUA</h5>
+      <p>ICE Futures FECHADA. Liquidez global reduzida. Mercado brasileiro abre sem referência externa.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">TER<br>26/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Crop Progress (USDA) — Plantio do Algodão</h5>
+      <p>Liberado às 17h (BR). Expectativa: avanço acima de 50%. Atraso por chuvas seria suporte aos preços.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUA<br>27/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 IPCA-15 de Maio</h5>
+      <p>Expectativa: 0,30-0,40%. Impacto indireto via câmbio (Copom junho) e consumo doméstico têxtil.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Export Sales Weekly (USDA) — ALGODÃO</h5>
+      <p>RELATÓRIO-CHAVE da semana. Atenção especial a vendas para CHINA e destinos "desconhecidos".</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PIB EUA (2ª prévia 1T26)</h5>
+      <p>Impacto direto no DXY. Dado forte = dólar mais forte = pressão sobre commodities em dólares.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PCE — Inflação preferida do FED</h5>
+      <p>Indicador-chave para ritmo de cortes de juros do Fed. Define direção do dólar nas próximas semanas.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🌎 Commitment of Traders (CFTC) — Algodão</h5>
+      <p>Posição dos fundos. Capitulação de quinta pode ter alterado posicionamento de forma relevante.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEM<br>25-29</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 Conab — Acompanhamento da Safra</h5>
+      <p>Possível atualização sobre safra brasileira de algodão 25/26. IMEA já apontou queda de 15,91% em MT.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+</ul>
+</section>
+
+<!-- O QUE ESPERAR -->
+<div class="esperar-box">
+  <h2>🎯 O Que Esperar Desta Próxima Semana</h2>
+  <p style="font-size:1.05rem;margin-bottom:14px;">A semana de 25 a 29/05 começa com <strong>ICE fechada na segunda (Memorial Day)</strong> e traz dados de alto impacto a partir de terça. O algodão entra na semana <strong>tecnicamente machucado</strong>, mas com fundamentos brasileiros ainda sólidos. Nossa leitura integrada:</p>
+
+  <div class="esperar-grid">
+
+    <div class="esperar-item">
+      <h4>📊 1. ICE em busca de fundo</h4>
+      <p>Cenário-base aponta <strong>75 a 79 ¢/lp</strong>. Suporte crítico em 77 ¢ — se perdido, abre 75 ¢ e até 72 ¢. Recuperação acima de 80 ¢ depende de catalisador chinês.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇨🇳 2. China é o "tudo ou nada"</h4>
+      <p>Qualquer confirmação concreta de compras chinesas pode <strong>reverter o quadro técnico em 48h</strong>. Sem isso, mercado tende a buscar piso.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇧🇷 3. Brasil em descolamento positivo</h4>
+      <p>Cepea resistirá graças à <strong>oferta restrita + exportações recordes</strong>. Mas a paridade tem limite — se ICE cair muito, pressão chega ao físico.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🛢️ 4. Petróleo dita curto prazo</h4>
+      <p>Correlação inversa via fibras sintéticas. Cessar-fogo Irã-EUA = mais pressão; escalada geopolítica = suporte ao algodão.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>💵 5. Dólar global em alta</h4>
+      <p>DXY em máxima de 6 semanas pressiona commodities em dólar. PCE de sexta é decisivo: dado quente = mais força do dólar = mais pressão.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🌱 6. Plantio EUA acelera</h4>
+      <p>Atualmente em 41% (acima da média). Avanço rápido = bearish; atraso por clima = suporte.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🏭 7. Indústria têxtil fraca</h4>
+      <p>Juros altos no mundo + varejo enfraquecido limitam repasse de preços. Demanda final é o "elo fraco" do mercado.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>⚖️ 8. Short-covering possível</h4>
+      <p>A capitulação de quinta-feira pode ter levado posições vendidas a níveis que favorecem rebote técnico de curto prazo.</p>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(255,255,255,.15);padding:16px;border-radius:10px;margin-top:18px;">
+    <strong style="color:var(--algodao-claro);">🎯 RECOMENDAÇÃO ESTRATÉGICA RURAL IN:</strong>
+    <p style="margin-top:8px;font-size:.95rem;">Para o <strong>cotonicultor brasileiro</strong>: o cenário ainda é favorável no físico graças à oferta restrita e exportações em ritmo recorde. <strong>Aproveite o Cepea em R$ 4,22/lp para travar parcelas adicionais</strong> (sugestão: 20-30% da safra ainda em estoque) — esses níveis estão entre os melhores dos últimos 10 meses. Para safra 26/27 (a plantar): considere <strong>hedge via futuros NY Dez/26 acima de 80 ¢</strong>, pois o cenário de oferta global pode pressionar a nova safra. <strong>Atenção:</strong> se o ICE perder o suporte de 75 ¢, a paridade chegará ao físico com lag de 1-2 semanas — não espere demais. A combinação dólar a R$ 5,03 + oferta restrita BR + exportações recordes é uma <strong>"janela de ouro"</strong> que pode não se repetir tão cedo.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">☁️</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div class="label-cred">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista & Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda & Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">🌐 ruralin-site</a>
+    <a href="mailto:sidneyagro@gmail.com">📧 sidneyagro@gmail.com</a>
+    <a href="https://wa.me/5564992266886" target="_blank">📱 (64) 9 9226-6886</a>
+    <a href="https://instagram.com/ruralin.ai" target="_blank">📸 @ruralin.ai</a>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo publicado em 24 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.<br>© Rural IN — Todos os direitos reservados.</p>
+</footer>
+
+</div>
+
+<script>
+// GRÁFICO 1 - Evolução Diária ICE Algodão
+const ctxDia = document.getElementById('graficoAlgodaoDia').getContext('2d');
+new Chart(ctxDia, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [{
+      label: 'ICE Jul/26 (¢/lb)',
+      data: [83.70, 82.33, 81.60, 77.98, 77.42],
+      borderColor: '#a89968',
+      backgroundColor: 'rgba(232,228,216,0.4)',
+      borderWidth: 3,
+      tension: 0.3,
+      pointBackgroundColor: '#a89968',
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.parsed.y.toFixed(2) + ' ¢/lb';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 76.50,
+        max: 84.50,
+        ticks: { callback: function(value) { return value.toFixed(2) + ' ¢'; } },
+        grid: { color: 'rgba(0,0,0,0.05)' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 2 - Comparativo ICE x Cepea
+const ctxComp = document.getElementById('graficoComparativo').getContext('2d');
+new Chart(ctxComp, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'ICE Jul/26 (¢/lb)',
+        data: [83.70, 82.33, 81.60, 77.98, 77.42],
+        borderColor: '#a89968',
+        backgroundColor: 'rgba(168,153,104,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y',
+        pointRadius: 5
+      },
+      {
+        label: 'Cepea/ESALQ (R$/lb)',
+        data: [4.225, 4.2214, 4.220, 4.218, 4.215],
+        borderColor: '#0f4d22',
+        backgroundColor: 'rgba(15,77,34,0.1)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y1',
+        pointRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        type: 'linear', position: 'left',
+        title: { display: true, text: 'ICE (¢/lb)' },
+        ticks: { callback: v => v.toFixed(2) + ' ¢' }
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        title: { display: true, text: 'Cepea (R$/lb)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(3) },
+        grid: { drawOnChartArea: false },
+        min: 4.15, max: 4.25
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

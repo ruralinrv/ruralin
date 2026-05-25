@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rural IN | Informativo Semanal Café — 18 a 22/05/2026</title>
+<meta name="description" content="Análise fundamentalista e técnica do mercado de café — semana de 18 a 22 de maio de 2026. ICE NY, Cepea, exportações, Conab, cenários e agenda da próxima semana." />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --cafe:#6F4E37;
+  --cafe-claro:#A0522D;
+  --cafe-escuro:#3E2723;
+  --bege:#E8D5B7;
+  --bege-claro:#F5EBDC;
+  --creme:#FAF3E7;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --vermelho-claro:#e74c3c;
+  --azul:#1f4e79;
+  --azul-claro:#3498db;
+  --texto:#2c3e50;
+  --dourado:#c9a227;
+  --cinza-claro:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fdfaf6 0%,#f4f0ea 50%,#fdfaf6 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:
+    linear-gradient(135deg,rgba(62,39,35,.95) 0%,rgba(111,78,55,.92) 60%,rgba(160,82,45,.92) 100%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.1) 0%,transparent 50%);
+  color:#fff;padding:60px 24px;border-radius:20px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.20);margin-bottom:30px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"☕";position:absolute;font-size:14em;right:-30px;top:-40px;
+  opacity:.10;pointer-events:none;
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--cafe-escuro);
+  padding:14px 30px;border-radius:50px;font-weight:800;font-size:1.6rem;letter-spacing:1px;
+  margin-bottom:18px;box-shadow:0 6px 18px rgba(0,0,0,.30);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:44px;height:44px;background:linear-gradient(135deg,var(--dourado),var(--cafe-claro));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.15);
+}
+header h1{
+  font-size:clamp(1.7rem,4.5vw,2.8rem);margin-bottom:12px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.35);position:relative;z-index:2;font-weight:800;
+}
+header .subtitulo{
+  font-size:clamp(1rem,2.4vw,1.25rem);opacity:.96;margin-bottom:20px;
+  position:relative;z-index:2;max-width:780px;margin-left:auto;margin-right:auto;
+}
+.badges-header{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.badge{
+  background:var(--bege);color:var(--cafe-escuro);padding:10px 22px;
+  border-radius:30px;font-weight:800;font-size:.95rem;box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.badge.tecnico{background:#fff;color:var(--verde-escuro);}
+.badge.fundamental{background:var(--vermelho-claro);color:#fff;}
+
+/* RESUMO */
+.resumo-exec{
+  background:linear-gradient(135deg,#fff,var(--creme));border-left:6px solid var(--cafe);
+  padding:24px;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.resumo-exec h2{color:var(--cafe-escuro);margin-bottom:14px;font-size:1.4rem;}
+.resumo-exec p{font-size:.98rem;margin-bottom:10px;}
+.tag-resumo{display:inline-block;background:var(--cafe);color:#fff;padding:3px 12px;border-radius:14px;font-size:.78rem;font-weight:700;margin-right:6px;}
+
+/* PLACAR */
+.placar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0;}
+.placar-card{
+  background:#fff;border-radius:14px;padding:18px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);border-top:5px solid var(--cafe);
+}
+.placar-card .ref{font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.placar-card .preco{font-size:1.7rem;font-weight:900;color:var(--cafe-escuro);margin:8px 0 4px;}
+.placar-card .var{font-size:.95rem;font-weight:800;padding:4px 12px;border-radius:18px;display:inline-block;}
+.var-down{background:#fdecea;color:var(--vermelho);}
+.var-up{background:#e8f7e8;color:var(--verde);}
+.var-neutro{background:#f0f0f0;color:#555;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--cafe-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--cafe);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--cafe-escuro);font-size:1.1rem;margin:18px 0 10px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;color:var(--cafe-escuro);}
+.grafico-canvas{position:relative;height:340px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;min-width:560px;}
+table.dados th{background:var(--cafe-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#fafbf5;}
+table.dados tbody tr:hover{background:#fef9e7;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--cafe);
+}
+.termometro h4{font-size:.98rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:18px;background:#e8eef0;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.termometro .preench{height:100%;border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.72rem;color:#fff;font-weight:700;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.85rem;color:#555;}
+.nivel{font-weight:800;font-size:.78rem;padding:3px 10px;border-radius:12px;}
+.nivel-forte{background:#e8f7e8;color:var(--verde);}
+.nivel-fraco{background:#fdecea;color:var(--vermelho);}
+.nivel-neutro{background:#fff3cd;color:#856404;}
+
+/* CAIXAS */
+.destaque-box{background:linear-gradient(135deg,var(--creme),#fff);border-left:5px solid var(--cafe);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:20px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+.destaque-box h4{color:var(--cafe-escuro);margin-bottom:8px;}
+
+/* FÍSICO MG */
+.precos-fisico{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:14px 0;}
+.preco-card{background:#fff;border:2px solid var(--bege);border-radius:10px;padding:14px;text-align:center;transition:.2s;}
+.preco-card:hover{border-color:var(--cafe);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.preco-card .uf{font-size:.85rem;color:#666;font-weight:600;}
+.preco-card .cidade{font-size:1rem;font-weight:700;color:var(--cafe-escuro);margin:4px 0;}
+.preco-card .valor{font-size:1.25rem;font-weight:900;color:var(--cafe);}
+.preco-card .obs{font-size:.75rem;color:#888;margin-top:4px;}
+
+/* CENÁRIOS */
+.cenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+.cenario-card{padding:18px;border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08);position:relative;}
+.cenario-card.otim{border-top:5px solid var(--verde);}
+.cenario-card.base{border-top:5px solid var(--cafe);}
+.cenario-card.pess{border-top:5px solid var(--vermelho);}
+.cenario-card .prob{position:absolute;top:14px;right:14px;background:var(--cafe-escuro);color:#fff;padding:4px 10px;border-radius:14px;font-size:.78rem;font-weight:800;}
+.cenario-card h4{margin-bottom:10px;color:var(--cafe-escuro);}
+.cenario-card .preco-cen{font-size:1.3rem;font-weight:900;margin:8px 0;color:var(--cafe);}
+.cenario-card ul{padding-left:18px;font-size:.86rem;}
+.cenario-card li{margin-bottom:5px;}
+
+/* AGENDA */
+.agenda-list{list-style:none;}
+.agenda-list li{
+  background:#fafdfa;padding:14px;border-radius:10px;margin-bottom:10px;
+  border-left:4px solid var(--cafe);display:flex;gap:14px;align-items:flex-start;
+}
+.agenda-data{
+  background:var(--cafe-escuro);color:#fff;padding:8px 12px;border-radius:8px;
+  font-weight:800;font-size:.85rem;min-width:90px;text-align:center;
+}
+.agenda-conteudo h5{color:var(--cafe-escuro);margin-bottom:4px;font-size:.95rem;}
+.agenda-conteudo p{font-size:.85rem;margin:0;color:#555;}
+.agenda-impacto{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;margin-top:4px;}
+.impacto-alto{background:#fdecea;color:var(--vermelho);}
+.impacto-medio{background:#fff3cd;color:#856404;}
+.impacto-baixo{background:#e8f4f8;color:var(--azul);}
+
+/* ESPERAR */
+.esperar-box{
+  background:linear-gradient(135deg,var(--cafe-escuro),var(--cafe));
+  color:#fff;padding:30px;border-radius:16px;margin:20px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.esperar-box h2{color:#fff;border-left-color:var(--bege);margin-bottom:18px;}
+.esperar-box p{color:#fff;}
+.esperar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;}
+.esperar-item{background:rgba(255,255,255,.12);padding:16px;border-radius:10px;backdrop-filter:blur(10px);}
+.esperar-item h4{color:var(--bege);margin-bottom:8px;font-size:1rem;}
+.esperar-item p{font-size:.88rem;margin:0;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:36px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:14px;}
+.credenciais{margin:18px auto;max-width:720px;}
+.credenciais .label-cred{font-size:.85rem;opacity:.85;margin-bottom:6px;}
+.credenciais .nome{font-size:1.4rem;font-weight:800;margin:8px 0 4px;color:var(--bege);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.95rem;margin:16px 0;padding:12px;background:rgba(255,255,255,.10);border-radius:10px;}
+.contatos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;font-size:.92rem;}
+.contatos a{color:var(--bege);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:20px;font-size:.78rem;opacity:.8;padding-top:16px;border-top:1px solid rgba(255,255,255,.20);}
+
+@media(max-width:600px){
+  header.hero{padding:40px 18px;}
+  .container{padding:14px 10px;}
+  section.bloco{padding:18px;}
+  .cenario-card .prob{position:static;display:inline-block;margin-bottom:10px;}
+  .agenda-list li{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">☕</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>☕ Informativo Semanal — CAFÉ</h1>
+  <p class="subtitulo">Análise fundamentalista e técnica do mercado de café, com leitura de cenários, gráficos e perspectivas para a próxima semana.</p>
+  <div class="badges-header">
+    <span class="badge">📅 18 a 22 de Maio de 2026</span>
+    <span class="badge fundamental">📊 Fundamentalista</span>
+    <span class="badge tecnico">📈 Técnica</span>
+  </div>
+</header>
+
+<!-- RESUMO -->
+<div class="resumo-exec">
+  <h2>📍 Resumo Executivo da Semana</h2>
+  <p><span class="tag-resumo">FUNDAMENTO</span> Semana marcada pelo <strong>2º Levantamento da Conab</strong>, que projetou safra brasileira recorde de <strong>66,7 milhões de sacas (+18% vs. 2025)</strong> — sendo 45,8 mi de arábica (+28%) e 20,9 mi de conilon. Por outro lado, <strong>colheita atrasada em 9% (vs. 14% da média)</strong> e estoques certificados ICE em queda contínua deram sustentação técnica e impediram colapso dos preços.</p>
+  <p><span class="tag-resumo">TÉCNICO</span> ICE Jul/26 oscilou em range estreito de <strong>262,85 ¢ (mínima de terça)</strong> a <strong>272,35 ¢ (sexta)</strong>. Após cair a mínima de 9 meses na semana anterior (266,90¢ em 15/05), o mercado encontrou suporte em <strong>262,30¢ (PP1S)</strong>, com recuperação técnica via cobertura de shorts. Fechamento semanal em <strong>272,35 ¢/lb (+2,04%)</strong>.</p>
+  <p><span class="tag-resumo">BRASIL</span> Cepea Arábica Tipo 6 fechou <strong>R$ 1.614,77/sc (+0,54%)</strong> em 21/05, mas acumula <strong>-8,33% no mês</strong>. Conilon resiliente a <strong>R$ 921,88/sc (-0,37% no mês)</strong> — diferencial de comportamento marcante. Dólar a R$ 5,00 e frente fria no Sudeste foram vetores-chave de suporte.</p>
+</div>
+
+<!-- PLACAR -->
+<section class="bloco">
+<h2>🎯 Placar da Semana — Principais Indicadores</h2>
+<div class="placar-grid">
+  <div class="placar-card">
+    <div class="ref">ICE Arábica Jul/26</div>
+    <div class="preco">272,35 ¢</div>
+    <span class="var var-up">▲ +2,04% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">ICE Arábica Set/26</div>
+    <div class="preco">~261,00 ¢</div>
+    <span class="var var-up">▲ +1,69% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Cepea Arábica T6</div>
+    <div class="preco">R$ 1.614,77</div>
+    <span class="var var-down">▼ -8,33% mês</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Cepea Conilon T6</div>
+    <div class="preco">R$ 921,88</div>
+    <span class="var var-down">▼ -0,37% mês</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Robusta Londres Jul/26</div>
+    <div class="preco">US$ 3.306</div>
+    <span class="var var-down">▼ -1,76% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Dólar Comercial</div>
+    <div class="preco">R$ 4,99</div>
+    <span class="var var-down">▼ Pressão</span>
+  </div>
+</div>
+</section>
+
+<!-- GRÁFICO DIÁRIO -->
+<section class="bloco">
+<h2>📈 Análise Técnica — Evolução Diária ICE Arábica Jul/26</h2>
+<p>A semana começou com <strong>continuação da queda</strong> (segunda em 264,20¢, mínima desde agosto/2025), mas a partir da terça-feira o mercado entrou em <strong>modo de recuperação técnica via cobertura de posições vendidas</strong> dos fundos. O suporte crítico em 262,30¢ (PP1S) foi respeitado e segurou o mercado. Sexta fechou em 272,35¢, com leve realização de lucros (-0,38%).</p>
+
+<div class="grafico-wrap">
+  <h4>Café Arábica ICE Jul/26 — Fechamentos Diários (¢/lb)</h4>
+  <div class="grafico-canvas"><canvas id="graficoCafeDia"></canvas></div>
+</div>
+
+<div class="destaque-box">
+  <h4>🔍 Leitura Técnica (Grafista)</h4>
+  <ul>
+    <li><strong>Suporte respeitado:</strong> 262,30¢ (PP1S) e 262,85¢ (mínima de terça) — base sólida formada.</li>
+    <li><strong>Resistência imediata:</strong> 275,00¢ (média de 21 dias) e 280,00¢ (gap de abril).</li>
+    <li><strong>Padrão:</strong> Possível <strong>fundo duplo</strong> com mínimas em 263,45¢ (seg) e 262,85¢ (ter intraday). Confirmação acima de 275¢.</li>
+    <li><strong>Cobertura de shorts:</strong> Posição líquida dos fundos vendida — qualquer notícia positiva amplifica altas.</li>
+    <li><strong>Estoques ICE:</strong> Em queda contínua — fator técnico altista persistente.</li>
+    <li><strong>Volatilidade:</strong> Range semanal de 10¢ (~3,8%) — moderada para o café atual.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TABELA DIÁRIA -->
+<section class="bloco">
+<h2>📋 Tabela Completa — Fechamentos Diários ICE NY</h2>
+<div class="tabela-wrap">
+<table class="dados">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Dia</th>
+      <th>Jul/26 (¢/lb)</th>
+      <th>Variação</th>
+      <th>%</th>
+      <th>Driver Principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>15/05 (ref.)</td><td>Sex ant.</td><td>266,90</td><td class="neg">-8,80</td><td class="neg">-3,19%</td><td>Mínima de 9 meses, pressão safra</td></tr>
+    <tr><td>18/05</td><td>Segunda</td><td>264,20</td><td class="neg">-2,70</td><td class="neg">-1,01%</td><td>Pressão colheita + dólar fraco</td></tr>
+    <tr><td>19/05</td><td>Terça</td><td>268,80</td><td class="pos">+4,60</td><td class="pos">+1,74%</td><td>🚀 Cobertura de shorts, ajuste técnico</td></tr>
+    <tr><td>20/05</td><td>Quarta</td><td>263,15</td><td class="neg">-5,65</td><td class="neg">-2,10%</td><td>Realização, dólar a R$ 5,00</td></tr>
+    <tr><td>21/05</td><td>Quinta</td><td>268,25</td><td class="pos">+5,10</td><td class="pos">+1,94%</td><td>Conab + estoques ICE em queda</td></tr>
+    <tr><td>22/05</td><td>Sexta</td><td>272,35</td><td class="pos">+4,10</td><td class="pos">+1,53%</td><td>Atraso colheita (9% vs. 14% média)</td></tr>
+    <tr style="background:#e8f7e8;font-weight:700;"><td colspan="2">FECHAMENTO SEMANAL</td><td>272,35</td><td class="pos">+5,45</td><td class="pos">+2,04%</td><td>Recuperação técnica + suporte</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- MERCADO FÍSICO -->
+<section class="bloco">
+<h2>🗺️ Mercado Físico Brasileiro — Principais Praças (fech. semana)</h2>
+<p>O físico brasileiro acompanhou a volatilidade externa mas com <strong>maior estabilidade</strong>, sustentado pela retenção de produtores e baixos estoques internos. Destaque para a <strong>resiliência do conilon</strong>, que mal sentiu a pressão (-0,37% no mês) vs. arábica (-8,33%).</p>
+
+<h3>🌱 Arábica Tipo 6 (Bebida Dura)</h3>
+<div class="precos-fisico">
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Guaxupé (Cooxupé)</div>
+    <div class="valor">R$ 1.578,00</div>
+    <div class="obs">+0,32% no dia</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Poços de Caldas</div>
+    <div class="valor">R$ 1.650,00</div>
+    <div class="obs">-1,20% no dia</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Patrocínio (Expocaccer)</div>
+    <div class="valor">R$ 1.680,00</div>
+    <div class="obs">Cerrado mineiro</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Varginha (Minasul)</div>
+    <div class="valor">R$ 1.720,00</div>
+    <div class="obs">Sul de Minas</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Araguari (Coocacer)</div>
+    <div class="valor">R$ 1.670,00</div>
+    <div class="obs">-1,76% no dia</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">SP</div><div class="cidade">Franca (Cocapec)</div>
+    <div class="valor">R$ 1.700,00</div>
+    <div class="obs">Mogiana paulista</div>
+  </div>
+</div>
+
+<h3>🌿 Café Cereja Descascado (CD)</h3>
+<div class="precos-fisico">
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Guaxupé CD</div>
+    <div class="valor">R$ 1.613,00</div>
+    <div class="obs">+0,31%</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Poços CD</div>
+    <div class="valor">R$ 1.950,00</div>
+    <div class="obs">Prêmio qualidade</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Varginha CD</div>
+    <div class="valor">R$ 1.800,00</div>
+    <div class="obs">Estável</div>
+  </div>
+  <div class="preco-card">
+    <div class="uf">MG</div><div class="cidade">Patrocínio CD</div>
+    <div class="valor">R$ 1.700,00</div>
+    <div class="obs">-0,58%</div>
+  </div>
+</div>
+</section>
+
+<!-- FUNDAMENTOS -->
+<section class="bloco">
+<h2>🌍 Análise Fundamentalista — Drivers da Semana</h2>
+
+<h3>🇧🇷 CONAB — Safra Recorde Confirmada</h3>
+<div class="destaque-box alerta">
+  <h4>📊 2º Levantamento (21/05) — Maior da Série Histórica</h4>
+  <ul>
+    <li><strong>Produção total:</strong> 66,7 milhões de sacas (+18% vs. 2025) — recorde absoluto, supera 2020 em 5,74%.</li>
+    <li><strong>Arábica:</strong> 45,8 mi sacas (+28%) — 3ª maior já registrada, beneficiada por bienalidade positiva.</li>
+    <li><strong>Conilon:</strong> 20,9 mi sacas (+0,8%) — expansão de área compensa produtividade menor.</li>
+    <li><strong>Área:</strong> 2,34 mi ha (+3,9%); Produtividade: 34,4 sc/ha (+13%).</li>
+    <li><strong>Minas Gerais:</strong> 33,4 mi sacas (+29,8%); ES: 18 mi sacas (+3%); BA: 4,7 mi sacas (+5,9%).</li>
+    <li><strong>Impacto:</strong> Vetor estrutural baixista para 2026/27 — mas já parcialmente precificado.</li>
+  </ul>
+</div>
+
+<h3>🌧️ Clima e Colheita — Fator Altista da Semana</h3>
+<div class="destaque-box positivo">
+  <h4>❄️ Frente fria e atraso na colheita</h4>
+  <ul>
+    <li><strong>Andamento da colheita (Safras & Mercado):</strong> Apenas 9% até 20/05 — vs. 13% no ano passado e <strong>14% da média de 5 anos</strong>.</li>
+    <li>Maturação <strong>desuniforme</strong>: muitos grãos ainda verdes na planta.</li>
+    <li><strong>Frente fria</strong> avançou sobre o Sudeste durante a semana — risco de geada na mira do mercado.</li>
+    <li>Mercado em "estado de alerta" para massa de ar polar nas principais regiões produtoras.</li>
+    <li><strong>Risco-prêmio climático</strong> volta a ser precificado nos contratos.</li>
+  </ul>
+</div>
+
+<h3>📦 Estoques ICE — Suporte Técnico Persistente</h3>
+<div class="destaque-box info">
+  <ul>
+    <li><strong>Queda contínua</strong> dos estoques certificados ICE — fator citado em todas as sessões.</li>
+    <li>Baixo estoque remanescente da safra 2025/26 sustenta preços apesar da nova safra entrando.</li>
+    <li>USDA projeta produção global 2025/26 em <strong>178,8 mi sacas (+2%)</strong>, mas demanda em 173,9 mi sacas (+1,3%) — balanço ainda apertado.</li>
+    <li>Brasil exportou no 1º quadrimestre apenas <strong>11,5 mi sacas (-22,5%)</strong> vs. 2025 — produtor segura vendas.</li>
+  </ul>
+</div>
+
+<h3>🌎 Exportações Brasileiras</h3>
+<div class="destaque-box alerta">
+  <ul>
+    <li><strong>Abril/2026 (Cecafé):</strong> 3,12 mi sacas (+0,55% vs. abr/25 em volume).</li>
+    <li><strong>Mas receita caiu 17,7%</strong> para US$ 1,109 bilhão — preços médios mais baixos.</li>
+    <li><strong>Arábica em abril:</strong> -15,92% vs. abr/25 — produtor retém grãos remanescentes.</li>
+    <li><strong>Robusta/conilon:</strong> +374% em abril — entrada da nova safra de conilon.</li>
+    <li><strong>Ano-safra 2025/26 (jul/24 a abr/26):</strong> 32,247 mi sacas (-19,4%).</li>
+    <li>Expectativa: <strong>retomada forte no 2º semestre</strong> com chegada da safra nova.</li>
+  </ul>
+</div>
+
+<h3>💵 Câmbio e Macro Global</h3>
+<div class="destaque-box info">
+  <ul>
+    <li><strong>Dólar testou R$ 5,00</strong> na semana — moeda americana fraca pressiona café em reais e desestimula vendas pelo produtor.</li>
+    <li><strong>Tensões geopolíticas</strong> (Oriente Médio) seguem no radar — petróleo elevado afeta logística.</li>
+    <li>Juros globais elevados pressionam commodities como classe de ativo.</li>
+    <li>Posição dos fundos: ainda líquida <strong>vendida</strong> — espaço para curto squeeze.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TERMÔMETROS -->
+<section class="bloco">
+<h2>🌡️ Termômetro de Mercado — Café Arábica</h2>
+<div class="termometro-grid">
+
+  <div class="termometro media">
+    <h4>Momentum Técnico <span class="nivel nivel-neutro">REAÇÃO</span></h4>
+    <div class="barra"><div class="preench" style="width:55%">55%</div></div>
+    <p class="legenda">Suporte respeitado em 262¢, recuperação +2% na semana.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Safra Brasil 2026 <span class="nivel nivel-fraco">RECORDE</span></h4>
+    <div class="barra"><div class="preench" style="width:25%">25%</div></div>
+    <p class="legenda">66,7 mi sacas, maior da série histórica. Pressão estrutural.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Atraso Colheita <span class="nivel nivel-forte">SUPORTE</span></h4>
+    <div class="barra"><div class="preench" style="width:70%">70%</div></div>
+    <p class="legenda">Apenas 9% colhido vs. 14% da média. Atraso de 5pp.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Estoques ICE <span class="nivel nivel-forte">EM QUEDA</span></h4>
+    <div class="barra"><div class="preench" style="width:75%">75%</div></div>
+    <p class="legenda">Queda contínua sustenta preços tecnicamente.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Risco Climático <span class="nivel nivel-forte">FRENTE FRIA</span></h4>
+    <div class="barra"><div class="preench" style="width:65%">65%</div></div>
+    <p class="legenda">Massa polar no Sudeste, risco-prêmio de geada ativo.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Câmbio (R$/US$) <span class="nivel nivel-neutro">CONTRA</span></h4>
+    <div class="barra"><div class="preench" style="width:40%">40%</div></div>
+    <p class="legenda">Dólar a R$ 5,00 reduz incentivo de venda.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Exportações 2025/26 <span class="nivel nivel-fraco">-19,4%</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">Produtor segura vendas, estoques internos baixos.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Posição Fundos <span class="nivel nivel-forte">VENDIDA</span></h4>
+    <div class="barra"><div class="preench" style="width:72%">72%</div></div>
+    <p class="legenda">Short squeeze potencial em caso de notícia altista.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- COMPARATIVO -->
+<section class="bloco">
+<h2>📊 Comparativo — ICE NY × Cepea Brasil & Arábica × Conilon</h2>
+<p>Duas histórias paralelas: o <strong>arábica</strong> sofre com a pressão da safra recorde, enquanto o <strong>conilon</strong> mostra resiliência impressionante (queda de apenas -0,37% no mês vs. -8,33% do arábica). A divergência reflete a forte demanda industrial pelo conilon e estoques mais apertados desse tipo.</p>
+
+<div class="grafico-wrap">
+  <h4>ICE Arábica Jul/26 (¢/lb) × Cepea Arábica T6 (R$/sc)</h4>
+  <div class="grafico-canvas"><canvas id="graficoComparativo"></canvas></div>
+</div>
+
+<div class="grafico-wrap">
+  <h4>Cepea Arábica × Conilon — Diferencial de Comportamento (R$/sc)</h4>
+  <div class="grafico-canvas"><canvas id="graficoArabConilon"></canvas></div>
+</div>
+
+<div class="destaque-box positivo">
+  <h4>💡 Insight do Analista</h4>
+  <p>"O grande sinal técnico da semana foi a <strong>defesa do suporte de 262¢</strong>. Com fundos ainda vendidos, estoques ICE caindo, atraso na colheita brasileira e risco de geada, o cenário de curtíssimo prazo é de <strong>recuperação técnica para 275-280¢</strong>. Porém, a pressão estrutural da safra recorde (66,7 mi sacas) limita o potencial de alta no médio prazo. Para o cafeicultor: <strong>esta janela de 270-280¢ representa oportunidade de hedge parcial</strong>, especialmente para boa parte da safra ainda não vendida."</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (25 a 29/05)</h2>
+<p>Considerando posição vendida dos fundos, agenda climática, calendário macro e fundamentos brasileiros:</p>
+
+<div class="cenario-grid">
+
+  <div class="cenario-card otim">
+    <span class="prob">30%</span>
+    <h4>🟢 OTIMISTA</h4>
+    <div class="preco-cen">ICE Jul: 280 – 290 ¢</div>
+    <ul>
+      <li>Confirmação de geada no Sudeste brasileiro</li>
+      <li>Short squeeze: fundos cobrem agressivamente</li>
+      <li>Estoques ICE seguem em queda</li>
+      <li>Dólar volta acima de R$ 5,10</li>
+      <li>Cepea Arábica: R$ 1.680-1.730/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card base">
+    <span class="prob">45%</span>
+    <h4>🟡 BASE (mais provável)</h4>
+    <div class="preco-cen">ICE Jul: 265 – 278 ¢</div>
+    <ul>
+      <li>Mercado lateraliza em torno de 270¢</li>
+      <li>Memorial Day (seg) reduz liquidez</li>
+      <li>Pressão da colheita × risco climático = equilíbrio</li>
+      <li>Atraso de colheita sustenta o piso</li>
+      <li>Cepea Arábica: R$ 1.600-1.650/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card pess">
+    <span class="prob">25%</span>
+    <h4>🔴 PESSIMISTA</h4>
+    <div class="preco-cen">ICE Jul: 255 – 265 ¢</div>
+    <ul>
+      <li>Rompimento do suporte de 262¢</li>
+      <li>Sem geada, frente fria sem efeito</li>
+      <li>Ritmo de colheita acelera (vai para 15%+)</li>
+      <li>Dólar abaixo de R$ 4,90</li>
+      <li>Cepea Arábica: R$ 1.540-1.590/sc</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="bloco">
+<h2>📅 Agenda Econômica — Semana de 25 a 29/05/2026</h2>
+<ul class="agenda-list">
+
+  <li>
+    <div class="agenda-data">SEG<br>25/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Memorial Day — Feriado nos EUA</h5>
+      <p>ICE Futures US FECHADA. Sem pregão de café arábica. Liquidez global reduzida. Mercado brasileiro abre sem referência externa.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">TER<br>26/05</div>
+    <div class="agenda-conteudo">
+      <h5>🌡️ Boletim climático Somar/Climatempo — Frente Fria</h5>
+      <p>Avaliação da extensão da massa polar sobre Sudeste. Confirmação de geada pode disparar shorts cobrirem.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUA<br>27/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 IPCA-15 de Maio + Cecafé maio (parcial)</h5>
+      <p>Inflação ao consumidor (café é peso) e parcial de exportações de maio. Diretor do ritmo do escoamento.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>📊 Atualização Andamento Colheita (Safras & Mercado)</h5>
+      <p>% colhido até 27/05. Aceleração ou atraso da colheita move o mercado. Estoques ICE semanais.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PIB EUA 1T26 (2ª prévia) + Pedidos de Auxílio</h5>
+      <p>Dado forte = dólar forte = ICE pressionada. Dado fraco = dólar fraco = café em reais sobe menos.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PCE — Inflação preferida do FED</h5>
+      <p>Define direção do dólar. Vital para câmbio brasileiro e para o ICE em dólares.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>📈 Relatório COT (Commitment of Traders)</h5>
+      <p>Posição dos fundos. Indica se cobertura de shorts se intensificou. Vital para leitura técnica.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEM<br>25-29</div>
+    <div class="agenda-conteudo">
+      <h5>🌍 Tensões Oriente Médio + Negociações EUA-China</h5>
+      <p>Petróleo segue elevado (~US$ 110). Tarifas e geopolítica afetam commodities globais.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+</ul>
+</section>
+
+<!-- O QUE ESPERAR -->
+<div class="esperar-box">
+  <h2>🎯 O Que Esperar Desta Próxima Semana</h2>
+  <p style="font-size:1.05rem;margin-bottom:14px;">A semana de 25 a 29/05 começa com <strong>ICE NY fechada na segunda (Memorial Day)</strong> e tem como roteiro central o duelo entre <strong>safra recorde × atraso de colheita + risco de geada</strong>. Nossa leitura integrada:</p>
+
+  <div class="esperar-grid">
+
+    <div class="esperar-item">
+      <h4>❄️ 1. Clima é o grande catalisador</h4>
+      <p>Avanço da frente fria pode disparar precificação de risco-geada. <strong>Acompanhe diariamente boletins da Somar/Climatempo</strong>. Confirmação de geada = ICE para 280-290¢.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>📊 2. Suporte de 262¢ defendido</h4>
+      <p>Tecnicamente, o piso de curto prazo está estabelecido. <strong>Próximo movimento mais provável é recuperação até 275-280¢</strong>, salvo evento bearish.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🌱 3. Colheita atrasada favorece</h4>
+      <p>9% vs. 14% da média histórica. <strong>Cada semana de atraso adiciona suporte</strong>. Se acelerar, pressão volta forte.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>💰 4. Cobertura de shorts</h4>
+      <p>Fundos seguem líquidos vendidos. <strong>Short squeeze é o cenário-surpresa</strong> da semana, especialmente com qualquer notícia altista climática.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>💵 5. Dólar a R$ 5,00 = vento contra</h4>
+      <p>Dólar abaixo de R$ 5,00 desestimula vendas pelo produtor e reduz competitividade. PCE de sexta é vital.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🌿 6. Conilon resiliente</h4>
+      <p>Diferencial de comportamento é uma <strong>oportunidade para o produtor de conilon</strong>. Estoques apertados e demanda industrial firme sustentam preços.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>📦 7. Estoques ICE em queda</h4>
+      <p>Fator técnico altista persistente. Acompanhar relatório diário. Queda continuada amplifica recuperação.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>⚖️ 8. Cenário-base: lateral</h4>
+      <p>45% de probabilidade de ICE Jul/26 entre <strong>265-278¢</strong> e Cepea Arábica entre <strong>R$ 1.600-1.650/sc</strong>.</p>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(255,255,255,.15);padding:16px;border-radius:10px;margin-top:18px;">
+    <strong style="color:var(--bege);">🎯 RECOMENDAÇÃO ESTRATÉGICA RURAL IN:</strong>
+    <p style="margin-top:8px;font-size:.95rem;">Para o <strong>cafeicultor com produção 2026/27 a colher</strong>: aproveite eventuais picos acima de <strong>R$ 1.680-1.700/sc no Cepea</strong> para <strong>hedge parcial de 30-40%</strong> via Termos ou opções. A safra recorde é fato — não a ignore. Para o <strong>produtor com estoque remanescente da safra 25/26</strong>: o mercado interno está com prêmio sobre o ICE devido à escassez — <strong>aproveite a próxima alta para liquidar parte</strong>. Para o <strong>produtor de conilon</strong>: cenário muito mais favorável — <strong>estoques apertados + demanda industrial firme</strong> dão suporte para venda gradual em R$ 920-940/sc. Para todos: <strong>monitore diariamente boletins climáticos</strong> — uma geada confirmada pode mover o mercado 20-30¢ em poucos pregões.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">☕</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div class="label-cred">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista & Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda & Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">🌐 ruralin-site</a>
+    <a href="mailto:sidneyagro@gmail.com">📧 sidneyagro@gmail.com</a>
+    <a href="https://wa.me/5564992266886" target="_blank">📱 (64) 9 9226-6886</a>
+    <a href="https://instagram.com/ruralin.ai" target="_blank">📸 @ruralin.ai</a>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo publicado em 24 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.<br>© Rural IN — Todos os direitos reservados.</p>
+</footer>
+
+</div>
+
+<script>
+// GRÁFICO 1 - Evolução Diária ICE Café
+const ctxDia = document.getElementById('graficoCafeDia').getContext('2d');
+new Chart(ctxDia, {
+  type: 'line',
+  data: {
+    labels: ['Sex 15/05','Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [{
+      label: 'ICE Arábica Jul/26 (¢/lb)',
+      data: [266.90, 264.20, 268.80, 263.15, 268.25, 272.35],
+      borderColor: '#6F4E37',
+      backgroundColor: 'rgba(160,82,45,0.20)',
+      borderWidth: 3,
+      tension: 0.3,
+      pointBackgroundColor: '#6F4E37',
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.parsed.y.toFixed(2) + ' ¢/lb';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 260, max: 275,
+        ticks: { callback: function(value) { return value.toFixed(2) + ' ¢'; } },
+        grid: { color: 'rgba(0,0,0,0.05)' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 2 - Comparativo ICE x Cepea
+const ctxComp = document.getElementById('graficoComparativo').getContext('2d');
+new Chart(ctxComp, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'ICE Jul/26 (¢/lb)',
+        data: [264.20, 268.80, 263.15, 268.25, 272.35],
+        borderColor: '#6F4E37',
+        backgroundColor: 'rgba(111,78,55,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y',
+        pointRadius: 5
+      },
+      {
+        label: 'Cepea Arábica T6 (R$/sc)',
+        data: [1605.75, 1589.67, 1606.03, 1614.77, 1623.50],
+        borderColor: '#3E2723',
+        backgroundColor: 'rgba(62,39,35,0.10)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y1',
+        pointRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        type: 'linear', position: 'left',
+        title: { display: true, text: 'ICE (¢/lb)' },
+        ticks: { callback: v => v.toFixed(2) + ' ¢' },
+        min: 260, max: 275
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        title: { display: true, text: 'Cepea (R$/sc)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(0) },
+        grid: { drawOnChartArea: false },
+        min: 1580, max: 1640
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 3 - Arábica x Conilon
+const ctxAC = document.getElementById('graficoArabConilon').getContext('2d');
+new Chart(ctxAC, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'Cepea Arábica T6 (R$/sc)',
+        data: [1605.75, 1589.67, 1606.03, 1614.77, 1623.50],
+        borderColor: '#A0522D',
+        backgroundColor: 'rgba(160,82,45,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y',
+        pointRadius: 5,
+        fill: true
+      },
+      {
+        label: 'Cepea Conilon T6 (R$/sc)',
+        data: [914.16, 921.88, 919.16, 921.88, 923.50],
+        borderColor: '#0f4d22',
+        backgroundColor: 'rgba(15,77,34,0.10)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y1',
+        pointRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        type: 'linear', position: 'left',
+        title: { display: true, text: 'Arábica (R$/sc)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(0) },
+        min: 1580, max: 1640
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        title: { display: true, text: 'Conilon (R$/sc)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(0) },
+        grid: { drawOnChartArea: false },
+        min: 910, max: 930
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

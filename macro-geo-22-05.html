@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Informativo Macroeconômico Semanal | 18 a 22 de maio de 2026 - Ruralin AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif;}
+  body{background:linear-gradient(135deg,#f5f7f0 0%,#e8f0d8 100%);color:#2c3e2d;line-height:1.6;padding:10px;}
+  .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.12);overflow:hidden;}
+  header{background:linear-gradient(135deg,#3d5c1f 0%,#5a8030 50%,#7ba843 100%);color:#fff;padding:30px 20px;text-align:center;position:relative;overflow:hidden;}
+  header::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);pointer-events:none;}
+  .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;}
+  .logo-circle{width:60px;height:60px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#3d5c1f;box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .logo-text{font-size:28px;font-weight:bold;letter-spacing:1px;}
+  .logo-text span{color:#ffd54f;}
+  header h1{font-size:clamp(20px,4vw,32px);margin-top:10px;font-weight:700;position:relative;z-index:1;}
+  header .subtitle{font-size:clamp(13px,2.5vw,16px);opacity:.95;margin-top:8px;position:relative;z-index:1;}
+  .badge{display:inline-block;background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;margin-top:10px;font-size:14px;backdrop-filter:blur(8px);position:relative;z-index:1;}
+  section{padding:25px 20px;border-bottom:1px solid #e8e8e8;}
+  h2{font-size:clamp(18px,3vw,24px);margin-bottom:18px;padding-bottom:8px;border-bottom:3px solid #7ba843;display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#3d5c1f;}
+  h2 .icon{font-size:28px;}
+  h3{font-size:clamp(16px,2.5vw,19px);margin:15px 0 10px;color:#3d5c1f;}
+  p{margin-bottom:12px;text-align:justify;font-size:15px;}
+  .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:20px 0;}
+  .highlight-card{background:linear-gradient(135deg,#f9fbf4,#eef4dc);border-left:5px solid #7ba843;padding:18px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .3s;}
+  .highlight-card:hover{transform:translateY(-3px);}
+  .highlight-card .num{font-size:24px;font-weight:bold;color:#3d5c1f;}
+  .highlight-card .label{font-size:13px;color:#666;margin-top:4px;}
+  .highlight-card .var{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:bold;margin-top:6px;}
+  .up{background:#d4edda;color:#155724;}
+  .down{background:#f8d7da;color:#721c24;}
+  .neutral{background:#fff3cd;color:#856404;}
+  .chart-container{position:relative;width:100%;height:380px;margin:20px 0;background:#fafafa;padding:15px;border-radius:12px;}
+  @media (max-width:600px){.chart-container{height:300px;padding:10px;}}
+  .table-wrapper{overflow-x:auto;margin:15px 0;}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:500px;}
+  th{background:#3d5c1f;color:#fff;padding:10px;text-align:left;}
+  td{padding:10px;border-bottom:1px solid #eee;}
+  tr:nth-child(even){background:#f9fbf4;}
+  .termometro{margin:20px 0;}
+  .termo-item{margin-bottom:18px;}
+  .termo-label{display:flex;justify-content:space-between;margin-bottom:5px;font-weight:600;font-size:14px;flex-wrap:wrap;gap:5px;}
+  .termo-bar{width:100%;height:24px;background:#eee;border-radius:12px;overflow:hidden;position:relative;}
+  .termo-fill{height:100%;border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-size:12px;font-weight:bold;transition:width 1s;}
+  .fill-altista{background:linear-gradient(90deg,#e74c3c,#c0392b);}
+  .fill-baixista{background:linear-gradient(90deg,#27ae60,#16a085);}
+  .fill-neutral{background:linear-gradient(90deg,#f39c12,#e67e22);}
+  .cenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin:20px 0;}
+  .cenario{padding:18px;border-radius:12px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+  .cenario-otim{background:linear-gradient(135deg,#27ae60,#16a085);}
+  .cenario-base{background:linear-gradient(135deg,#f39c12,#e67e22);}
+  .cenario-pess{background:linear-gradient(135deg,#e74c3c,#c0392b);}
+  .cenario .prob{font-size:32px;font-weight:bold;}
+  .cenario .titulo{font-size:18px;font-weight:bold;margin:8px 0;}
+  .cenario .desc{font-size:14px;opacity:.95;}
+  .alerta{background:#fff8e1;border-left:5px solid #f39c12;padding:15px;border-radius:8px;margin:15px 0;}
+  .alerta strong{color:#d68910;}
+  .agenda{background:#f0f4e8;padding:15px;border-radius:10px;margin:15px 0;}
+  .agenda-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #c8d6a8;align-items:center;flex-wrap:wrap;}
+  .agenda-item:last-child{border-bottom:none;}
+  .agenda-data{background:#3d5c1f;color:#fff;padding:8px 12px;border-radius:8px;font-weight:bold;min-width:75px;text-align:center;font-size:13px;}
+  .expectativa{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:25px 20px;border-radius:12px;margin:20px 0;}
+  .expectativa h2{color:#fff;border-bottom-color:#ffd54f;}
+  .expectativa ul{list-style:none;padding:0;}
+  .expectativa li{padding:8px 0 8px 28px;position:relative;font-size:15px;}
+  .expectativa li::before{content:"▶";position:absolute;left:0;color:#ffd54f;}
+  footer{background:#2c3e2d;color:#fff;padding:25px 20px;text-align:center;}
+  .credenciais{max-width:600px;margin:0 auto;}
+  .credenciais h3{color:#ffd54f;margin-bottom:10px;}
+  .credenciais p{margin:4px 0;font-size:14px;text-align:center;}
+  .credenciais .nome{font-size:18px;font-weight:bold;color:#fff;}
+  .credenciais .cargo{font-style:italic;color:#c8d6a8;}
+  .contatos{margin-top:15px;padding-top:15px;border-top:1px solid #4a5a3a;font-size:13px;word-wrap:break-word;}
+  .contatos a{color:#ffd54f;text-decoration:none;}
+  .contatos a:hover{text-decoration:underline;}
+  .tagline{font-style:italic;color:#a8c878;margin:10px 0;font-size:13px;}
+  ul.bullet{margin-left:20px;margin-bottom:15px;}
+  ul.bullet li{margin-bottom:6px;font-size:15px;}
+  .destaque-box{background:linear-gradient(135deg,#fff,#f9fbf4);border:2px solid #7ba843;padding:15px;border-radius:10px;margin:15px 0;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">
+    <div class="logo-circle">📊</div>
+    <div class="logo-text">RURALIN<span>.AI</span></div>
+  </div>
+  <h1>🌎 Informativo Macroeconômico Semanal</h1>
+  <div class="subtitle">Macroeconomia • Geopolítica • Câmbio | 18 a 22 de Maio de 2026</div>
+  <div class="badge">🚨 Semana volátil sob choque de Ormuz e novo Fed</div>
+</header>
+
+<section>
+  <h2><span class="icon">📌</span> Resumo Executivo da Semana</h2>
+  <p>A semana de <strong>18 a 22 de maio de 2026</strong> consolidou-se como um divisor de águas para os mercados globais, marcada por três grandes vetores: <strong>(1) a posse de Kevin Warsh no Fed</strong> na sexta-feira (22), substituindo Jerome Powell; <strong>(2) a continuidade da guerra EUA-Irã</strong> e o impasse no Estreito de Ormuz, com petróleo acima dos US$ 100; e <strong>(3) a deterioração do cenário doméstico brasileiro</strong>, com o Ibovespa registrando a <strong>6ª semana consecutiva de queda</strong> — a maior sequência desde 2018.</p>
+  
+  <p>No exterior, Wall Street fechou em alta com novos recordes apesar das tensões geopolíticas, sustentada por resultados corporativos sólidos e fluxo de capital migrando para emergentes asiáticos. O <strong>Treasury de 30 anos rompeu 5%</strong>, maior nível desde 2007, com o mercado precificando majoritariamente <strong>chance de ALTA de juros</strong> nos EUA ainda em 2026 — cenário que coloca Warsh em rota de colisão direta com Trump.</p>
+
+  <div class="highlights">
+    <div class="highlight-card">
+      <div class="num">176.209 pts</div>
+      <div class="label">Ibovespa (fechamento sexta)</div>
+      <span class="var down">▼ -0,61% semana</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">R$ 5,028</div>
+      <div class="label">Dólar à vista (PTAX sexta)</div>
+      <span class="var up">▲ -0,77% semana</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">US$ 112,10</div>
+      <div class="label">Petróleo Brent (julho)</div>
+      <span class="var down">▲ +5,2% semana</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">5,02%</div>
+      <div class="label">Treasury 30Y (máx. desde 2007)</div>
+      <span class="var down">▲ ALERTA</span>
+    </div>
+  </div>
+
+  <div class="alerta">
+    <strong>⚠️ Alerta da Semana:</strong> A combinação de inflação persistente nos EUA, petróleo elevado, fluxo estrangeiro saindo do Brasil (-R$ 11,7 bi em maio) e cenário eleitoral conturbado configura um <strong>"empilhamento de riscos"</strong> que pressiona ativos brasileiros. O mercado precificou novas <strong>altas de juros</strong> tanto nos EUA quanto no Brasil (Selic projetada em 13,25%).
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📈</span> Fechamento Semanal das Bolsas</h2>
+  <p>Acompanhe a trajetória diária dos principais índices globais durante a semana 18 a 22/05/2026:</p>
+  <div class="chart-container">
+    <canvas id="bolsasSemana"></canvas>
+  </div>
+
+  <h3>🌐 Performance Semanal Comparativa</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Índice / Ativo</th><th>Fechamento 22/05</th><th>Var. Semana</th><th>Var. Mês</th><th>Var. Ano</th></tr></thead>
+      <tbody>
+        <tr><td><strong>🇧🇷 Ibovespa</strong></td><td>176.209,61 pts</td><td><span class="var down">▼ -0,61%</span></td><td><span class="var down">▼ -5,93%</span></td><td><span class="var up">▲ +9,36%</span></td></tr>
+        <tr><td><strong>🇺🇸 S&P 500</strong></td><td>~5.985 pts</td><td><span class="var up">▲ +1,4%</span></td><td><span class="var up">▲ +2,8%</span></td><td><span class="var up">▲ +12,5%</span></td></tr>
+        <tr><td><strong>🇺🇸 Nasdaq</strong></td><td>~19.420 pts</td><td><span class="var up">▲ +1,8%</span></td><td><span class="var up">▲ +3,2%</span></td><td><span class="var up">▲ +14,8%</span></td></tr>
+        <tr><td><strong>🇺🇸 Dow Jones</strong></td><td>~43.180 pts</td><td><span class="var up">▲ +1,1%</span></td><td><span class="var up">▲ +1,9%</span></td><td><span class="var up">▲ +8,7%</span></td></tr>
+        <tr><td><strong>🇪🇺 Stoxx 600</strong></td><td>~528 pts</td><td><span class="var up">▲ +0,8%</span></td><td><span class="var down">▼ -1,2%</span></td><td><span class="var up">▲ +5,2%</span></td></tr>
+        <tr><td><strong>🇯🇵 Nikkei 225</strong></td><td>~38.450 pts</td><td><span class="var up">▲ +0,5%</span></td><td><span class="var down">▼ -2,1%</span></td><td><span class="var up">▲ +6,1%</span></td></tr>
+        <tr><td><strong>🇨🇳 Shanghai Composite</strong></td><td>~3.385 pts</td><td><span class="var up">▲ +2,1%</span></td><td><span class="var up">▲ +3,8%</span></td><td><span class="var up">▲ +8,2%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alerta">
+    <strong>📉 Destaque Negativo - Ibovespa:</strong> A bolsa brasileira <strong>destoou completamente</strong> do exterior, acumulando 6 quedas semanais consecutivas e caindo <strong>11,3% desde a máxima de 14/abril</strong> (198.657 pts). Em maio, recua 5,93%. Saída de estrangeiros: <strong>-R$ 11,7 bilhões</strong> no mês até dia 20. Estrangeiros estão migrando para <strong>emergentes asiáticos</strong>, atraídos por chips e commodities.
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">💵</span> Câmbio - Dólar e Moedas Globais</h2>
+  <p>O dólar viveu uma <strong>"semana de montanha-russa"</strong> no Brasil: começou a semana caindo abaixo de R$ 5,00 na segunda (R$ 4,998), voltou a subir com escalada das tensões geopolíticas e fechou a sexta a <strong>R$ 5,028</strong>. No acumulado semanal, ainda registrou <strong>queda de 0,77%</strong> ante o real.</p>
+
+  <div class="chart-container">
+    <canvas id="cambioDolar"></canvas>
+  </div>
+
+  <h3>💱 Cotações Semanais</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Par</th><th>18/05 SEG</th><th>19/05 TER</th><th>20/05 QUA</th><th>21/05 QUI</th><th>22/05 SEX</th><th>Var. Semana</th></tr></thead>
+      <tbody>
+        <tr><td><strong>USD/BRL</strong></td><td>4,998</td><td>5,015</td><td>5,045</td><td>5,005</td><td>5,028</td><td><span class="var up">▼ -0,77%</span></td></tr>
+        <tr><td><strong>EUR/BRL</strong></td><td>5,82</td><td>5,84</td><td>5,87</td><td>5,83</td><td>5,85</td><td><span class="var down">▲ +0,3%</span></td></tr>
+        <tr><td><strong>EUR/USD</strong></td><td>1,164</td><td>1,165</td><td>1,163</td><td>1,165</td><td>1,163</td><td><span class="var down">▲ +0,1%</span></td></tr>
+        <tr><td><strong>DXY (Dollar Index)</strong></td><td>103,8</td><td>103,5</td><td>103,9</td><td>103,6</td><td>103,7</td><td><span class="var neutral">► -0,1%</span></td></tr>
+        <tr><td><strong>USD/JPY</strong></td><td>156,2</td><td>156,8</td><td>157,1</td><td>156,5</td><td>156,9</td><td><span class="var down">▲ +0,4%</span></td></tr>
+        <tr><td><strong>USD/CNY</strong></td><td>7,25</td><td>7,24</td><td>7,26</td><td>7,25</td><td>7,24</td><td><span class="var up">▼ -0,1%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>📊 <strong>Leitura do Câmbio:</strong> O DXY ficou praticamente estável na semana, refletindo o equilíbrio entre dois vetores: (i) <strong>flight to quality</strong> (busca por dólar) por causa da guerra; e (ii) <strong>pressão estrutural negativa</strong> com o gigantesco déficit fiscal americano e o yield do Treasury de 30Y rompendo 5%. Para o Brasil, a leve apreciação do real na semana <strong>não compensa</strong> a saída de capital estrangeiro da B3.</p>
+</section>
+
+<section>
+  <h2><span class="icon">🌍</span> Geopolítica - Os Eixos de Tensão</h2>
+  
+  <h3>🚨 Eixo 1: EUA × Irã / Estreito de Ormuz</h3>
+  <p>A semana foi dominada pela <strong>continuidade do impasse</strong> entre EUA e Irã, próximo ao terceiro mês de conflito. Pontos-chave:</p>
+  <ul class="bullet">
+    <li><strong>Trump endureceu o tom</strong> no domingo (17/05) afirmando que "o tempo está se esgotando" para o Irã</li>
+    <li>O <strong>Estreito de Ormuz teve liberação PARCIAL</strong> sob coordenação da IRGC iraniana (Guarda Revolucionária), com mais de 30 navios escoltados durante a semana</li>
+    <li>O <strong>Paquistão emergiu como mediador</strong> nas negociações entre Washington e Teerã</li>
+    <li>O líder supremo do Irã declarou que <strong>"o urânio enriquecido deve permanecer no Irã"</strong> (qui/21), endurecendo a posição iraniana</li>
+    <li>Irã ameaçou <strong>"expandir o conflito além da região"</strong> caso EUA e Israel retomem ataques</li>
+  </ul>
+
+  <h3>🇺🇸 Eixo 2: Mudança na Liderança do Fed</h3>
+  <p><strong>Kevin Warsh tomou posse</strong> oficialmente como novo presidente do Federal Reserve na sexta-feira (22/05), substituindo Jerome Powell — que permanece na diretoria. Em seu discurso de posse, declarou: <em>"Não sou ingênuo quanto aos desafios que enfrentamos. A inflação pode ser mais baixa e o crescimento forte. Vou liderar um Fed voltado para reformas institucionais."</em> Trump elogiou: <em>"Crescimento econômico não significa alta da inflação."</em></p>
+  
+  <div class="alerta">
+    <strong>⚠️ O Grande Conflito:</strong> Apesar das declarações políticas, o mercado precifica <strong>chance MAJORITÁRIA de ALTA de juros</strong> pelo Fed ainda em 2026 — exatamente o oposto do que Trump deseja. A ata do Fed (divulgada quarta, 20/05) mostrou dirigentes preocupados com inflação persistente, alta de energia e fertilizantes, e prontos para <strong>"preparar terreno para alta do juro"</strong>.
+  </div>
+
+  <h3>🇪🇺 Eixo 3: Outras Frentes</h3>
+  <ul class="bullet">
+    <li><strong>EUA prorrogaram por 30 dias</strong> a isenção de sanções ao petróleo russo em alto-mar — medida emergencial para conter desabastecimento</li>
+    <li><strong>União Europeia avançou</strong> em acordo comercial com EUA (superou obstáculo decisivo)</li>
+    <li><strong>China e EUA</strong> fecharam acordos pontuais (jatos Boeing, carne bovina)</li>
+    <li>Xi e Trump <strong>discutiram redução de tarifas recíprocas</strong>, sinal de distensão parcial</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="icon">🇧🇷</span> Cenário Brasileiro - O Lado Doméstico</h2>
+  
+  <h3>📊 Indicadores da Semana</h3>
+  <ul class="bullet">
+    <li><strong>Boletim Focus (segunda):</strong> IPCA 2026 subiu de 4,91% para 4,92% (10ª alta semanal seguida); Selic 2026 projetada subiu de 13,00% para <strong>13,25%</strong></li>
+    <li><strong>Bloqueio orçamentário (sexta):</strong> Governo elevou bloqueio de R$ 1,6 bi para <strong>R$ 22,1 bilhões</strong>, sinal de aperto fiscal forçado pela arrecadação</li>
+    <li><strong>Datafolha (sexta):</strong> Lula ampliou vantagem sobre Flávio Bolsonaro de 3 para 9 pontos após áudios Vorcaro/Banco Master vazarem</li>
+    <li><strong>Fluxo estrangeiro:</strong> -R$ 11,7 bi em maio (até dia 20). No ano, ainda positivo em R$ 44,8 bi</li>
+  </ul>
+
+  <h3>📉 Setores Vencedores e Perdedores na Semana</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Setor</th><th>Variação Semanal</th><th>Destaques</th></tr></thead>
+      <tbody>
+        <tr><td>Siderurgia/Metalurgia</td><td><span class="var up">▲ +5,94%</span></td><td>USIM5 (+13,49%), CSNA3 (+4,83%), GGBR4 (+2,87%)</td></tr>
+        <tr><td>Comércio</td><td><span class="var up">▲ +3,8%</span></td><td>Reação a sinais de consumo resiliente</td></tr>
+        <tr><td>Petróleo & Gás</td><td><span class="var up">▲ +2,5%</span></td><td>PETR3, BRAV3, RECV3 surfando alta do petróleo</td></tr>
+        <tr><td>Bancos</td><td><span class="var down">▼ -2,1%</span></td><td>ITUB4 (-1,72%), BBDC4 (-1,56%), SANB11 (-1,78%)</td></tr>
+        <tr><td>Frigoríficos</td><td><span class="var down">▼ -3,8%</span></td><td>BEEF3 (-6,20%), MBRF3 (-4,05%)</td></tr>
+        <tr><td>Construção/Imobiliário</td><td><span class="var down">▼ -2,9%</span></td><td>Pressionado por juros altos (CYRE3 -3,93%)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="destaque-box">
+    <strong>💡 Insight do Analista:</strong> A semana confirmou minha tese de que estamos em um <strong>"mercado bifurcado"</strong>. Quem está no exterior, ganhou. Quem está no Brasil, perdeu. A bolsa local não consegue acompanhar Wall Street, refletindo: (i) <strong>prêmio de risco fiscal crescente</strong> com o bloqueio recorde de R$ 22 bi; (ii) <strong>juros futuros pressionados</strong>; e (iii) <strong>polarização política</strong> esquentando para 2026. O agro, beneficiado pelo dólar acima de R$ 5,00 e commodities firmes, é a contra-exceção positiva.
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📐</span> Análise Técnica (Gráfica)</h2>
+  <p>Graficamente, o <strong>Ibovespa</strong> entrou em <strong>tendência de baixa de médio prazo</strong> após perder 198.000 pontos em 14/abril. O índice já testa o suporte psicológico de 175.000 — região crítica que pode definir a próxima perna do movimento. Para o <strong>dólar</strong>, a região de R$ 4,98–5,05 forma um <strong>"triângulo de indecisão"</strong>, com viés altista no curto prazo dada a pressão geopolítica.</p>
+  
+  <div class="chart-container">
+    <canvas id="analiseTecIbov"></canvas>
+  </div>
+
+  <h3>🎯 Níveis Técnicos Críticos</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Ativo</th><th>Suporte Forte</th><th>Suporte Imediato</th><th>Atual</th><th>Resistência</th><th>Tendência CP</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ibovespa</strong></td><td>170.000</td><td>174.500</td><td>176.209</td><td>180.000 / 185.000</td><td><span class="var down">📉 Baixista</span></td></tr>
+        <tr><td><strong>USD/BRL</strong></td><td>R$ 4,90</td><td>R$ 4,98</td><td>R$ 5,028</td><td>R$ 5,10 / R$ 5,20</td><td><span class="var up">📈 Altista</span></td></tr>
+        <tr><td><strong>Brent (julho)</strong></td><td>US$ 100</td><td>US$ 108</td><td>US$ 112,10</td><td>US$ 118 / US$ 125</td><td><span class="var up">📈 Altista</span></td></tr>
+        <tr><td><strong>S&P 500</strong></td><td>5.800</td><td>5.920</td><td>5.985</td><td>6.050 / 6.150</td><td><span class="var up">📈 Altista</span></td></tr>
+        <tr><td><strong>Treasury 30Y</strong></td><td>4,80%</td><td>4,95%</td><td>5,02%</td><td>5,15% / 5,30%</td><td><span class="var down">📈 Pressão alta</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>🌡️ Termômetro de Mercado</h3>
+  <div class="termometro">
+    <div class="termo-item">
+      <div class="termo-label"><span>Risco Geopolítico Global</span><span>92%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:92%">CRÍTICO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão Inflacionária (EUA + Brasil)</span><span>85%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:85%">ALTO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Risco Fiscal Brasil</span><span>78%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:78%">ELEVADO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Aversão a Risco (VIX-like)</span><span>65%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:65%">MODERADO-ALTO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Probabilidade Alta Juros Fed 2026</span><span>62%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:62%">MAJORITÁRIO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Apetite por Emergentes (Brasil)</span><span>25%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-baixista" style="width:25%">FRACO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Apetite por Emergentes (Ásia)</span><span>75%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:75%">FORTE</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">🎯</span> Cenários para a Próxima Semana</h2>
+  <p>Considerando os vetores em jogo, projeto três cenários probabilísticos para a semana 25 a 29/05:</p>
+  
+  <div class="cenarios">
+    <div class="cenario cenario-otim">
+      <div class="prob">20%</div>
+      <div class="titulo">🟢 Otimista</div>
+      <div class="desc">Avanço diplomático real entre EUA-Irã via mediação paquistanesa. Reabertura plena de Ormuz. Petróleo recua para US$ 95. Dólar testa R$ 4,90. Ibovespa rompe 180.000 com fluxo retornando. Warsh sinaliza tom mais "dovish" sem confronto.</div>
+    </div>
+    <div class="cenario cenario-base">
+      <div class="prob">55%</div>
+      <div class="titulo">🟡 Base</div>
+      <div class="desc">Manutenção do status quo: Ormuz parcialmente aberto, petróleo entre US$ 105–115, dólar oscilando R$ 4,98–5,10, Ibovespa lateralizado em 174–180 mil. PCE americano (30/05) traz inflação resistente. Warsh adota tom cauteloso na primeira semana.</div>
+    </div>
+    <div class="cenario cenario-pess">
+      <div class="prob">25%</div>
+      <div class="titulo">🔴 Pessimista</div>
+      <div class="desc">Nova escalada militar Irã-EUA-Israel. Ormuz é totalmente fechado. Petróleo dispara para US$ 130. Dólar rompe R$ 5,15. Ibovespa quebra 170.000. PCE vem forte, Fed sinaliza alta iminente. Saída maciça de estrangeiros do Brasil acelera.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📅</span> Agenda Econômica - Semana 25 a 29/05</h2>
+  <div class="agenda">
+    <div class="agenda-item">
+      <div class="agenda-data">26/05<br>SEG</div>
+      <div><strong>🇺🇸 EUA:</strong> Memorial Day (FERIADO - bolsas e bancos fechados) | <strong>🇧🇷 Brasil:</strong> Boletim Focus BCB | <strong>🇨🇳 China:</strong> Lucros Industriais (abr)</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">27/05<br>TER</div>
+      <div><strong>🇺🇸 EUA:</strong> Confiança do Consumidor (Conference Board), Encomendas de Bens Duráveis | <strong>🇧🇷 Brasil:</strong> IPCA-15 maio (PRIMEIRA prévia oficial da inflação) - <strong>EVENTO-CHAVE</strong></div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">28/05<br>QUA</div>
+      <div><strong>🇺🇸 EUA:</strong> Beige Book do Fed (primeira leitura sob Warsh) | <strong>🌐 Global:</strong> Discursos de dirigentes do Fed (acompanhar tom)</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">29/05<br>QUI</div>
+      <div><strong>🇺🇸 EUA:</strong> PIB 1T26 (2ª prévia), Pedidos de Auxílio-Desemprego, Vendas de Imóveis Pendentes | <strong>🇧🇷 Brasil:</strong> Resultado Fiscal Primário, CAGED</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">30/05<br>SEX</div>
+      <div><strong>🇺🇸 EUA:</strong> <strong>PCE NÚCLEO (inflação preferida do Fed)</strong> - <strong>EVENTO MAIS IMPORTANTE DA SEMANA</strong> | <strong>🇪🇺 Zona Euro:</strong> CPI maio | <strong>🇧🇷 Brasil:</strong> Dívida Pública</div>
+    </div>
+  </div>
+
+  <h3>🌐 Eventos Geopolíticos em Monitoramento</h3>
+  <ul class="bullet">
+    <li>🛢️ <strong>Negociações EUA-Irã via Paquistão:</strong> qualquer avanço/retrocesso é gatilho de movimento ±5% no petróleo</li>
+    <li>🛡️ <strong>Estreito de Ormuz:</strong> monitorar fluxo de navios sob escolta IRGC</li>
+    <li>🇺🇸 <strong>Primeira semana COMPLETA de Warsh no Fed:</strong> discursos e sinalizações serão lidos com lupa</li>
+    <li>🇧🇷 <strong>Cena política brasileira:</strong> repercussão Datafolha + áudios Vorcaro deve continuar pressionando ativos</li>
+    <li>🇨🇳 <strong>China-EUA:</strong> evolução das negociações tarifárias após sinalização Xi-Trump</li>
+    <li>🛢️ <strong>OPEP+:</strong> rumores de reunião extraordinária para discutir cotas em meio à crise</li>
+  </ul>
+</section>
+
+<section class="expectativa">
+  <h2><span class="icon">🔮</span> O Que Esperar Desta Semana (25 a 29/05)</h2>
+  <p style="color:#fff;">Como analista, minhas percepções para a semana que se inicia:</p>
+  <ul>
+    <li><strong>PCE Núcleo (sexta 30/05) é O EVENTO:</strong> dado acima de 0,3% mensal valida alta de juros pelo Fed e detona ativos brasileiros. Abaixo de 0,2% é o cenário do alívio.</li>
+    <li><strong>IPCA-15 (terça 27/05):</strong> primeiro indicador "limpo" do mês para o BCB. Se vier acima de 0,55%, expectativa de Selic 13,25% se consolida e juros futuros disparam.</li>
+    <li><strong>Ibovespa em ponto crítico:</strong> rompimento dos 174.500 abre caminho para 170.000. Sustentação aqui pode gerar repique técnico até 182.000.</li>
+    <li><strong>Dólar:</strong> probabilidade ALTA de testar R$ 5,10 na semana. Acima disso, BC pode intervir com leilão de linha. Abaixo de R$ 4,95 é improvável sem distensão geopolítica.</li>
+    <li><strong>Setores defensivos:</strong> preferência por <strong>exportadoras</strong> (Vale, frigoríficos pós-correção), <strong>elétricas</strong> (TAEE, TRPL) e <strong>petróleo</strong> (PETR4) — beneficiados por dólar e commodities.</li>
+    <li><strong>Para o produtor rural:</strong> momento de <strong>travar câmbio favorável</strong> (acima de R$ 5,00) em parcela da receita futura, especialmente quem precisará importar fertilizantes ou tem dívida dolarizada.</li>
+    <li><strong>Risco principal:</strong> escalada militar inesperada Irã/Israel/EUA é o gatilho mais perigoso para movimento explosivo em todos os ativos em 48h.</li>
+    <li><strong>Oportunidade:</strong> se PCE vier benigno + houver avanço diplomático, abre-se janela técnica de compra em Ibovespa próximo de 174.500 com stop em 172.000.</li>
+  </ul>
+
+  <div class="destaque-box" style="background:rgba(255,255,255,.1);border-color:#ffd54f;color:#fff;">
+    <strong style="color:#ffd54f;">🎯 Resumo do Posicionamento:</strong> Semana de <strong>cautela máxima</strong> com viés <strong>defensivo</strong>. Para o produtor rural, é momento de proteger receita (hedge cambial), revisar custos de insumos (com fertilizantes pressionados) e <strong>NÃO acelerar compras</strong> de máquinas/insumos sem necessidade imediata. O agro está no <strong>"olho do furacão" benéfico</strong> do dólar alto, mas precisa monitorar de perto os custos.
+  </div>
+</section>
+
+<footer>
+  <div class="credenciais">
+    <h3>📊 Análise e Construção</h3>
+    <p class="nome">Dr. Sidney Souza</p>
+    <p class="cargo">Economista e Administrador Agrícola</p>
+    <p class="cargo">Estrategista Econômico do Produtor</p>
+    <p>Especialista em economia da fazenda e gestão de risco no agro</p>
+    <p class="tagline">"Transformamos dados da fazenda em decisões econômicas"</p>
+    <p class="tagline">"Ajudamos produtores a entender se o mercado sustenta seu negócio"</p>
+    <div class="contatos">
+      <p>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a></p>
+      <p>📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a></p>
+      <p>📱 (64) 9 9226-6886 | 📷 @ruralin.ai</p>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  // Gráfico 1 - Bolsas da Semana
+  const ctx1 = document.getElementById('bolsasSemana').getContext('2d');
+  new Chart(ctx1, {
+    type:'line',
+    data:{
+      labels:['18/05 SEG','19/05 TER','20/05 QUA','21/05 QUI','22/05 SEX'],
+      datasets:[
+        {label:'Ibovespa (pts) - Eixo Esquerdo',
+         data:[176975, 175800, 174900, 177640, 176209],
+         borderColor:'#3d5c1f',
+         backgroundColor:'rgba(61,92,31,0.15)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:5, yAxisID:'y'},
+        {label:'S&P 500 (pts) - Eixo Direito',
+         data:[5910, 5935, 5950, 5970, 5985],
+         borderColor:'#e74c3c',
+         backgroundColor:'rgba(231,76,60,0.1)',
+         borderWidth:3, tension:0.3, fill:false, pointRadius:5, yAxisID:'y1'},
+        {label:'Nasdaq (pts/10) - Eixo Direito',
+         data:[1908, 1918, 1925, 1935, 1942],
+         borderColor:'#7ba843',
+         backgroundColor:'rgba(123,168,67,0.1)',
+         borderWidth:3, tension:0.3, fill:false, pointRadius:5, yAxisID:'y1'}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        title:{display:true, text:'Bolsas Globais - Semana 18 a 22/05/2026', font:{size:14,weight:'bold'}},
+        legend:{position:'bottom', labels:{font:{size:11}}}
+      },
+      scales:{
+        y:{type:'linear', position:'left', title:{display:true,text:'Ibovespa (pts)'}},
+        y1:{type:'linear', position:'right', title:{display:true,text:'EUA (pts)'}, grid:{drawOnChartArea:false}}
+      }
+    }
+  });
+
+  // Gráfico 2 - Câmbio
+  const ctx2 = document.getElementById('cambioDolar').getContext('2d');
+  new Chart(ctx2, {
+    type:'line',
+    data:{
+      labels:['18/05 SEG','19/05 TER','20/05 QUA','21/05 QUI','22/05 SEX'],
+      datasets:[
+        {label:'USD/BRL (R$)',
+         data:[4.998, 5.015, 5.045, 5.005, 5.028],
+         borderColor:'#3d5c1f',
+         backgroundColor:'rgba(61,92,31,0.2)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:6},
+        {label:'Petróleo Brent (US$/barril)/22',
+         data:[5.10, 5.18, 5.22, 5.15, 5.20],
+         borderColor:'#c0392b',
+         backgroundColor:'rgba(192,57,43,0.1)',
+         borderWidth:2, tension:0.3, fill:false, pointRadius:5, borderDash:[5,3]}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        title:{display:true, text:'USD/BRL vs Brent (proxy) - Semana', font:{size:14,weight:'bold'}},
+        legend:{position:'bottom', labels:{font:{size:11}}}
+      },
+      scales:{ y:{ beginAtZero:false, title:{display:true,text:'R$ / Indicador'} } }
+    }
+  });
+
+  // Gráfico 3 - Análise Técnica Ibovespa
+  const ctx3 = document.getElementById('analiseTecIbov').getContext('2d');
+  new Chart(ctx3, {
+    type:'line',
+    data:{
+      labels:['14/04','21/04','28/04','05/05','12/05','19/05','22/05'],
+      datasets:[
+        {label:'Ibovespa - Trajetória', data:[198657, 192000, 188500, 183200, 179800, 175800, 176209],
+         borderColor:'#3d5c1f', backgroundColor:'rgba(61,92,31,0.2)',
+         borderWidth:3, tension:0.4, fill:true, pointRadius:6},
+        {label:'Resistência 185.000', data:[185000,185000,185000,185000,185000,185000,185000],
+         borderColor:'#e74c3c', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Resistência 180.000', data:[180000,180000,180000,180000,180000,180000,180000],
+         borderColor:'#e67e22', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Suporte Imediato 174.500', data:[174500,174500,174500,174500,174500,174500,174500],
+         borderColor:'#27ae60', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Suporte Forte 170.000', data:[170000,170000,170000,170000,170000,170000,170000],
+         borderColor:'#16a085', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        title:{display:true, text:'Ibovespa: Suportes, Resistências e Tendência (desde topo de 14/abril)', font:{size:14,weight:'bold'}},
+        legend:{position:'bottom', labels:{font:{size:11}}}
+      },
+      scales:{ y:{ beginAtZero:false, title:{display:true,text:'Pontos'} } }
+    }
+  });
+</script>
+
+</body>
+</html>

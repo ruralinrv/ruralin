@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rural IN | Informativo Semanal Açúcar — 18 a 22/05/2026</title>
+<meta name="description" content="Análise fundamentalista e técnica do mercado de açúcar — semana de 18 a 22 de maio de 2026. ICE NY, ICE Europe, Cepea, físico, mix, exportações, cenários e agenda da próxima semana." />
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --acucar:#D4A017;
+  --acucar-claro:#F4C842;
+  --acucar-escuro:#8B6914;
+  --cana:#7CB342;
+  --cana-escuro:#558B2F;
+  --bege:#FFF8DC;
+  --bege-claro:#FFFEF0;
+  --creme:#FFF9E6;
+  --verde-escuro:#0f4d22;
+  --verde:#1f7a3a;
+  --verde-claro:#27ae60;
+  --vermelho:#c0392b;
+  --vermelho-claro:#e74c3c;
+  --azul:#1f4e79;
+  --azul-claro:#3498db;
+  --texto:#2c3e50;
+  --dourado:#B8860B;
+  --cinza-claro:#ecf0f1;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Segoe UI',Tahoma,Arial,sans-serif;
+  background:linear-gradient(135deg,#fffef5 0%,#f9f4e0 50%,#fffef5 100%);
+  color:var(--texto);line-height:1.6;min-height:100vh;
+}
+.container{max-width:1280px;margin:0 auto;padding:24px 16px;}
+
+/* HEADER */
+header.hero{
+  background:
+    linear-gradient(135deg,rgba(85,139,47,.95) 0%,rgba(124,179,66,.90) 40%,rgba(212,160,23,.92) 100%),
+    radial-gradient(circle at 20% 80%,rgba(255,255,255,.10) 0%,transparent 50%);
+  color:#fff;padding:60px 24px;border-radius:20px;text-align:center;
+  box-shadow:0 12px 40px rgba(0,0,0,.20);margin-bottom:30px;position:relative;overflow:hidden;
+}
+header.hero::before{
+  content:"🍬";position:absolute;font-size:14em;right:-30px;top:-40px;
+  opacity:.10;pointer-events:none;
+}
+.logo-portal{
+  display:inline-flex;align-items:center;gap:14px;background:#fff;color:var(--acucar-escuro);
+  padding:14px 30px;border-radius:50px;font-weight:800;font-size:1.6rem;letter-spacing:1px;
+  margin-bottom:18px;box-shadow:0 6px 18px rgba(0,0,0,.30);position:relative;z-index:2;
+}
+.logo-portal-icon{
+  width:44px;height:44px;background:linear-gradient(135deg,var(--acucar),var(--dourado));
+  border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  box-shadow:inset 0 -3px 8px rgba(0,0,0,.15);
+}
+header h1{
+  font-size:clamp(1.7rem,4.5vw,2.8rem);margin-bottom:12px;
+  text-shadow:2px 2px 8px rgba(0,0,0,.35);position:relative;z-index:2;font-weight:800;
+}
+header .subtitulo{
+  font-size:clamp(1rem,2.4vw,1.25rem);opacity:.96;margin-bottom:20px;
+  position:relative;z-index:2;max-width:780px;margin-left:auto;margin-right:auto;
+}
+.badges-header{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2;}
+.badge{
+  background:var(--bege);color:var(--acucar-escuro);padding:10px 22px;
+  border-radius:30px;font-weight:800;font-size:.95rem;box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.badge.tecnico{background:#fff;color:var(--cana-escuro);}
+.badge.fundamental{background:var(--vermelho-claro);color:#fff;}
+
+/* RESUMO */
+.resumo-exec{
+  background:linear-gradient(135deg,#fff,var(--creme));border-left:6px solid var(--acucar);
+  padding:24px;border-radius:14px;margin-bottom:24px;box-shadow:0 4px 16px rgba(0,0,0,.08);
+}
+.resumo-exec h2{color:var(--acucar-escuro);margin-bottom:14px;font-size:1.4rem;}
+.resumo-exec p{font-size:.98rem;margin-bottom:10px;}
+.tag-resumo{display:inline-block;background:var(--acucar);color:#fff;padding:3px 12px;border-radius:14px;font-size:.78rem;font-weight:700;margin-right:6px;}
+
+/* PLACAR */
+.placar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:18px 0;}
+.placar-card{
+  background:#fff;border-radius:14px;padding:18px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.1);border-top:5px solid var(--acucar);
+}
+.placar-card .ref{font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600;}
+.placar-card .preco{font-size:1.7rem;font-weight:900;color:var(--acucar-escuro);margin:8px 0 4px;}
+.placar-card .var{font-size:.95rem;font-weight:800;padding:4px 12px;border-radius:18px;display:inline-block;}
+.var-down{background:#fdecea;color:var(--vermelho);}
+.var-up{background:#e8f7e8;color:var(--verde);}
+.var-neutro{background:#f0f0f0;color:#555;}
+
+/* SEÇÕES */
+section.bloco{background:#fff;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+section.bloco h2{
+  color:var(--acucar-escuro);font-size:clamp(1.15rem,2.4vw,1.5rem);margin-bottom:16px;
+  border-left:5px solid var(--acucar);padding-left:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+section.bloco h3{color:var(--acucar-escuro);font-size:1.1rem;margin:18px 0 10px;}
+section.bloco p{margin-bottom:12px;font-size:.95rem;}
+
+/* GRÁFICOS */
+.grafico-wrap{background:#fafdfa;border-radius:12px;padding:16px;margin:14px 0;border:1px solid #e8eef0;}
+.grafico-wrap h4{text-align:center;margin-bottom:10px;color:var(--acucar-escuro);}
+.grafico-canvas{position:relative;height:340px;width:100%;}
+@media(max-width:600px){.grafico-canvas{height:280px;}}
+
+/* TABELAS */
+.tabela-wrap{overflow-x:auto;margin:14px 0;}
+table.dados{width:100%;border-collapse:collapse;font-size:.9rem;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);background:#fff;min-width:560px;}
+table.dados th{background:var(--acucar-escuro);color:#fff;padding:11px 10px;text-align:left;font-weight:700;font-size:.88rem;}
+table.dados td{padding:10px;border-bottom:1px solid #e8eef0;}
+table.dados tbody tr:nth-child(even){background:#fafbf5;}
+table.dados tbody tr:hover{background:#fef9e7;}
+.pos{color:var(--verde);font-weight:700;}
+.neg{color:var(--vermelho);font-weight:700;}
+
+/* TERMÔMETROS */
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;}
+.termometro{
+  background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-top:4px solid var(--acucar);
+}
+.termometro h4{font-size:.98rem;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+.termometro .barra{width:100%;height:18px;background:#e8eef0;border-radius:10px;overflow:hidden;margin-bottom:10px;}
+.termometro .preench{height:100%;border-radius:10px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:.72rem;color:#fff;font-weight:700;}
+.termometro.alta .preench{background:linear-gradient(90deg,#27ae60,#2ecc71);}
+.termometro.media .preench{background:linear-gradient(90deg,#f39c12,#e67e22);}
+.termometro.baixa .preench{background:linear-gradient(90deg,#e67e22,#c0392b);}
+.termometro .legenda{font-size:.85rem;color:#555;}
+.nivel{font-weight:800;font-size:.78rem;padding:3px 10px;border-radius:12px;}
+.nivel-forte{background:#e8f7e8;color:var(--verde);}
+.nivel-fraco{background:#fdecea;color:var(--vermelho);}
+.nivel-neutro{background:#fff3cd;color:#856404;}
+
+/* CAIXAS */
+.destaque-box{background:linear-gradient(135deg,var(--creme),#fff);border-left:5px solid var(--acucar);padding:16px 18px;border-radius:10px;margin:14px 0;}
+.destaque-box.alerta{background:linear-gradient(135deg,#fdecea,#fef5f4);border-left-color:var(--vermelho);}
+.destaque-box.info{background:linear-gradient(135deg,#e8f4f8,#f0f8fa);border-left-color:var(--azul);}
+.destaque-box.positivo{background:linear-gradient(135deg,#e8f7e8,#f0fbf0);border-left-color:var(--verde);}
+.destaque-box ul{margin:8px 0;padding-left:20px;}
+.destaque-box li{margin-bottom:6px;font-size:.92rem;}
+.destaque-box h4{color:var(--acucar-escuro);margin-bottom:8px;}
+
+/* MIX */
+.mix-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0;}
+.mix-card{background:#fff;border:2px solid var(--bege);border-radius:10px;padding:14px;text-align:center;transition:.2s;}
+.mix-card:hover{border-color:var(--acucar);transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08);}
+.mix-card .titulo{font-size:.85rem;color:#666;font-weight:600;}
+.mix-card .valor{font-size:1.25rem;font-weight:900;color:var(--acucar-escuro);margin:6px 0;}
+.mix-card .obs{font-size:.78rem;color:#888;}
+
+/* CENÁRIOS */
+.cenario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px;}
+.cenario-card{padding:18px;border-radius:12px;background:#fff;box-shadow:0 3px 12px rgba(0,0,0,.08);position:relative;}
+.cenario-card.otim{border-top:5px solid var(--verde);}
+.cenario-card.base{border-top:5px solid var(--acucar);}
+.cenario-card.pess{border-top:5px solid var(--vermelho);}
+.cenario-card .prob{position:absolute;top:14px;right:14px;background:var(--acucar-escuro);color:#fff;padding:4px 10px;border-radius:14px;font-size:.78rem;font-weight:800;}
+.cenario-card h4{margin-bottom:10px;color:var(--acucar-escuro);}
+.cenario-card .preco-cen{font-size:1.3rem;font-weight:900;margin:8px 0;color:var(--acucar);}
+.cenario-card ul{padding-left:18px;font-size:.86rem;}
+.cenario-card li{margin-bottom:5px;}
+
+/* AGENDA */
+.agenda-list{list-style:none;}
+.agenda-list li{
+  background:#fafdfa;padding:14px;border-radius:10px;margin-bottom:10px;
+  border-left:4px solid var(--acucar);display:flex;gap:14px;align-items:flex-start;
+}
+.agenda-data{
+  background:var(--acucar-escuro);color:#fff;padding:8px 12px;border-radius:8px;
+  font-weight:800;font-size:.85rem;min-width:90px;text-align:center;
+}
+.agenda-conteudo h5{color:var(--acucar-escuro);margin-bottom:4px;font-size:.95rem;}
+.agenda-conteudo p{font-size:.85rem;margin:0;color:#555;}
+.agenda-impacto{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;margin-top:4px;}
+.impacto-alto{background:#fdecea;color:var(--vermelho);}
+.impacto-medio{background:#fff3cd;color:#856404;}
+.impacto-baixo{background:#e8f4f8;color:var(--azul);}
+
+/* ESPERAR */
+.esperar-box{
+  background:linear-gradient(135deg,var(--acucar-escuro),var(--acucar));
+  color:#fff;padding:30px;border-radius:16px;margin:20px 0;
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.esperar-box h2{color:#fff;border-left-color:var(--bege);margin-bottom:18px;}
+.esperar-box p{color:#fff;}
+.esperar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px;}
+.esperar-item{background:rgba(255,255,255,.12);padding:16px;border-radius:10px;backdrop-filter:blur(10px);}
+.esperar-item h4{color:var(--bege);margin-bottom:8px;font-size:1rem;}
+.esperar-item p{font-size:.88rem;margin:0;}
+
+/* FOOTER */
+footer{
+  background:linear-gradient(135deg,var(--verde-escuro),var(--verde));color:#fff;
+  padding:36px 24px;border-radius:16px;text-align:center;margin-top:20px;
+}
+footer .logo-portal{margin-bottom:14px;}
+.credenciais{margin:18px auto;max-width:720px;}
+.credenciais .label-cred{font-size:.85rem;opacity:.85;margin-bottom:6px;}
+.credenciais .nome{font-size:1.4rem;font-weight:800;margin:8px 0 4px;color:var(--bege);}
+.credenciais .titulo{font-size:.9rem;opacity:.95;margin-bottom:3px;}
+.frase-final{font-style:italic;font-size:.95rem;margin:16px 0;padding:12px;background:rgba(255,255,255,.10);border-radius:10px;}
+.contatos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;font-size:.92rem;}
+.contatos a{color:var(--bege);text-decoration:none;}
+.contatos a:hover{text-decoration:underline;}
+.disclaimer{margin-top:20px;font-size:.78rem;opacity:.8;padding-top:16px;border-top:1px solid rgba(255,255,255,.20);}
+
+@media(max-width:600px){
+  header.hero{padding:40px 18px;}
+  .container{padding:14px 10px;}
+  section.bloco{padding:18px;}
+  .cenario-card .prob{position:static;display:inline-block;margin-bottom:10px;}
+  .agenda-list li{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<header class="hero">
+  <div class="logo-portal">
+    <div class="logo-portal-icon">🍬</div>
+    RURAL <span style="color:var(--dourado)">IN</span>
+  </div>
+  <h1>🍬 Informativo Semanal — AÇÚCAR</h1>
+  <p class="subtitulo">Análise fundamentalista e técnica do mercado de açúcar, com leitura de cenários, gráficos e perspectivas para a próxima semana.</p>
+  <div class="badges-header">
+    <span class="badge">📅 18 a 22 de Maio de 2026</span>
+    <span class="badge fundamental">📊 Fundamentalista</span>
+    <span class="badge tecnico">📈 Técnica</span>
+  </div>
+</header>
+
+<!-- RESUMO -->
+<div class="resumo-exec">
+  <h2>📍 Resumo Executivo da Semana</h2>
+  <p><span class="tag-resumo">FUNDAMENTO</span> Semana de <strong>volatilidade extrema</strong> e indefinição estrutural. As consultorias travaram uma "<strong>guerra de projeções</strong>": Czarnikow vê superávit de 1,4 mi t em 2026/27 (China impulsiona oferta), enquanto Green Pool projeta <strong>déficit de 4,3 mi t</strong> (mais etanol em detrimento do açúcar). UE pode reduzir produção em 8-10% na próxima temporada, e <strong>El Niño + Ásia</strong> seguem como wild cards.</p>
+  <p><span class="tag-resumo">TÉCNICO</span> ICE Jul/26 oscilou em range estreito entre <strong>14,70¢ (mínima de sexta)</strong> e <strong>15,15¢ (máxima de terça)</strong>. Mercado encontrou <strong>suporte em 14,70¢</strong>, com fechamento semanal em <strong>14,70 ¢/lb (-0,68%)</strong>. Padrão de "indecisão" predominou — fundos cobrindo shorts mas pressão da safra brasileira limitando altas.</p>
+  <p><span class="tag-resumo">BRASIL</span> Cepea Cristal Branco SP fechou semana próximo de <strong>R$ 94,50/sc (50kg)</strong>, acumulando <strong>-3,91% a -4,76% em maio</strong>. Mercado físico <strong>travado</strong>: usinas resistem a preços baixos, oferta concentrada em açúcar de qualidade inferior, compradores esperando mais quedas. Início de safra atípico no Centro-Sul.</p>
+</div>
+
+<!-- PLACAR -->
+<section class="bloco">
+<h2>🎯 Placar da Semana — Principais Indicadores</h2>
+<div class="placar-grid">
+  <div class="placar-card">
+    <div class="ref">ICE NY Jul/26</div>
+    <div class="preco">14,70 ¢</div>
+    <span class="var var-down">▼ -0,68% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">ICE NY Out/26</div>
+    <div class="preco">15,17 ¢</div>
+    <span class="var var-down">▼ -0,79% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">ICE NY Mar/27</div>
+    <div class="preco">16,06 ¢</div>
+    <span class="var var-down">▼ -0,50% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Branco Londres Ago/26</div>
+    <div class="preco">US$ 445</div>
+    <span class="var var-up">▲ +1,48% sem.</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Cepea Cristal SP</div>
+    <div class="preco">R$ 94,50</div>
+    <span class="var var-down">▼ -3,91% mês</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Etanol Hidratado Paulínia</div>
+    <div class="preco">R$ 2.347</div>
+    <span class="var var-down">▼ -2,45% mês</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Dólar Comercial</div>
+    <div class="preco">R$ 4,99</div>
+    <span class="var var-down">▼ Pressão</span>
+  </div>
+  <div class="placar-card">
+    <div class="ref">Petróleo Brent</div>
+    <div class="preco">~US$ 78</div>
+    <span class="var var-neutro">◆ Volátil</span>
+  </div>
+</div>
+</section>
+
+<!-- GRÁFICO DIÁRIO -->
+<section class="bloco">
+<h2>📈 Análise Técnica — Evolução Diária ICE Açúcar Bruto Jul/26</h2>
+<p>A semana foi marcada por <strong>indecisão e oscilações curtas</strong>. Tentativa de recuperação no início (segunda e terça), com retomada a 15,01¢ a 15,15¢, mas <strong>realização de lucros na quarta</strong> (-1,9%) seguindo queda do petróleo. Quinta houve nova reação (+1,2%) com preocupações de oferta global e UE, mas <strong>sexta fechou em queda (-1,34%)</strong> com realização de lucros antes do feriado americano.</p>
+
+<div class="grafico-wrap">
+  <h4>Açúcar Bruto ICE NY Jul/26 — Fechamentos Diários (¢/lb)</h4>
+  <div class="grafico-canvas"><canvas id="graficoAcucarDia"></canvas></div>
+</div>
+
+<div class="destaque-box">
+  <h4>🔍 Leitura Técnica (Grafista)</h4>
+  <ul>
+    <li><strong>Suporte crítico:</strong> 14,70¢ (mínima de sexta) e 14,65¢ (mínima do mês). Rompimento abre caminho para 14,30¢.</li>
+    <li><strong>Resistência imediata:</strong> 15,15¢ (máxima de terça) e 15,40¢ (média de 21 dias).</li>
+    <li><strong>Padrão:</strong> "Doji semanal" — mercado indefinido entre fundamentos opostos (déficit Green Pool × superávit Czarnikow).</li>
+    <li><strong>Volatilidade intra-semana:</strong> 45 pontos (3,1%) — alta, sinal de disputa entre comprados e vendidos.</li>
+    <li><strong>Posição dos fundos:</strong> Líquida vendida, com ligeira redução. Espaço para short squeeze caso de notícia altista.</li>
+    <li><strong>Correlação com petróleo:</strong> Muito forte — petróleo em alta favorece etanol e tira cana da produção de açúcar.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TABELA DIÁRIA -->
+<section class="bloco">
+<h2>📋 Tabela Completa — Fechamentos Diários ICE NY</h2>
+<div class="tabela-wrap">
+<table class="dados">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Dia</th>
+      <th>Jul/26 (¢/lb)</th>
+      <th>Variação</th>
+      <th>%</th>
+      <th>Driver Principal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>15/05 (ref.)</td><td>Sex ant.</td><td>14,80</td><td class="neg">-0,19</td><td class="neg">-1,27%</td><td>Pressão safra + câmbio</td></tr>
+    <tr><td>18/05</td><td>Segunda</td><td>14,73</td><td class="neg">-0,07</td><td class="neg">-0,47%</td><td>Cautela, dólar forte</td></tr>
+    <tr><td>19/05</td><td>Terça</td><td>15,01</td><td class="pos">+0,28</td><td class="pos">+1,90%</td><td>🚀 Cobertura shorts, máx 15,15¢</td></tr>
+    <tr><td>20/05</td><td>Quarta</td><td>14,73</td><td class="neg">-0,28</td><td class="neg">-1,87%</td><td>Petróleo cai, Czarnikow superávit</td></tr>
+    <tr><td>21/05</td><td>Quinta</td><td>14,90</td><td class="pos">+0,17</td><td class="pos">+1,15%</td><td>UE -10%, preocupação oferta</td></tr>
+    <tr><td>22/05</td><td>Sexta</td><td>14,70</td><td class="neg">-0,20</td><td class="neg">-1,34%</td><td>Realização pré-Memorial Day</td></tr>
+    <tr style="background:#fdecea;font-weight:700;"><td colspan="2">FECHAMENTO SEMANAL</td><td>14,70</td><td class="neg">-0,10</td><td class="neg">-0,68%</td><td>Indecisão, lateralização</td></tr>
+  </tbody>
+</table>
+</div>
+</section>
+
+<!-- MIX CANA -->
+<section class="bloco">
+<h2>🌾 Mix Centro-Sul — Cana para Açúcar × Etanol (Início Safra 2026/27)</h2>
+<p>Com o petróleo abaixo de US$ 80 e o etanol em queda (-2,45% no mês em Paulínia), o <strong>mix está pendendo para o açúcar</strong>. Segundo a Covrig Analytics, o açúcar está <strong>0,7 a 1,0¢/lb mais lucrativo</strong> que o etanol no momento — o que está fazendo as usinas brasileiras desviarem cana para o açúcar e amplifica a pressão de oferta no curto prazo.</p>
+
+<div class="mix-grid">
+  <div class="mix-card">
+    <div class="titulo">Açúcar Bruto NY Jul/26</div>
+    <div class="valor">14,70 ¢/lb</div>
+    <div class="obs">Equivalente físico FOB</div>
+  </div>
+  <div class="mix-card">
+    <div class="titulo">Etanol Hidratado SP</div>
+    <div class="valor">R$ 2,35/L</div>
+    <div class="obs">Paulínia indicador</div>
+  </div>
+  <div class="mix-card">
+    <div class="titulo">Petróleo Brent</div>
+    <div class="valor">US$ 78</div>
+    <div class="obs">Volatilidade alta</div>
+  </div>
+  <div class="mix-card">
+    <div class="titulo">Vantagem Açúcar vs. Etanol</div>
+    <div class="valor">+0,7 a 1,0 ¢/lb</div>
+    <div class="obs">Fonte: Covrig Analytics</div>
+  </div>
+  <div class="mix-card">
+    <div class="titulo">Mix Açúcar Esperado 2026/27</div>
+    <div class="valor">~51-52%</div>
+    <div class="obs">vs. 48,5% em 2025/26</div>
+  </div>
+  <div class="mix-card">
+    <div class="titulo">Moagem Centro-Sul Estimada</div>
+    <div class="valor">~625 mi t</div>
+    <div class="obs">+2% vs. 2025/26</div>
+  </div>
+</div>
+</section>
+
+<!-- FUNDAMENTOS -->
+<section class="bloco">
+<h2>🌍 Análise Fundamentalista — Drivers da Semana</h2>
+
+<h3>⚔️ Guerra de Projeções — Superávit × Déficit Global 2026/27</h3>
+<div class="destaque-box alerta">
+  <h4>📊 Consultorias divididas — alta volatilidade</h4>
+  <ul>
+    <li><strong>Czarnikow (20/05):</strong> Superávit de <strong>1,4 milhão de toneladas</strong> em 2026/27 — impulsionado por aumento da produção na China.</li>
+    <li><strong>Green Pool (recente):</strong> Déficit de <strong>4,3 milhões de toneladas</strong> — fator: mais etanol em detrimento do açúcar nas usinas.</li>
+    <li><strong>StoneX:</strong> Déficit pequeno de <strong>0,55 milhão de toneladas</strong> em 2026/27.</li>
+    <li><strong>OIA (Organização Internacional do Açúcar):</strong> Revisou para CIMA superávit em 2025/26.</li>
+    <li><strong>Tradução:</strong> Mercado segue refém da próxima projeção — qualquer revisão grande move o preço.</li>
+  </ul>
+</div>
+
+<h3>🇪🇺 União Europeia — Vetor Altista da Semana</h3>
+<div class="destaque-box positivo">
+  <ul>
+    <li>Trading desks reportam que UE — <strong>3º maior produtor mundial</strong> — pode ter <strong>queda de produção de 8% a 10%</strong> na próxima temporada.</li>
+    <li>Causa: <strong>redução de plantações</strong> de beterraba (rentabilidade baixa) + condições climáticas adversas em alguns países.</li>
+    <li>Soma-se a <strong>preocupações com clima nos EUA</strong> (também produtor relevante).</li>
+    <li>Impacto: aumenta demanda por açúcar bruto brasileiro para refino, fator <strong>altista no médio prazo</strong>.</li>
+  </ul>
+</div>
+
+<h3>🇧🇷 Brasil — Pressão de Safra e Mercado Travado</h3>
+<div class="destaque-box alerta">
+  <ul>
+    <li>Centro-Sul em <strong>início de safra 2026/27</strong> — moagem avançando, oferta aumentando.</li>
+    <li>Cepea Cristal SP: <strong>R$ 94,08/sc (21/05)</strong>, acumulando <strong>-3,91% no mês</strong> (chegou a -4,76% na quarta).</li>
+    <li>Mercado spot <strong>travado</strong>: usinas resistem a preços baixos, oferta de açúcar de qualidade inferior, compradores aguardando piso.</li>
+    <li>Moagem com queda no Norte/Nordeste (atraso sazonal).</li>
+    <li>Safra de cana no <strong>interior de SP começa mais cedo</strong> com expectativa de produção elevada.</li>
+    <li>Mix favorável ao açúcar: usinas estão desviando cana do etanol para açúcar (lucratividade +0,7-1,0¢).</li>
+  </ul>
+</div>
+
+<h3>🛢️ Petróleo & Etanol — Correlação Crucial</h3>
+<div class="destaque-box info">
+  <ul>
+    <li>Petróleo (Brent) oscila em torno de <strong>US$ 75-80</strong>, com picos pontuais por tensões geopolíticas (EUA-Irã).</li>
+    <li>Quedas no petróleo derrubam etanol — incentivando mais açúcar, ampliando oferta global.</li>
+    <li>Etanol hidratado Paulínia em <strong>R$ 2.347/m³ (-2,45% mês)</strong>.</li>
+    <li>Negociações EUA-Irã: <strong>complicações</strong> reportadas na quinta — petróleo subiu temporariamente, sustentando açúcar.</li>
+  </ul>
+</div>
+
+<h3>💵 Câmbio e Macro</h3>
+<div class="destaque-box info">
+  <ul>
+    <li>Dólar testou <strong>R$ 5,00</strong>, com viés de queda na semana — pressão sobre exportações.</li>
+    <li>Índice DXY (força do dólar global) provocou liquidação de commodities por fundos no meio da semana.</li>
+    <li><strong>El Niño</strong> projetado para 2026/27 pode reduzir produção asiática (Tailândia, Índia) — fator altista de médio prazo.</li>
+    <li>China amplia produção doméstica — fator baixista estrutural.</li>
+  </ul>
+</div>
+</section>
+
+<!-- TERMÔMETROS -->
+<section class="bloco">
+<h2>🌡️ Termômetro de Mercado — Açúcar</h2>
+<div class="termometro-grid">
+
+  <div class="termometro media">
+    <h4>Momentum Técnico <span class="nivel nivel-neutro">INDEFINIDO</span></h4>
+    <div class="barra"><div class="preench" style="width:48%">48%</div></div>
+    <p class="legenda">Range estreito (14,70-15,15¢), doji semanal.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Safra Brasil 2026/27 <span class="nivel nivel-fraco">PRESSÃO</span></h4>
+    <div class="barra"><div class="preench" style="width:25%">25%</div></div>
+    <p class="legenda">Moagem avançando, oferta crescente, mix favorável ao açúcar.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>UE -8% a -10% produção <span class="nivel nivel-forte">ALTISTA</span></h4>
+    <div class="barra"><div class="preench" style="width:70%">70%</div></div>
+    <p class="legenda">3º maior produtor reduz oferta — apoio estrutural.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>China Produção <span class="nivel nivel-fraco">+OFERTA</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">Aumento citado pela Czarnikow, base do superávit 1,4 mi t.</p>
+  </div>
+
+  <div class="termometro media">
+    <h4>Petróleo / Etanol <span class="nivel nivel-neutro">VOLÁTIL</span></h4>
+    <div class="barra"><div class="preench" style="width:45%">45%</div></div>
+    <p class="legenda">Brent em US$ 75-80, queda de etanol -2,45% no mês.</p>
+  </div>
+
+  <div class="termometro baixa">
+    <h4>Físico Brasil <span class="nivel nivel-fraco">TRAVADO</span></h4>
+    <div class="barra"><div class="preench" style="width:30%">30%</div></div>
+    <p class="legenda">Liquidez baixíssima, -3,91% no mês, usinas resistem.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Risco Climático El Niño <span class="nivel nivel-forte">SUSPEITA</span></h4>
+    <div class="barra"><div class="preench" style="width:62%">62%</div></div>
+    <p class="legenda">Ásia em risco — Tailândia e Índia podem reduzir produção.</p>
+  </div>
+
+  <div class="termometro alta">
+    <h4>Posição Fundos <span class="nivel nivel-forte">VENDIDA</span></h4>
+    <div class="barra"><div class="preench" style="width:68%">68%</div></div>
+    <p class="legenda">Líquidos vendidos — potencial de short squeeze.</p>
+  </div>
+
+</div>
+</section>
+
+<!-- COMPARATIVO -->
+<section class="bloco">
+<h2>📊 Comparativo — ICE NY × Cepea Brasil × Londres</h2>
+<p>Análise integrada mostra <strong>divergência interessante</strong>: o açúcar branco em Londres se sustentou (+1,48% na semana) enquanto o açúcar bruto em NY caiu (-0,68%) e o Cepea brasileiro perdeu fôlego. O <strong>prêmio branco vs. bruto se ampliou</strong>, refletindo a expectativa de menor oferta de refinado vinda da UE.</p>
+
+<div class="grafico-wrap">
+  <h4>ICE Açúcar Bruto NY Jul/26 × Cepea Cristal SP (Semana 18-22/05)</h4>
+  <div class="grafico-canvas"><canvas id="graficoComparativo"></canvas></div>
+</div>
+
+<div class="grafico-wrap">
+  <h4>Curva Forward ICE NY — Estrutura Temporal</h4>
+  <div class="grafico-canvas"><canvas id="graficoCurva"></canvas></div>
+</div>
+
+<div class="destaque-box positivo">
+  <h4>💡 Insight do Analista</h4>
+  <p>"A <strong>curva forward em contango acentuado</strong> (Jul/26 a 14,70¢ → Mar/27 a 16,06¢, diferença de 1,36¢ ou +9,3%) sinaliza que o mercado <strong>espera recuperação no segundo semestre</strong>. O prêmio reflete três fatores: (1) menor oferta UE confirmada, (2) risco climático El Niño na Ásia, (3) eventual reversão do mix para etanol caso o petróleo suba. Para o produtor brasileiro: <strong>os contratos Out/26 e Mar/27 a 15,17¢ e 16,06¢ representam oportunidade superior</strong> para hedge da safra ainda no campo. NÃO trave o Jul/26 — aproveite a curva."</p>
+</div>
+</section>
+
+<!-- CENÁRIOS -->
+<section class="bloco">
+<h2>🔮 Cenários para a Próxima Semana (25 a 29/05)</h2>
+<p>Considerando guerra de projeções, agenda climática, calendário macro (Memorial Day na seg) e fundamentos brasileiros:</p>
+
+<div class="cenario-grid">
+
+  <div class="cenario-card otim">
+    <span class="prob">25%</span>
+    <h4>🟢 OTIMISTA</h4>
+    <div class="preco-cen">ICE Jul: 15,20 – 15,80 ¢</div>
+    <ul>
+      <li>Confirmação oficial de queda UE -10%</li>
+      <li>Short squeeze: fundos cobrem agressivamente</li>
+      <li>Petróleo volta acima de US$ 82 → mais etanol</li>
+      <li>Tensão EUA-Irã se agrava</li>
+      <li>Cepea Cristal: R$ 96-99/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card base">
+    <span class="prob">50%</span>
+    <h4>🟡 BASE (mais provável)</h4>
+    <div class="preco-cen">ICE Jul: 14,60 – 15,20 ¢</div>
+    <ul>
+      <li>Lateralização entre suporte e resistência</li>
+      <li>Memorial Day (seg) reduz liquidez</li>
+      <li>Indecisão entre projeções (Czarnikow × Green Pool)</li>
+      <li>Safra brasileira segue pressionando</li>
+      <li>Cepea Cristal: R$ 93-96/sc</li>
+    </ul>
+  </div>
+
+  <div class="cenario-card pess">
+    <span class="prob">25%</span>
+    <h4>🔴 PESSIMISTA</h4>
+    <div class="preco-cen">ICE Jul: 14,00 – 14,60 ¢</div>
+    <ul>
+      <li>Rompimento do suporte de 14,70¢</li>
+      <li>Petróleo cai abaixo de US$ 72 → etanol perde competitividade</li>
+      <li>Mais usinas confirmam mix pró-açúcar</li>
+      <li>Dólar cai para R$ 4,85 (DXY forte)</li>
+      <li>Cepea Cristal: R$ 90-93/sc</li>
+    </ul>
+  </div>
+
+</div>
+</section>
+
+<!-- AGENDA -->
+<section class="bloco">
+<h2>📅 Agenda Econômica — Semana de 25 a 29/05/2026</h2>
+<ul class="agenda-list">
+
+  <li>
+    <div class="agenda-data">SEG<br>25/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 Memorial Day — Feriado nos EUA</h5>
+      <p>ICE Futures US FECHADA. Sem pregão do açúcar bruto NY. Liquidez global reduzida. Londres opera, mas com volume reduzido.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">TER<br>26/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 Quinzena Unica — Relatório Centro-Sul</h5>
+      <p>Dados da 1ª quinzena de maio: moagem, ATR, mix açúcar/etanol. <strong>Crucial para confirmar tese do mix pró-açúcar</strong>.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUA<br>27/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇧🇷 IPCA-15 de Maio + Estoques EIA Petróleo</h5>
+      <p>Inflação ao consumidor (impacto câmbio) e estoques de petróleo nos EUA. Açúcar reage ao petróleo via canal etanol.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">QUI<br>28/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PIB EUA 1T26 (2ª prévia) + Exportações Semanais USDA</h5>
+      <p>Dado forte = dólar forte = ICE pressionada. Dados de embarques brasileiros de açúcar também são monitorados.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>🇺🇸 PCE — Inflação preferida do FED</h5>
+      <p>Define direção do dólar global e juros futuros. Vital para câmbio brasileiro e para o ICE em dólares.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEX<br>29/05</div>
+    <div class="agenda-conteudo">
+      <h5>📈 Relatório COT (Commitment of Traders)</h5>
+      <p>Posição dos fundos no açúcar. Indica se short squeeze está se formando. Vital para leitura técnica.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEM<br>25-29</div>
+    <div class="agenda-conteudo">
+      <h5>🌍 Tensões EUA-Irã + Negociações EUA-China</h5>
+      <p>Petróleo segue volátil. Eventual acordo Irã-EUA derruba Brent e pressiona açúcar via canal etanol.</p>
+      <span class="agenda-impacto impacto-alto">Impacto Alto</span>
+    </div>
+  </li>
+
+  <li>
+    <div class="agenda-data">SEM<br>25-29</div>
+    <div class="agenda-conteudo">
+      <h5>☁️ Clima Ásia + UE — El Niño & beterraba</h5>
+      <p>Monitorar previsões para Tailândia, Índia e Europa Ocidental. Confirmações de seca/redução plantio = altista.</p>
+      <span class="agenda-impacto impacto-medio">Impacto Médio</span>
+    </div>
+  </li>
+
+</ul>
+</section>
+
+<!-- O QUE ESPERAR -->
+<div class="esperar-box">
+  <h2>🎯 O Que Esperar Desta Próxima Semana</h2>
+  <p style="font-size:1.05rem;margin-bottom:14px;">A semana de 25 a 29/05 começa com <strong>ICE NY fechada na segunda (Memorial Day)</strong> e tem como roteiro central o duelo entre <strong>pressão da safra brasileira × redução UE + risco climático El Niño</strong>. Nossa leitura integrada:</p>
+
+  <div class="esperar-grid">
+
+    <div class="esperar-item">
+      <h4>⚖️ 1. Indecisão deve persistir</h4>
+      <p>Cenário-base (50% prob.) aponta para <strong>lateralização entre 14,60-15,20¢</strong>. Mercado precisa de catalisador definitivo (relatório UNICA, COT, clima).</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🌾 2. UNICA 1ª quinzena maio (terça) é o ponto-chave</h4>
+      <p>Confirmação de <strong>mix pró-açúcar elevado</strong> em SP/Centro-Sul pressiona NY. Mix menor que esperado dispara alta. <strong>Monitorar com atenção</strong>.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇪🇺 3. UE é vetor altista crescente</h4>
+      <p>Confirmação oficial de queda de 8-10% na produção europeia pode disparar <strong>recuperação para 15,40-15,80¢</strong>.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🛢️ 4. Petróleo dita o ritmo</h4>
+      <p>Brent acima de US$ 80 favorece etanol → tira cana do açúcar → altista. Brent abaixo de US$ 72 → mais açúcar → baixista. <strong>Faixa crítica de definição</strong>.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>💵 5. PCE (sexta) define dólar</h4>
+      <p>Inflação alta nos EUA = dólar forte = açúcar mais barato em ¢/lb (pressão). Inflação fraca = dólar fraco = espaço para recuperação.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>📈 6. Short squeeze possível</h4>
+      <p>Fundos ainda líquidos vendidos. Qualquer notícia altista (UE, El Niño, Irã) pode disparar <strong>cobertura agressiva de posições</strong>.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>🇧🇷 7. Físico brasileiro permanece travado</h4>
+      <p>Cepea Cristal deve oscilar entre <strong>R$ 93-96/sc</strong>. Usinas resistem, compradores aguardam piso. Liquidez seguirá baixa.</p>
+    </div>
+
+    <div class="esperar-item">
+      <h4>📊 8. Curva forward é a oportunidade</h4>
+      <p><strong>Out/26 a 15,17¢ e Mar/27 a 16,06¢</strong> oferecem prêmio relevante sobre Jul/26. Janela ideal para hedge de longo prazo.</p>
+    </div>
+
+  </div>
+
+  <div style="background:rgba(255,255,255,.15);padding:16px;border-radius:10px;margin-top:18px;">
+    <strong style="color:var(--bege);">🎯 RECOMENDAÇÃO ESTRATÉGICA RURAL IN:</strong>
+    <p style="margin-top:8px;font-size:.95rem;">Para o <strong>produtor de cana / usina com posição vendedora</strong>: as cotações Jul/26 em 14,70¢ estão <strong>próximas do piso de curto prazo</strong> — NÃO trave volumes adicionais neste vencimento. <strong>Use Out/26 (15,17¢) e Mar/27 (16,06¢) para hedge gradual de 30-40% da safra restante</strong> — esses vencimentos refletem melhor o cenário de recuperação esperado. Para quem ainda não tem hedge: aguarde teste de 14,60¢ — se rompido com força, espere reação técnica a partir de 14,30¢. Para o <strong>mercado interno (Cepea)</strong>: produto de qualidade superior tem prêmio — <strong>segure açúcar cristal de melhor padrão</strong> aguardando recuperação no 2º semestre, quando exportações ganham força. <strong>Atenção máxima ao relatório UNICA na terça-feira</strong> — pode mudar tudo em uma sessão.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="logo-portal">
+  <div class="logo-portal-icon">🍬</div>
+  RURAL <span style="color:var(--dourado)">IN</span>
+</div>
+<div class="credenciais">
+  <div class="label-cred">Análise e Construção</div>
+  <div class="nome">Dr. Sidney Souza</div>
+  <div class="titulo">Economista & Administrador Agrícola</div>
+  <div class="titulo">Estrategista Econômico do Produtor</div>
+  <div class="titulo">Especialista em Economia da Fazenda & Gestão de Risco no Agro</div>
+  <div class="frase-final">"Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio."</div>
+  <div class="contatos">
+    <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">🌐 ruralin-site</a>
+    <a href="mailto:sidneyagro@gmail.com">📧 sidneyagro@gmail.com</a>
+    <a href="https://wa.me/5564992266886" target="_blank">📱 (64) 9 9226-6886</a>
+    <a href="https://instagram.com/ruralin.ai" target="_blank">📸 @ruralin.ai</a>
+  </div>
+</div>
+<p class="disclaimer">📅 Informativo publicado em 24 de maio de 2026 — Conteúdo informativo, não constitui recomendação de investimento.<br>© Rural IN — Todos os direitos reservados.</p>
+</footer>
+
+</div>
+
+<script>
+// GRÁFICO 1 - Evolução Diária ICE Açúcar
+const ctxDia = document.getElementById('graficoAcucarDia').getContext('2d');
+new Chart(ctxDia, {
+  type: 'line',
+  data: {
+    labels: ['Sex 15/05','Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [{
+      label: 'ICE Açúcar Bruto Jul/26 (¢/lb)',
+      data: [14.80, 14.73, 15.01, 14.73, 14.90, 14.70],
+      borderColor: '#D4A017',
+      backgroundColor: 'rgba(244,200,66,0.25)',
+      borderWidth: 3,
+      tension: 0.3,
+      pointBackgroundColor: '#8B6914',
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      fill: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.parsed.y.toFixed(2) + ' ¢/lb';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        min: 14.50, max: 15.20,
+        ticks: { callback: function(value) { return value.toFixed(2) + ' ¢'; } },
+        grid: { color: 'rgba(0,0,0,0.05)' }
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 2 - Comparativo ICE NY x Cepea
+const ctxComp = document.getElementById('graficoComparativo').getContext('2d');
+new Chart(ctxComp, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'ICE NY Jul/26 (¢/lb)',
+        data: [14.73, 15.01, 14.73, 14.90, 14.70],
+        borderColor: '#D4A017',
+        backgroundColor: 'rgba(212,160,23,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y',
+        pointRadius: 5
+      },
+      {
+        label: 'Cepea Cristal SP (R$/sc 50kg)',
+        data: [95.00, 94.00, 93.25, 94.08, 94.50],
+        borderColor: '#558B2F',
+        backgroundColor: 'rgba(85,139,47,0.10)',
+        borderWidth: 3,
+        tension: 0.3,
+        yAxisID: 'y1',
+        pointRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: {
+        type: 'linear', position: 'left',
+        title: { display: true, text: 'ICE NY (¢/lb)' },
+        ticks: { callback: v => v.toFixed(2) + ' ¢' },
+        min: 14.5, max: 15.2
+      },
+      y1: {
+        type: 'linear', position: 'right',
+        title: { display: true, text: 'Cepea (R$/sc)' },
+        ticks: { callback: v => 'R$ ' + v.toFixed(2) },
+        grid: { drawOnChartArea: false },
+        min: 92, max: 96
+      },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// GRÁFICO 3 - Curva Forward
+const ctxCurva = document.getElementById('graficoCurva').getContext('2d');
+new Chart(ctxCurva, {
+  type: 'bar',
+  data: {
+    labels: ['Jul/26','Out/26','Mar/27','Mai/27','Jul/27'],
+    datasets: [{
+      label: 'Fechamento 22/05 (¢/lb)',
+      data: [14.70, 15.17, 16.06, 16.45, 16.78],
+      backgroundColor: [
+        'rgba(212,160,23,0.6)',
+        'rgba(212,160,23,0.7)',
+        'rgba(39,174,96,0.7)',
+        'rgba(39,174,96,0.8)',
+        'rgba(39,174,96,0.9)'
+      ],
+      borderColor: '#8B6914',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top' },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.parsed.y.toFixed(2) + ' ¢/lb';
+          }
+        }
+      }
+    },
+    scales: {
+      y: { min: 14, max: 17.5, ticks: { callback: v => v.toFixed(2) + ' ¢' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>

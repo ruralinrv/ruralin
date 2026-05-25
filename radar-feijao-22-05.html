@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informativo Semanal do Feijão | 18 a 22 de maio de 2026 - Ruralin AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif;}
+  body{background:linear-gradient(135deg,#f5f7f0 0%,#e8f0d8 100%);color:#2c3e2d;line-height:1.6;padding:10px;}
+  .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.12);overflow:hidden;}
+  header{background:linear-gradient(135deg,#3d5c1f 0%,#5a8030 50%,#7ba843 100%);color:#fff;padding:30px 20px;text-align:center;position:relative;}
+  .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .logo-circle{width:60px;height:60px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#3d5c1f;box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .logo-text{font-size:28px;font-weight:bold;letter-spacing:1px;}
+  .logo-text span{color:#ffd54f;}
+  header h1{font-size:clamp(20px,4vw,32px);margin-top:10px;font-weight:700;}
+  header .subtitle{font-size:clamp(13px,2.5vw,16px);opacity:.95;margin-top:8px;}
+  .badge{display:inline-block;background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;margin-top:10px;font-size:14px;backdrop-filter:blur(8px);}
+  section{padding:25px 20px;border-bottom:1px solid #e8e8e8;}
+  h2{color:#3d5c1f;font-size:clamp(18px,3vw,24px);margin-bottom:18px;padding-bottom:8px;border-bottom:3px solid #7ba843;display:flex;align-items:center;gap:10px;}
+  h2 .icon{font-size:28px;}
+  h3{color:#5a8030;font-size:clamp(16px,2.5vw,19px);margin:15px 0 10px;}
+  p{margin-bottom:12px;text-align:justify;font-size:15px;}
+  .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:20px 0;}
+  .highlight-card{background:linear-gradient(135deg,#f9fbf4,#eef4dc);border-left:5px solid #7ba843;padding:18px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .3s;}
+  .highlight-card:hover{transform:translateY(-3px);}
+  .highlight-card .num{font-size:28px;font-weight:bold;color:#3d5c1f;}
+  .highlight-card .label{font-size:13px;color:#666;margin-top:4px;}
+  .highlight-card .var{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:bold;margin-top:6px;}
+  .up{background:#d4edda;color:#155724;}
+  .down{background:#f8d7da;color:#721c24;}
+  .neutral{background:#fff3cd;color:#856404;}
+  .chart-container{position:relative;width:100%;height:350px;margin:20px 0;background:#fafafa;padding:15px;border-radius:12px;}
+  @media (max-width:600px){.chart-container{height:280px;}}
+  table{width:100%;border-collapse:collapse;margin:15px 0;font-size:14px;overflow-x:auto;display:block;}
+  @media(min-width:600px){table{display:table;}}
+  th{background:#3d5c1f;color:#fff;padding:10px;text-align:left;}
+  td{padding:10px;border-bottom:1px solid #eee;}
+  tr:nth-child(even){background:#f9fbf4;}
+  .termometro{margin:20px 0;}
+  .termo-item{margin-bottom:18px;}
+  .termo-label{display:flex;justify-content:space-between;margin-bottom:5px;font-weight:600;font-size:14px;}
+  .termo-bar{width:100%;height:24px;background:#eee;border-radius:12px;overflow:hidden;position:relative;}
+  .termo-fill{height:100%;border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-size:12px;font-weight:bold;transition:width 1s;}
+  .fill-altista{background:linear-gradient(90deg,#7ba843,#3d5c1f);}
+  .fill-baixista{background:linear-gradient(90deg,#e74c3c,#c0392b);}
+  .fill-neutral{background:linear-gradient(90deg,#f39c12,#e67e22);}
+  .cenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px;margin:20px 0;}
+  .cenario{padding:18px;border-radius:12px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+  .cenario-otim{background:linear-gradient(135deg,#27ae60,#16a085);}
+  .cenario-base{background:linear-gradient(135deg,#f39c12,#e67e22);}
+  .cenario-pess{background:linear-gradient(135deg,#e74c3c,#c0392b);}
+  .cenario .prob{font-size:32px;font-weight:bold;}
+  .cenario .titulo{font-size:18px;font-weight:bold;margin:8px 0;}
+  .cenario .desc{font-size:14px;opacity:.95;}
+  .alerta{background:#fff8e1;border-left:5px solid #f39c12;padding:15px;border-radius:8px;margin:15px 0;}
+  .alerta strong{color:#d68910;}
+  .agenda{background:#f0f4e8;padding:15px;border-radius:10px;margin:15px 0;}
+  .agenda-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #c8d6a8;}
+  .agenda-item:last-child{border-bottom:none;}
+  .agenda-data{background:#3d5c1f;color:#fff;padding:8px 12px;border-radius:8px;font-weight:bold;min-width:75px;text-align:center;font-size:13px;}
+  .expectativa{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:25px;border-radius:12px;margin:20px 0;}
+  .expectativa h2{color:#fff;border-bottom-color:#ffd54f;}
+  .expectativa ul{list-style:none;padding:0;}
+  .expectativa li{padding:8px 0 8px 28px;position:relative;}
+  .expectativa li::before{content:"▶";position:absolute;left:0;color:#ffd54f;}
+  footer{background:#2c3e2d;color:#fff;padding:25px 20px;text-align:center;}
+  .credenciais{max-width:600px;margin:0 auto;}
+  .credenciais h3{color:#ffd54f;margin-bottom:10px;}
+  .credenciais p{margin:4px 0;font-size:14px;text-align:center;}
+  .credenciais .nome{font-size:18px;font-weight:bold;color:#fff;}
+  .credenciais .cargo{font-style:italic;color:#c8d6a8;}
+  .contatos{margin-top:15px;padding-top:15px;border-top:1px solid #4a5a3a;font-size:13px;}
+  .contatos a{color:#ffd54f;text-decoration:none;}
+  .contatos a:hover{text-decoration:underline;}
+  .tagline{font-style:italic;color:#a8c878;margin:10px 0;font-size:13px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">
+    <div class="logo-circle">🌾</div>
+    <div class="logo-text">RURALIN<span>.AI</span></div>
+  </div>
+  <h1>📊 Informativo Semanal do Feijão</h1>
+  <div class="subtitle">Análise Fundamentalista & Técnica | 18 a 22 de Maio de 2026</div>
+  <div class="badge">🫘 Mercado em valorização histórica</div>
+</header>
+
+<section>
+  <h2><span class="icon">📌</span> Resumo Executivo da Semana</h2>
+  <p>A semana de <strong>18 a 22 de maio de 2026</strong> consolidou um cenário fortemente <strong>altista</strong> para o feijão no Brasil. O <strong>feijão-carioca</strong> de qualidade superior atingiu <strong>R$ 372,00/sc no sul do Paraná</strong> (Cepea/CNA), com lotes "extra" superando <strong>R$ 430-470/sc</strong> em São Paulo e Minas Gerais. O <strong>feijão-preto</strong> saltou para <strong>R$ 204,36/sc</strong>, acumulando alta de 21,8% no mês. A combinação de <strong>colheita atrasada no PR</strong>, <strong>geadas no Sul</strong>, <strong>quebra de 40-50% no preto</strong> (Ibrafe) e <strong>estoques baixos</strong> impulsiona os preços a patamares históricos.</p>
+  
+  <div class="highlights">
+    <div class="highlight-card">
+      <div class="num">R$ 372</div>
+      <div class="label">Carioca Sup. - Sul PR (Cepea)</div>
+      <span class="var up">▲ +9,81% no mês</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">R$ 204</div>
+      <div class="label">Preto - Sul PR (Cepea)</div>
+      <span class="var up">▲ +21,8% no mês</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">R$ 415-470</div>
+      <div class="label">Carioca Extra - SP/MG</div>
+      <span class="var up">▲ Recorde histórico</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">+70%</div>
+      <div class="label">Carioca - Variação Anual</div>
+      <span class="var up">▲ Maior da série</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📈</span> Cotações da Semana (Seg a Sex)</h2>
+  <p>Evolução diária do feijão-carioca (superior) e feijão-preto no sul do Paraná, segundo levantamento Cepea/CNA e referências de mercado:</p>
+  <div class="chart-container">
+    <canvas id="precosSemana"></canvas>
+  </div>
+  
+  <h3>📍 Cotações por Praça (sexta-feira 22/05)</h3>
+  <table>
+    <thead>
+      <tr><th>Praça</th><th>Tipo</th><th>R$/sc 60kg</th><th>Var. Semanal</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Sul do Paraná</td><td>Carioca Superior</td><td>R$ 372,00</td><td><span class="var up">▲ +3,9%</span></td></tr>
+      <tr><td>Interior SP/Triângulo MG</td><td>Carioca Extra (nota 9)</td><td>R$ 415,00</td><td><span class="var up">▲ +5,1%</span></td></tr>
+      <tr><td>Capital SP (atacado)</td><td>Carioca Premium</td><td>R$ 470,00</td><td><span class="var up">▲ +6,8%</span></td></tr>
+      <tr><td>Noroeste MG</td><td>Carioca Comercial</td><td>R$ 400,00</td><td><span class="var up">▲ +4,2%</span></td></tr>
+      <tr><td>Mato Grosso</td><td>Carioca Intermediário</td><td>R$ 345,00</td><td><span class="var up">▲ +3,3%</span></td></tr>
+      <tr><td>Sul do Paraná</td><td>Preto</td><td>R$ 204,36</td><td><span class="var up">▲ +8,2%</span></td></tr>
+      <tr><td>Curitiba/PR</td><td>Preto</td><td>R$ 198,50</td><td><span class="var up">▲ +14,08%</span></td></tr>
+      <tr><td>Itapeva/SP</td><td>Preto</td><td>R$ 195,00</td><td><span class="var up">▲ +8,0%</span></td></tr>
+      <tr><td>Santa Catarina</td><td>Carioca Médio</td><td>R$ 268,77</td><td><span class="var up">▲ +3,6%</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="icon">🌾</span> Análise Fundamentalista</h2>
+  
+  <h3>🔻 Oferta: O Coração da Alta</h3>
+  <p>A <strong>retração estrutural da oferta</strong> é o motor da disparada. Segundo dados oficiais e análises da Safras & Mercado e Ibrafe:</p>
+  <ul style="margin-left:20px;margin-bottom:15px;">
+    <li>📉 <strong>Produção PR 2025/26:</strong> revisada para 745 mil t (Deral), recuo de 100+ mil t vs. ciclos anteriores</li>
+    <li>📉 <strong>2ª safra PR:</strong> estimada em 377 mil t — cerca de <strong>30% menor</strong> que 2025</li>
+    <li>📉 <strong>Área 1ª safra PR:</strong> queda de <strong>44%</strong> no maior produtor nacional</li>
+    <li>📉 <strong>Quebra feijão-preto:</strong> entre <strong>40% e 50%</strong> (Ibrafe), levando à possível necessidade de importação no 2º semestre</li>
+    <li>📉 <strong>Colheita PR:</strong> avanço ainda próximo de <strong>10%</strong>, atrasada pelas chuvas e maturação tardia</li>
+    <li>📉 <strong>Estoques iniciais 2026/27:</strong> projeção Safras aponta queda de <strong>46,3%</strong></li>
+    <li>📉 <strong>Relação estoque/consumo:</strong> <strong>2,2%</strong> — nível tecnicamente apertado</li>
+  </ul>
+
+  <h3>🌡️ Clima: Geadas e Excesso de Chuva</h3>
+  <p>A semana foi marcada por <strong>geadas em áreas de baixada no Sul</strong> e <strong>chuvas excessivas no Paraná</strong>, que comprometem o enchimento dos grãos, peneira e qualidade final. O frio intenso entrou no radar como novo vetor altista, com risco de novas perdas em lavouras tardias.</p>
+
+  <h3>🛒 Demanda</h3>
+  <p>Demanda <strong>defensiva</strong>, com empacotadoras focadas em reposição mínima, mas <strong>disputa intensa por lotes nota 9+</strong>. O repasse ao varejo já começa a chegar ao consumidor final, gerando alerta inflacionário. A liquidez no spot está baixa, com pregões praticamente inoperantes em algumas sessões — o mercado opera por amostras.</p>
+
+  <h3>🌍 Cenário Externo e Macro</h3>
+  <p>Possibilidade de <strong>importação de feijão-preto</strong> (Argentina, China) no 2º semestre para suprir o déficit. Câmbio em torno de R$ 5,00 reduz competitividade da importação, sustentando preços internos. Exportações brasileiras projetadas com recuo de <strong>29,8%</strong>.</p>
+</section>
+
+<section>
+  <h2><span class="icon">📐</span> Análise Técnica (Gráfica)</h2>
+  <p>O gráfico do feijão-carioca apresenta uma <strong>tendência de alta consolidada</strong>, com sucessivos topos e fundos ascendentes desde meados de abril. Os indicadores apontam:</p>
+  
+  <div class="chart-container">
+    <canvas id="analiseTecnica"></canvas>
+  </div>
+
+  <h3>🧭 Termômetro de Mercado</h3>
+  <div class="termometro">
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão Altista (Fundamentos)</span><span>92%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:92%;">FORTE</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Risco Climático</span><span>85%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:85%;">ELEVADO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Liquidez de Mercado</span><span>30%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-baixista" style="width:30%;">BAIXA</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Demanda do Varejo</span><span>55%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:55%;">MODERADA</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão de Importação (2S)</span><span>70%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:70%;">ALTA</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Risco de Realização de Lucros</span><span>45%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:45%;">MODERADO</div></div>
+    </div>
+  </div>
+
+  <h3>🎯 Níveis Técnicos — Carioca Sul PR</h3>
+  <table>
+    <thead><tr><th>Nível</th><th>Valor (R$/sc)</th><th>Comentário</th></tr></thead>
+    <tbody>
+      <tr><td>🔴 Resistência 2</td><td>R$ 400,00</td><td>Próximo objetivo psicológico</td></tr>
+      <tr><td>🟠 Resistência 1</td><td>R$ 385,00</td><td>Topo de curto prazo</td></tr>
+      <tr><td>⚪ Preço atual</td><td>R$ 372,00</td><td>Tendência altista mantida</td></tr>
+      <tr><td>🟢 Suporte 1</td><td>R$ 355,00</td><td>Média móvel 9 períodos</td></tr>
+      <tr><td>🟢 Suporte 2</td><td>R$ 338,00</td><td>Rompimento mudaria viés</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="icon">🎲</span> Cenários para a Próxima Semana</h2>
+  <div class="cenarios">
+    <div class="cenario cenario-otim">
+      <div class="prob">55%</div>
+      <div class="titulo">🟢 Cenário Altista</div>
+      <div class="desc">Continuidade da alta com carioca buscando R$ 385-400/sc. Geadas adicionais no Sul + colheita travada + demanda industrial reforçam o movimento. Preto pode buscar R$ 220/sc.</div>
+    </div>
+    <div class="cenario cenario-base">
+      <div class="prob">30%</div>
+      <div class="titulo">🟡 Cenário Lateral</div>
+      <div class="desc">Acomodação em R$ 365-380/sc para o carioca, com mercado digerindo as altas recentes. Realização parcial de lucros, mas sem reversão de tendência. Liquidez segue baixa.</div>
+    </div>
+    <div class="cenario cenario-pess">
+      <div class="prob">15%</div>
+      <div class="titulo">🔴 Cenário Baixista</div>
+      <div class="desc">Avanço rápido da colheita no PR + dólar em queda + retração forte do varejo pressionam para R$ 350/sc. Improvável no curto prazo, mas possível com clima favorável.</div>
+    </div>
+  </div>
+
+  <div class="alerta">
+    <strong>⚠️ Atenção Produtor:</strong> Os patamares atuais são <strong>históricos</strong>. Considere travar parte da produção (hedge físico) entre <strong>30% a 50%</strong> nos níveis atuais, especialmente para lotes nota 8+. A janela de oportunidade pode encurtar com a chegada do feijão irrigado de GO/MG/BA/SP entre <strong>fim de junho e início de julho</strong>, conforme alerta o Ibrafe.
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📅</span> Agenda Econômica - Próxima Semana</h2>
+  <div class="agenda">
+    <div class="agenda-item">
+      <div class="agenda-data">SEG 25/05</div>
+      <div><strong>Boletim Focus (BCB)</strong> — projeções IPCA, Selic e PIB. Impacto no câmbio e custo de carrego.</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">TER 26/05</div>
+      <div><strong>Conab — Boletim de Grãos</strong> e <strong>Deral/PR</strong> — atualização da safra paranaense. Pode confirmar nova quebra.</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">QUA 27/05</div>
+      <div><strong>IPCA-15 maio (IBGE)</strong> — alimentação no domicílio pode refletir alta do feijão no varejo.</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">QUI 28/05</div>
+      <div><strong>Cepea/CNA</strong> — indicador semanal do feijão. <strong>FOMC Minutes (EUA)</strong> — impacto no dólar.</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">SEX 29/05</div>
+      <div><strong>Fechamento mensal de maio</strong> — possível ajuste técnico. Monitorar boletins climáticos do Inmet/Climatempo.</div>
+    </div>
+  </div>
+</section>
+
+<section class="expectativa">
+  <h2><span class="icon">🔮</span> O Que Esperar Desta Semana?</h2>
+  <ul>
+    <li><strong>Tendência altista preservada</strong> com viés de busca de R$ 385-400/sc para o carioca superior, sustentada pelo atraso de colheita e baixa oferta.</li>
+    <li><strong>Geadas no radar:</strong> nova entrada de massa polar prevista para meados/final da semana pode amplificar o movimento.</li>
+    <li><strong>Liquidez seguirá baixa</strong> — operações por amostragem dominam, com prêmios elevados para lotes nota 9+.</li>
+    <li><strong>Feijão-preto:</strong> mantém disparada com fundamento de quebra estrutural (40-50%) — atenção à entrada de notícias sobre importação.</li>
+    <li><strong>Janela estratégica de venda:</strong> aproveite os atuais patamares históricos para travar parte da safra. O alívio chega com o irrigado (fim jun/início jul).</li>
+    <li><strong>Cuidado com a inflação alimentar:</strong> repasse ao varejo já é realidade — pode acelerar políticas governamentais de contenção.</li>
+    <li><strong>Câmbio é peça-chave:</strong> dólar próximo a R$ 5,00 reduz pressão de importação. Atenção ao Copom e Fed.</li>
+    <li><strong>Próxima leitura do Cepea (quinta):</strong> deve confirmar novas altas no acumulado mensal — provável superação dos R$ 380/sc no indicador.</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="credenciais">
+    <h3>📋 Análise e Construção</h3>
+    <p class="nome">Dr. Sidney Souza</p>
+    <p class="cargo">Economista e Administrador Agrícola</p>
+    <p class="cargo">Estrategista Econômico do Produtor</p>
+    <p>Especialista em economia da fazenda e gestão de risco no agro</p>
+    <p class="tagline">"Transformamos dados da fazenda em decisões econômicas"</p>
+    <p class="tagline">"Ajudamos produtores a entender se o mercado sustenta seu negócio"</p>
+    <div class="contatos">
+      🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+      ✉️ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+      📱 (64) 9 9226-6886 &nbsp;|&nbsp; 📸 @ruralin.ai
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+// Gráfico 1 - Cotações da Semana
+const ctx1 = document.getElementById('precosSemana').getContext('2d');
+new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: ['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+    datasets: [
+      {
+        label: 'Carioca Superior - Sul PR (R$/sc)',
+        data: [358, 362, 366, 369, 372],
+        borderColor: '#3d5c1f',
+        backgroundColor: 'rgba(123,168,67,0.2)',
+        borderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        pointRadius: 5,
+        pointBackgroundColor: '#3d5c1f'
+      },
+      {
+        label: 'Carioca Extra - SP/MG (R$/sc)',
+        data: [395, 402, 408, 412, 415],
+        borderColor: '#e67e22',
+        backgroundColor: 'rgba(243,156,18,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        pointRadius: 5,
+        pointBackgroundColor: '#e67e22'
+      },
+      {
+        label: 'Feijão Preto - Sul PR (R$/sc)',
+        data: [189, 193, 197, 201, 204.36],
+        borderColor: '#2c3e50',
+        backgroundColor: 'rgba(44,62,80,0.15)',
+        borderWidth: 3,
+        tension: 0.3,
+        fill: true,
+        pointRadius: 5,
+        pointBackgroundColor: '#2c3e50'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: 'Evolução Diária - Semana 18 a 22/05/2026', font:{size:14, weight:'bold'}},
+      legend: { position: 'bottom' }
+    },
+    scales: {
+      y: { 
+        title: { display: true, text: 'R$/saca 60kg' },
+        beginAtZero: false
+      }
+    }
+  }
+});
+
+// Gráfico 2 - Análise Técnica com suportes e resistências
+const ctx2 = document.getElementById('analiseTecnica').getContext('2d');
+new Chart(ctx2, {
+  type: 'line',
+  data: {
+    labels: ['15/04','22/04','29/04','06/05','13/05','18/05','22/05'],
+    datasets: [
+      {
+        label: 'Carioca Sup. - Tendência',
+        data: [310, 318, 330, 338, 350, 358, 372],
+        borderColor: '#3d5c1f',
+        backgroundColor: 'rgba(123,168,67,0.25)',
+        borderWidth: 3,
+        tension: 0.4,
+        fill: true,
+        pointRadius: 6
+      },
+      {
+        label: 'Resistência R$ 385',
+        data: [385,385,385,385,385,385,385],
+        borderColor: '#e74c3c',
+        borderDash: [6,6],
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false
+      },
+      {
+        label: 'Resistência R$ 400',
+        data: [400,400,400,400,400,400,400],
+        borderColor: '#c0392b',
+        borderDash: [6,6],
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false
+      },
+      {
+        label: 'Suporte R$ 355',
+        data: [355,355,355,355,355,355,355],
+        borderColor: '#27ae60',
+        borderDash: [6,6],
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false
+      },
+      {
+        label: 'Suporte R$ 338',
+        data: [338,338,338,338,338,338,338],
+        borderColor: '#16a085',
+        borderDash: [6,6],
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      title: { display: true, text: 'Tendência + Suportes e Resistências - Carioca Sul PR', font:{size:14, weight:'bold'}},
+      legend: { position: 'bottom' }
+    },
+    scales: {
+      y: { title: { display: true, text: 'R$/saca 60kg' }, beginAtZero: false }
+    }
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Informativo Semanal de Fertilizantes | 18 a 22 de maio de 2026 - Ruralin AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif;}
+  body{background:linear-gradient(135deg,#f5f7f0 0%,#e8f0d8 100%);color:#2c3e2d;line-height:1.6;padding:10px;}
+  .container{max-width:1200px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.12);overflow:hidden;}
+  header{background:linear-gradient(135deg,#3d5c1f 0%,#5a8030 50%,#7ba843 100%);color:#fff;padding:30px 20px;text-align:center;position:relative;}
+  .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap;justify-content:center;}
+  .logo-circle{width:60px;height:60px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:22px;color:#3d5c1f;box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .logo-text{font-size:28px;font-weight:bold;letter-spacing:1px;}
+  .logo-text span{color:#ffd54f;}
+  header h1{font-size:clamp(20px,4vw,32px);margin-top:10px;font-weight:700;}
+  header .subtitle{font-size:clamp(13px,2.5vw,16px);opacity:.95;margin-top:8px;}
+  .badge{display:inline-block;background:rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;margin-top:10px;font-size:14px;backdrop-filter:blur(8px);}
+  section{padding:25px 20px;border-bottom:1px solid #e8e8e8;}
+  h2{font-size:clamp(18px,3vw,24px);margin-bottom:18px;padding-bottom:8px;border-bottom:3px solid #7ba843;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  h2 .icon{font-size:28px;}
+  h3{font-size:clamp(16px,2.5vw,19px);margin:15px 0 10px;color:#3d5c1f;}
+  p{margin-bottom:12px;text-align:justify;font-size:15px;}
+  .highlights{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin:20px 0;}
+  .highlight-card{background:linear-gradient(135deg,#f9fbf4,#eef4dc);border-left:5px solid #7ba843;padding:18px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .3s;}
+  .highlight-card:hover{transform:translateY(-3px);}
+  .highlight-card .num{font-size:26px;font-weight:bold;color:#3d5c1f;}
+  .highlight-card .label{font-size:13px;color:#666;margin-top:4px;}
+  .highlight-card .var{display:inline-block;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:bold;margin-top:6px;}
+  .up{background:#f8d7da;color:#721c24;}
+  .down{background:#d4edda;color:#155724;}
+  .neutral{background:#fff3cd;color:#856404;}
+  .chart-container{position:relative;width:100%;height:380px;margin:20px 0;background:#fafafa;padding:15px;border-radius:12px;}
+  @media (max-width:600px){.chart-container{height:300px;padding:10px;}}
+  .table-wrapper{overflow-x:auto;margin:15px 0;}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:500px;}
+  th{background:#3d5c1f;color:#fff;padding:10px;text-align:left;}
+  td{padding:10px;border-bottom:1px solid #eee;}
+  tr:nth-child(even){background:#f9fbf4;}
+  .termometro{margin:20px 0;}
+  .termo-item{margin-bottom:18px;}
+  .termo-label{display:flex;justify-content:space-between;margin-bottom:5px;font-weight:600;font-size:14px;flex-wrap:wrap;gap:5px;}
+  .termo-bar{width:100%;height:24px;background:#eee;border-radius:12px;overflow:hidden;position:relative;}
+  .termo-fill{height:100%;border-radius:12px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-size:12px;font-weight:bold;transition:width 1s;}
+  .fill-altista{background:linear-gradient(90deg,#e74c3c,#c0392b);}
+  .fill-baixista{background:linear-gradient(90deg,#27ae60,#16a085);}
+  .fill-neutral{background:linear-gradient(90deg,#f39c12,#e67e22);}
+  .cenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin:20px 0;}
+  .cenario{padding:18px;border-radius:12px;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.1);}
+  .cenario-otim{background:linear-gradient(135deg,#27ae60,#16a085);}
+  .cenario-base{background:linear-gradient(135deg,#f39c12,#e67e22);}
+  .cenario-pess{background:linear-gradient(135deg,#e74c3c,#c0392b);}
+  .cenario .prob{font-size:32px;font-weight:bold;}
+  .cenario .titulo{font-size:18px;font-weight:bold;margin:8px 0;}
+  .cenario .desc{font-size:14px;opacity:.95;}
+  .alerta{background:#fff8e1;border-left:5px solid #f39c12;padding:15px;border-radius:8px;margin:15px 0;}
+  .alerta strong{color:#d68910;}
+  .agenda{background:#f0f4e8;padding:15px;border-radius:10px;margin:15px 0;}
+  .agenda-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px dashed #c8d6a8;align-items:center;flex-wrap:wrap;}
+  .agenda-item:last-child{border-bottom:none;}
+  .agenda-data{background:#3d5c1f;color:#fff;padding:8px 12px;border-radius:8px;font-weight:bold;min-width:75px;text-align:center;font-size:13px;}
+  .expectativa{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:25px 20px;border-radius:12px;margin:20px 0;}
+  .expectativa h2{color:#fff;border-bottom-color:#ffd54f;}
+  .expectativa ul{list-style:none;padding:0;}
+  .expectativa li{padding:8px 0 8px 28px;position:relative;font-size:15px;}
+  .expectativa li::before{content:"▶";position:absolute;left:0;color:#ffd54f;}
+  footer{background:#2c3e2d;color:#fff;padding:25px 20px;text-align:center;}
+  .credenciais{max-width:600px;margin:0 auto;}
+  .credenciais h3{color:#ffd54f;margin-bottom:10px;}
+  .credenciais p{margin:4px 0;font-size:14px;text-align:center;}
+  .credenciais .nome{font-size:18px;font-weight:bold;color:#fff;}
+  .credenciais .cargo{font-style:italic;color:#c8d6a8;}
+  .contatos{margin-top:15px;padding-top:15px;border-top:1px solid #4a5a3a;font-size:13px;word-wrap:break-word;}
+  .contatos a{color:#ffd54f;text-decoration:none;}
+  .contatos a:hover{text-decoration:underline;}
+  .tagline{font-style:italic;color:#a8c878;margin:10px 0;font-size:13px;}
+  ul.bullet{margin-left:20px;margin-bottom:15px;}
+  ul.bullet li{margin-bottom:6px;font-size:15px;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">
+    <div class="logo-circle">🌱</div>
+    <div class="logo-text">RURALIN<span>.AI</span></div>
+  </div>
+  <h1>🧪 Informativo Semanal de Fertilizantes</h1>
+  <div class="subtitle">Análise Fundamentalista & Técnica | 18 a 22 de Maio de 2026</div>
+  <div class="badge">⚠️ Mercado pressionado pelo choque de Hormuz</div>
+</header>
+
+<section>
+  <h2><span class="icon">📌</span> Resumo Executivo da Semana</h2>
+  <p>A semana de <strong>18 a 22 de maio de 2026</strong> foi marcada por um mercado global de fertilizantes em <strong>"holding pattern"</strong> (compasso de espera), pressionado pelo fechamento do <strong>Estreito de Ormuz</strong> em meio ao conflito Irã–EUA. Os <strong>nitrogenados</strong> (ureia) seguem em correção técnica após o pico de março, mas mantêm-se <strong>53% acima do nível pré-conflito</strong>. Os <strong>fosfatados</strong> (MAP/DAP) avançaram com a ausência das exportações chinesas e escassez de enxofre. O <strong>cloreto de potássio (KCl)</strong> ficou estável, com compradores resistindo a novas altas. No Brasil, o gasto com importação cresceu <strong>16,7%</strong> no quadrimestre, deteriorando a <strong>relação de troca</strong> a níveis não vistos desde 2022.</p>
+  
+  <div class="highlights">
+    <div class="highlight-card">
+      <div class="num">US$ 730</div>
+      <div class="label">Ureia FOB Oriente Médio (OMIFCO)</div>
+      <span class="var up">▲ +22% YoY</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">US$ 947</div>
+      <div class="label">MAP EUA varejo (USDA 15/05)</div>
+      <span class="var up">▲ +15% YoY</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">US$ 493</div>
+      <div class="label">Potash EUA varejo (USDA)</div>
+      <span class="var neutral">► Estável</span>
+    </div>
+    <div class="highlight-card">
+      <div class="num">R$ 3.500</div>
+      <div class="label">Ureia média Brasil (s/ frete)</div>
+      <span class="var up">▲ +27,2% YoY</span>
+    </div>
+  </div>
+
+  <div class="alerta">
+    <strong>⚠️ Alerta Geopolítico:</strong> O Estreito de Ormuz, por onde passa cerca de <strong>1/3 do comércio marítimo global de ureia e amônia</strong>, segue efetivamente fechado. Aproximadamente <strong>20 navios carregados</strong> de ureia destinados à Austrália permanecem retidos no Golfo Pérsico (~600 mil t).
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📈</span> Cotações da Semana (Seg a Sex)</h2>
+  <p>Evolução diária dos preços internacionais de referência (US$/t) durante a semana de 18 a 22/05/2026:</p>
+  <div class="chart-container">
+    <canvas id="precosSemana"></canvas>
+  </div>
+  
+  <h3>📍 Preços de Referência Internacional - Fechamento 22/05</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Produto</th><th>Praça</th><th>US$/t</th><th>Var. Semanal</th><th>Var. Anual</th></tr></thead>
+      <tbody>
+        <tr><td>Ureia</td><td>FOB Oriente Médio (Omã)</td><td>730</td><td><span class="var neutral">► 0,0%</span></td><td><span class="var up">▲ +22%</span></td></tr>
+        <tr><td>Ureia</td><td>NOLA Barge (EUA Golfo)</td><td>650</td><td><span class="var down">▼ -2,3%</span></td><td><span class="var up">▲ +60%</span></td></tr>
+        <tr><td>Ureia</td><td>Granel CFR Brasil</td><td>585</td><td><span class="var down">▼ -1,5%</span></td><td><span class="var up">▲ +25,7%</span></td></tr>
+        <tr><td>MAP</td><td>CFR Brasil</td><td>820</td><td><span class="var up">▲ +1,8%</span></td><td><span class="var up">▲ +10,8%</span></td></tr>
+        <tr><td>DAP</td><td>FOB Tampa (EUA)</td><td>735</td><td><span class="var up">▲ +1,4%</span></td><td><span class="var up">▲ +15%</span></td></tr>
+        <tr><td>KCl (Potássio)</td><td>CFR Brasil</td><td>365</td><td><span class="var neutral">► +0,3%</span></td><td><span class="var up">▲ +21,5%</span></td></tr>
+        <tr><td>Sulfato de Amônio</td><td>CFR Brasil</td><td>295</td><td><span class="var up">▲ +0,7%</span></td><td><span class="var up">▲ +41%</span></td></tr>
+        <tr><td>Amônia</td><td>FOB Oriente Médio</td><td>610</td><td><span class="var up">▲ +2,5%</span></td><td><span class="var up">▲ +35%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>💵 Preços no Mercado Brasileiro (CFR + frete)</h3>
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>Produto</th><th>Praça</th><th>R$/t</th><th>Var. Mensal</th></tr></thead>
+      <tbody>
+        <tr><td>Ureia</td><td>Porto Paranaguá</td><td>3.480</td><td><span class="var up">▲ +2,3%</span></td></tr>
+        <tr><td>Ureia</td><td>Rondonópolis/MT</td><td>3.720</td><td><span class="var up">▲ +2,8%</span></td></tr>
+        <tr><td>MAP</td><td>Porto Paranaguá</td><td>4.650</td><td><span class="var up">▲ +3,5%</span></td></tr>
+        <tr><td>MAP</td><td>Sorriso/MT</td><td>4.980</td><td><span class="var up">▲ +4,1%</span></td></tr>
+        <tr><td>KCl</td><td>Porto Paranaguá</td><td>2.180</td><td><span class="var up">▲ +1,2%</span></td></tr>
+        <tr><td>KCl</td><td>Rondonópolis/MT</td><td>2.380</td><td><span class="var up">▲ +1,5%</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">🌍</span> Análise Fundamentalista</h2>
+  
+  <h3>🔴 Nitrogenados (Ureia, Sulfato de Amônio, Amônia)</h3>
+  <p>O mercado global de ureia está em <strong>hibernação</strong>: o fechamento do Estreito de Ormuz paralisa cerca de 1/3 do comércio marítimo de ureia/amônia, mas o pós-tender massivo da Índia esvaziou a demanda imediata. <strong>OMIFCO (Omã)</strong> é o único exportador ativo do Oriente Médio (~US$ 730 FOB). O Irã reduziu seu preço de reserva para US$ 610 FOB, mas sanções limitam a captura de demanda. A <strong>China cortou cotas de exportação em 33%</strong> (para 3,3 Mt em 2026) e <strong>baniu vendas à Índia</strong>. No Brasil, a cotação média da ureia atingiu R$ 3.500/t em maio (+27,2% YoY).</p>
+  
+  <h3>🟠 Fosfatados (MAP, DAP, SSP)</h3>
+  <p>Mercado <strong>estruturalmente apertado</strong>. A continuidade do embargo chinês às exportações de fosfatados pressiona os preços para cima, com compradores resistindo, mas sem alternativas reais. O <strong>SSP subiu 19% em abril</strong>, refletindo a escassez global de <strong>enxofre</strong>. O MAP brasileiro subiu 20% no quadrimestre. Os EUA registraram MAP a <strong>US$ 947/t no varejo</strong> (USDA 15/05), com anidra a US$ 1.126/t — níveis não vistos em anos.</p>
+  
+  <h3>🟡 Potássicos (KCl)</h3>
+  <p>Mercado <strong>lateralizado</strong>. Os fornecedores tentam empurrar preços para cima, mas a resistência dos compradores limita o movimento. No Brasil, o KCl em pó acumula +21,5% no ano. A dependência russa/bielorrussa mantém o risco geopolítico elevado, mas Canadá (Nutrien/Mosaic) e Jordânia oferecem alternativa de oferta.</p>
+  
+  <h3>🇧🇷 Cenário Brasileiro</h3>
+  <ul class="bullet">
+    <li><strong>Importação Jan-Abr/26:</strong> 11,8 Mt (+2,7% YoY), gasto US$ 4,3 bi (+16,7% YoY)</li>
+    <li><strong>Relação de troca:</strong> pior nível desde 2022 (CNA/Campo Futuro)</li>
+    <li><strong>Substituição de insumos:</strong> Sulfato de Amônio +62,6%; DAP -76%; TSP +37,4%</li>
+    <li><strong>IPCF (Mosaic):</strong> 1,56 em abril — produtor entrega mais sacas por tonelada de adubo</li>
+    <li><strong>Câmbio:</strong> R$ 5,00/US$ (dólar -4% no mês) — alívio parcial nos custos importados</li>
+  </ul>
+
+  <div class="alerta">
+    <strong>📊 Relação de Troca (CNA):</strong> Enquanto MAP subiu 20% e ureia 40% no ano, soja avançou apenas 0,9% e milho 0,1%. O produtor precisa entregar <strong>significativamente mais sacas</strong> para comprar o mesmo pacote tecnológico — pressão direta sobre a rentabilidade da safra 2026/27.
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📐</span> Análise Técnica (Gráfica)</h2>
+  <p>Tecnicamente, a <strong>ureia</strong> corrige após o topo de US$ 714/t em março, encontrando suporte na região de US$ 575–585/t. O movimento configura uma <strong>"bandeira de correção"</strong> dentro de tendência altista de longo prazo. Resistência imediata em US$ 620 e psicológica em US$ 700. Para o <strong>MAP</strong>, a tendência permanece firmemente altista, sem sinais de reversão, com rompimento sucessivo de topos. O <strong>KCl</strong> opera lateralizado em range US$ 355–375, aguardando definição direcional.</p>
+  <div class="chart-container">
+    <canvas id="analiseTecnica"></canvas>
+  </div>
+
+  <h3>🌡️ Termômetro de Mercado</h3>
+  <div class="termometro">
+    <div class="termo-item">
+      <div class="termo-label"><span>Risco geopolítico (Hormuz/Irã)</span><span>95%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:95%">CRÍTICO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão de alta - Fosfatados</span><span>85%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-altista" style="width:85%">ALTO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão de alta - Nitrogenados</span><span>65%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:65%">MÉDIO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Pressão de alta - Potássicos</span><span>45%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-neutral" style="width:45%">MODERADO</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Demanda compradora brasileira</span><span>30%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-baixista" style="width:30%">FRACA</div></div>
+    </div>
+    <div class="termo-item">
+      <div class="termo-label"><span>Acessibilidade ao produtor</span><span>25%</span></div>
+      <div class="termo-bar"><div class="termo-fill fill-baixista" style="width:25%">DETERIORADA</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">🎯</span> Cenários para a Próxima Semana</h2>
+  <div class="cenarios">
+    <div class="cenario cenario-otim">
+      <div class="prob">20%</div>
+      <div class="titulo">🟢 Cenário Otimista</div>
+      <div class="desc">Reabertura parcial do Estreito de Ormuz / corredor humanitário para fertilizantes. Ureia recua para US$ 550–580 CFR Brasil. Compradores retomam negociações pontuais. Câmbio abaixo de R$ 4,95.</div>
+    </div>
+    <div class="cenario cenario-base">
+      <div class="prob">55%</div>
+      <div class="titulo">🟡 Cenário Base</div>
+      <div class="desc">Mercado segue em holding pattern. Ureia entre US$ 580–620 CFR. Fosfatados sustentados em alta moderada (+1–2% sem). KCl lateral. Brasil mantém compras cautelosas, com posicionamento pontual para safra 2026/27.</div>
+    </div>
+    <div class="cenario cenario-pess">
+      <div class="prob">25%</div>
+      <div class="titulo">🔴 Cenário Pessimista</div>
+      <div class="desc">Nova escalada Irã–EUA / apreensão de navios. Ureia volta a testar US$ 700+ CFR. MAP rompe US$ 850. Frete e seguro disparam. Dólar acima de R$ 5,15. Produtor adia compras e amplia substituição.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="icon">📅</span> Agenda Econômica - Semana 25 a 29/05</h2>
+  <div class="agenda">
+    <div class="agenda-item">
+      <div class="agenda-data">26/05<br>SEG</div>
+      <div><strong>EUA:</strong> Memorial Day (mercados fechados) | <strong>Brasil:</strong> Boletim Focus BCB</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">27/05<br>TER</div>
+      <div><strong>EUA:</strong> Confiança do Consumidor (Conference Board) | <strong>China:</strong> Lucros Industriais</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">28/05<br>QUA</div>
+      <div><strong>Brasil:</strong> IPCA-15 maio | <strong>Global:</strong> Tender da Índia (ammonia) - resultado parcial</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">29/05<br>QUI</div>
+      <div><strong>EUA:</strong> PIB 1T26 (2ª prévia), Pedidos de Auxílio-Desemprego | <strong>Brasil:</strong> Resultado Fiscal</div>
+    </div>
+    <div class="agenda-item">
+      <div class="agenda-data">30/05<br>SEX</div>
+      <div><strong>EUA:</strong> PCE Núcleo (inflação preferida do Fed) | <strong>Zona Euro:</strong> CPI maio</div>
+    </div>
+  </div>
+
+  <h3>🌐 Eventos Geopolíticos em Monitoramento</h3>
+  <ul class="bullet">
+    <li>🛢️ <strong>Estreito de Ormuz:</strong> qualquer notícia de reabertura/escalada moverá o mercado de ureia em ±10%</li>
+    <li>🇮🇳 <strong>Resultado do tender de amônia da Índia</strong> (521 mil t, encerrou 18/05) — referência para preços globais</li>
+    <li>🇨🇳 <strong>Cotas de exportação chinesas</strong> — qualquer flexibilização para fosfatados aliviaria a pressão global</li>
+    <li>🇷🇺 <strong>Guerra na Ucrânia</strong> — sanções secundárias seguem restringindo nitrogenados russos</li>
+    <li>🇧🇷 <strong>Plano Safra 2026/27</strong> — definição de juros impactará decisão de compra de insumos</li>
+  </ul>
+</section>
+
+<section class="expectativa">
+  <h2><span class="icon">🔮</span> O Que Esperar Desta Semana (25 a 29/05)</h2>
+  <ul>
+    <li><strong>Ureia:</strong> Viés lateral-baixista no curto prazo, mas com piso firme em US$ 575/t. Acompanhe o tender indiano de amônia como termômetro.</li>
+    <li><strong>MAP/DAP:</strong> Pressão de alta continua. Recomendação: produtores com necessidade para safra 2026/27 devem considerar travamento parcial (30–40% da necessidade).</li>
+    <li><strong>KCl:</strong> Janela de oportunidade para compra — preços lateralizados e potencial de alta sazonal a partir de junho/julho.</li>
+    <li><strong>Câmbio:</strong> PCE americano (30/05) é o grande evento — dado abaixo do esperado pode enfraquecer dólar e aliviar custos importados.</li>
+    <li><strong>Estratégia para o produtor:</strong> Diversificar compras (parcelar em 3–4 tranches), usar substituição quando viável (Sulfato de Amônio, TSP), e priorizar o <strong>cálculo da relação de troca</strong> antes de fechar negócio.</li>
+    <li><strong>Risco principal:</strong> Nova escalada militar no Oriente Médio é o gatilho mais relevante para movimento de +10% nos nitrogenados em 48h.</li>
+    <li><strong>Oportunidade:</strong> Janela de correção técnica na ureia pode abrir compra pontual entre US$ 560–580 CFR Brasil.</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="credenciais">
+    <h3>📊 Análise e Construção</h3>
+    <p class="nome">Dr. Sidney Souza</p>
+    <p class="cargo">Economista e Administrador Agrícola</p>
+    <p class="cargo">Estrategista Econômico do Produtor</p>
+    <p>Especialista em economia da fazenda e gestão de risco no agro</p>
+    <p class="tagline">"Transformamos dados da fazenda em decisões econômicas"</p>
+    <p class="tagline">"Ajudamos produtores a entender se o mercado sustenta seu negócio"</p>
+    <div class="contatos">
+      <p>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a></p>
+      <p>📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a></p>
+      <p>📱 (64) 9 9226-6886 | 📷 @ruralin.ai</p>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+<script>
+  // Gráfico 1 - Cotações da Semana
+  const ctx1 = document.getElementById('precosSemana').getContext('2d');
+  new Chart(ctx1, {
+    type:'line',
+    data:{
+      labels:['18/05 SEG','19/05 TER','20/05 QUA','21/05 QUI','22/05 SEX'],
+      datasets:[
+        {label:'Ureia FOB Oriente Médio (US$/t)',
+         data:[730, 730, 728, 730, 730],
+         borderColor:'#e74c3c',
+         backgroundColor:'rgba(231,76,60,0.15)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:5},
+        {label:'MAP CFR Brasil (US$/t)',
+         data:[805, 810, 815, 818, 820],
+         borderColor:'#e67e22',
+         backgroundColor:'rgba(230,126,34,0.15)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:5},
+        {label:'KCl CFR Brasil (US$/t)',
+         data:[364, 364, 365, 365, 365],
+         borderColor:'#f39c12',
+         backgroundColor:'rgba(243,156,18,0.15)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:5},
+        {label:'Ureia NOLA Barge EUA (US$/t)',
+         data:[665, 658, 653, 650, 650],
+         borderColor:'#3d5c1f',
+         backgroundColor:'rgba(61,92,31,0.15)',
+         borderWidth:3, tension:0.3, fill:true, pointRadius:5}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        title:{display:true, text:'Evolução Diária - Semana 18 a 22/05/2026', font:{size:14,weight:'bold'}},
+        legend:{position:'bottom', labels:{font:{size:11}}}
+      },
+      scales:{ y:{ beginAtZero:false, title:{display:true,text:'US$/t'} } }
+    }
+  });
+
+  // Gráfico 2 - Análise Técnica Ureia
+  const ctx2 = document.getElementById('analiseTecnica').getContext('2d');
+  new Chart(ctx2, {
+    type:'line',
+    data:{
+      labels:['10/03','24/03','07/04','21/04','05/05','15/05','22/05'],
+      datasets:[
+        {label:'Ureia US$/t - Tendência', data:[714, 685, 650, 615, 595, 577, 585],
+         borderColor:'#3d5c1f', backgroundColor:'rgba(61,92,31,0.2)',
+         borderWidth:3, tension:0.4, fill:true, pointRadius:6},
+        {label:'Resistência US$ 700', data:[700,700,700,700,700,700,700],
+         borderColor:'#e74c3c', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Resistência US$ 620', data:[620,620,620,620,620,620,620],
+         borderColor:'#c0392b', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Suporte US$ 575', data:[575,575,575,575,575,575,575],
+         borderColor:'#27ae60', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false},
+        {label:'Suporte Forte US$ 540', data:[540,540,540,540,540,540,540],
+         borderColor:'#16a085', borderDash:[6,6], borderWidth:2, pointRadius:0, fill:false}
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        title:{display:true, text:'Ureia: Suportes, Resistências e Tendência', font:{size:14,weight:'bold'}},
+        legend:{position:'bottom', labels:{font:{size:11}}}
+      },
+      scales:{ y:{ beginAtZero:false, title:{display:true,text:'US$/t'} } }
+    }
+  });
+</script>
+
+</body>
+</html>

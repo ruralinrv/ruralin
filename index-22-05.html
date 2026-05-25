@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal Ruralin.AI | Central de Informativos Semanais - 22/05/2026</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;}
+  html{scroll-behavior:smooth;}
+  body{background:linear-gradient(135deg,#f5f7f0 0%,#e8f0d8 50%,#d4e4b8 100%);color:#2c3e2d;min-height:100vh;padding:15px;}
+  
+  /* HEADER */
+  .container{max-width:1300px;margin:0 auto;}
+  header{background:linear-gradient(135deg,#2c4416 0%,#3d5c1f 40%,#5a8030 80%,#7ba843 100%);color:#fff;padding:40px 25px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.15);text-align:center;position:relative;overflow:hidden;margin-bottom:30px;}
+  header::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none;animation:rotate 20s linear infinite;}
+  @keyframes rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .logo-wrapper{display:inline-flex;align-items:center;gap:15px;margin-bottom:18px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2;}
+  .logo-circle{width:75px;height:75px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;color:#3d5c1f;box-shadow:0 6px 15px rgba(0,0,0,.25);}
+  .logo-text{font-size:clamp(28px,5vw,42px);font-weight:800;letter-spacing:2px;text-shadow:2px 2px 4px rgba(0,0,0,.2);}
+  .logo-text span{color:#ffd54f;}
+  header h1{font-size:clamp(20px,3.5vw,30px);margin-top:10px;font-weight:700;position:relative;z-index:2;}
+  header .subtitle{font-size:clamp(14px,2.2vw,17px);opacity:.95;margin-top:10px;position:relative;z-index:2;}
+  .header-badge{display:inline-block;background:rgba(255,213,79,.25);border:2px solid #ffd54f;padding:8px 22px;border-radius:25px;margin-top:18px;font-size:14px;font-weight:600;backdrop-filter:blur(10px);position:relative;z-index:2;}
+  
+  /* INTRO */
+  .intro{background:#fff;padding:25px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:25px;border-left:6px solid #7ba843;}
+  .intro h2{color:#3d5c1f;margin-bottom:12px;font-size:clamp(18px,2.8vw,24px);display:flex;align-items:center;gap:10px;}
+  .intro p{font-size:15px;line-height:1.7;color:#444;text-align:justify;margin-bottom:10px;}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px;}
+  .stat-box{background:linear-gradient(135deg,#f9fbf4,#eef4dc);padding:15px;border-radius:10px;text-align:center;border:1px solid #c8d6a8;}
+  .stat-num{font-size:26px;font-weight:bold;color:#3d5c1f;}
+  .stat-label{font-size:12px;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:.5px;}
+
+  /* SECTIONS */
+  .section-title{display:flex;align-items:center;gap:12px;margin:35px 0 20px;color:#3d5c1f;font-size:clamp(20px,3vw,26px);padding:0 5px;}
+  .section-title::after{content:"";flex:1;height:3px;background:linear-gradient(90deg,#7ba843,transparent);border-radius:2px;}
+  .section-title .num{background:#3d5c1f;color:#fff;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  
+  /* GRID DE CARDS */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:30px;}
+  .card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,.08);transition:all .35s cubic-bezier(.175,.885,.32,1.275);cursor:pointer;position:relative;display:flex;flex-direction:column;}
+  .card:hover{transform:translateY(-8px);box-shadow:0 12px 30px rgba(0,0,0,.18);}
+  .card-banner{padding:25px 20px;color:#fff;position:relative;overflow:hidden;}
+  .card-banner::before{content:"";position:absolute;top:-30%;right:-20%;width:180px;height:180px;background:rgba(255,255,255,.1);border-radius:50%;}
+  .card-banner .emoji{font-size:48px;display:block;margin-bottom:8px;position:relative;z-index:2;}
+  .card-banner h3{font-size:22px;font-weight:700;position:relative;z-index:2;}
+  .card-banner .tag{display:inline-block;background:rgba(255,255,255,.25);padding:4px 12px;border-radius:12px;font-size:12px;margin-top:8px;font-weight:600;backdrop-filter:blur(5px);position:relative;z-index:2;}
+  
+  .card-body{padding:20px;flex:1;display:flex;flex-direction:column;}
+  .card-body p{font-size:14px;color:#555;line-height:1.6;margin-bottom:15px;flex:1;}
+  .card-meta{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px dashed #e0e0e0;font-size:12px;color:#888;}
+  .card-btn{display:block;background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;text-align:center;padding:14px;font-weight:700;text-decoration:none;font-size:15px;letter-spacing:.5px;transition:all .3s;position:relative;overflow:hidden;}
+  .card-btn::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transition:left .5s;}
+  .card-btn:hover::before{left:100%;}
+  .card-btn:hover{background:linear-gradient(135deg,#5a8030,#7ba843);}
+  
+  /* CORES POR CATEGORIA */
+  .banner-macro{background:linear-gradient(135deg,#1e3a5f,#3d5c8f);}
+  .banner-fert{background:linear-gradient(135deg,#8b4513,#cd853f);}
+  .banner-soja{background:linear-gradient(135deg,#5a7d2a,#8db94c);}
+  .banner-milho{background:linear-gradient(135deg,#d4a017,#f4c430);}
+  .banner-cafe{background:linear-gradient(135deg,#3e2723,#6d4c41);}
+  .banner-acucar{background:linear-gradient(135deg,#c0392b,#e74c3c);}
+  .banner-algodao{background:linear-gradient(135deg,#546e7a,#90a4ae);}
+  .banner-boi{background:linear-gradient(135deg,#5d4037,#a1887f);}
+  .banner-feijao{background:linear-gradient(135deg,#4a148c,#7b1fa2);}
+  
+  .badge-destaque{position:absolute;top:12px;right:12px;background:#ffd54f;color:#3d5c1f;padding:5px 12px;border-radius:15px;font-size:11px;font-weight:bold;z-index:3;box-shadow:0 2px 6px rgba(0,0,0,.2);}
+  
+  /* CALL TO ACTION */
+  .cta{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:30px 25px;border-radius:16px;margin:30px 0;text-align:center;box-shadow:0 8px 25px rgba(61,92,31,.3);}
+  .cta h3{font-size:clamp(20px,3vw,26px);margin-bottom:12px;color:#ffd54f;}
+  .cta p{font-size:15px;margin-bottom:18px;opacity:.95;}
+  .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .cta-btn{display:inline-flex;align-items:center;gap:8px;background:#fff;color:#3d5c1f;padding:12px 24px;border-radius:30px;text-decoration:none;font-weight:700;transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+  .cta-btn:hover{transform:translateY(-3px);background:#ffd54f;color:#2c4416;}
+  .cta-btn.outline{background:transparent;color:#fff;border:2px solid #ffd54f;}
+  .cta-btn.outline:hover{background:#ffd54f;color:#2c4416;}
+
+  /* FOOTER */
+  footer{background:#1f2e1a;color:#fff;padding:35px 25px;border-radius:16px;text-align:center;margin-top:30px;}
+  .credenciais{max-width:650px;margin:0 auto;}
+  .credenciais h3{color:#ffd54f;margin-bottom:15px;font-size:18px;}
+  .credenciais .nome{font-size:22px;font-weight:bold;color:#fff;margin-bottom:5px;}
+  .credenciais .cargo{font-style:italic;color:#c8d6a8;font-size:14px;margin:3px 0;}
+  .credenciais p{margin:5px 0;font-size:14px;}
+  .tagline{font-style:italic;color:#a8c878;margin:12px 0;font-size:13px;border-left:3px solid #ffd54f;padding-left:12px;display:inline-block;text-align:left;}
+  .contatos{margin-top:20px;padding-top:20px;border-top:1px solid #3d5c1f;font-size:14px;}
+  .contatos a{color:#ffd54f;text-decoration:none;transition:color .3s;}
+  .contatos a:hover{color:#fff;text-decoration:underline;}
+  .contatos p{margin:6px 0;word-wrap:break-word;}
+  .social{display:flex;gap:12px;justify-content:center;margin-top:15px;flex-wrap:wrap;}
+  .social a{background:#3d5c1f;color:#fff;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px;transition:all .3s;}
+  .social a:hover{background:#ffd54f;color:#2c4416;}
+  
+  .disclaimer{font-size:11px;color:#7a8a72;margin-top:20px;padding-top:15px;border-top:1px solid #2c3e2d;line-height:1.5;}
+  
+  /* RESPONSIVE */
+  @media (max-width:600px){
+    body{padding:8px;}
+    header{padding:25px 15px;}
+    .card-banner{padding:20px 15px;}
+    .card-banner .emoji{font-size:40px;}
+    .card-banner h3{font-size:19px;}
+    .cta-buttons{flex-direction:column;align-items:stretch;}
+    .cta-btn{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-wrapper">
+      <div class="logo-circle">🌾</div>
+      <div class="logo-text">RURALIN<span>.AI</span></div>
+    </div>
+    <h1>📊 Portal de Informativos Semanais</h1>
+    <div class="subtitle">Inteligência de mercado para o produtor rural | Semana de 18 a 22 de Maio de 2026</div>
+    <div class="header-badge">🗓️ Edição Semanal | Atualizado em 22/05/2026</div>
+  </header>
+
+  <!-- INTRO -->
+  <section class="intro">
+    <h2>👋 Olá, Produtor!</h2>
+    <p>Bem-vindo ao <strong>Portal Semanal Ruralin.AI</strong>. Reunimos aqui toda a inteligência de mercado da semana em <strong>9 informativos especializados</strong>: análise macroeconômica e geopolítica, panorama de insumos (fertilizantes) e radares completos das principais commodities agrícolas brasileiras.</p>
+    <p>Cada relatório foi construído com <strong>análise fundamentalista e técnica</strong>, gráficos interativos, cenários probabilísticos e recomendações práticas para sua tomada de decisão. <strong>Clique em cada card</strong> para acessar o informativo completo.</p>
+    
+    <div class="stats">
+      <div class="stat-box"><div class="stat-num">9</div><div class="stat-label">Informativos</div></div>
+      <div class="stat-box"><div class="stat-num">7</div><div class="stat-label">Commodities</div></div>
+      <div class="stat-box"><div class="stat-num">22/05</div><div class="stat-label">Atualização</div></div>
+      <div class="stat-box"><div class="stat-num">100%</div><div class="stat-label">Dados Reais</div></div>
+    </div>
+  </section>
+
+  <!-- BLOCO 1: MACRO -->
+  <h2 class="section-title"><span class="num">1</span> 🌎 Cenário Global</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="badge-destaque">⭐ DESTAQUE</div>
+      <div class="card-banner banner-macro">
+        <span class="emoji">🌐</span>
+        <h3>Macroeconomia & Geopolítica</h3>
+        <span class="tag">📅 Semana 18-22/05</span>
+      </div>
+      <div class="card-body">
+        <p>Análise completa de bolsas, câmbio, juros e tensões geopolíticas. Fechamento dos mercados globais, posse de Kevin Warsh no Fed, crise EUA-Irã e cenários para a próxima semana.</p>
+        <div class="card-meta">
+          <span>📈 Macro</span>
+          <span>⏱️ ~12 min</span>
+        </div>
+      </div>
+      <a href="macro-geo-22-05.html" class="card-btn">📊 Acessar Informativo →</a>
+    </div>
+  </div>
+
+  <!-- BLOCO 2: INSUMOS -->
+  <h2 class="section-title"><span class="num">2</span> 🧪 Insumos Agrícolas</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-banner banner-fert">
+        <span class="emoji">🧪</span>
+        <h3>Fertilizantes</h3>
+        <span class="tag">Ureia • MAP • KCl</span>
+      </div>
+      <div class="card-body">
+        <p>Radar completo de fertilizantes: ureia em correção (-14%), fosfatados em alta sustentada (US$ 850/t CFR) e potássio estável. Análise de oferta global e estratégia de compras.</p>
+        <div class="card-meta">
+          <span>💰 Custos</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-fertilizantes-22-05.html" class="card-btn">🧪 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- BLOCO 3: GRÃOS -->
+  <h2 class="section-title"><span class="num">3</span> 🌾 Radar de Grãos</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-banner banner-soja">
+        <span class="emoji">🌱</span>
+        <h3>Soja</h3>
+        <span class="tag">CBOT • Paranaguá • Interior</span>
+      </div>
+      <div class="card-body">
+        <p>Cotações da CBOT, prêmios de exportação, basis no Paranaguá e indicadores ESALQ. Análise técnica, demanda chinesa e perspectivas para a comercialização da safra 25/26.</p>
+        <div class="card-meta">
+          <span>🌾 Grão</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-soja-22-05.html" class="card-btn">🌱 Acessar Radar →</a>
+    </div>
+
+    <div class="card">
+      <div class="card-banner banner-milho">
+        <span class="emoji">🌽</span>
+        <h3>Milho</h3>
+        <span class="tag">CBOT • B3 • Mercado Interno</span>
+      </div>
+      <div class="card-body">
+        <p>Análise do milho no mercado interno e externo. Safrinha em andamento, demanda do etanol de milho, exportações e cotações regionais. Gestão de risco com B3.</p>
+        <div class="card-meta">
+          <span>🌾 Grão</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-milho-22-05.html" class="card-btn">🌽 Acessar Radar →</a>
+    </div>
+
+    <div class="card">
+      <div class="card-banner banner-feijao">
+        <span class="emoji">🫘</span>
+        <h3>Feijão</h3>
+        <span class="tag">Carioca • Preto • CEAGESP</span>
+      </div>
+      <div class="card-body">
+        <p>Cotações do feijão carioca e preto nas principais praças. Análise da 1ª safra, perspectivas para a 2ª safra e dinâmica de consumo interno. Recomendações de venda.</p>
+        <div class="card-meta">
+          <span>🌾 Grão</span>
+          <span>⏱️ ~8 min</span>
+        </div>
+      </div>
+      <a href="radar-feijao-22-05.html" class="card-btn">🫘 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- BLOCO 4: COMMODITIES INDUSTRIAIS -->
+  <h2 class="section-title"><span class="num">4</span> 🏭 Commodities Industriais</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-banner banner-cafe">
+        <span class="emoji">☕</span>
+        <h3>Café</h3>
+        <span class="tag">ICE NY • Arábica • Conilon</span>
+      </div>
+      <div class="card-body">
+        <p>Cotação do café na ICE Futures, mercado físico interior de SP/MG, estimativas Conab e fundamentos da safra 26/27. Análise climática e perspectivas de exportação.</p>
+        <div class="card-meta">
+          <span>☕ Bebida</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-cafe-22-05.html" class="card-btn">☕ Acessar Radar →</a>
+    </div>
+
+    <div class="card">
+      <div class="card-banner banner-acucar">
+        <span class="emoji">🍬</span>
+        <h3>Açúcar</h3>
+        <span class="tag">ICE NY • Esalq • VHP</span>
+      </div>
+      <div class="card-body">
+        <p>Análise do açúcar com cotação ICE NY #11, hidratado x açúcar (mix das usinas), petróleo Brent e exportações brasileiras. Cenários para safra 26/27 do CS.</p>
+        <div class="card-meta">
+          <span>🍬 Energia</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-acucar-22-05.html" class="card-btn">🍬 Acessar Radar →</a>
+    </div>
+
+    <div class="card">
+      <div class="card-banner banner-algodao">
+        <span class="emoji">☁️</span>
+        <h3>Algodão</h3>
+        <span class="tag">ICE NY • Pluma • Indicador CEPEA</span>
+      </div>
+      <div class="card-body">
+        <p>Cotação ICE NY do algodão, indicador CEPEA/Esalq pluma, exportações brasileiras e demanda global. Safra 25/26 em Mato Grosso e expectativas para 26/27.</p>
+        <div class="card-meta">
+          <span>☁️ Fibra</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-algodao-22-05.html" class="card-btn">☁️ Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- BLOCO 5: PECUÁRIA -->
+  <h2 class="section-title"><span class="num">5</span> 🐂 Pecuária</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-banner banner-boi">
+        <span class="emoji">🐂</span>
+        <h3>Boi Gordo</h3>
+        <span class="tag">B3 • Arroba • Exportação</span>
+      </div>
+      <div class="card-body">
+        <p>Indicador Esalq/B3 do boi gordo, escalas de abate dos frigoríficos, exportações para China e custos do bezerro. Análise de relação de troca e ciclo pecuário.</p>
+        <div class="card-meta">
+          <span>🐂 Carne</span>
+          <span>⏱️ ~10 min</span>
+        </div>
+      </div>
+      <a href="radar-boi-22-05.html" class="card-btn">🐂 Acessar Radar →</a>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h3>💡 Quer Análises Personalizadas para Sua Fazenda?</h3>
+    <p>Transformamos dados da sua fazenda em decisões econômicas. Consultoria estratégica em gestão de risco, hedge, comercialização e custos de produção.</p>
+    <div class="cta-buttons">
+      <a href="https://wa.me/5564992266886" target="_blank" class="cta-btn">💬 Fale no WhatsApp</a>
+      <a href="mailto:sidneyagro@gmail.com" class="cta-btn outline">📧 Enviar E-mail</a>
+      <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" class="cta-btn outline">🌐 Visitar Site</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="credenciais">
+      <h3>📊 Análise e Construção</h3>
+      <p class="nome">Dr. Sidney Souza</p>
+      <p class="cargo">Economista e Administrador Agrícola</p>
+      <p class="cargo">Estrategista Econômico do Produtor</p>
+      <p class="cargo">Especialista em economia da fazenda e gestão de risco no agro</p>
+      
+      <div class="tagline">
+        "Transformamos dados da fazenda em decisões econômicas"<br>
+        "Ajudamos produtores a entender se o mercado sustenta seu negócio"
+      </div>
+      
+      <div class="contatos">
+        <p>🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a></p>
+        <p>📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a></p>
+        <p>📱 (64) 9 9226-6886</p>
+        
+        <div class="social">
+          <a href="https://wa.me/5564992266886" target="_blank">💬 WhatsApp</a>
+          <a href="https://instagram.com/ruralin.ai" target="_blank">📷 @ruralin.ai</a>
+          <a href="mailto:sidneyagro@gmail.com">📧 E-mail</a>
+        </div>
+      </div>
+      
+      <div class="disclaimer">
+        <strong>⚠️ Aviso Legal:</strong> Os informativos contidos neste portal têm caráter exclusivamente informativo e educacional, não constituindo recomendação de compra ou venda de ativos. Cada produtor deve avaliar sua situação particular, perfil de risco e consultar profissionais habilitados antes de tomar decisões financeiras ou de comercialização. As análises baseiam-se em fontes públicas consideradas confiáveis na data de publicação. © 2026 Ruralin.AI - Todos os direitos reservados.
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Animação de entrada dos cards
+  const cards = document.querySelectorAll('.card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if(entry.isIntersecting){
+        setTimeout(() => {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }, i * 80);
+      }
+    });
+  }, {threshold:0.1});
+  
+  cards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(20px)';
+    card.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(card);
+  });
+</script>
+
+</body>
+</html>
