@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informativo Semanal | Leite, Câmbio & Geopolítica | 18-22/05/2026 | Ruralin.AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(135deg,#f5f7f0 0%,#e8f0d8 50%,#d4e4b8 100%);color:#2c3e2d;min-height:100vh;padding:15px;line-height:1.6}
+.container{max-width:1300px;margin:0 auto}
+header{background:linear-gradient(135deg,#2c4416 0%,#3d5c1f 40%,#5a8030 80%,#7ba843 100%);color:#fff;padding:40px 25px;border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.15);text-align:center;position:relative;overflow:hidden;margin-bottom:30px}
+header::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);pointer-events:none;animation:rotate 25s linear infinite}
+@keyframes rotate{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.logo-wrapper{display:inline-flex;align-items:center;gap:15px;margin-bottom:15px;flex-wrap:wrap;justify-content:center;position:relative;z-index:2}
+.logo-circle{width:75px;height:75px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:38px;box-shadow:0 6px 15px rgba(0,0,0,.25)}
+.logo-text{font-size:32px;font-weight:bold;letter-spacing:2px;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
+.logo-text span{color:#ffd54f}
+header h1{font-size:clamp(20px,3.5vw,30px);margin-top:10px;font-weight:700;position:relative;z-index:2}
+header .subtitle{font-size:clamp(14px,2.2vw,17px);opacity:.95;margin-top:10px;position:relative;z-index:2}
+.header-badge{display:inline-block;background:rgba(255,213,79,.25);border:2px solid #ffd54f;padding:8px 22px;border-radius:25px;margin-top:18px;font-size:14px;font-weight:600;position:relative;z-index:2}
+.nav-bar{background:#fff;padding:15px;border-radius:14px;box-shadow:0 4px 15px rgba(0,0,0,.08);margin-bottom:25px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.nav-bar a{background:#eef4dc;color:#3d5c1f;padding:8px 16px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:600;transition:all .3s}
+.nav-bar a:hover{background:#3d5c1f;color:#fff;transform:translateY(-2px)}
+.resumo{background:#fff;padding:25px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:30px;border-left:6px solid #7ba843}
+.resumo h2{color:#3d5c1f;margin-bottom:15px;font-size:clamp(20px,3vw,26px)}
+.resumo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:18px}
+.resumo-box{background:linear-gradient(135deg,#f9fbf4,#eef4dc);padding:18px;border-radius:12px;border:1px solid #c8d6a8}
+.resumo-box .label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.resumo-box .valor{font-size:24px;font-weight:bold;color:#3d5c1f;margin:5px 0}
+.resumo-box .var{font-size:13px;font-weight:600}
+.alta{color:#27ae60}
+.baixa{color:#c0392b}
+.neutra{color:#7f8c8d}
+.section{background:#fff;padding:28px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:25px}
+.section-title{display:flex;align-items:center;gap:12px;color:#3d5c1f;font-size:clamp(20px,3vw,26px);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #eef4dc}
+.section-title .icon{background:linear-gradient(135deg,#3d5c1f,#7ba843);color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.section h3{color:#3d5c1f;font-size:18px;margin:20px 0 10px}
+.section h4{color:#5a8030;font-size:16px;margin:15px 0 8px}
+.section p{color:#444;margin-bottom:12px;text-align:justify;font-size:15px}
+.section ul{padding-left:25px;margin:10px 0}
+.section ul li{margin-bottom:6px;font-size:14px;color:#444}
+.chart-container{background:linear-gradient(135deg,#f9fbf4,#eef4dc);padding:20px;border-radius:14px;margin:20px 0;border:1px solid #c8d6a8}
+.chart-title{color:#3d5c1f;font-size:16px;font-weight:700;margin-bottom:12px;text-align:center}
+.chart-wrapper{position:relative;height:320px}
+.termometro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:20px 0}
+.termo-card{background:linear-gradient(135deg,#f9fbf4,#eef4dc);padding:18px;border-radius:12px;border:1px solid #c8d6a8;text-align:center}
+.termo-card .titulo{font-size:13px;color:#666;text-transform:uppercase;font-weight:600;margin-bottom:8px}
+.termo-bar{height:14px;background:#e0e0e0;border-radius:10px;overflow:hidden;margin:10px 0}
+.termo-fill{height:100%;border-radius:10px;transition:width 1s ease}
+.termo-card .status{font-size:13px;font-weight:700;margin-top:8px}
+.verde{background:linear-gradient(90deg,#27ae60,#7ba843)}
+.amarelo{background:linear-gradient(90deg,#f39c12,#ffd54f)}
+.vermelho{background:linear-gradient(90deg,#c0392b,#e74c3c)}
+.tabela{width:100%;border-collapse:collapse;margin:15px 0;font-size:13px;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.tabela th{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:12px 10px;text-align:left;font-size:13px}
+.tabela td{padding:10px;border-bottom:1px solid #eef4dc}
+.tabela tr:hover{background:#f9fbf4}
+.tabela .destaque{font-weight:700;color:#3d5c1f}
+.tabela-wrapper{overflow-x:auto}
+.alert{padding:18px;border-radius:12px;margin:18px 0;border-left:5px solid;font-size:14px}
+.alert strong{display:block;margin-bottom:6px;font-size:15px}
+.alert-info{background:#e3f2fd;border-color:#1976d2;color:#0d47a1}
+.alert-warning{background:#fff3e0;border-color:#f57c00;color:#e65100}
+.alert-danger{background:#ffebee;border-color:#c62828;color:#b71c1c}
+.alert-success{background:#e8f5e9;border-color:#2e7d32;color:#1b5e20}
+.cenarios{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin:20px 0}
+.cenario{padding:20px;border-radius:14px;color:#fff;position:relative;overflow:hidden}
+.cenario .prob{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.25);padding:4px 12px;border-radius:15px;font-size:12px;font-weight:700}
+.cenario h4{color:#fff!important;font-size:17px;margin-bottom:10px;margin-top:25px}
+.cenario ul{list-style:none;padding:0}
+.cenario li{padding:5px 0;font-size:13px;padding-left:18px;position:relative;color:#fff}
+.cenario li::before{content:"▸";position:absolute;left:0;color:#ffd54f}
+.cen-otimista{background:linear-gradient(135deg,#1e7e34,#28a745)}
+.cen-base{background:linear-gradient(135deg,#0c5460,#17a2b8)}
+.cen-pessimista{background:linear-gradient(135deg,#721c24,#dc3545)}
+.agenda-item{display:flex;gap:15px;padding:14px;background:linear-gradient(135deg,#f9fbf4,#eef4dc);border-radius:10px;margin-bottom:10px;border-left:4px solid #7ba843;align-items:center;flex-wrap:wrap}
+.agenda-data{background:#3d5c1f;color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;font-size:13px;min-width:90px;text-align:center}
+.agenda-evento{flex:1;font-size:14px;color:#333;min-width:200px}
+.agenda-impacto{padding:4px 10px;border-radius:12px;font-size:11px;font-weight:700;color:#fff}
+.impacto-alto{background:#c0392b}
+.impacto-medio{background:#f39c12}
+.impacto-baixo{background:#7f8c8d}
+.expectativa{background:linear-gradient(135deg,#3d5c1f,#5a8030);color:#fff;padding:30px;border-radius:16px;margin:30px 0}
+.expectativa h2{color:#ffd54f!important;margin-bottom:15px;font-size:clamp(20px,3vw,26px);border:none!important}
+.expectativa h3{color:#ffd54f!important;margin-top:20px;margin-bottom:10px;font-size:18px}
+.expectativa p,.expectativa li{color:#fff;font-size:15px}
+.expectativa ul{margin:15px 0;padding-left:25px}
+.expectativa li{margin-bottom:8px}
+.expectativa strong{color:#ffd54f}
+footer{background:#1f2e1a;color:#fff;padding:35px 25px;border-radius:16px;text-align:center;margin-top:30px}
+.credenciais{max-width:650px;margin:0 auto}
+.credenciais h3{color:#ffd54f;margin-bottom:15px;font-size:18px}
+.credenciais .nome{font-size:24px;font-weight:bold;color:#fff;margin-bottom:5px}
+.credenciais .cargo{font-style:italic;color:#c8d6a8;font-size:14px;margin:3px 0}
+.credenciais .tagline{color:#ffd54f;font-style:italic;font-size:13px;margin-top:10px}
+.contatos{margin-top:20px;padding-top:20px;border-top:1px solid #3d5c1f;font-size:14px}
+.contatos a{color:#ffd54f;text-decoration:none}
+.contatos a:hover{color:#fff;text-decoration:underline}
+.disclaimer{font-size:11px;color:#7a8a72;margin-top:20px;padding-top:15px;border-top:1px solid #2c3e2d;line-height:1.5}
+@media(max-width:600px){
+body{padding:8px}
+header{padding:25px 15px}
+.section{padding:18px}
+.chart-wrapper{height:260px}
+.nav-bar{gap:5px}
+.nav-bar a{font-size:11px;padding:6px 10px}
+.tabela{font-size:12px}
+.tabela th,.tabela td{padding:8px 6px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<div class="logo-wrapper">
+<div class="logo-circle">🌾</div>
+<div class="logo-text">RURALIN<span>.AI</span></div>
+</div>
+<h1>📊 Informativo Semanal | Leite, Câmbio & Geopolítica</h1>
+<div class="subtitle">Inteligência de Mercado para o Produtor Rural | Semana de 18 a 22 de Maio de 2026</div>
+<div class="header-badge">🗓️ Análise Fundamentalista & Técnica</div>
+</header>
+
+<nav class="nav-bar">
+<a href="#resumo">📋 Resumo</a>
+<a href="#leite">🥛 Leite</a>
+<a href="#cambio">💵 Câmbio</a>
+<a href="#geo">🌍 Geopolítica</a>
+<a href="#cenarios">🎯 Cenários</a>
+<a href="#agenda">📅 Agenda</a>
+<a href="#esperar">🔮 O que esperar</a>
+</nav>
+
+<section id="resumo" class="resumo">
+<h2>📋 Resumo Executivo da Semana</h2>
+<p>Semana de <strong>alta volatilidade global</strong> com tensões nas negociações EUA-Irã, reflexos no petróleo, câmbio e juros. No mercado lácteo, segue forte <strong>valorização ao produtor</strong>, com leite spot em níveis históricos em GO/MG/SP, sustentado pela menor captação e sazonalidade do outono-inverno.</p>
+<div class="resumo-grid">
+<div class="resumo-box"><div class="label">💵 Dólar (Sex 22/05)</div><div class="valor">R$ 5,0289</div><div class="var baixa">▼ -0,74% na semana</div></div>
+<div class="resumo-box"><div class="label">📉 Ibovespa</div><div class="valor">176.209 pts</div><div class="var baixa">▼ -5,93% no mês</div></div>
+<div class="resumo-box"><div class="label">🛢️ Petróleo Brent</div><div class="valor">US$ 103,54</div><div class="var baixa">▼ -5,48% na semana</div></div>
+<div class="resumo-box"><div class="label">🥛 Leite Cepea (Mar/26)</div><div class="valor">R$ 2,3924/L</div><div class="var alta">▲ +17,6% no 1º Tri</div></div>
+<div class="resumo-box"><div class="label">🥛 Leite Spot (Abr/26)</div><div class="valor">R$ 3,41/L</div><div class="var alta">▲ +12,1% vs Mar</div></div>
+<div class="resumo-box"><div class="label">📊 ICAP-L Captação</div><div class="valor">-11,1%</div><div class="var baixa">▼ Acum. 1º Tri/26</div></div>
+</div>
+</section>
+
+<section id="leite" class="section">
+<div class="section-title"><span class="icon">🥛</span> Análise do Leite — Fundamentalista & Técnica</div>
+
+<h3>1. Panorama Fundamentalista — Por que o leite está subindo?</h3>
+<p>O mercado leiteiro brasileiro vive em maio de 2026 um dos seus <strong>melhores momentos em 18 meses</strong>. O preço pago ao produtor (Cepea/Esalq) atingiu R$ 2,3924/litro em março — terceira alta consecutiva e acumulando <strong>+17,6% no 1º trimestre</strong>. No mercado spot (negociação entre indústrias), os valores explodiram ainda mais, com média GO/MG/SP em <strong>R$ 3,41/L em abril (+12,12% vs março)</strong>, segundo Scot Consultoria.</p>
+
+<p>Os fundamentos por trás dessa valorização são <strong>estruturais e sazonais</strong>:</p>
+<ul>
+<li><strong>Queda na captação (ICAP-L):</strong> -3,9% de fev→mar e -11,1% no 1º Tri</li>
+<li><strong>Sazonalidade outono-inverno:</strong> piora da pastagem em PR, MG, GO</li>
+<li><strong>Custos elevados (COE +1,1% em abril):</strong> nutrição, sanidade, mecanização</li>
+<li><strong>Cautela do produtor pós-2025:</strong> menos investimento, menos vacas em lactação</li>
+<li><strong>Disputa industrial intensa:</strong> laticínios brigando por matéria-prima escassa</li>
+<li><strong>Derivados em alta (GO +15,15% em abril):</strong> UHT +24%, muçarela +21%</li>
+</ul>
+
+<h3>2. Análise Gráfica — Evolução dos Preços</h3>
+
+<div class="chart-container">
+<div class="chart-title">📈 Preço do Leite ao Produtor (Cepea) — Série 12 meses (R$/L)</div>
+<div class="chart-wrapper"><canvas id="chartLeiteCepea"></canvas></div>
+</div>
+
+<div class="chart-container">
+<div class="chart-title">📊 Leite Spot Mensal — Média GO / MG / SP (R$/L)</div>
+<div class="chart-wrapper"><canvas id="chartSpot"></canvas></div>
+</div>
+
+<h3>3. Termômetros do Mercado Lácteo</h3>
+<div class="termometro-grid">
+<div class="termo-card"><div class="titulo">🌡️ Oferta de Leite</div><div class="termo-bar"><div class="termo-fill vermelho" style="width:25%"></div></div><div class="status baixa">RESTRITA</div></div>
+<div class="termo-card"><div class="titulo">💰 Preço Produtor</div><div class="termo-bar"><div class="termo-fill verde" style="width:75%"></div></div><div class="status alta">ALTA SUSTENTADA</div></div>
+<div class="termo-card"><div class="titulo">🏭 Demanda Indústria</div><div class="termo-bar"><div class="termo-fill verde" style="width:80%"></div></div><div class="status alta">AQUECIDA</div></div>
+<div class="termo-card"><div class="titulo">📦 Estoques</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:35%"></div></div><div class="status">AJUSTADOS</div></div>
+<div class="termo-card"><div class="titulo">💸 Custo Produção</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:60%"></div></div><div class="status">PRESSIONADO</div></div>
+<div class="termo-card"><div class="titulo">🛒 Demanda Varejo</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:50%"></div></div><div class="status">MODERADA</div></div>
+</div>
+
+<h3>4. Análise Técnica — Suportes e Resistências</h3>
+<div class="tabela-wrapper">
+<table class="tabela">
+<tr><th>Indicador</th><th>Valor Atual</th><th>Tendência</th><th>Suporte / Resistência</th></tr>
+<tr><td class="destaque">Leite Produtor (Cepea)</td><td>R$ 2,3924/L</td><td>📈 Alta</td><td>S: R$ 2,20 | R: R$ 2,65</td></tr>
+<tr><td class="destaque">Leite Spot GO</td><td>R$ 3,44/L</td><td>📈 Alta forte</td><td>S: R$ 3,00 | R: R$ 3,80</td></tr>
+<tr><td class="destaque">Leite Spot MG</td><td>R$ 3,37/L</td><td>📈 Alta forte</td><td>S: R$ 2,95 | R: R$ 3,70</td></tr>
+<tr><td class="destaque">Leite Spot SP</td><td>R$ 3,41/L</td><td>📈 Alta forte</td><td>S: R$ 3,00 | R: R$ 3,75</td></tr>
+<tr><td class="destaque">Relação Leite/Milho</td><td>+6,3% (fev→mar)</td><td>📈 Melhorando</td><td>Favorável produtor</td></tr>
+<tr><td class="destaque">ICAP-L (Captação)</td><td>-11,1% YTD</td><td>📉 Em queda</td><td>Sustenta preços</td></tr>
+</table>
+</div>
+
+<div class="alert alert-success">
+<strong>✅ Leitura Técnica:</strong> O leite ao produtor rompeu importante resistência em R$ 2,20/L em março, abrindo caminho para teste de R$ 2,65/L. No spot, tendência de alta intacta, com indústrias compradoras agressivas. <strong>Momento de boa rentabilidade para quem mantém produção.</strong>
+</div>
+
+<div class="alert alert-warning">
+<strong>⚠️ Risco a Monitorar:</strong> Apesar da valorização nominal, em termos reais o leite ainda está <strong>-18,7% abaixo de mar/2025</strong>. Custos seguem pressionando margens. Produtor deve aproveitar para <strong>capitalizar e renegociar contratos</strong>, com cautela em investimentos de longo prazo.
+</div>
+</section>
+
+<section id="cambio" class="section">
+<div class="section-title"><span class="icon">💵</span> Câmbio — Análise Fundamentalista & Técnica</div>
+
+<h3>1. Fechamento Semanal do Dólar</h3>
+<p>O dólar à vista encerrou a semana de 18-22/05 em <strong>R$ 5,0289</strong>, com <strong>queda acumulada de 0,74%</strong>, apesar da alta de 0,57% na sexta. No ano, recua 8,38% frente ao real. O movimento semanal foi <strong>volátil e direcionado por três fatores:</strong> (i) negociações EUA-Irã, (ii) cenário fiscal doméstico (bloqueio de R$ 23,7 bi no Orçamento) e (iii) sinais hawkish do Fed.</p>
+
+<div class="chart-container">
+<div class="chart-title">📈 Dólar/Real — Fechamento Diário (18-22/05/2026)</div>
+<div class="chart-wrapper"><canvas id="chartDolar"></canvas></div>
+</div>
+
+<h3>2. Cotações Diárias da Semana</h3>
+<div class="tabela-wrapper">
+<table class="tabela">
+<tr><th>Dia</th><th>Fechamento</th><th>Variação</th><th>Driver Principal</th></tr>
+<tr><td>Seg 18/05</td><td>R$ 5,065</td><td class="alta">+0,30%</td><td>Tensão Oriente Médio</td></tr>
+<tr><td>Ter 19/05</td><td>R$ 5,022</td><td class="baixa">-0,85%</td><td>Sinais positivos EUA-Irã</td></tr>
+<tr><td>Qua 20/05</td><td>R$ 4,998</td><td class="baixa">-0,48%</td><td>Carry trade + commodities</td></tr>
+<tr><td>Qui 21/05</td><td>R$ 5,001</td><td class="alta">+0,06%</td><td>Notícias conflitantes</td></tr>
+<tr><td>Sex 22/05</td><td class="destaque">R$ 5,029</td><td class="alta">+0,57%</td><td>Datafolha + bloqueio fiscal</td></tr>
+<tr style="background:#eef4dc;font-weight:700;"><td>SEMANA</td><td>—</td><td class="baixa">-0,74%</td><td>Volatilidade alta, viés baixista</td></tr>
+</table>
+</div>
+
+<h3>3. Termômetro Cambial</h3>
+<div class="termometro-grid">
+<div class="termo-card"><div class="titulo">🌐 Dólar Global (DXY)</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:55%"></div></div><div class="status">99,29 pts</div></div>
+<div class="termo-card"><div class="titulo">💸 Fluxo Cambial</div><div class="termo-bar"><div class="termo-fill verde" style="width:65%"></div></div><div class="status alta">POSITIVO</div></div>
+<div class="termo-card"><div class="titulo">⚖️ Risco Fiscal BR</div><div class="termo-bar"><div class="termo-fill vermelho" style="width:75%"></div></div><div class="status baixa">ELEVADO</div></div>
+<div class="termo-card"><div class="titulo">📊 Risco Eleitoral</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:55%"></div></div><div class="status">MODERADO</div></div>
+</div>
+
+<h3>4. Análise Técnica — Dólar/Real</h3>
+<p>No gráfico diário, o dólar está em <strong>zona de congestão entre R$ 4,99 e R$ 5,06</strong>, com viés baixista de médio prazo (MM50 inclinada para baixo). O rompimento abaixo de R$ 4,99 (suporte testado 3x na semana) abriria caminho para R$ 4,90. Perda de R$ 5,06 levaria a teste de R$ 5,12.</p>
+
+<div class="tabela-wrapper">
+<table class="tabela">
+<tr><th>Nível</th><th>Valor</th><th>Significado</th></tr>
+<tr><td class="destaque">Resistência forte</td><td>R$ 5,12</td><td>Topo recente, MM21</td></tr>
+<tr><td class="destaque">Resistência</td><td>R$ 5,06</td><td>Máxima da semana</td></tr>
+<tr style="background:#fff3e0;"><td class="destaque">PREÇO ATUAL</td><td>R$ 5,029</td><td>Zona de decisão</td></tr>
+<tr><td class="destaque">Suporte</td><td>R$ 4,99</td><td>Mínima testada 3x</td></tr>
+<tr><td class="destaque">Suporte forte</td><td>R$ 4,90</td><td>Objetivo de rompimento</td></tr>
+</table>
+</div>
+
+<div class="alert alert-info">
+<strong>📌 Impacto para o Agro:</strong> Dólar abaixo de R$ 5,05 favorece <strong>importadores de fertilizantes</strong> (custos menores na próxima safra), mas pressiona <strong>exportadores de soja, café, açúcar e carne</strong>. Para o leite, impacto indireto via custo de insumos importados (farelo de soja, fertilizantes). <strong>Janela boa para travar compras de insumos.</strong>
+</div>
+</section>
+
+<section id="geo" class="section">
+<div class="section-title"><span class="icon">🌍</span> Geopolítica — EUA, Irã & Reflexos Globais</div>
+
+<h3>1. Conflito EUA-Irã — Status na Semana</h3>
+<p>A semana foi <strong>dominada pela volatilidade do conflito EUA-Irã</strong>, no 3º mês desde fevereiro/2026. As negociações avançaram em ritmo de <strong>"3 passos à frente, 2 para trás"</strong>, com manchetes contraditórias movimentando petróleo, ouro e dólar globalmente.</p>
+
+<ul>
+<li><strong>Seg-Ter:</strong> Rubio (Secretário de Estado) sinaliza "progresso" mas "mais trabalho a fazer"</li>
+<li><strong>Qua-Qui:</strong> Reunião do chefe do exército paquistanês com mediadores em Teerã</li>
+<li><strong>Sex 22/05:</strong> Brent fecha US$ 103,54 com queda semanal de -5,48%</li>
+<li><strong>Sáb 23/05:</strong> Trump anuncia memorando "praticamente negociado"</li>
+<li><strong>Dom 24/05:</strong> Acordo prevê reabertura do Estreito de Ormuz, cessar-fogo 60 dias, venda livre de petróleo iraniano</li>
+</ul>
+
+<div class="chart-container">
+<div class="chart-title">🛢️ Petróleo Brent — Fechamento Diário Semanal (US$/barril)</div>
+<div class="chart-wrapper"><canvas id="chartBrent"></canvas></div>
+</div>
+
+<h3>2. Termômetros Geopolíticos</h3>
+<div class="termometro-grid">
+<div class="termo-card"><div class="titulo">⚔️ Tensão Oriente Médio</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:55%"></div></div><div class="status">REDUZINDO</div></div>
+<div class="termo-card"><div class="titulo">🚢 Estreito de Ormuz</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:50%"></div></div><div class="status">REABRINDO</div></div>
+<div class="termo-card"><div class="titulo">🛢️ Risco Petróleo</div><div class="termo-bar"><div class="termo-fill amarelo" style="width:60%"></div></div><div class="status">EM QUEDA</div></div>
+<div class="termo-card"><div class="titulo">🇺🇸 Fed (Política Monetária)</div><div class="termo-bar"><div class="termo-fill vermelho" style="width:70%"></div></div><div class="status baixa">HAWKISH</div></div>
+</div>
+
+<h3>3. Impacto nas Commodities e Insumos</h3>
+<p>A possibilidade real de acordo entre EUA e Irã, com reabertura do Estreito de Ormuz em 30 dias e cessar-fogo de 60 dias, tem implicações <strong>significativas para o agronegócio brasileiro:</strong></p>
+
+<div class="tabela-wrapper">
+<table class="tabela">
+<tr><th>Variável</th><th>Cenário Atual</th><th>Se Acordo Confirmar</th><th>Impacto no Leite</th></tr>
+<tr><td class="destaque">Petróleo Brent</td><td>US$ 103/bbl</td><td>US$ 75-85/bbl</td><td>↓ Custo frete, diesel</td></tr>
+<tr><td class="destaque">Fertilizantes</td><td>Pressionados</td><td>Recuo de 8-12%</td><td>↓ Custo nutrição</td></tr>
+<tr><td class="destaque">Dólar</td><td>R$ 5,02</td><td>R$ 4,85-4,95</td><td>↓ Insumos importados</td></tr>
+<tr><td class="destaque">Inflação Global</td><td>Pressão energética</td><td>Alívio</td><td>↑ Poder compra consumidor</td></tr>
+<tr><td class="destaque">Milho (custo ração)</td><td>Volátil</td><td>Tendência baixa</td><td>↓ COE da atividade</td></tr>
+</table>
+</div>
+
+<div class="alert alert-info">
+<strong>🌐 Leitura Geopolítica:</strong> Se o acordo for confirmado nas próximas semanas, teremos um <strong>vento favorável duplo</strong> para o produtor de leite: (1) preços firmes pela menor oferta interna, e (2) custos em queda pela normalização do petróleo. <strong>Janela rara de margens em expansão.</strong>
+</div>
+
+<div class="alert alert-danger">
+<strong>🚨 Risco de Cauda:</strong> Caso o acordo fracasse (Irã rejeitar termos, Israel sabotar negociações), o Brent pode disparar para US$ 130+ em poucos dias, com Ormuz fechado, levando fertilizantes ao topo histórico e pressionando margens do leite. <strong>Probabilidade baixa, mas existente.</strong>
+</div>
+</section>
+
+<section id="cenarios" class="section">
+<div class="section-title"><span class="icon">🎯</span> Cenários Probabilísticos — Próximas 4 Semanas</div>
+
+<p>Com base na conjuntura fundamentalista, técnica e geopolítica, traçamos três cenários para o mercado de leite, câmbio e custos do produtor:</p>
+
+<div class="cenarios">
+<div class="cenario cen-otimista">
+<span class="prob">45%</span>
+<h4>🟢 CENÁRIO OTIMISTA</h4>
+<ul>
+<li>Acordo EUA-Irã confirmado</li>
+<li>Brent recua para US$ 80</li>
+<li>Dólar testa R$ 4,85</li>
+<li>Leite produtor: R$ 2,55-2,70/L</li>
+<li>Spot GO/MG/SP: R$ 3,60-3,80/L</li>
+<li>Custos (COE) em estabilização</li>
+<li>Margem do produtor +15%</li>
+</ul>
+</div>
+
+<div class="cenario cen-base">
+<span class="prob">40%</span>
+<h4>🔵 CENÁRIO BASE</h4>
+<ul>
+<li>Acordo parcial, volatilidade alta</li>
+<li>Brent oscila US$ 90-105</li>
+<li>Dólar entre R$ 4,95-5,15</li>
+<li>Leite produtor: R$ 2,40-2,55/L</li>
+<li>Spot GO/MG/SP: R$ 3,30-3,55/L</li>
+<li>Custos seguem pressionados</li>
+<li>Margem do produtor estável</li>
+</ul>
+</div>
+
+<div class="cenario cen-pessimista">
+<span class="prob">15%</span>
+<h4>🔴 CENÁRIO PESSIMISTA</h4>
+<ul>
+<li>Negociações fracassam</li>
+<li>Brent dispara US$ 130+</li>
+<li>Dólar volta a R$ 5,30+</li>
+<li>Leite produtor: R$ 2,35-2,45/L</li>
+<li>Spot ainda firme R$ 3,30+</li>
+<li>Custos explodem (+8% COE)</li>
+<li>Margem do produtor -10%</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section id="agenda" class="section">
+<div class="section-title"><span class="icon">📅</span> Agenda Econômica — Próxima Semana (25-29/05)</div>
+
+<div class="agenda-item">
+<div class="agenda-data">SEG 25/05</div>
+<div class="agenda-evento"><strong>Boletim Focus (BCB)</strong> — Expectativas para Selic, IPCA, PIB e câmbio. Mercado avalia ajustes pós bloqueio fiscal.</div>
+<div class="agenda-impacto impacto-medio">MÉDIO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">SEG 25/05</div>
+<div class="agenda-evento"><strong>🌍 Anúncio Acordo EUA-Irã (esperado)</strong> — Possível confirmação do memorando de entendimento. Impacto direto em petróleo e câmbio global.</div>
+<div class="agenda-impacto impacto-alto">ALTÍSSIMO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">TER 26/05</div>
+<div class="agenda-evento"><strong>🇺🇸 Confiança do Consumidor EUA</strong> — Indicador antecedente para política do Fed.</div>
+<div class="agenda-impacto impacto-medio">MÉDIO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">QUA 27/05</div>
+<div class="agenda-evento"><strong>IPCA-15 (Brasil) — Maio/26</strong> — Prévia da inflação oficial. Leite UHT entre os itens em alta pressionando IGP-10 (+13,85%).</div>
+<div class="agenda-impacto impacto-alto">ALTO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">QUA 27/05</div>
+<div class="agenda-evento"><strong>🥛 Indicador Quinzenal Leite Spot (Cepea)</strong> — 2ª quinzena de maio. Mercado espera nova alta com captação restrita.</div>
+<div class="agenda-impacto impacto-alto">ALTO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">QUI 28/05</div>
+<div class="agenda-evento"><strong>🇺🇸 PIB EUA — 1º Trimestre (revisão)</strong> e Pedidos de Auxílio-Desemprego. Direcional para Treasury e DXY.</div>
+<div class="agenda-impacto impacto-medio">MÉDIO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">SEX 29/05</div>
+<div class="agenda-evento"><strong>🇺🇸 PCE (Inflação preferida do Fed) — Abril</strong> — Indicador chave para decisão da Selic dos EUA. Pode mover fortemente o dólar.</div>
+<div class="agenda-impacto impacto-alto">ALTO</div>
+</div>
+
+<div class="agenda-item">
+<div class="agenda-data">SEX 29/05</div>
+<div class="agenda-evento"><strong>Resultado Fiscal Primário (Brasil) — Abril</strong> — Confirmação ou não da trajetória fiscal preocupante.</div>
+<div class="agenda-impacto impacto-alto">ALTO</div>
+</div>
+</section>
+
+<section id="esperar" class="expectativa">
+<h2>🔮 O Que Esperar Desta Semana do Mercado (25-29/05)</h2>
+
+<p>A semana que se inicia será <strong>decisiva</strong> para definir o rumo dos próximos 60 dias no agronegócio brasileiro. Três grandes forças se cruzam: (1) o desfecho geopolítico EUA-Irã, (2) a inflação americana (PCE) e (3) o resultado fiscal do Brasil.</p>
+
+<h3>🥛 Para o Leite</h3>
+<ul>
+<li><strong>Spot deve seguir firme:</strong> 2ª quinzena de maio (Cepea) deve confirmar nova alta. Projeção de R$ 3,50-3,65/L na média GO/MG/SP.</li>
+<li><strong>Captação não recupera no curto prazo:</strong> sazonalidade outono-inverno se intensifica em junho. Vantagem para quem mantém produção.</li>
+<li><strong>Indústria seguirá agressiva nas compras:</strong> estoques ajustados + demanda firme de UHT e muçarela. Janela ideal para renegociar contratos.</li>
+<li><strong>Atenção ao IPCA-15 (qua):</strong> se leite UHT seguir pressionando, governo pode tentar medidas para conter preço ao consumidor.</li>
+</ul>
+
+<h3>💵 Para o Câmbio</h3>
+<ul>
+<li><strong>Cenário base:</strong> dólar oscilando entre R$ 4,98 e R$ 5,10, com viés de queda se acordo EUA-Irã for confirmado.</li>
+<li><strong>Gatilho de baixa:</strong> rompimento de R$ 4,99 abre caminho para R$ 4,90 (aproveite para travar compras de fertilizantes e insumos importados).</li>
+<li><strong>Gatilho de alta:</strong> piora fiscal + PCE americano forte podem levar dólar a R$ 5,12-5,15.</li>
+<li><strong>Recomendação:</strong> produtor exportador (carne, café, açúcar) — proteger parcial em R$ 5,05+. Produtor comprador de insumos — aproveitar zonas abaixo de R$ 5,00.</li>
+</ul>
+
+<h3>🌍 Para a Geopolítica</h3>
+<ul>
+<li><strong>Probabilidade alta (60%)</strong> de anúncio formal do acordo EUA-Irã até quarta-feira (27/05).</li>
+<li><strong>Se confirmado:</strong> Brent cai rápido para US$ 80-85, fertilizantes seguem com queda em 30-60 dias, diesel mais barato no campo.</li>
+<li><strong>Se atrasar:</strong> volatilidade segue alta, com Brent oscilando US$ 95-110. Monitorar diariamente.</li>
+<li><strong>Risco-cauda:</strong> Israel pode tentar sabotar acordo (intransigência sobre programa nuclear iraniano). Probabilidade baixa, mas presente.</li>
+</ul>
+
+<h3>🎯 Recomendações Estratégicas Ruralin.AI</h3>
+<ul>
+<li><strong>1️⃣ CAPITALIZE AGORA:</strong> O momento do leite é favorável. Pague dívidas curtas, reforce capital de giro e mantenha disciplina financeira.</li>
+<li><strong>2️⃣ TRAVE INSUMOS:</strong> Com dólar próximo de R$ 5,00 e possibilidade de queda nos fertilizantes, antecipe compras para safra 26/27.</li>
+<li><strong>3️⃣ RENEGOCIE CONTRATOS:</strong> A disputa industrial está intensa. Use o momento para reposicionar valor recebido.</li>
+<li><strong>4️⃣ EVITE ENDIVIDAMENTO LONGO:</strong> Apesar do bom momento, custos pressionam e cenário macro ainda é incerto. Investimento estrutural só com retorno claro.</li>
+<li><strong>5️⃣ MONITORE A QUARTA (27/05):</strong> IPCA-15 + spot Cepea + sinais EUA-Irã = dia que pode redefinir o mês.</li>
+</ul>
+
+<p style="margin-top:20px;font-size:16px;"><strong>⚡ Conclusão:</strong> A semana traz uma combinação rara — leite firme, dólar contido e possibilidade de alívio nos custos. Quem souber ler os sinais e agir agora pode encerrar 2026 com margem de dois dígitos. <strong>O mercado sustenta o seu negócio — agora é hora de fazê-lo sustentar você.</strong></p>
+</section>
+
+<footer>
+<div class="credenciais">
+<h3>📍 Análise e Construção</h3>
+<div class="nome">Dr. Sidney Souza</div>
+<div class="cargo">Economista e Adm. Agrícola</div>
+<div class="cargo">Estrategista Econômico do Produtor</div>
+<div class="cargo">Especialista em economia da fazenda e gestão de risco no agro</div>
+<div class="tagline">"Transformamos dados da fazenda em decisões econômicas"</div>
+<div class="tagline">Ajudamos produtores a entender se o mercado sustenta seu negócio</div>
+<div class="contatos">
+🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+📧 <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a> | 📱 (64) 9 9226-6886<br>
+📸 <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a>
+</div>
+<div class="disclaimer">
+⚠️ DISCLAIMER: Este informativo tem caráter exclusivamente informativo e educacional. As análises, projeções e cenários apresentados refletem a interpretação do autor com base em dados públicos disponíveis (Cepea, MilkPoint, Scot, Reuters, B3, Valor, Exame, CNN Brasil), e não constituem recomendação formal de compra, venda ou operação. Toda decisão econômica é de responsabilidade do produtor. © 2026 Ruralin.AI — Todos os direitos reservados.
+</div>
+</div>
+</footer>
+
+</div>
+
+<script>
+// CONFIG GLOBAL
+Chart.defaults.font.family="'Segoe UI',Tahoma,sans-serif";
+Chart.defaults.color="#3d5c1f";
+
+// GRÁFICO 1 - LEITE CEPEA (Produtor)
+new Chart(document.getElementById('chartLeiteCepea'),{
+type:'line',
+data:{
+labels:['Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26'],
+datasets:[{
+label:'Leite Produtor (R$/L) — Média Brasil',
+data:[2.75,2.69,2.64,2.65,2.62,2.54,2.44,2.30,2.11,1.99,2.02,2.14,2.39],
+borderColor:'#3d5c1f',
+backgroundColor:'rgba(123,168,67,0.25)',
+fill:true,
+tension:0.35,
+borderWidth:3,
+pointBackgroundColor:'#7ba843',
+pointRadius:5,
+pointHoverRadius:7
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'top'},
+tooltip:{callbacks:{label:(c)=>'R$ '+c.parsed.y.toFixed(2)+'/L'}}
+},
+scales:{
+y:{beginAtZero:false,ticks:{callback:(v)=>'R$ '+v.toFixed(2)}}
+}
+}
+});
+
+// GRÁFICO 2 - LEITE SPOT (GO/MG/SP)
+new Chart(document.getElementById('chartSpot'),{
+type:'bar',
+data:{
+labels:['Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26'],
+datasets:[
+{label:'GO',data:[2.45,2.21,1.93,1.95,2.38,3.07,3.44],backgroundColor:'#3d5c1f'},
+{label:'MG',data:[2.42,2.22,1.96,1.83,2.38,2.90,3.37],backgroundColor:'#7ba843'},
+{label:'SP',data:[2.39,2.08,1.79,1.95,2.41,2.79,3.41],backgroundColor:'#ffd54f'}
+]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'top'},
+tooltip:{callbacks:{label:(c)=>c.dataset.label+': R$ '+c.parsed.y.toFixed(2)+'/L'}}
+},
+scales:{
+y:{beginAtZero:false,ticks:{callback:(v)=>'R$ '+v.toFixed(2)}}
+}
+}
+});
+
+// GRÁFICO 3 - DÓLAR DIÁRIO
+new Chart(document.getElementById('chartDolar'),{
+type:'line',
+data:{
+labels:['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+datasets:[{
+label:'Dólar/Real (Fechamento)',
+data:[5.065,5.022,4.998,5.001,5.029],
+borderColor:'#c0392b',
+backgroundColor:'rgba(231,76,60,0.20)',
+fill:true,
+tension:0.3,
+borderWidth:3,
+pointBackgroundColor:'#c0392b',
+pointRadius:6,
+pointHoverRadius:8
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'top'},
+tooltip:{callbacks:{label:(c)=>'R$ '+c.parsed.y.toFixed(4)}}
+},
+scales:{
+y:{beginAtZero:false,ticks:{callback:(v)=>'R$ '+v.toFixed(3)}}
+}
+}
+});
+
+// GRÁFICO 4 - BRENT
+new Chart(document.getElementById('chartBrent'),{
+type:'line',
+data:{
+labels:['Seg 18/05','Ter 19/05','Qua 20/05','Qui 21/05','Sex 22/05'],
+datasets:[{
+label:'Petróleo Brent (US$/barril)',
+data:[109.50,106.20,104.80,102.58,103.54],
+borderColor:'#1f2e1a',
+backgroundColor:'rgba(61,92,31,0.25)',
+fill:true,
+tension:0.3,
+borderWidth:3,
+pointBackgroundColor:'#5a8030',
+pointRadius:6,
+pointHoverRadius:8
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{position:'top'},
+tooltip:{callbacks:{label:(c)=>'US$ '+c.parsed.y.toFixed(2)}}
+},
+scales:{
+y:{beginAtZero:false,ticks:{callback:(v)=>'US$ '+v.toFixed(0)}}
+}
+}
+});
+</script>
+</body>
+</html>
