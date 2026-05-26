@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta Comercial RuralIn — Waldelon | Indiara-GO</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --green-900: #0f3d22;
+      --green-800: #14532d;
+      --green-700: #166534;
+      --green-600: #16a34a;
+      --green-500: #22c55e;
+      --green-100: #dcfce7;
+
+      --amber-700: #b45309;
+      --amber-600: #d97706;
+      --amber-500: #f59e0b;
+      --amber-100: #fef3c7;
+
+      --gray-950: #020617;
+      --gray-900: #111827;
+      --gray-800: #1f2937;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-500: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+
+      --white: #ffffff;
+
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.12);
+      --shadow-md: 0 10px 25px rgba(15, 23, 42, 0.12);
+      --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.20);
+
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 28px;
+
+      --gradient-dark: linear-gradient(135deg, #020617 0%, #0f172a 45%, #14532d 100%);
+      --gradient-green: linear-gradient(135deg, #14532d 0%, #16a34a 100%);
+      --gradient-gold: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 84px 0;
+    }
+
+    .section.alt {
+      background: var(--white);
+    }
+
+    .section.dark {
+      background: var(--gradient-dark);
+      color: var(--white);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: var(--green-600);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .section-title {
+      margin-top: 16px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .section-subtitle {
+      max-width: 760px;
+      margin: 16px auto 0;
+      color: var(--gray-600);
+      font-size: 1.05rem;
+    }
+
+    .dark .section-subtitle {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 100vh;
+      background: var(--gradient-dark);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 64px 0;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 760px;
+      height: 760px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.24), transparent 65%);
+      top: -260px;
+      right: -260px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.16), transparent 68%);
+      bottom: -260px;
+      left: -180px;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .brand {
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      line-height: 0.92;
+      font-weight: 950;
+      letter-spacing: -0.08em;
+      margin: 26px 0 10px;
+    }
+
+    .brand span {
+      color: var(--green-500);
+    }
+
+    .tagline {
+      color: rgba(255, 255, 255, 0.68);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.92rem;
+    }
+
+    h1 {
+      margin-top: 42px;
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
+      line-height: 1.02;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      color: var(--white);
+    }
+
+    .hero p {
+      margin-top: 24px;
+      max-width: 680px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 1.12rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary {
+      background: var(--gradient-green);
+      color: var(--white);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .client-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(18px);
+      border-radius: var(--radius-lg);
+      padding: 34px;
+    }
+
+    .client-card .label {
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .client-name {
+      margin-top: 8px;
+      font-size: 2rem;
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--white);
+    }
+
+    .client-info {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-line {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .info-line strong {
+      color: var(--white);
+    }
+
+    .hero-price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .mini-price {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .mini-price span {
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .mini-price strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--amber-500);
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+
+    /* INTRO */
+
+    .intro-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 44px;
+      border: 1px solid var(--gray-200);
+    }
+
+    .intro-card p {
+      margin-bottom: 18px;
+      color: var(--gray-700);
+      font-size: 1.04rem;
+    }
+
+    .intro-card strong {
+      color: var(--green-800);
+    }
+
+    /* PLANOS */
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .plan-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .plan-card.featured {
+      border: 2px solid var(--amber-500);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-10px);
+    }
+
+    .plan-card.featured::before {
+      content: "RECOMENDADO";
+      position: absolute;
+      top: 18px;
+      right: -38px;
+      background: var(--gradient-gold);
+      color: var(--white);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      padding: 7px 42px;
+      transform: rotate(35deg);
+    }
+
+    .plan-letter {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--green-100);
+      color: var(--green-800);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 950;
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+    }
+
+    .featured .plan-letter {
+      background: var(--amber-100);
+      color: var(--amber-600);
+    }
+
+    .plan-title {
+      font-size: 1.45rem;
+      line-height: 1.16;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+      color: var(--gray-900);
+    }
+
+    .plan-desc {
+      color: var(--gray-600);
+      font-size: 0.95rem;
+      margin-bottom: 22px;
+      min-height: 84px;
+    }
+
+    .price {
+      margin: 10px 0 22px;
+      padding: 22px;
+      border-radius: var(--radius-md);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+    }
+
+    .price .currency {
+      color: var(--gray-500);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .price .amount {
+      display: block;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.08em;
+      color: var(--green-800);
+    }
+
+    .featured .price .amount {
+      color: var(--amber-600);
+    }
+
+    .price .period {
+      color: var(--gray-500);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .plan-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-bottom: 26px;
+      flex: 1;
+    }
+
+    .plan-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: var(--gray-700);
+      font-size: 0.93rem;
+    }
+
+    .check {
+      flex: 0 0 auto;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--green-100);
+      color: var(--green-800);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 900;
+    }
+
+    .featured .check {
+      background: var(--amber-100);
+      color: var(--amber-600);
+    }
+
+    .plan-button {
+      width: 100%;
+      margin-top: auto;
+    }
+
+    /* SERVIÇOS */
+
+    .services-layout {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .sticky-note {
+      position: sticky;
+      top: 24px;
+      background: var(--gradient-dark);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sticky-note h3 {
+      font-size: 1.7rem;
+      line-height: 1.12;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      margin-bottom: 14px;
+    }
+
+    .sticky-note p {
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .service-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .service-item {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 18px;
+    }
+
+    .service-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--green-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .service-item h3 {
+      font-size: 1.12rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+      color: var(--gray-900);
+    }
+
+    .service-item p {
+      color: var(--gray-600);
+      font-size: 0.95rem;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .market-extra {
+      background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+      border: 2px solid var(--amber-500);
+    }
+
+    .market-extra .service-icon {
+      background: var(--amber-100);
+    }
+
+    .market-extra .tag {
+      background: var(--amber-100);
+      color: var(--amber-600);
+    }
+
+    /* TABELA */
+
+    .comparison-wrap {
+      overflow-x: auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 780px;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--gray-200);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    th:first-child,
+    td:first-child {
+      text-align: left;
+      width: 44%;
+    }
+
+    th {
+      background: var(--gray-900);
+      color: var(--white);
+      font-weight: 900;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison-wrap tbody td {
+      color: var(--gray-800);
+      background: var(--white);
+    }
+
+    .comparison-wrap tbody td:first-child {
+      color: var(--gray-900);
+      font-weight: 700;
+    }
+
+    .comparison-wrap tbody td.highlight-col {
+      background: #fffbeb;
+      color: var(--gray-900);
+    }
+
+    .comparison-wrap tbody td.yes {
+      color: var(--green-700);
+      font-weight: 950;
+    }
+
+    .comparison-wrap tbody td.no {
+      color: var(--gray-300);
+      font-weight: 950;
+    }
+
+    /* PAGAMENTO */
+
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .payment-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .payment-card h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      margin-bottom: 16px;
+      color: var(--gray-900);
+    }
+
+    .payment-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--gray-300);
+      color: var(--gray-700);
+      font-size: 0.94rem;
+    }
+
+    .payment-line:last-child {
+      border-bottom: none;
+    }
+
+    .payment-line strong {
+      color: var(--gray-900);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .payment-divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 18px 0;
+    }
+
+    /* RECOMENDAÇÃO */
+
+    .recommended-box {
+      background: var(--gradient-dark);
+      color: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 42px;
+      box-shadow: var(--shadow-lg);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .recommended-box h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.08;
+      font-weight: 950;
+      letter-spacing: -0.06em;
+    }
+
+    .recommended-box h2 span {
+      color: var(--amber-500);
+    }
+
+    .recommended-box p {
+      margin-top: 16px;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .recommended-list {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .recommended-list li {
+      display: flex;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.82);
+      font-weight: 600;
+    }
+
+    /* ACEITE */
+
+    .accept-card {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--gray-200);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--gray-700);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 2px solid var(--gray-200);
+      background: var(--gray-50);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--green-600);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+      background: var(--white);
+    }
+
+    .terms {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      color: var(--gray-600);
+      font-size: 0.9rem;
+    }
+
+    .checkbox {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--green-100);
+    }
+
+    .checkbox input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--green-700);
+      margin-top: 3px;
+    }
+
+    .checkbox label {
+      color: var(--green-900);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 22px;
+      padding: 17px 22px;
+      border: none;
+      border-radius: 16px;
+      background: var(--gradient-green);
+      color: var(--white);
+      font-size: 1.05rem;
+      font-weight: 900;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* FOOTER E MODAL */
+
+    .footer {
+      background: var(--gray-950);
+      color: rgba(255, 255, 255, 0.64);
+      padding: 46px 0;
+      text-align: center;
+    }
+
+    .footer .footer-brand {
+      color: var(--white);
+      font-size: 1.8rem;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    .footer .footer-brand span {
+      color: var(--green-500);
+    }
+
+    .footer p {
+      color: rgba(255, 255, 255, 0.64);
+      margin-top: 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.78);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: min(520px, 100%);
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 38px;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-icon {
+      font-size: 3.8rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-box h3 {
+      font-size: 1.65rem;
+      font-weight: 950;
+      letter-spacing: -0.04em;
+      margin-bottom: 10px;
+      color: var(--gray-900);
+    }
+
+    .modal-box p {
+      color: var(--gray-600);
+      margin-bottom: 22px;
+    }
+
+    /* RESPONSIVO */
+
+    @media print {
+      .hero-actions,
+      .accept-card,
+      .footer,
+      .modal {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      .section {
+        padding: 40px 0;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 50px 0;
+      }
+
+      .plan-card.featured {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .services-layout,
+      .recommended-box {
+        grid-template-columns: 1fr;
+      }
+
+      .plans-grid,
+      .payment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plan-card.featured {
+        transform: none;
+      }
+
+      .sticky-note {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .section {
+        padding: 58px 0;
+      }
+
+      .hero {
+        padding: 44px 0;
+      }
+
+      .hero-price-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-item {
+        grid-template-columns: 1fr;
+      }
+
+      .client-card,
+      .intro-card,
+      .accept-card,
+      .recommended-box {
+        padding: 26px;
+      }
+
+      .brand {
+        font-size: 3.6rem;
+      }
+
+      h1 {
+        font-size: 2.75rem;
+      }
+
+      .payment-line {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .payment-line strong {
+        text-align: left;
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Proposta Comercial Personalizada</div>
+
+          <div class="brand">Rural<span>In</span></div>
+          <div class="tagline">Informação e Decisão</div>
+
+          <h1>Assessoria jurídica, econômica e estratégica para produtor rural</h1>
+
+          <p>
+            Três cenários de contratação para apoiar a proteção jurídica, a organização econômica,
+            o acompanhamento bancário, a gestão financeira e a tomada de decisão comercial da operação rural.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#planos" class="btn btn-primary">Ver planos disponíveis</a>
+            <button class="btn btn-secondary" onclick="window.print()">Imprimir / Salvar PDF</button>
+          </div>
+        </div>
+
+        <aside class="client-card">
+          <div class="label">Proposta destinada a</div>
+          <div class="client-name">Sr. Waldelon</div>
+
+          <div class="client-info">
+            <div class="info-line">
+              <span>📍</span>
+              <div><strong>Município:</strong> Indiara – GO</div>
+            </div>
+
+            <div class="info-line">
+              <span>🌾</span>
+              <div><strong>Atividade:</strong> Produção rural</div>
+            </div>
+
+            <div class="info-line">
+              <span>📅</span>
+              <div><strong>Emissão:</strong> 25 de maio de 2026</div>
+            </div>
+
+            <div class="info-line">
+              <span>⏳</span>
+              <div><strong>Validade:</strong> 15 dias úteis</div>
+            </div>
+          </div>
+
+          <div class="hero-price-grid">
+            <div class="mini-price">
+              <span>Plano A</span>
+              <strong>R$ 50 mil</strong>
+            </div>
+
+            <div class="mini-price">
+              <span>Plano B</span>
+              <strong>R$ 125 mil/ano</strong>
+            </div>
+
+            <div class="mini-price">
+              <span>Plano C</span>
+              <strong>R$ 170 mil/ano</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Apresentação</div>
+          <h2 class="section-title">Uma proposta estruturada para diferentes necessidades do produtor</h2>
+          <p class="section-subtitle">
+            O objetivo é permitir que o Sr. Waldelon escolha o nível de assessoria mais adequado ao momento atual da operação.
+          </p>
+        </div>
+
+        <div class="intro-card">
+          <p>Prezado Sr. Waldelon,</p>
+
+          <p>
+            A atividade rural exige cada vez mais controle, organização e estratégia. A volatilidade dos preços,
+            o aumento dos custos, os contratos bancários complexos e a tomada de decisão baseada em dados requerem
+            suporte técnico, jurídico, econômico e estratégico.
+          </p>
+
+          <p>
+            A <strong>RuralIn — Informação e Decisão</strong> oferece três cenários de contratação que atendem diferentes
+            níveis de suporte, do jurídico bancário ao acompanhamento completo de gestão econômica, financeira e mercado.
+          </p>
+
+          <p>
+            Nosso objetivo é transformar dados da fazenda em decisões econômicas, protegendo seu patrimônio,
+            organizando sua gestão e aumentando a clareza de custos, margens, créditos e resultados.
+          </p>
+
+          <p style="margin-bottom: 0;">
+            Atenciosamente,<br />
+            <strong>Dr. Sidney Souza</strong><br />
+            Economista e Administrador Agrícola | Estrategista Econômico do Produtor
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="planos">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Planos Comerciais</div>
+          <h2 class="section-title">Escolha o cenário ideal</h2>
+          <p class="section-subtitle">
+            Três planos com níveis diferentes de profundidade, escopo e acompanhamento.
+          </p>
+        </div>
+
+        <div class="plans-grid">
+          <article class="plan-card">
+            <div class="plan-letter">A</div>
+            <h3 class="plan-title">Assessoria Jurídica Bancária</h3>
+            <p class="plan-desc">
+              Apoio jurídico na análise, revisão, negociação ou judicialização de contratos bancários e dívidas.
+            </p>
+
+            <div class="price">
+              <span class="currency">R$</span>
+              <span class="amount">50.000</span>
+            </div>
+
+            <ul class="plan-list">
+              <li><span class="check">✓</span> Análise de contratos rurais</li>
+              <li><span class="check">✓</span> Revisão de operações de crédito</li>
+              <li><span class="check">✓</span> Estratégia de negociação ou judicialização</li>
+              <li><span class="check">✓</span> Avaliação de riscos jurídicos</li>
+              <li><span class="check">✓</span> Parecer e plano de ação</li>
+            </ul>
+
+            <a href="#aceite" class="btn btn-primary plan-button" onclick="selectPlan('Plano A')">
+              Selecionar Plano A
+            </a>
+          </article>
+
+          <article class="plan-card">
+            <div class="plan-letter">B</div>
+            <h3 class="plan-title">Gestão Econômica e Financeira Completa</h3>
+            <p class="plan-desc">
+              Estruturação econômica e financeira, indicadores, relatórios, crédito, jurídico e software para gestão contínua.
+            </p>
+
+            <div class="price">
+              <span class="currency">R$</span>
+              <span class="amount">125.000</span>
+              <span class="period">/ ano</span>
+            </div>
+
+            <ul class="plan-list">
+              <li><span class="check">✓</span> Gestão econômica e financeira integral</li>
+              <li><span class="check">✓</span> Indicadores avançados</li>
+              <li><span class="check">✓</span> Relatórios mensais</li>
+              <li><span class="check">✓</span> Software RuralIn</li>
+              <li><span class="check">✓</span> Crédito rural e acompanhamento bancário</li>
+              <li><span class="check">✓</span> Jurídico</li>
+              <li><span class="check">✓</span> Informações de mercado</li>
+              <li><span class="check">✓</span> Suporte ilimitado</li>
+            </ul>
+
+            <a href="#aceite" class="btn btn-primary plan-button" onclick="selectPlan('Plano B')">
+              Selecionar Plano B
+            </a>
+          </article>
+
+          <article class="plan-card featured">
+            <div class="plan-letter">C</div>
+            <h3 class="plan-title">Completo + Mercado</h3>
+            <p class="plan-desc">
+              Tudo do Plano B + análise estratégica de mercado de soja e milho, com foco em comercialização e margem.
+            </p>
+
+            <div class="price">
+              <span class="currency">R$</span>
+              <span class="amount">170.000</span>
+              <span class="period">/ ano</span>
+            </div>
+
+            <ul class="plan-list">
+              <li><span class="check">✓</span> Todos os serviços do Plano B</li>
+              <li><span class="check">✓</span> Análise de mercado de soja e milho</li>
+              <li><span class="check">✓</span> Estratégia de venda e proteção de margem</li>
+              <li><span class="check">✓</span> Simulações de margem e preço</li>
+              <li><span class="check">✓</span> Relatórios de mercado</li>
+            </ul>
+
+            <a href="#aceite" class="btn btn-primary plan-button" onclick="selectPlan('Plano C')">
+              Selecionar Plano C
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Escopo Técnico</div>
+          <h2 class="section-title">Detalhamento dos serviços</h2>
+          <p class="section-subtitle">
+            Serviços que compõem os planos, com foco no suporte jurídico, econômico, financeiro e estratégico.
+          </p>
+        </div>
+
+        <div class="services-layout">
+          <aside class="sticky-note">
+            <h3>Proteção jurídica aliada à decisão econômica</h3>
+            <p>
+              Atuação em contratos bancários, fluxo de caixa, custos, indicadores, crédito,
+              fornecedores, comercialização e gestão estratégica da operação.
+            </p>
+          </aside>
+
+          <div class="service-stack">
+            <div class="service-item">
+              <div class="service-icon">⚖️</div>
+              <div>
+                <h3>Assessoria jurídica em contratos bancários</h3>
+                <p>Análise de contratos, renegociações, garantias e estratégia judicial ou extrajudicial.</p>
+                <span class="tag">Planos A, B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">📊</div>
+              <div>
+                <h3>Gestão econômica e financeira contínua</h3>
+                <p>Controle de receitas, despesas, fluxo de caixa, custos, margens, indicadores e relatórios.</p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">📈</div>
+              <div>
+                <h3>Indicadores econômicos e financeiros avançados</h3>
+                <p>Custo de produção, margem, EBITDA, ponto de equilíbrio, endividamento e benchmarking.</p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">📋</div>
+              <div>
+                <h3>Relatório mensal de fluxo de caixa</h3>
+                <p>Detalhamento do fluxo financeiro, desvios, recomendações e plano de ação para a gestão.</p>
+                <span class="tag">Mensal</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">🌾</div>
+              <div>
+                <h3>Informações de Mercado — Boi, Soja e Milho</h3>
+                <p>
+                  Informações contínuas sobre tendências de preço, janelas de comercialização,
+                  cotações, cenários de oferta e demanda e alertas de oportunidade.
+                </p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">💻</div>
+              <div>
+                <h3>Software RuralIn — acesso completo</h3>
+                <p>Dados, indicadores, relatórios e painel de gestão para acompanhamento da operação rural.</p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">🏦</div>
+              <div>
+                <h3>Orientação em crédito e acompanhamento bancário</h3>
+                <p>Suporte em operações de crédito rural, renegociações, relacionamento bancário e estruturação financeira.</p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item">
+              <div class="service-icon">📞</div>
+              <div>
+                <h3>Suporte técnico-financeiro ilimitado</h3>
+                <p>Contato via WhatsApp ou telefone para dúvidas, alinhamentos e decisões estratégicas do dia a dia.</p>
+                <span class="tag">Planos B e C</span>
+              </div>
+            </div>
+
+            <div class="service-item market-extra">
+              <div class="service-icon">🌽</div>
+              <div>
+                <h3>Análise estratégica de mercado — Soja e Milho</h3>
+                <p>
+                  Aprofundamento em tendências, preços, janelas de venda, estratégias de comercialização,
+                  risco de mercado, proteção de margem e simulações econômicas.
+                </p>
+                <span class="tag">Exclusivo do Plano C</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Comparativo</div>
+          <h2 class="section-title">O que está incluído em cada plano</h2>
+          <p class="section-subtitle">
+            Comparação objetiva entre os cenários A, B e C.
+          </p>
+        </div>
+
+        <div class="comparison-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Serviço</th>
+                <th>Plano A</th>
+                <th>Plano B</th>
+                <th>Plano C</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>Assessoria jurídica em contratos bancários</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Revisão de dívidas, garantias e encargos</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Estratégia de negociação ou judicialização</td>
+                <td class="yes">✓</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Gestão econômica e financeira contínua</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Controle de receitas e despesas</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Indicadores econômicos e financeiros avançados</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Relatório mensal de fluxo de caixa</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Software RuralIn</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Crédito rural e acompanhamento bancário</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Suporte técnico-financeiro ilimitado</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Informações de Mercado — Boi, Soja e Milho</td>
+                <td class="no">—</td>
+                <td class="yes">✓</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Análise estratégica de mercado — Soja e Milho</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Simulações de margem e preço</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td>Estratégia de comercialização</td>
+                <td class="no">—</td>
+                <td class="no">—</td>
+                <td class="yes highlight-col">✓</td>
+              </tr>
+
+              <tr>
+                <td><strong>Investimento</strong></td>
+                <td><strong>R$ 50.000</strong></td>
+                <td><strong>R$ 125.000/ano</strong></td>
+                <td class="highlight-col"><strong>R$ 170.000/ano</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Condições Comerciais</div>
+          <h2 class="section-title">Investimento e formas de pagamento</h2>
+          <p class="section-subtitle">
+            Condições estruturadas no modelo de entrada + Plano Safra.
+          </p>
+        </div>
+
+        <div class="payment-grid">
+          <div class="payment-card">
+            <h3>Plano A — R$ 50.000</h3>
+
+            <div class="payment-line">
+              <span>Opção 1 — Entrada</span>
+              <strong>R$ 25.000</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Opção 1 — Plano Safra</span>
+              <strong>R$ 25.000 em 30/03/2027</strong>
+            </div>
+
+            <hr class="payment-divider" />
+
+            <div class="payment-line">
+              <span>Opção 2 — Entrada</span>
+              <strong>R$ 20.000</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Opção 2 — Parcela intermediária</span>
+              <strong>R$ 15.000 em 30/09/2026</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Opção 2 — Plano Safra</span>
+              <strong>R$ 15.000 em 30/03/2027</strong>
+            </div>
+          </div>
+
+          <div class="payment-card">
+            <h3>Plano B — R$ 125.000/ano</h3>
+
+            <div class="payment-line">
+              <span>Entrada</span>
+              <strong>R$ 50.000</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Parcela intermediária</span>
+              <strong>R$ 30.000 em 30/09/2026</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Plano Safra</span>
+              <strong>R$ 45.000 em 30/03/2027</strong>
+            </div>
+          </div>
+
+          <div class="payment-card">
+            <h3>Plano C — R$ 170.000/ano</h3>
+
+            <div class="payment-line">
+              <span>Entrada</span>
+              <strong>R$ 50.000</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Parcela intermediária</span>
+              <strong>R$ 50.000 em 30/09/2026</strong>
+            </div>
+
+            <div class="payment-line">
+              <span>Plano Safra</span>
+              <strong>R$ 70.000 em 30/03/2027</strong>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top: 22px; color: var(--gray-600); text-align: center;">
+          As datas e condições poderão ser ajustadas mediante alinhamento entre as partes.
+          Para os planos anuais, sugere-se vigência contratual de 12 meses a partir da assinatura.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="recommended-box">
+          <div>
+            <div class="eyebrow">Recomendação RuralIn</div>
+            <h2>Para maior proteção e estratégia, recomendamos o <span>Plano C</span></h2>
+
+            <p>
+              O Plano C oferece suporte completo: jurídico, econômico, financeiro, crédito,
+              software, suporte e análise de mercado para comercialização e proteção de margem.
+            </p>
+          </div>
+
+          <ul class="recommended-list">
+            <li><span>✓</span> Proteção jurídica e patrimonial</li>
+            <li><span>✓</span> Gestão econômica e financeira estruturada</li>
+            <li><span>✓</span> Clareza em custos e margens</li>
+            <li><span>✓</span> Decisão de venda apoiada em mercado</li>
+            <li><span>✓</span> Análise avançada de mercado de soja e milho</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="aceite">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">Aceite</div>
+          <h2 class="section-title">Formalize sua contratação</h2>
+          <p class="section-subtitle">
+            Preencha os dados e selecione o plano desejado para formalizar.
+          </p>
+        </div>
+
+        <div class="accept-card">
+          <form id="acceptForm" onsubmit="handleAccept(event)">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nome">Nome completo *</label>
+                <input id="nome" type="text" placeholder="Waldelon" required />
+              </div>
+
+              <div class="form-group">
+                <label for="documento">CPF/CNPJ *</label>
+                <input id="documento" type="text" placeholder="000.000.000-00" required />
+              </div>
+
+              <div class="form-group">
+                <label for="telefone">Telefone/WhatsApp *</label>
+                <input id="telefone" type="tel" placeholder="(64) 99999-9999" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input id="email" type="email" placeholder="email@exemplo.com" />
+              </div>
+
+              <div class="form-group full">
+                <label for="plano">Plano escolhido *</label>
+                <select id="plano" required>
+                  <option value="">Selecione um plano</option>
+                  <option>Plano A — Assessoria Jurídica Bancária — R$ 50.000</option>
+                  <option>Plano B — Gestão Econômica e Financeira Completa — R$ 125.000/ano</option>
+                  <option>Plano C — Completo + Mercado — R$ 170.000/ano</option>
+                </select>
+              </div>
+
+              <div class="form-group full">
+                <label for="fazenda">Nome da propriedade/fazenda</label>
+                <input id="fazenda" type="text" placeholder="Nome da fazenda" />
+              </div>
+
+              <div class="form-group full">
+                <label for="observacoes">Observações</label>
+                <textarea id="observacoes" placeholder="Observações ou informações adicionais..."></textarea>
+              </div>
+            </div>
+
+            <div class="terms">
+              <strong>Termos gerais:</strong><br />
+              A proposta contempla os serviços do plano selecionado, formalização por contrato,
+              sigilo de dados e validade de 15 dias úteis. As condições de pagamento seguem o modelo
+              de entrada + Plano Safra, conforme descrito nesta proposta.
+            </div>
+
+            <div class="checkbox">
+              <input id="termsCheck" type="checkbox" onchange="toggleSubmit()" required />
+              <label for="termsCheck">
+                Li e aceito os termos e condições e autorizo o início da formalização contratual.
+              </label>
+            </div>
+
+            <button id="submitBtn" class="submit-btn" type="submit" disabled>
+              ✅ Aceitar proposta e iniciar parceria
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">Rural<span>In</span></div>
+      <p>Informação e Decisão | Transformamos dados da fazenda em decisões econômicas</p>
+      <p>Dr. Sidney Souza — Economista & Administrador Agrícola</p>
+      <p>📧 ruralin.ai@gmail.com &nbsp;|&nbsp; 📱 WhatsApp: (64) 99226-6886</p>
+      <p style="margin-top: 18px;">© 2026 RuralIn — Todos os direitos reservados</p>
+    </div>
+  </footer>
+
+  <div id="successModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-icon">🎉</div>
+      <h3>Proposta aceita com sucesso!</h3>
+      <p id="modalText">
+        Obrigado. A RuralIn entrará em contato para formalização contratual e início dos trabalhos.
+      </p>
+      <button class="btn btn-primary" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    function selectPlan(planName) {
+      const select = document.getElementById("plano");
+
+      for (const option of select.options) {
+        if (option.text.includes(planName)) {
+          select.value = option.text;
+          break;
+        }
+      }
+    }
+
+    function toggleSubmit() {
+      const checkbox = document.getElementById("termsCheck");
+      const button = document.getElementById("submitBtn");
+      button.disabled = !checkbox.checked;
+    }
+
+    function handleAccept(event) {
+      event.preventDefault();
+
+      const nome = document.getElementById("nome").value || "Cliente";
+      const plano = document.getElementById("plano").value || "Plano não selecionado";
+
+      document.getElementById("modalText").innerHTML =
+        "Obrigado, <strong>" + nome + "</strong>.<br /><br />" +
+        "Plano escolhido: <strong>" + plano + "</strong><br /><br />" +
+        "A RuralIn entrará em contato para formalização contratual e início dos trabalhos.";
+
+      document.getElementById("successModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("successModal").classList.remove("active");
+    }
+  </script>
+</body>
+</html>
