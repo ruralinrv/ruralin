@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Boi | Rural IN - Semana 26/05/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #1a6b3c;
+    --verde-claro: #2d9e5f;
+    --verde-escuro: #0d4025;
+    --dourado: #c8931a;
+    --dourado-claro: #f0b429;
+    --terra: #7a3b1e;
+    --creme: #fdf8f0;
+    --cinza: #4a4a4a;
+    --cinza-claro: #f4f1ec;
+    --vermelho: #c0392b;
+    --azul: #1a4a7a;
+    --branco: #ffffff;
+    --sombra: 0 4px 24px rgba(0,0,0,0.10);
+    --borda: 1px solid rgba(200,147,26,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--creme);
+    color: var(--cinza);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--verde-escuro) 0%, var(--verde) 60%, var(--verde-claro) 100%);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,147,26,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .logo-svg {
+    width: 72px; height: 72px;
+    flex-shrink: 0;
+  }
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    color: white;
+  }
+  .logo-text .sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dourado-claro);
+    margin-top: 4px;
+  }
+  .header-meta {
+    text-align: right;
+  }
+  .header-meta .edicao {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+  .header-meta .data {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--dourado-claro);
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .header-strip {
+    background: var(--dourado);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .header-strip span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--verde-escuro);
+    font-weight: 600;
+  }
+  .header-strip .sep { color: var(--verde-escuro); opacity: 0.4; }
+  .preco-destaque {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+  }
+  .alta { color: var(--verde-escuro) !important; }
+  .baixa { color: var(--vermelho) !important; }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* SEÇÕES */
+  .section {
+    padding: 48px 0 36px;
+    border-bottom: 1px solid rgba(200,147,26,0.18);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-icon {
+    width: 42px; height: 42px;
+    background: var(--dourado);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .section-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    color: var(--verde-escuro);
+    font-weight: 700;
+  }
+  .section-title .linha {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--dourado) 0%, transparent 100%);
+  }
+
+  /* CARDS DE PREÇO */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .price-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px 18px;
+    box-shadow: var(--sombra);
+    border-top: 4px solid var(--dourado);
+    position: relative;
+    overflow: hidden;
+  }
+  .price-card::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(200,147,26,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .price-card.red { border-top-color: var(--vermelho); }
+  .price-card.green { border-top-color: var(--verde-claro); }
+  .price-card.blue { border-top-color: var(--azul); }
+  .price-card .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 6px;
+  }
+  .price-card .valor {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--verde-escuro);
+    line-height: 1;
+  }
+  .price-card .variacao {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .v-alta { color: var(--verde-claro); }
+  .v-baixa { color: var(--vermelho); }
+  .price-card .fonte {
+    font-size: 0.7rem;
+    color: #bbb;
+    margin-top: 8px;
+  }
+
+  /* ANÁLISE BOX */
+  .analise-box {
+    background: white;
+    border-radius: 14px;
+    padding: 26px 28px;
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+    border-left: 5px solid var(--verde);
+  }
+  .analise-box.dourado { border-left-color: var(--dourado); }
+  .analise-box.vermelho { border-left-color: var(--vermelho); }
+  .analise-box.azul { border-left-color: var(--azul); }
+  .analise-box h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--verde-escuro);
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .analise-box p { color: #555; line-height: 1.75; }
+  .analise-box p + p { margin-top: 10px; }
+
+  /* GRÁFICOS CANVAS */
+  .chart-wrap {
+    background: white;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+  }
+  .chart-wrap h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--verde-escuro);
+    font-size: 1.05rem;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--cinza-claro);
+    padding-bottom: 10px;
+  }
+  canvas { max-width: 100%; }
+
+  /* TABELA FUTURO */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: var(--sombra);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 0.9rem;
+  }
+  thead th {
+    background: var(--verde-escuro);
+    color: white;
+    padding: 13px 16px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  tbody tr:nth-child(even) { background: var(--cinza-claro); }
+  tbody td {
+    padding: 12px 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+  .td-verde { color: var(--verde-claro); font-weight: 700; }
+  .td-vermelho { color: var(--vermelho); font-weight: 700; }
+  .td-neutro { color: var(--cinza); }
+
+  /* ALERTA / DESTAQUE */
+  .alerta {
+    background: linear-gradient(135deg, #fff8e7 0%, #fffdf5 100%);
+    border: 1px solid var(--dourado);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .alerta .icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 2px; }
+  .alerta .texto h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dourado);
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  .alerta .texto p { font-size: 0.88rem; color: #666; line-height: 1.65; }
+  .alerta.danger { background: #fff5f5; border-color: var(--vermelho); }
+  .alerta.danger .texto h4 { color: var(--vermelho); }
+  .alerta.info { background: #f0f5ff; border-color: var(--azul); }
+  .alerta.info .texto h4 { color: var(--azul); }
+
+  /* TAGS / BADGES */
+  .badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+  }
+  .badge-verde { background: #e6f4ee; color: var(--verde); border: 1px solid var(--verde-claro); }
+  .badge-dourado { background: #fef3dc; color: var(--terra); border: 1px solid var(--dourado); }
+  .badge-vermelho { background: #fde8e6; color: var(--vermelho); border: 1px solid var(--vermelho); }
+  .badge-azul { background: #e6eeff; color: var(--azul); border: 1px solid var(--azul); }
+
+  /* GRID 2 COLUNAS */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 700px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .logo-text h1 { font-size: 1.6rem; }
+    .price-card .valor { font-size: 1.5rem; }
+    .header-inner { flex-direction: column; align-items: flex-start; }
+    .header-meta { text-align: left; }
+  }
+
+  /* CENÁRIOS */
+  .cenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .cenario-card {
+    border-radius: 12px;
+    padding: 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cenario-card.otimista { background: linear-gradient(135deg, #e8f5ee, #d4ede0); border-left: 5px solid var(--verde-claro); }
+  .cenario-card.neutro { background: linear-gradient(135deg, #fef9ec, #fdf3d0); border-left: 5px solid var(--dourado); }
+  .cenario-card.pessimista { background: linear-gradient(135deg, #fde8e6, #fbd5d2); border-left: 5px solid var(--vermelho); }
+  .cenario-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  .cenario-card.otimista h4 { color: var(--verde); }
+  .cenario-card.neutro h4 { color: var(--terra); }
+  .cenario-card.pessimista h4 { color: var(--vermelho); }
+  .cenario-card ul {
+    list-style: none;
+    font-size: 0.85rem;
+    color: #555;
+    line-height: 1.8;
+  }
+  .cenario-card ul li::before { content: '→ '; font-weight: 700; }
+  .prob {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    margin-top: 12px;
+    opacity: 0.7;
+  }
+
+  /* BAR VISUAL */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+  }
+  .bar-label { min-width: 120px; color: #555; }
+  .bar-track { flex: 1; background: #eee; border-radius: 6px; height: 14px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 1s ease; }
+  .bar-value { min-width: 50px; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; font-weight: 600; }
+
+  /* SEPARADOR */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--dourado), transparent);
+    margin: 28px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--verde-escuro);
+    color: white;
+    padding: 48px 24px 32px;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: 28px;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--dourado-claro);
+  }
+  .footer-logo span { color: white; }
+  .footer-slogan {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    margin-top: 4px;
+    font-style: italic;
+  }
+  .footer-cred h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dourado-claro);
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+  .footer-cred p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.8;
+  }
+  .footer-cred a {
+    color: var(--dourado-claro);
+    text-decoration: none;
+  }
+  .footer-cred a:hover { text-decoration: underline; }
+  .footer-bottom {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+    text-align: center;
+  }
+
+  /* NOTA FONTE */
+  .nota-fonte {
+    font-size: 0.75rem;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  /* HIGHLIGHT TEXT */
+  .hl { background: linear-gradient(transparent 60%, rgba(200,147,26,0.25) 60%); }
+
+  /* SEMAFORO */
+  .semaforo { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+  .s-verde { background: var(--verde-claro); }
+  .s-amarelo { background: var(--dourado-claro); }
+  .s-vermelho { background: var(--vermelho); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-area">
+      <!-- Logo Rural IN SVG -->
+      <svg class="logo-svg" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="72" height="72" rx="14" fill="#c8931a"/>
+        <text x="8" y="44" font-family="Georgia, serif" font-size="28" font-weight="900" fill="#0d4025">RI</text>
+        <rect x="6" y="50" width="60" height="3" rx="1.5" fill="#0d4025" opacity="0.7"/>
+        <text x="6" y="64" font-family="Arial, sans-serif" font-size="8.5" font-weight="700" fill="#0d4025" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-text">
+        <h1>Radar Agro do Boi</h1>
+        <div class="sub">Pecuária de Corte · Análise &amp; Mercado</div>
+      </div>
+    </div>
+    <div class="header-meta">
+      <div class="edicao">Edição Semanal</div>
+      <div class="data">26 de Maio de 2026</div>
+    </div>
+  </div>
+  <div class="header-strip">
+    <span class="preco-destaque">BOI GORDO FÍSICO: <strong>R$ 345,00/@</strong></span>
+    <span class="sep">|</span>
+    <span>FUTURO JUN/26: <strong>R$ 346,00/@</strong></span>
+    <span class="sep">|</span>
+    <span>FUTURO DEZ/26: <strong>R$ 360,00/@</strong></span>
+    <span class="sep">|</span>
+    <span>DÓLAR: <strong>R$ 5,01</strong></span>
+    <span class="sep">|</span>
+    <span>SELIC: <strong>13,25% a.a.</strong></span>
+  </div>
+</header>
+
+<!-- SEÇÃO 1: MERCADO FÍSICO -->
+<div class="container">
+<section class="section">
+  <div class="section-title">
+    <div class="section-icon">📊</div>
+    <h2>Mercado Físico — Cotações da Semana</h2>
+    <div class="linha"></div>
+  </div>
+
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="label">Boi Gordo · Físico (Datagro)</div>
+      <div class="valor">R$ 345</div>
+      <div class="variacao v-baixa">▼ -2,3% em maio</div>
+      <div class="fonte">Fonte: Datagro / Farmnews</div>
+    </div>
+    <div class="price-card green">
+      <div class="label">Boi Gordo · Futuro Jun/26 (B3)</div>
+      <div class="valor">R$ 346</div>
+      <div class="variacao v-alta">▲ +0,9/@ vs físico</div>
+      <div class="fonte">Fonte: B3</div>
+    </div>
+    <div class="price-card">
+      <div class="label">Boi Gordo · Futuro Dez/26 (B3)</div>
+      <div class="valor">R$ 360</div>
+      <div class="variacao v-alta">▲ Premia o 2º semestre</div>
+      <div class="fonte">Fonte: B3</div>
+    </div>
+    <div class="price-card red">
+      <div class="label">Bezerro (Nelore, MS)</div>
+      <div class="valor">R$ 2.850</div>
+      <div class="variacao v-alta">▲ Recorde histórico</div>
+      <div class="fonte">Fonte: Scot Consultoria</div>
+    </div>
+    <div class="price-card blue">
+      <div class="label">Boi Gordo · EUA (Nebraska)</div>
+      <div class="valor">US$ 162</div>
+      <div class="variacao v-alta">▲ +16,7% a/a · Máx. histórica</div>
+      <div class="fonte">Fonte: Farmnews / USDA</div>
+    </div>
+    <div class="price-card">
+      <div class="label">Carne Bovina Export. (preço médio)</div>
+      <div class="valor">US$ 5,83</div>
+      <div class="variacao v-alta">▲ +17,2% vs jan-abr/25</div>
+      <div class="fonte">Fonte: Abiec / MDIC</div>
+    </div>
+  </div>
+
+  <!-- GRÁFICO: Evolução da arroba em 2026 -->
+  <div class="chart-wrap">
+    <h3>📈 Evolução da Arroba do Boi Gordo em 2026 (R$/@) — Físico vs. Futuro Dez/26</h3>
+    <canvas id="chartArroba" height="90"></canvas>
+    <p class="nota-fonte">Fonte: Datagro / B3. Elaboração: Rural IN. Dados até 25/05/2026.</p>
+  </div>
+
+  <!-- ANÁLISE DO ANALISTA -->
+  <div class="analise-box">
+    <h3>🔍 Análise Fundamentalista — Dr. Sidney Souza</h3>
+    <p>O mercado físico do boi gordo encerra maio pressionado pela <span class="hl">sazonalidade da safra</span>, com oferta aumentada de animais prontos para abate. A arroba oscila ao redor de R$ 345,00 — uma queda de 2,3% em relação ao início do mês, mas ainda em patamar historicamente elevado (8,3% acima do fechamento de 2025).</p>
+    <p>O ponto mais importante da leitura gráfica atual é a <strong>convergência entre físico e futuro</strong>: pela primeira vez em meses, o contrato de junho precifica leve prêmio em relação ao físico (R$ +0,90/@), sinalizando que o mercado futuro já absorveu a pressão de curto prazo e começa a olhar para o segundo semestre. Os contratos de out-dez/26 seguem precificando <strong>R$ 355–360/@</strong>, o que é consistente com a restrição de oferta esperada no 2º semestre.</p>
+    <p>No lado da demanda, as exportações seguem firmes globalmente — o preço da carne exportada bateu recorde em US$ 5,83/kg — mas o fechamento gradual da cota chinesa representa o principal vetor de risco para o curto prazo.</p>
+  </div>
+
+  <!-- ANÁLISE GRAFISTA -->
+  <div class="analise-box dourado">
+    <h3>📉 Análise Grafista — Suportes, Resistências e Tendência</h3>
+    <p><strong>Suporte imediato:</strong> R$ 340/@. Esse nível foi testado em meados de maio e sustentou. Romper abaixo dele abre caminho para R$ 325–328/@, região do topo de 2022 que agora funciona como suporte técnico relevante.</p>
+    <p><strong>Resistência imediata:</strong> R$ 350/@. Região que concentrou vendas em abril. A superação desse nível com volume confirmaria retomada rumo a R$ 360–365/@.</p>
+    <p><strong>Tendência de médio prazo:</strong> Ainda de alta (tendência principal intacta desde 2023), porém em fase corretiva no curto prazo. Correção saudável dentro do bull market pecuário. O padrão gráfico sugere <em>bandeira de baixa</em> de curto prazo — típica antes de retomada — com alvo em R$ 355–362/@ no 3º trimestre.</p>
+    <p><strong>RSI (14 períodos):</strong> estimado em 46, saindo de zona de sobrevenda de curto prazo. Momentum começa a virar.</p>
+  </div>
+</section>
+
+<!-- SEÇÃO 2: MERCADO FUTURO B3 -->
+<section class="section">
+  <div class="section-title">
+    <div class="section-icon">📅</div>
+    <h2>Mercado Futuro B3 — Curva de Preços</h2>
+    <div class="linha"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Vencimento</th>
+          <th>Preço Ajuste (R$/@)</th>
+          <th>Variação vs Físico</th>
+          <th>Posições em Aberto</th>
+          <th>Perspectiva</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Maio/26</td>
+          <td>344,50</td>
+          <td class="td-vermelho">-0,50</td>
+          <td>Encerrando</td>
+          <td class="td-neutro">Liquidação</td>
+        </tr>
+        <tr>
+          <td>Junho/26</td>
+          <td>346,00</td>
+          <td class="td-verde">+0,90</td>
+          <td>Alta demanda</td>
+          <td class="td-verde">Neutro/Alta</td>
+        </tr>
+        <tr>
+          <td>Julho/26</td>
+          <td>348,50</td>
+          <td class="td-verde">+3,40</td>
+          <td>Maior aumento em aberto</td>
+          <td class="td-verde">Alta</td>
+        </tr>
+        <tr>
+          <td>Agosto/26</td>
+          <td>350,00</td>
+          <td class="td-verde">+5,00</td>
+          <td>Moderado</td>
+          <td class="td-verde">Alta</td>
+        </tr>
+        <tr>
+          <td>Outubro/26</td>
+          <td>355,00</td>
+          <td class="td-verde">+10,00</td>
+          <td>Crescente</td>
+          <td class="td-verde">Alta</td>
+        </tr>
+        <tr>
+          <td>Dezembro/26</td>
+          <td>360,00</td>
+          <td class="td-verde">+15,00</td>
+          <td>Crescente</td>
+          <td class="td-verde">Alta forte</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota-fonte" style="margin-top:10px">Fonte: B3 / Farmnews. Preços de ajuste referência 20/05/2026. Elaboração: Rural IN.</p>
+
+  <!-- GRÁFICO CURVA FUTURA -->
+  <div class="chart-wrap" style="margin-top:20px">
+    <h3>📊 Curva Futura do Boi Gordo — Vencimentos 2026 (R$/@)</h3>
+    <canvas id="chartFuturo" height="80"></canvas>
+    <p class="nota-fonte">A curva em contango (preços futuros acima do físico) sinaliza expectativa de valorização ao longo do ano. Fonte: B3.</p>
+  </div>
+
+  <div class="analise-box">
+    <h3>💡 O que a Curva Futura Nos Diz?</h3>
+    <p>A virada na curva futura é um sinal técnico relevante. Em abril, o mercado precificava quedas de R$ 20/@ para o mês de junho. Hoje, essa diferença virou positiva: o futuro <strong>premia</strong> o físico pela primeira vez em meses. Isso reflete três movimentos simultâneos: (1) absorção do excesso de oferta sazonal de maio; (2) antecipação da redução de abate no 2º semestre, quando a cota da China se esgotar e os frigoríficos retrairem; (3) rebanho estruturalmente em retenção de fêmeas, reduzindo oferta futura.</p>
+    <p>Para o pecuarista que ainda não travou preço de venda do 2º semestre, a janela de <strong>hedge em R$ 355–360/@</strong> está se abrindo. Travar parte da produção neste nível pode ser estratégico.</p>
+  </div>
+</section>
+
+<!-- SEÇÃO 3: PERCEPÇÕES DA SEMANA / MACRO -->
+<section class="section">
+  <div class="section-title">
+    <div class="section-icon">🌐</div>
+    <h2>Percepções da Semana — Macro, Geopolítica e Agenda</h2>
+    <div class="linha"></div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-vermelho">⚠ Selic 13,25%</span>
+    <span class="badge badge-dourado">🐂 Dólar R$ 5,01</span>
+    <span class="badge badge-verde">✅ Exportações firmes</span>
+    <span class="badge badge-azul">🌏 Geopolítica China</span>
+    <span class="badge badge-vermelho">🚨 Cota China 55,4% atingida</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="analise-box azul">
+      <h3>🏦 Macro Brasil — Semana 26/05</h3>
+      <p>O ambiente macro desta semana tem tom de <strong>cautela</strong>. A Selic em 13,25% a.a. (com projeção de mercado chegando a 13,25% ao final de 2026) comprime crédito rural e eleva o custo de capital do confinamento. O Focus projeta IPCA de 4,86–4,92% em 2026 — acima do teto da meta —, o que mantém o BC em postura restritiva.</p>
+      <p>O dólar em R$ 5,01 (com projeção de mercado de R$ 5,20 ao final do ano) funciona como colchão para o exportador de carne: dólar alto beneficia diretamente os frigoríficos exportadores, mantendo a receita em reais elevada mesmo com pressão de custos.</p>
+    </div>
+    <div class="analise-box vermelho">
+      <h3>🌏 Geopolítica — O que Monitorar</h3>
+      <p><strong>China:</strong> Principal vetor de risco para o boi brasileiro. Com 55,4% da cota anual consumida em apenas 4 meses, a cota de 1,106 Mt pode ser esgotada antes de agosto. A tarifa de 55% acima da cota inviabiliza exportação. Monitorar: PIB chinês, consumo interno e eventual renegociação diplomática.</p>
+      <p><strong>EUA:</strong> Com rebanho nos menores níveis da história, os EUA importam cada vez mais carne brasileira. O boi gordo americano em US$ 162/@ (recorde) é oportunidade de diversificação. Monitorar: acordo tarifário EUA-Brasil e demanda doméstica americana.</p>
+    </div>
+  </div>
+
+  <div class="alerta">
+    <div class="icon">⚡</div>
+    <div class="texto">
+      <h4>Fato da Semana: Cota China Prestes a se Esgotar</h4>
+      <p>O Brasil já consumiu 55,4% (612.868 t) da cota anual de 1,106 Mt para exportação à China livre de tarifa adicional. Com o ritmo atual, o limite pode ser atingido até agosto. A ABIEC projeta queda de 10% nas exportações em 2026. O governo brasileiro negocia redistribuição das cotas remanescentes de outros países, mas a China rejeitou a proposta. <strong>Impacto direto: redução do volume abatido pelos frigoríficos no 2º semestre, menor oferta interna e sustentação dos preços da arroba.</strong></p>
+    </div>
+  </div>
+
+  <div class="alerta info">
+    <div class="icon">🇺🇸</div>
+    <div class="texto">
+      <h4>EUA: Janela de Exportação se Abre</h4>
+      <p>Com rebanho bovino americano nos menores patamares históricos e demanda interna aquecida, os EUA aumentaram importações de carne brasileira. A carne exportada para o mercado americano tem preço médio superior ao chinês e não possui teto de cota. Nos primeiros 5 dias úteis de maio, a média diária de embarques bateu 17,17 mil toneladas — avanço forte em relação a maio/25. O Brasil mira nos EUA como principal destino alternativo à China, mas o volume não substitui integralmente o mercado asiático.</p>
+    </div>
+  </div>
+
+  <div class="alerta">
+    <div class="icon">🌎</div>
+    <div class="texto">
+      <h4>Outros Mercados para Monitorar</h4>
+      <p><strong>Austrália:</strong> já consumiu 69,96% de sua cota chinesa, pode antecipar o esgotamento antes do Brasil, redirecionando demanda para outros exportadores. <strong>Oriente Médio:</strong> demanda crescente por proteína bovina halal — oportunidade para cortes específicos. <strong>União Europeia:</strong> debate sobre remoção de restrições sanitárias ao boi brasileiro pode abrir novo mercado premium. <strong>Mercosul–UE:</strong> acordo em estágio avançado pode ampliar acesso ao mercado europeu a médio prazo.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO MACRO -->
+  <div class="chart-wrap">
+    <h3>📊 Radar Macro: Fatores de Impacto na Precificação do Boi (Intensidade de Influência)</h3>
+    <canvas id="chartMacro" height="90"></canvas>
+    <p class="nota-fonte">Elaboração: Rural IN — Dr. Sidney Souza. Escala de 0 a 10 (intensidade de impacto na precificação da arroba).</p>
+  </div>
+
+  <!-- CENÁRIOS PARA A SEMANA -->
+  <h3 style="font-family:'Playfair Display',serif; color:var(--verde-escuro); font-size:1.2rem; margin:28px 0 16px; padding-top:8px;">🎯 Cenários para a Semana (26–30/mai/2026)</h3>
+  <div class="cenarios">
+    <div class="cenario-card otimista">
+      <h4>🟢 Cenário Otimista</h4>
+      <ul>
+        <li>Físico testa R$ 348–350/@</li>
+        <li>Redução de oferta pressionando alta</li>
+        <li>Dólar se mantém acima de R$ 5,00</li>
+        <li>EUA amplia compras de carne brasileira</li>
+        <li>B3 sustenta contratos de 2º sem.</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 30%</div>
+    </div>
+    <div class="cenario-card neutro">
+      <h4>🟡 Cenário Base</h4>
+      <ul>
+        <li>Físico oscila entre R$ 342–347/@</li>
+        <li>Safra mantém pressão suave</li>
+        <li>Cota China: mercado monitorando</li>
+        <li>Futuro segue em leve contango</li>
+        <li>Dólar estável em R$ 4,98–5,10</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 50%</div>
+    </div>
+    <div class="cenario-card pessimista">
+      <h4>🔴 Cenário Pessimista</h4>
+      <ul>
+        <li>Físico recua para R$ 336–340/@</li>
+        <li>Cota China esgotada antes de jul.</li>
+        <li>Frigoríficos reduzem escala de abate</li>
+        <li>Dólar cai abaixo de R$ 4,90</li>
+        <li>Fuga de risco dos contratos futuros</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 20%</div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 4: CONFINAMENTO E FRIGORÍFICOS -->
+<section class="section">
+  <div class="section-title">
+    <div class="section-icon">🏭</div>
+    <h2>Confinamento &amp; Frigoríficos — Demanda, Rentabilidade e Cota China</h2>
+    <div class="linha"></div>
+  </div>
+
+  <div class="alerta">
+    <div class="icon">📈</div>
+    <div class="texto">
+      <h4>Confinamento em Alta Histórica em 2026</h4>
+      <p>Mato Grosso projeta crescimento de 55,4% no confinamento em 2026, com 1,44 milhão de cabeças — expansão concentrada em grandes operações (&gt;5.001 cabeças, com 80,92% do total). O otimismo é sustentado pela arroba superando R$ 300 há mais de um ano e custos de milho e soja relativamente estáveis. Segundo levantamento Cargill, 70,2% dos confinadores esperam que 2026 seja melhor que 2025.</p>
+    </div>
+  </div>
+
+  <!-- DADOS ECONÓMICOS CONFINAMENTO -->
+  <div class="chart-wrap">
+    <h3>💰 Indicadores Econômicos do Confinamento (Referência Maio/2026)</h3>
+    <canvas id="chartConfinamento" height="90"></canvas>
+    <p class="nota-fonte">Referência: Análise ICAP / CompreRural / Scot. Região Centro-Oeste. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="analise-box">
+      <h3>📊 Centro-Oeste — Margem e Custo</h3>
+      <p><strong>Custo de aquisição:</strong> R$ 10,40/kg vivo (bezerro)</p>
+      <p><strong>Custo total arroba produzida:</strong> ~ R$ 272–285/@</p>
+      <p><strong>Preço de venda:</strong> ~ R$ 345/@</p>
+      <p><strong>Lucro bruto estimado:</strong> R$ 60–73/@ (TIR ≈ 4,9–6,0% no período)</p>
+      <p style="margin-top:10px; font-size:0.88rem; color:#888">⚠ Em abril, a queda das arrobas produzidas de 8,40 para 7,80 elevou o custo unitário em 9,75%, reduzindo o lucro por cabeça em ~ R$ 230.</p>
+    </div>
+    <div class="analise-box dourado">
+      <h3>📊 Sudeste — Margem e Custo</h3>
+      <p><strong>Custo de aquisição:</strong> R$ 10,40–11,00/kg vivo</p>
+      <p><strong>Custo total arroba produzida:</strong> ~ R$ 275–290/@</p>
+      <p><strong>Preço de venda:</strong> ~ R$ 350–355/@ (prêmio regional)</p>
+      <p><strong>Lucro bruto estimado:</strong> R$ 60–75/@</p>
+      <p style="margin-top:10px; font-size:0.88rem; color:#888">Redução de arrobas produzidas foi parcialmente compensada pela redução do custo da dieta. Margem recuou ~ R$ 63/cabeça em abril.</p>
+    </div>
+  </div>
+
+  <!-- BARRAS DE RENTABILIDADE -->
+  <div class="analise-box" style="margin-top:6px">
+    <h3>📊 Distribuição do Custo do Confinamento (% do custo total)</h3>
+    <div style="margin-top:12px">
+      <div class="bar-row">
+        <span class="bar-label">Aquisição do Animal</span>
+        <div class="bar-track"><div class="bar-fill" style="width:52%;background:var(--verde);"></div></div>
+        <span class="bar-value">52%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Alimentação/Dieta</span>
+        <div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--dourado);"></div></div>
+        <span class="bar-value">28%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Sanidade</span>
+        <div class="bar-track"><div class="bar-fill" style="width:7%;background:#8ecae6;"></div></div>
+        <span class="bar-value">7%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Mão de Obra</span>
+        <div class="bar-track"><div class="bar-fill" style="width:6%;background:#a2d2ff;"></div></div>
+        <span class="bar-value">6%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">Outros Custos</span>
+        <div class="bar-track"><div class="bar-fill" style="width:7%;background:#ccc;"></div></div>
+        <span class="bar-value">7%</span>
+      </div>
+    </div>
+    <p class="nota-fonte">A aquisição do animal é o maior custo — e com o bezerro em máxima histórica, a gestão de compra é o principal diferencial competitivo do confinador em 2026.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FRIGORÍFICOS -->
+  <h3 style="font-family:'Playfair Display',serif; color:var(--verde-escuro); font-size:1.3rem; margin-bottom:16px;">🏭 Frigoríficos Brasileiros — Demanda Interna e Externa</h3>
+
+  <div class="grid-2">
+    <div class="analise-box azul">
+      <h3>🌍 Demanda Externa</h3>
+      <p>Receita recorde de exportação: US$ 5,83/kg em média (jan–abr/26), alta de 17,2% a/a. No 1T26, volume total exportado cresceu quase 20% frente ao mesmo período de 2025. Destinos em alta: EUA (alta demanda), Oriente Médio e Europa.</p>
+      <p>Com a cota China se esgotando, os frigoríficos devem <strong>reduzir ritmo de abate</strong> no 2º semestre para não superar o limite e incorrer na tarifa de 55%. Menos abate = menos oferta interna = sustentação do preço da arroba.</p>
+    </div>
+    <div class="analise-box vermelho">
+      <h3>🛒 Demanda Interna</h3>
+      <p>Pressão inflacionária real. O IPCA projetado em 4,86–4,92% para 2026, combinado com Selic em 13,25%, comprime renda real do consumidor. Varejistas relatam migração para cortes mais baratos e proteínas alternativas (frango, ovos).</p>
+      <p>No entanto, a menor oferta esperada no 2º semestre (redução de abate pós-esgotamento da cota China) deve <strong>sustentar ou elevar preços no atacado</strong>, impedindo queda expressiva do boi no mercado doméstico.</p>
+    </div>
+  </div>
+
+  <!-- RENTABILIDADE FRIGORÍFICOS -->
+  <div class="analise-box" style="margin-top:6px">
+    <h3>📈 Frigoríficos Listados — Desempenho 1T26 (projeções analistas)</h3>
+    <div class="table-wrap" style="margin-top:14px">
+      <table>
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>Receita Liq. 1T26</th>
+            <th>EBITDA Estimado</th>
+            <th>Margem EBITDA</th>
+            <th>Expectativa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Minerva (BEEF3)</strong></td>
+            <td>R$ 12,8 bi</td>
+            <td>R$ 1,018 bi</td>
+            <td class="td-verde">7,9%</td>
+            <td class="td-verde">Destaque Positivo</td>
+          </tr>
+          <tr>
+            <td><strong>JBS Brasil</strong></td>
+            <td>Recorde de vendas</td>
+            <td>Pressionado</td>
+            <td class="td-neutro">~6,5%</td>
+            <td class="td-neutro">Neutro</td>
+          </tr>
+          <tr>
+            <td><strong>Marfrig (MRFG3)</strong></td>
+            <td>Impactado por EUA</td>
+            <td>Comprimido</td>
+            <td class="td-vermelho">~4,0%</td>
+            <td class="td-vermelho">Ventos contrários</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="nota-fonte" style="margin-top:8px">Fonte: Banco Safra / Euqueroinvestir. Projeções de analistas para 1T26. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COTA CHINA: IMPACTO NO CONFINADOR E FRIGORÍFICO -->
+  <h3 style="font-family:'Playfair Display',serif; color:var(--verde-escuro); font-size:1.3rem; margin:20px 0 16px;">🇨🇳 Cota China: Impacto no Confinador e no Frigorífico</h3>
+
+  <!-- GRÁFICO USO DA COTA -->
+  <div class="chart-wrap">
+    <h3>📊 Uso da Cota Chinesa por País Exportador (jan–abr/2026, % da cota anual utilizada)</h3>
+    <canvas id="chartCota" height="80"></canvas>
+    <p class="nota-fonte">Fonte: Ministério do Comércio da China / ABIEC. Dados de jan–abr/2026. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="analise-box dourado">
+    <h3>⚖️ Para o Confinador — Efeito Líquido: POSITIVO no médio prazo</h3>
+    <p><strong>Curto prazo (maio–julho):</strong> Pressão negativa. O excesso de abates antecipados pelos frigoríficos (para aproveitar a cota) gerou excedente de animais prontos, pressionando o físico para baixo (R$ 340–348/@). A relação bezerro/boi gordo atingiu o pior nível desde outubro de 2021, comprimindo margens de quem comprou reposição cara.</p>
+    <p><strong>Médio prazo (ago–dez):</strong> Efeito positivo. Após o esgotamento da cota, os frigoríficos <em>freiam o ritmo de abate</em>. Com menos animais sendo processados, a oferta de boi gordo no mercado diminui e a tendência é de <strong>valorização da arroba para R$ 355–365/@</strong>. Quem confina hoje para abater em setembro–novembro estará no momento exato desta valorização.</p>
+    <p><strong>Estratégia recomendada:</strong> Fixar custo de reposição agora, planejar saída para 3T/4T26 e avaliar hedge via B3 nos contratos de out–dez/26.</p>
+  </div>
+
+  <div class="analise-box vermelho">
+    <h3>⚖️ Para o Frigorífico — Efeito Líquido: MISTO, com compressão de margem</h3>
+    <p><strong>Cenário de curto prazo (até ago/26):</strong> Os grandes frigoríficos exportadores (JBS, Minerva, Marfrig) correram para antecipar embarques à China enquanto a tarifa era de 12%, maximizando receitas em R$ e US$. Isso gerou volumes recordes de abate em 1T26, elevando receita mas aumentando o custo de aquisição do boi vivo.</p>
+    <p><strong>Pós-cota (ago–dez/26):</strong> Volume de exportação para China cai drasticamente. Frigoríficos precisam: (1) redirecionar volume para EUA, Oriente Médio, Europa; (2) reduzir escala de abate para não gerar excesso de oferta doméstica; (3) trabalhar com margens mais comprimidas no 2º semestre. A Minerva, com ativos diversificados na América do Sul, deve sofrer menos que a JBS, cuja divisão Brasil depende mais da demanda chinesa.</p>
+    <p><strong>Pressão adicional:</strong> Selic em 13,25% eleva custo financeiro das empresas. JBS usa o esgotamento da cota como oportunidade para diversificação geográfica (EUA, Austrália), mitigando o risco China.</p>
+  </div>
+
+  <div class="cenarios" style="margin-top:8px">
+    <div class="cenario-card otimista">
+      <h4>🟢 Se Brasil Renegociar Cota</h4>
+      <ul>
+        <li>Exportações retomam para China</li>
+        <li>Frigoríficos mantêm margem</li>
+        <li>Arroba sustentada por demanda</li>
+        <li>Confinador colhe bom spread</li>
+      </ul>
+      <div class="prob">Prob. baixa a curto prazo</div>
+    </div>
+    <div class="cenario-card neutro">
+      <h4>🟡 Redirecionamento para EUA</h4>
+      <ul>
+        <li>EUA absorve 30–40% do volume China</li>
+        <li>Preço médio exportação se sustenta</li>
+        <li>Margem frig. ligeiramente comprimida</li>
+        <li>Arroba se valoriza no 2º sem.</li>
+      </ul>
+      <div class="prob">Prob. 55% — Cenário Base</div>
+    </div>
+    <div class="cenario-card pessimista">
+      <h4>🔴 Sem Substituto para China</h4>
+      <ul>
+        <li>Volume não redirecionado gera excesso</li>
+        <li>Frigoríficos pressionam arroba abaixo</li>
+        <li>Margem do confinador deteriora</li>
+        <li>Arroba cai para R$ 325–330/@</li>
+      </ul>
+      <div class="prob">Prob. 20%</div>
+    </div>
+  </div>
+</section>
+
+<!-- SEÇÃO 5: PERCEPÇÃO FINAL -->
+<section class="section">
+  <div class="section-title">
+    <div class="section-icon">🎯</div>
+    <h2>Visão Estratégica do Analista</h2>
+    <div class="linha"></div>
+  </div>
+
+  <div class="analise-box" style="border-left-color: var(--dourado); background: linear-gradient(135deg, #fffdf5, #fff8e7);">
+    <h3>🧭 Síntese Estratégica — Dr. Sidney Souza</h3>
+    <p>O mercado do boi gordo em 2026 está operando em uma <span class="hl">janela de transição crítica</span>. Os fundamentos estruturais continuam favoráveis: rebanho global em contração (EUA no menor patamar histórico, Brasil retendo fêmeas), demanda global de proteína em expansão e câmbio acima de R$ 5,00 sustentando receitas em real.</p>
+    <p>O problema de curto prazo — a cota chinesa — é ao mesmo tempo um risco e uma oportunidade. Risco para quem precisar vender animais em junho–julho sem estratégia de preço travado. Oportunidade para quem está confinando para saída em setembro–novembro: esse produtor terá o benefício da arroba valorizada pós-restrição de abate, sem o custo da pressão de curto prazo.</p>
+    <p><strong>Para esta semana:</strong> O mercado deve continuar lateralizado entre R$ 342–350/@. A agenda macro (sem grandes eventos domésticos de primeira linha, mas com atenção ao câmbio e dados externos) não deve trazer volatilidade excessiva. O foco do setor permanece na velocidade de consumo da cota chinesa e na capacidade de redirecionamento das exportações para os EUA. Quem não tem hedge no 2º semestre deveria avaliar a janela dos contratos B3 de out–dez/26.</p>
+  </div>
+
+  <!-- SEMÁFORO FINAL -->
+  <div class="chart-wrap">
+    <h3>🚦 Semáforo do Boi — Indicadores-Chave (Semana 26/05/2026)</h3>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:14px; margin-top:12px;">
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-amarelo"></span>
+        <div><strong style="font-size:0.9rem">Preço Físico</strong><br><span style="font-size:0.78rem;color:#777">R$ 345/@ — Pressão sazonal, mas sustentado</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-verde"></span>
+        <div><strong style="font-size:0.9rem">Mercado Futuro</strong><br><span style="font-size:0.78rem;color:#777">Contango favorável — Perspectiva positiva 2º sem.</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-vermelho"></span>
+        <div><strong style="font-size:0.9rem">Cota China</strong><br><span style="font-size:0.78rem;color:#777">55,4% consumida em 4 meses — ALERTA MÁXIMO</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-verde"></span>
+        <div><strong style="font-size:0.9rem">Exportações EUA</strong><br><span style="font-size:0.78rem;color:#777">Boi americano recorde, demanda cresce</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-amarelo"></span>
+        <div><strong style="font-size:0.9rem">Confinamento</strong><br><span style="font-size:0.78rem;color:#777">Margens positivas, mas bezerro caro pressiona</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-amarelo"></span>
+        <div><strong style="font-size:0.9rem">Frigoríficos</strong><br><span style="font-size:0.78rem;color:#777">Margem comprimida, receita ainda forte</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-vermelho"></span>
+        <div><strong style="font-size:0.9rem">Relação Troca Bezerro/Boi</strong><br><span style="font-size:0.78rem;color:#777">Pior nível desde out/2021 — Custo reposição alto</span></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px; padding:14px 16px; background:var(--cinza-claro); border-radius:10px;">
+        <span class="semaforo s-verde"></span>
+        <div><strong style="font-size:0.9rem">Câmbio</strong><br><span style="font-size:0.78rem;color:#777">R$ 5,01 — Sustenta receita do exportador</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- fim container -->
+
+<!-- FOOTER / CREDENCIAIS -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Rural<span> IN</span></div>
+        <div class="footer-slogan">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:0.8rem; color:rgba(255,255,255,0.45); margin-top:10px; max-width:280px; line-height:1.6;">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="footer-cred">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      RADAR AGRO DO BOI · EDIÇÃO 26/05/2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      AS INFORMAÇÕES CONTIDAS NESTE DOCUMENTO SÃO DE CARÁTER ANALÍTICO E NÃO CONSTITUEM RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: DATAGRO · B3 · ABIEC · CEPEA/ESALQ · SCOT CONSULTORIA · FARMNEWS · CARGILL · IMEA · CNN BRASIL · INFOMONEY
+    </div>
+  </div>
+</footer>
+
+<!-- CHARTS JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+  // Cores comuns
+  const verde = '#1a6b3c';
+  const verdeClaro = '#2d9e5f';
+  const dourado = '#c8931a';
+  const douradoClaro = '#f0b429';
+  const vermelho = '#c0392b';
+  const azul = '#1a4a7a';
+  const cinzaClaro = '#e8e0d4';
+
+  Chart.defaults.font.family = "'Source Serif 4', Georgia, serif";
+  Chart.defaults.color = '#666';
+
+  // GRÁFICO 1 — Evolução da arroba 2026
+  const ctx1 = document.getElementById('chartArroba').getContext('2d');
+  new Chart(ctx1, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai (21)'],
+      datasets: [
+        {
+          label: 'Físico (Datagro) R$/@',
+          data: [318.5, 325.0, 340.0, 362.8, 345.0],
+          borderColor: verde,
+          backgroundColor: 'rgba(26,107,60,0.08)',
+          borderWidth: 3,
+          pointBackgroundColor: verde,
+          tension: 0.35,
+          fill: true,
+        },
+        {
+          label: 'Futuro Dez/26 (B3) R$/@',
+          data: [330.0, 338.0, 350.0, 365.0, 360.0],
+          borderColor: dourado,
+          backgroundColor: 'rgba(200,147,26,0.06)',
+          borderWidth: 2.5,
+          borderDash: [6, 4],
+          pointBackgroundColor: dourado,
+          tension: 0.35,
+          fill: false,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top', labels: { usePointStyle: true, padding: 16 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        y: {
+          min: 300,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { callback: v => 'R$ ' + v }
+        },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // GRÁFICO 2 — Curva futura
+  const ctx2 = document.getElementById('chartFuturo').getContext('2d');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Físico', 'Jun/26', 'Jul/26', 'Ago/26', 'Out/26', 'Dez/26'],
+      datasets: [{
+        label: 'Preço R$/@',
+        data: [345, 346, 348.5, 350, 355, 360],
+        backgroundColor: [
+          'rgba(74,74,74,0.55)',
+          'rgba(45,158,95,0.7)',
+          'rgba(45,158,95,0.75)',
+          'rgba(45,158,95,0.8)',
+          'rgba(26,107,60,0.85)',
+          'rgba(26,107,60,0.95)',
+        ],
+        borderRadius: 7,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => 'R$ ' + ctx.raw + '/@' } }
+      },
+      scales: {
+        y: { min: 335, ticks: { callback: v => 'R$ ' + v }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // GRÁFICO 3 — Radar Macro
+  const ctx3 = document.getElementById('chartMacro').getContext('2d');
+  new Chart(ctx3, {
+    type: 'radar',
+    data: {
+      labels: ['Cota China', 'Câmbio (R$/$)', 'Selic/Crédito', 'Rebanho EUA', 'Oferta Interna', 'Demanda Export.', 'Custo Bezerro', 'Inflação Alimentos'],
+      datasets: [{
+        label: 'Impacto na precificação (0–10)',
+        data: [9.5, 7.5, 6.0, 7.0, 6.5, 8.0, 7.5, 5.5],
+        borderColor: dourado,
+        backgroundColor: 'rgba(200,147,26,0.18)',
+        pointBackgroundColor: dourado,
+        borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 10,
+          ticks: { stepSize: 2, font: { size: 10 } },
+          grid: { color: 'rgba(0,0,0,0.08)' },
+          pointLabels: { font: { size: 11 }, color: '#444' }
+        }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // GRÁFICO 4 — Confinamento (custos e margens)
+  const ctx4 = document.getElementById('chartConfinamento').getContext('2d');
+  new Chart(ctx4, {
+    type: 'bar',
+    data: {
+      labels: ['Custo Aquis.', 'Custo Alim.', 'Custo Total/@', 'Preço Venda/@', 'Lucro Bruto/@'],
+      datasets: [
+        {
+          label: 'Centro-Oeste (R$)',
+          data: [272, 70, 282, 345, 63],
+          backgroundColor: 'rgba(26,107,60,0.75)',
+          borderRadius: 6,
+        },
+        {
+          label: 'Sudeste (R$)',
+          data: [278, 68, 287, 350, 63],
+          backgroundColor: 'rgba(200,147,26,0.7)',
+          borderRadius: 6,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top', labels: { usePointStyle: true } },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': R$ ' + ctx.raw + '/@' } }
+      },
+      scales: {
+        y: { ticks: { callback: v => 'R$ ' + v }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  // GRÁFICO 5 — Uso da cota China
+  const ctx5 = document.getElementById('chartCota').getContext('2d');
+  new Chart(ctx5, {
+    type: 'bar',
+    data: {
+      labels: ['Brasil', 'Austrália', 'Argentina', 'Uruguai', 'Nova Zelândia', 'EUA'],
+      datasets: [{
+        label: '% da cota anual utilizada (jan-abr/2026)',
+        data: [55.4, 69.96, 34.58, 18.61, 18.23, 0.42],
+        backgroundColor: [
+          'rgba(192,57,43,0.85)',
+          'rgba(200,147,26,0.80)',
+          'rgba(45,158,95,0.75)',
+          'rgba(74,74,200,0.60)',
+          'rgba(74,74,200,0.55)',
+          'rgba(180,180,180,0.5)',
+        ],
+        borderRadius: 7,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.raw + '% da cota utilizada' } }
+      },
+      scales: {
+        x: {
+          max: 100,
+          ticks: { callback: v => v + '%' },
+          grid: { color: 'rgba(0,0,0,0.05)' }
+        },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
