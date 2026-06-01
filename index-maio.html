@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central de Relatórios · Radar Agro | Rural IN</title>
+<meta name="description" content="Central de relatórios Radar Agro — Maio 2026 + Perspectivas Junho. Análise de mercado de grãos, fibras, adoçantes, pecuária, fertilizantes e macroeconomia. Por Dr. Sidney Souza — Rural IN.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ouro:#d4a017;--ouro-l:#e6a817;--ouro-xl:#fde68a;
+  --navy:#0d1b2e;--navy-l:#1e3a5f;
+  --verde-s:#1a5c2a;--verde-l:#2d9e5f;
+  --cinza-esc:#111827;--cinza:#374151;--cinza-l:#6b7280;
+  --bg:#f4f6f8;--card:#ffffff;
+  --sombra:0 4px 20px rgba(0,0,0,.08);--sombra2:0 12px 40px rgba(0,0,0,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#07101d 0%,var(--navy-l) 55%,#3d6494 100%);position:relative;overflow:hidden;color:#fff}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.h-inner{max-width:1180px;margin:0 auto;padding:40px 24px 34px;position:relative;z-index:1}
+.h-top{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.logo-svg{width:74px;height:74px;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.35))}
+.h-titles h1{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;line-height:1.04;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.h-titles .sub{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--ouro-xl);margin-top:7px}
+.h-desc{margin-top:18px;max-width:640px;font-size:.95rem;color:rgba(255,255,255,.82);line-height:1.7}
+.h-meta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+.h-pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:6px 13px;border-radius:20px;font-weight:700;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.h-pill.gold{background:rgba(212,160,23,.2);border-color:var(--ouro);color:var(--ouro-xl)}
+
+/* SEARCH BAR */
+.toolbar{background:var(--navy);border-top:3px solid var(--ouro);padding:16px 24px;position:sticky;top:0;z-index:50;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.toolbar-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.search-box{flex:1;min-width:200px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:30px;padding:9px 18px}
+.search-box svg{flex-shrink:0;opacity:.7}
+.search-box input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:.92rem;font-family:'Inter',sans-serif}
+.search-box input::placeholder{color:rgba(255,255,255,.5)}
+.count-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--ouro-xl);white-space:nowrap}
+
+/* CONTAINER */
+.container{max-width:1180px;margin:0 auto;padding:36px 24px 20px}
+.cat{margin-bottom:38px}
+.cat-head{display:flex;align-items:center;gap:13px;margin-bottom:18px}
+.cat-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;background:var(--navy);color:#fff}
+.cat-head h2{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--navy-l);font-weight:700}
+.cat-head .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--ouro),transparent)}
+.cat-head .cat-n{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--cinza-l)}
+
+/* GRID + CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;background:var(--card);border-radius:16px;box-shadow:var(--sombra);overflow:hidden;position:relative;transition:transform .18s ease,box-shadow .18s ease;border:1px solid #eef0f3}
+.card:hover{transform:translateY(-4px);box-shadow:var(--sombra2)}
+.card .bar{height:6px;width:100%}
+.card .body{padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card .ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.card h3{font-family:'Playfair Display',serif;font-size:1.12rem;color:var(--cinza-esc);font-weight:700;line-height:1.15}
+.card .tag{font-size:.8rem;color:var(--cinza-l);line-height:1.5;flex:1}
+.card .open{display:flex;align-items:center;justify-content:space-between;margin-top:6px;padding-top:12px;border-top:1px solid #f0f2f4;font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:700;color:var(--navy-l)}
+.card .open .arrow{transition:transform .18s ease}
+.card:hover .open .arrow{transform:translateX(4px)}
+.no-results{display:none;text-align:center;padding:50px 20px;color:var(--cinza-l);font-size:.95rem}
+
+/* FOOTER */
+.footer{background:var(--cinza-esc);color:#fff;padding:48px 24px 30px;margin-top:30px}
+.fi{max-width:1180px;margin:0 auto}
+.ft{display:flex;align-items:flex-start;gap:36px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:22px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--ouro-l)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.78rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--ouro-l);font-size:1.1rem;margin-bottom:8px}
+.fc p{font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.95}
+.fc a{color:var(--ouro-l)}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:rgba(255,255,255,.3);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+@media(max-width:640px){
+  .h-titles h1{font-size:1.7rem}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .card .body{padding:15px}
+  .ft{flex-direction:column;gap:20px}
+  .container{padding:26px 16px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="h-inner">
+    <div class="h-top">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="14" fill="#d4a017"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#0d1b2e">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#0d1b2e" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#0d1b2e" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="h-titles">
+        <h1>Central de Relatórios Radar Agro</h1>
+        <div class="sub">Inteligência Econômica para o Produtor · Rural IN</div>
+      </div>
+    </div>
+    <p class="h-desc">Análise fundamentalista e técnica do mercado agropecuário — preços, gráficos, termômetros, cenários e a leitura estratégica de câmbio, petróleo e geopolítica. Escolha um relatório abaixo para abrir.</p>
+    <div class="h-meta">
+      <span class="h-pill gold">📅 Edição: Maio 2026 + Perspectivas Junho</span>
+      <span class="h-pill">📊 18 relatórios</span>
+      <span class="h-pill">✍️ Dr. Sidney Souza</span>
+    </div>
+  </div>
+</header>
+
+<!-- TOOLBAR / BUSCA -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-box">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="Buscar relatório (ex.: soja, boi, café, fertilizante, dólar...)" oninput="filtrar()">
+    </div>
+    <span class="count-tag" id="countTag">18 relatórios disponíveis</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- VISÃO MACRO -->
+  <div class="cat" data-cat>
+    <div class="cat-head"><div class="cat-icon">🌐</div><h2>Visão Macro &amp; Insumos</h2><div class="ln"></div><span class="cat-n">2</span></div>
+    <div class="grid">
+      <a class="card" href="radar-macro-geopolitica-maio-junho-2026.html" data-name="macroeconomia geopolitica macro cambio dolar petroleo brent juros selic fed inflacao guerra ormuz">
+        <div class="bar" style="background:linear-gradient(90deg,#1e3a5f,#d4a017)"></div>
+        <div class="body"><div class="ico" style="background:#eef4fa">🌐</div><h3>Macroeconomia &amp; Geopolítica</h3><div class="tag">Câmbio, petróleo, juros e os conflitos que movem o agro.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-fertilizantes-maio-junho-2026.html" data-name="fertilizantes ureia map potassio cloreto insumo custo adubo ormuz">
+        <div class="bar" style="background:linear-gradient(90deg,#516b80,#7e96a6)"></div>
+        <div class="body"><div class="ico" style="background:#f1f5f7">🧪</div><h3>Fertilizantes</h3><div class="tag">Custo de insumos, ureia em alta e o efeito Ormuz.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- GRÃOS E FIBRAS -->
+  <div class="cat" data-cat>
+    <div class="cat-head"><div class="cat-icon">🌾</div><h2>Grãos &amp; Fibras</h2><div class="ln"></div><span class="cat-n">7</span></div>
+    <div class="grid">
+      <a class="card" href="radar-agro-soja-maio-junho-2026.html" data-name="soja grao cbot paranagua china oleo farelo">
+        <div class="bar" style="background:linear-gradient(90deg,#7c4e00,#e6a817)"></div>
+        <div class="body"><div class="ico" style="background:#fffbeb">🌱</div><h3>Soja</h3><div class="tag">CBOT, exportação recorde e o acordo EUA-China.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-milho-maio-2026.html" data-name="milho cbot etanol racao safrinha">
+        <div class="bar" style="background:linear-gradient(90deg,#1a5c2a,#e6a817)"></div>
+        <div class="body"><div class="ico" style="background:#f0fdf4">🌽</div><h3>Milho</h3><div class="tag">Safrinha, demanda de ração e etanol de milho.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-trigo-maio-junho-2026.html" data-name="trigo chicago wasde argentina importacao el nino">
+        <div class="bar" style="background:linear-gradient(90deg,#8a5e12,#e0a92e)"></div>
+        <div class="body"><div class="ico" style="background:#fdf8ec">🌾</div><h3>Trigo</h3><div class="tag">Choque de oferta global e o teto argentino.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-algodao-maio-junho-2026.html" data-name="algodao pluma cepea ice china exportacao">
+        <div class="bar" style="background:linear-gradient(90deg,#1f6f8b,#3fa0bd)"></div>
+        <div class="body"><div class="ico" style="background:#f0f9fc">☁️</div><h3>Algodão</h3><div class="tag">Pluma no topo de 9 meses e exportação recorde.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-sorgo-maio-junho-2026.html" data-name="sorgo milho racao etanol safrinha">
+        <div class="bar" style="background:linear-gradient(90deg,#bb6a2a,#e09a4e)"></div>
+        <div class="body"><div class="ico" style="background:#fbf2ea">🌾</div><h3>Sorgo</h3><div class="tag">A sombra do milho e a demanda de ração e etanol.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-feijao-maio-junho-2026.html" data-name="feijao carioca preto itapeva colheita parana">
+        <div class="bar" style="background:linear-gradient(90deg,#b04a3f,#d4756a)"></div>
+        <div class="body"><div class="ico" style="background:#fbeeec">🫘</div><h3>Feijão</h3><div class="tag">Mercado doméstico em alta e a colheita atrasada.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-arroz-maio-junho-2026.html" data-name="arroz casca cepea irga conab preco minimo pepro">
+        <div class="bar" style="background:linear-gradient(90deg,#5c6e2f,#a3b86a)"></div>
+        <div class="body"><div class="ico" style="background:#f6f8ee">🌾</div><h3>Arroz</h3><div class="tag">Abaixo do mínimo e o socorro via leilões da Conab.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PERMANENTES E ADOÇANTES -->
+  <div class="cat" data-cat>
+    <div class="cat-head"><div class="cat-icon">☕</div><h2>Permanentes &amp; Adoçantes</h2><div class="ln"></div><span class="cat-n">4</span></div>
+    <div class="grid">
+      <a class="card" href="radar-agro-acucar-maio-junho-2026.html" data-name="acucar cana etanol ny 11 cristal mix usina">
+        <div class="bar" style="background:linear-gradient(90deg,#2f8f86,#4fb3a9)"></div>
+        <div class="body"><div class="ico" style="background:#eefaf8">🍬</div><h3>Açúcar</h3><div class="tag">Superávit global e o petróleo como coringa.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-cafe-maio-junho-2026.html" data-name="cafe arabica robusta conilon ice geada cepea cooxupe">
+        <div class="bar" style="background:linear-gradient(90deg,#7b4b2a,#a9774f)"></div>
+        <div class="body"><div class="ico" style="background:#f7f0ea">☕</div><h3>Café</h3><div class="tag">Safra recorde, queda de preço e o fantasma da geada.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-cacau-maio-junho-2026.html" data-name="cacau ice bahia crash moagem equador gana costa do marfim chocolate">
+        <div class="bar" style="background:linear-gradient(90deg,#6a3c25,#9c5e3a)"></div>
+        <div class="body"><div class="ico" style="background:#f8f1ea">🍫</div><h3>Cacau</h3><div class="tag">O grande crash: de US$13 mil para ~US$3,5 mil.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-laranja-maio-junho-2026.html" data-name="laranja suco fcoj fundecitrus greening pera cepea estoque">
+        <div class="bar" style="background:linear-gradient(90deg,#e07b1a,#f59e2e)"></div>
+        <div class="body"><div class="ico" style="background:#fff7ed">🍊</div><h3>Laranja</h3><div class="tag">O paradoxo: safra menor, mas preço sem reação.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- PECUÁRIA E PROTEÍNAS -->
+  <div class="cat" data-cat>
+    <div class="cat-head"><div class="cat-icon">🐂</div><h2>Pecuária &amp; Proteínas</h2><div class="ln"></div><span class="cat-n">5</span></div>
+    <div class="grid">
+      <a class="card" href="radar-agro-boi-maio-junho-2026.html" data-name="boi gordo arroba pecuaria carne bovina exportacao china">
+        <div class="bar" style="background:linear-gradient(90deg,#4a2c00,#a07b3a)"></div>
+        <div class="body"><div class="ico" style="background:#f5f1e8">🐂</div><h3>Boi Gordo</h3><div class="tag">Arroba, exportação de carne bovina e ciclo pecuário.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-suino-maio-junho-2026.html" data-name="suino carne suina exportacao racao milho china">
+        <div class="bar" style="background:linear-gradient(90deg,#b86b7a,#d99aa6)"></div>
+        <div class="body"><div class="ico" style="background:#fbeef1">🐖</div><h3>Suíno</h3><div class="tag">Margem, custo de ração e exportação de carne suína.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-aves-maio-junho-2026.html" data-name="aves frango carne de frango exportacao racao gripe aviaria">
+        <div class="bar" style="background:linear-gradient(90deg,#c2410c,#f97316)"></div>
+        <div class="body"><div class="ico" style="background:#fff3ec">🐔</div><h3>Aves / Frango</h3><div class="tag">Exportação, custo de grãos e sanidade avícola.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-peixes-maio-junho-2026.html" data-name="peixes piscicultura tilapia aquicultura pescado">
+        <div class="bar" style="background:linear-gradient(90deg,#1e6f8b,#52b3c9)"></div>
+        <div class="body"><div class="ico" style="background:#eef8fb">🐟</div><h3>Peixes</h3><div class="tag">Piscicultura, tilápia e cadeia do pescado.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+      <a class="card" href="radar-agro-ovinos-caprinos-maio-junho-2026.html" data-name="ovinos caprinos ovelha cabra cordeiro carne ovina">
+        <div class="bar" style="background:linear-gradient(90deg,#6b5b4a,#9c8a76)"></div>
+        <div class="body"><div class="ico" style="background:#f5f2ee">🐑</div><h3>Ovinos &amp; Caprinos</h3><div class="tag">Mercado de cordeiro, carne ovina e caprinocultura.</div><div class="open">ABRIR RELATÓRIO <span class="arrow">→</span></div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults">Nenhum relatório encontrado para a sua busca. Tente outro termo.</div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl"><div class="brand">Rural<span> IN</span></div><div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:280px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p></div>
+      <div class="fc"><h4>Análise e Construção</h4>
+        <p><strong>Dr. Sidney Souza</strong><br>Economista e Adm. Agrícola<br>Estrategista Econômico do Produtor<br>Especialista em economia da fazenda e gestão de risco no agro<br>Transformamos dados da fazenda em decisões econômicas<br>Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+        🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>📱 @ruralin.ai<br>✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>📞 (64) 9 9226-6886</p></div>
+    </div>
+    <div class="fb">
+      CENTRAL DE RELATÓRIOS RADAR AGRO · EDIÇÃO MAIO 2026 + PERSPECTIVAS JUNHO · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.
+    </div>
+  </div>
+</footer>
+
+<script>
+function filtrar(){
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const cards=document.querySelectorAll('.card');
+  let visiveis=0;
+  cards.forEach(c=>{
+    const txt=(c.getAttribute('data-name')||'')+' '+c.querySelector('h3').textContent.toLowerCase();
+    const match=txt.toLowerCase().includes(q);
+    c.style.display=match?'flex':'none';
+    if(match)visiveis++;
+  });
+  // esconde categorias sem resultado
+  document.querySelectorAll('[data-cat]').forEach(cat=>{
+    const algum=[...cat.querySelectorAll('.card')].some(c=>c.style.display!=='none');
+    cat.style.display=algum?'block':'none';
+  });
+  document.getElementById('noResults').style.display=visiveis?'none':'block';
+  document.getElementById('countTag').textContent=visiveis+(visiveis===1?' relatório':' relatórios')+(q?' encontrado'+(visiveis===1?'':'s'):' disponíveis');
+}
+</script>
+</body>
+</html>
