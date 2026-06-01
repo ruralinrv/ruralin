@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Arroz | Maio 2026 + Perspectivas Junho | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --amarelo:#7d9142;--amarelo-l:#a3b86a;--amarelo-xl:#dde7c2;--amarelo-pale:#f6f8ee;
+  --verde-s:#1a5c2a;--verde-l:#2d9e5f;--verde-xl:#52b788;
+  --marrom:#33401a;--marrom-l:#5c6e2f;
+  --cinza-esc:#1e1e2e;--cinza:#374151;--cinza-l:#6b7280;--cinza-xl:#f9fafb;
+  --azul:#1e40af;--azul-l:#3b82f6;
+  --vermelho:#991b1b;--vermelho-l:#ef4444;
+  --laranja:#c2410c;--laranja-l:#f97316;
+  --bg:#fafaf7;--sombra:0 4px 20px rgba(0,0,0,.08);--sombra2:0 8px 40px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#1f2810 0%,var(--marrom-l) 48%,var(--amarelo-l) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.h-top{max-width:1100px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--amarelo-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--amarelo-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.h-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-up{background:rgba(34,197,94,.25);color:#4ade80;border:1px solid rgba(74,222,128,.4)}
+.hb-dn{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(248,113,113,.4)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--amarelo-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#e5e7eb;font-weight:600}
+.ticker .sep{color:rgba(255,255,255,.2)}.t-nt{color:var(--amarelo-l)!important}
+.hl-strip{background:linear-gradient(135deg,#1f2810,#33401a);padding:18px 24px;text-align:center;border-bottom:2px solid var(--amarelo-l)}
+.hl-strip .hs-inner{max-width:1100px;margin:0 auto}
+.hl-strip h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:#fff;font-weight:700}
+.hl-strip p{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:5px}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:44px 0 32px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;background:var(--amarelo-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--marrom-l);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--amarelo-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--amarelo-l),transparent)}
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:24px}
+.p-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.p-card.up::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.p-card.dn::before{background:linear-gradient(90deg,#dc2626,#f87171)}
+.p-card.nt::before{background:linear-gradient(90deg,var(--amarelo),var(--amarelo-l))}
+.p-lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.p-val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.p-sub{font-size:.74rem;color:var(--cinza-l);margin-top:5px}
+.p-var{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;margin-top:5px}
+.v-up{color:#16a34a}.v-dn{color:#dc2626}.v-nt{color:var(--amarelo)}
+.p-src{font-size:.64rem;color:#ccc;margin-top:6px}
+.termometros{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.termo{background:#fff;border-radius:14px;padding:20px 16px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:12px}
+.termo-body{display:flex;flex-direction:column;align-items:center;gap:8px}
+.termo-gauge{width:110px;height:70px}.termo-gauge svg{width:110px;height:70px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--cinza-esc);margin-top:2px}
+.termo-desc{font-size:.75rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+.chart-card{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:20px}
+.chart-card h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.chart-card .nf{font-size:.69rem;color:#bbb;font-style:italic;margin-top:8px}
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:18px;border-left:5px solid var(--amarelo-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.vermelho{border-left-color:var(--vermelho-l)}.abox.azul{border-left-color:var(--azul-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--marrom-l);font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.abox.verde h3{color:var(--verde-s)}.abox.vermelho h3{color:var(--vermelho)}.abox.azul h3{color:var(--azul)}
+.abox p{color:var(--cinza);line-height:1.8;font-size:.9rem}.abox p+p{margin-top:8px}
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.yellow{background:var(--amarelo-pale);border-color:rgba(125,145,66,.3)}
+.al.red{background:#fef2f2;border-color:rgba(239,68,68,.3)}
+.al.green{background:#f0fdf4;border-color:rgba(34,197,94,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(59,130,246,.3)}
+.al .ai{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.al .at h4{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.al.yellow .at h4{color:var(--marrom-l)}.al.red .at h4{color:var(--vermelho)}.al.green .at h4{color:var(--verde-s)}.al.blue .at h4{color:var(--azul)}
+.al .at p{font-size:.82rem;color:var(--cinza-l);line-height:1.6}
+.scen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#16a34a}
+.sc.neu{background:linear-gradient(135deg,#f6f8ee,var(--amarelo-xl));border-color:var(--amarelo)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#dc2626}
+.sc-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:#16a34a}.sc.neu .sc-dot{background:var(--amarelo)}.sc.pes .sc-dot{background:#dc2626}
+.sc h4{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700}
+.sc.opt h4{color:#166534}.sc.neu h4{color:var(--marrom-l)}.sc.pes h4{color:var(--vermelho)}
+.sc ul{list-style:none;font-size:.83rem;color:var(--cinza);line-height:1.85}
+.sc ul li{display:flex;align-items:flex-start;gap:6px}.sc ul li::before{content:'›';font-weight:700;flex-shrink:0}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:6px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:#166534}.sc.neu .sc-prob{background:var(--amarelo-xl);color:var(--marrom-l)}.sc.pes .sc-prob{background:#fee2e2;color:var(--vermelho)}
+.geo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.geo-card{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sombra);display:flex;gap:12px;align-items:flex-start}
+.geo-flag{font-size:1.6rem;flex-shrink:0}
+.geo-info h5{font-weight:700;font-size:.85rem;color:var(--cinza-esc);margin-bottom:3px}
+.geo-info p{font-size:.78rem;color:var(--cinza-l);line-height:1.55}
+.geo-status{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:700}
+.gs-up{background:#dcfce7;color:#16a34a}.gs-dn{background:#fee2e2;color:#dc2626}.gs-nt{background:var(--amarelo-xl);color:var(--marrom-l)}
+.price-termo{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--sombra);margin-bottom:20px}
+.price-termo h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.pt-bar{margin-bottom:14px}
+.pt-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:.82rem}
+.pt-label .pl-name{font-weight:600;color:var(--cinza)}
+.pt-label .pl-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem}
+.pt-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pt-fill{height:100%;border-radius:8px;position:relative}
+.pt-marker{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px;transform:translateX(-50%)}
+.pt-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cinza-l)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.percepcao{background:linear-gradient(135deg,#1f2810,var(--marrom-l));border-radius:16px;padding:32px;margin-bottom:20px;color:#fff}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:14px;color:var(--amarelo-xl)}
+.percepcao p{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.85)}.percepcao p+p{margin-top:10px}
+.percepcao .quote{border-left:3px solid var(--amarelo-l);padding-left:16px;font-style:italic;margin-top:16px;color:var(--amarelo-xl);font-size:.92rem}
+.footer{background:var(--cinza-esc);color:#fff;padding:52px 24px 32px}
+.fi{max-width:1100px;margin:0 auto}
+.ft{display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:24px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:900;color:var(--amarelo-l)}
+.fl .brand span{color:#fff}.fl .tag{font-size:.78rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--amarelo-l);font-size:1.1rem;margin-bottom:8px}
+.fc p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.9}.fc a{color:var(--amarelo-l);text-decoration:none}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:rgba(255,255,255,.27);letter-spacing:.8px;text-align:center;line-height:1.8}
+.hl{background:linear-gradient(transparent 60%,rgba(163,184,106,.45) 60%)}
+.badge-neon{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:5px 14px;border-radius:20px;font-weight:700;display:inline-block;margin:3px}
+.bn-gold{background:rgba(125,145,66,.12);color:var(--marrom-l);border:1px solid var(--amarelo)}
+.bn-dn{background:rgba(239,68,68,.12);color:#dc2626;border:1px solid rgba(248,113,113,.5)}
+.bn-green{background:rgba(34,197,94,.12);color:#16a34a;border:1px solid rgba(74,222,128,.5)}
+.bn-blue{background:rgba(59,130,246,.12);color:#1e40af;border:1px solid rgba(147,197,253,.6)}
+@media(max-width:720px){.g2{grid-template-columns:1fr}.logo-txt h1{font-size:1.55rem}.h-top{flex-direction:column;align-items:flex-start}.h-meta{text-align:left}.h-badges{justify-content:flex-start}.ft{flex-direction:column}.p-val{font-size:1.3rem}}
+@media print{body{background:#fff}.header,.footer,.percepcao,.hl-strip{-webkit-print-color-adjust:exact;print-color-adjust:exact}.section{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#7d9142"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#1f2810">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#1f2810" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#1f2810" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt"><h1>Radar Agro do Arroz</h1><div class="sub">Análise Mensal · Maio 2026 · Rural IN</div></div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">PhD em Mercado Agro · Análise de Risco</div>
+      <div class="dt">Fechamento Maio 2026</div>
+      <div class="h-badges">
+        <span class="h-badge hb-dn">Casca: R$ 59,70/sc</span>
+        <span class="h-badge hb-dn">Abaixo do mínimo</span>
+        <span class="h-badge hb-nt">Conab: R$70 mi em leilão</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🌾 <span class="t-nt">Casca Cepea/Irga-RS:</span> <strong>R$ 59,70/sc (50kg)</strong></span>
+    <span class="sep">|</span>
+    <span>🏛️ <span class="t-nt">Mínimo Conab:</span> <strong>R$ 63,74/sc</strong></span>
+    <span class="sep">|</span>
+    <span>📉 <span class="t-nt">No mês:</span> <strong>−4,17%</strong></span>
+    <span class="sep">|</span>
+    <span>🚢 <span class="t-nt">Export abr:</span> <strong>78,79 mil t (−67%)</strong></span>
+    <span class="sep">|</span>
+    <span>🔨 <span class="t-nt">Leilão Conab:</span> <strong>177 mil t / R$70 mi</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-nt">Dólar:</span> <strong>R$ 5,03</strong></span>
+  </div>
+</header>
+
+<div class="hl-strip"><div class="hs-inner">
+  <h2>🌾 Fechamento de Maio 2026 + Perspectivas para Junho</h2>
+  <p>Colheita encerrada no RS · preço abaixo do mínimo · exportação travada pelo real forte · estoque cheio · o governo socorrendo a renda via Pepro/PEP</p>
+</div></div>
+
+<div class="container">
+
+<!-- SEÇÃO 1: PLACAR -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">💰</div><h2>Placar de Cotações — Fechamento Maio 2026</h2><div class="ln"></div></div>
+  <div class="placar">
+    <div class="p-card dn"><div class="p-lbl">Casca — Cepea/Irga-RS</div><div class="p-val">R$ 59,70</div><div class="p-sub">por saca de 50 kg (26/mai)</div><div class="p-var v-dn">▼ −4,17% no mês</div><div class="p-src">Fonte: Cepea/Esalq, Irga-RS</div></div>
+    <div class="p-card nt"><div class="p-lbl">Preço mínimo — Conab</div><div class="p-val">R$ 63,74</div><div class="p-sub">piso oficial safra 25/26</div><div class="p-var v-dn">▼ mercado R$ 4,04 abaixo</div><div class="p-src">Fonte: Conab / Mapa (PGPM)</div></div>
+    <div class="p-card dn"><div class="p-lbl">Exportação — abril/26</div><div class="p-val">78,79 kt</div><div class="p-sub">mil toneladas</div><div class="p-var v-dn">▼ −67,27% vs março</div><div class="p-src">Fonte: Secex/MDIC</div></div>
+    <div class="p-card nt"><div class="p-lbl">Leilão Conab (13/mai)</div><div class="p-val">177 kt</div><div class="p-sub">R$ 70 mi em Pepro/PEP</div><div class="p-var v-nt">◆ socorro à renda do produtor</div><div class="p-src">Fonte: Conab — Portaria 38/2026</div></div>
+    <div class="p-card dn"><div class="p-lbl">Rentabilidade gaúcha</div><div class="p-val">menor</div><div class="p-sub">patamar desde 2022</div><div class="p-var v-dn">▼ preço abaixo do custo</div><div class="p-src">Fonte: Cepea/Esalq</div></div>
+    <div class="p-card nt"><div class="p-lbl">Câmbio — Dólar</div><div class="p-val">R$ 5,03</div><div class="p-sub">real valorizado</div><div class="p-var v-dn">▼ trava a exportação</div><div class="p-src">Fonte: Banco Central</div></div>
+  </div>
+
+  <div class="price-termo">
+    <h3>🌡️ Termômetro do Arroz — preço de mercado × preço mínimo (R$/sc 50 kg)</h3>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🌾 Casca atual (26/mai)</span><span class="pl-val" style="color:#dc2626">R$ 59,70/sc</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:42%;background:linear-gradient(90deg,#dc2626,#f97316)"></div><div class="pt-marker" style="left:54%"></div></div>
+      <div class="pt-scale"><span>R$ 45</span><span style="font-weight:700;color:var(--cinza)">Mínimo Conab: R$ 63,74</span><span>R$ 80</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🌾 Início de maio (12/mai)</span><span class="pl-val" style="color:#d97706">R$ 61,84/sc</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:48%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div><div class="pt-marker" style="left:54%"></div></div>
+      <div class="pt-scale"><span>R$ 45</span><span style="font-weight:700;color:var(--cinza)">Mínimo Conab: R$ 63,74</span><span>R$ 80</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🏛️ Com prêmio Pepro/PEP (equalização)</span><span class="pl-val" style="color:#16a34a">≈ R$ 63,74/sc</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:54%;background:linear-gradient(90deg,#16a34a,#4ade80)"></div><div class="pt-marker" style="left:54%"></div></div>
+      <div class="pt-scale"><span>R$ 45</span><span style="font-weight:700;color:var(--cinza)">o leilão cobre a diferença até o piso</span><span>R$ 80</span></div></div>
+    <div style="margin-top:10px;padding:12px;background:#f9fafb;border-radius:8px;font-size:.78rem;color:var(--cinza-l)">
+      <strong style="color:var(--marrom-l)">Leitura:</strong> a marcação vertical é o <strong>preço mínimo da Conab (R$ 63,74)</strong>. O mercado físico opera <strong style="color:#dc2626">abaixo do piso</strong> — zona de prejuízo. O prêmio Pepro/PEP existe justamente para cobrir essa diferença e levar a renda do produtor de volta ao mínimo oficial.
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>📈 Arroz em Casca em Maio 2026 — Cepea/Irga-RS vs Preço Mínimo (R$/sc)</h3>
+    <canvas id="chartMaio" height="95"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq, Irga-RS, Conab. A linha tracejada é o piso oficial (R$ 63,74). Série de referência do mês. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 2: FATOS -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">📰</div><h2>Os 6 Fatos que Moveram o Arroz em Maio</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin-bottom:20px">
+    <div class="al red"><div class="ai">📉</div><div class="at"><h4>1. Casca abaixo do preço mínimo</h4><p>O indicador Cepea/Irga-RS fechou a <strong>R$ 59,70/sc</strong> (26/mai), −4,17% no mês e <strong>R$ 4,04 abaixo</strong> do piso oficial de R$ 63,74. O produtor gaúcho vende abaixo do custo no mercado à vista.</p></div></div>
+    <div class="al yellow"><div class="ai">🌾</div><div class="at"><h4>2. Colheita encerrada no RS</h4><p>A safra 2025/26 do Rio Grande do Sul foi <strong>oficialmente encerrada</strong>. Com toda a produção no mercado e os armazéns do beneficiador cheios, a pressão de oferta no pico da safra empurra o preço para baixo.</p></div></div>
+    <div class="al red"><div class="ai">🚢</div><div class="at"><h4>3. Exportação despenca 67%</h4><p>Os embarques caíram para <strong>78,79 mil t em abril (−67,27% vs março)</strong>, o menor nível em 14 meses. O real valorizado tirou a competitividade do arroz brasileiro lá fora, após meses de embarques fortes.</p></div></div>
+    <div class="al red"><div class="ai">🏭</div><div class="at"><h4>4. Demanda interna fraca</h4><p>O arroz beneficiado tem compras retraídas e a indústria opera com <strong>estoque elevado</strong>. A tendência é de oscilação no patamar atual até as beneficiadoras esgotarem estoques e voltarem a comprar.</p></div></div>
+    <div class="al blue"><div class="ai">🏛️</div><div class="at"><h4>5. Governo socorre com R$ 70 milhões</h4><p>A Conab leiloou <strong>177 mil t (13/mai)</strong> com R$ 70 mi via Pepro/PEP (Portaria 38/2026), destinando 86,2% ao RS e 30% à agricultura familiar. Os leilões cobrem a diferença até o piso oficial.</p></div></div>
+    <div class="al green"><div class="ai">🌍</div><div class="at"><h4>6. USDA: oferta global menor à frente</h4><p>O USDA projeta produção mundial <strong>0,9% menor</strong> e <strong>consumo recorde</strong> em 2026/27. No Brasil, a Conab já apontou recuo de 12,4% na produção 25/26 — fatores que dão suporte estrutural de médio prazo.</p></div></div>
+  </div>
+  <div class="chart-card"><h3>📊 Arroz em Casca em 2026 — Cepea/Irga-RS (R$/sc) cruza o Preço Mínimo</h3>
+    <canvas id="chartAnual" height="95"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq, Conab. O indicador desceu abaixo do piso oficial ao longo da safra. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 3: ANÁLISE -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔬</div><h2>Análise Técnica + Fundamentalista — Dupla Visão</h2><div class="ln"></div></div>
+  <div class="termometros">
+    <div class="termo"><h4>Físico RS (casca)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="31" y2="27" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">28 / 100</div><div class="termo-desc">Abaixo do mínimo; colheita encerrada pressiona</div></div></div>
+    <div class="termo"><h4>Exportação</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="26" y2="32" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">20 / 100</div><div class="termo-desc">−67% em abril; real forte tira competitividade</div></div></div>
+    <div class="termo"><h4>Demanda interna</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g3)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="36" y2="23" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">35 / 100</div><div class="termo-desc">Beneficiado fraco; indústria com estoque cheio</div></div></div>
+    <div class="termo"><h4>Suporte do governo</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g4)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="68" y2="26" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">70 / 100</div><div class="termo-desc">PGPM ativa: Pepro/PEP sustentam a renda no piso</div></div></div>
+    <div class="termo"><h4>Oferta global (aperto)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g5)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="55" y2="20" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">55 / 100</div><div class="termo-desc">USDA: produção −0,9% e consumo recorde 26/27</div></div></div>
+    <div class="termo"><h4>Aperto de margem</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#ef4444"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g6)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="71" y2="29" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">75 / 100</div><div class="termo-desc">Rentabilidade no menor nível desde 2022</div></div></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>📉 Análise de Mercado — Casca RS (Maio 2026)</h3>
+      <p><strong>Tendência:</strong> baixa, com o indicador rompendo o piso oficial. O pico de oferta da colheita encerrada somado à exportação travada e à demanda fraca empurrou a casca de R$ 61,84 (12/mai) para R$ 59,70 (26/mai).</p>
+      <p><strong>Suportes:</strong> o "suporte" real do mercado é institucional — o preço mínimo de R$ 63,74 via Pepro/PEP. <strong>Resistências:</strong> retomada das compras industriais e melhora do câmbio para destravar a exportação.</p>
+      <p>⚠ <span class="hl">A virada não virá do mercado livre no curto prazo</span> — virá quando a indústria esgotar estoques e voltar a comprar, ou quando o real ceder e a exportação reabrir.</p>
+    </div>
+    <div class="abox verde">
+      <h3>🌎 Análise Fundamentalista — Doméstico, mas com Suporte</h3>
+      <p><strong>Mercado interno:</strong> o arroz é quase totalmente doméstico — base da alimentação brasileira (~25 kg/hab/ano). Está blindado da geopolítica de grãos, mas refém do câmbio (exportação) e da política pública (preço mínimo).</p>
+      <p><strong>Conjuntura:</strong> colheita encerrada + estoque industrial cheio + exportação travada = pressão de curto prazo clássica de pico de safra.</p>
+      <p><strong>Médio prazo:</strong> o USDA projeta <span class="hl">produção mundial menor e consumo recorde</span> em 26/27, e a Conab apontou safra brasileira 12,4% menor — fatores que tendem a firmar o preço quando o estoque atual for absorvido.</p>
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>🚢 Exportação Brasileira de Arroz — Março × Abril (mil t)</h3>
+    <canvas id="chartGlobal" height="88"></canvas>
+    <p class="nf">Fonte: Secex/MDIC. Abril a 78,79 kt, queda de 67,27% sobre março (≈240,7 kt). Elaboração: Rural IN.</p></div>
+  <div class="chart-card"><h3>🌍 Destino das Exportações de Arroz do Brasil — Participação Aproximada (%)</h3>
+    <canvas id="chartShare" height="75"></canvas>
+    <p class="nf">Distribuição aproximada (Venezuela, Peru, África, Caribe e outros). Valores de referência. Fonte: Secex/MDIC. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 4: GEOPOLÍTICA -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🌐</div><h2>Macro e Política — O que Monitorar</h2><div class="ln"></div></div>
+  <div class="geo-grid">
+    <div class="geo-card"><div class="geo-flag">💵</div><div class="geo-info"><h5>Câmbio — Real Valorizado</h5><p>O gargalo do momento. Dólar pouco competitivo (~R$5,03) tira a competitividade do arroz brasileiro e travou a exportação (−67% em abril). É a variável-chave para reabrir o escoamento.</p><span class="geo-status gs-dn">Trava export</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🏛️</div><div class="geo-info"><h5>PGPM — Conab (Pepro/PEP)</h5><p>O sustentáculo da renda. O preço mínimo (R$63,74) e os prêmios de equalização cobrem a diferença até o piso. Já foram R$70 mi em leilões na safra 25/26.</p><span class="geo-status gs-up">Suporte ativo</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🌎</div><div class="geo-info"><h5>USDA / Mercado Global</h5><p>Produção mundial projetada 0,9% menor e consumo recorde em 26/27. Suporte estrutural de médio prazo, ainda que o curto prazo seja dominado pelo estoque interno.</p><span class="geo-status gs-up">Suporte futuro</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🇮🇳</div><div class="geo-info"><h5>Índia & Ásia</h5><p>A Ásia concentra produção e consumo mundial. A política de exportação de gigantes como a Índia dita o preço internacional e a competitividade relativa do arroz brasileiro.</p><span class="geo-status gs-nt">Monitorar</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🏭</div><div class="geo-info"><h5>Indústria Beneficiadora</h5><p>Opera com estoque cheio. A retomada das compras industriais — quando esgotarem o estoque atual — é o gatilho mais provável para a virada do preço no mercado livre.</p><span class="geo-status gs-nt">Gatilho</span></div></div>
+    <div class="geo-card"><div class="geo-flag">📉</div><div class="geo-info"><h5>Selic 14,5% e Custo</h5><p>Juro alto encarece carregar estoque à espera da virada. A rentabilidade da lavoura gaúcha está no menor nível desde 2022 — margem apertada exige disciplina de caixa.</p><span class="geo-status gs-dn">Pressão</span></div></div>
+  </div>
+  <div class="chart-card"><h3>💵 Câmbio (R$/US$) em 2026 — A Trava da Exportação</h3>
+    <canvas id="chartCambio" height="75"></canvas>
+    <p class="nf">A valorização do real ao longo de 2026 reduziu a competitividade do arroz brasileiro. Fonte: Banco Central. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 5: PERSPECTIVAS JUNHO -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔭</div><h2>Perspectivas para Junho 2026 — Cenários e Projeções</h2><div class="ln"></div></div>
+  <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px">
+    <span class="badge-neon bn-gold">🌾 Casca: R$ 58–64/sc</span>
+    <span class="badge-neon bn-dn">🚢 Export travada (real forte)</span>
+    <span class="badge-neon bn-blue">🏛️ Pepro/PEP: o piso</span>
+    <span class="badge-neon bn-gold">🏭 Indústria recomprar: o gatilho</span>
+    <span class="badge-neon bn-green">🌍 USDA: oferta global menor</span>
+  </div>
+  <div class="scen-grid">
+    <div class="sc opt"><div class="sc-header"><div class="sc-dot"></div><h4>🟢 Cenário Otimista</h4></div>
+      <ul><li><span>Indústria recompõe estoque</span></li><li><span>Real cede e exportação reabre</span></li><li><span>Oferta global menor pesa a favor</span></li><li><span>Casca volta ao mínimo: R$ 63–64/sc</span></li></ul>
+      <div class="sc-prob">Prob. 30% — Indústria + câmbio</div></div>
+    <div class="sc neu"><div class="sc-header"><div class="sc-dot"></div><h4>🟡 Cenário Base (mais provável)</h4></div>
+      <ul><li><span>Oscilação no patamar atual</span></li><li><span>Leilões Pepro/PEP sustentam a renda</span></li><li><span>Real forte ainda limita export</span></li><li><span>Casca: R$ 59–61/sc (abaixo do piso)</span></li></ul>
+      <div class="sc-prob">Prob. 45% — Impasse sustentado</div></div>
+    <div class="sc pes"><div class="sc-header"><div class="sc-dot"></div><h4>🔴 Cenário Pessimista</h4></div>
+      <ul><li><span>Exportação segue travada</span></li><li><span>Estoque industrial pesa mais</span></li><li><span>Leilões insuficientes para o volume</span></li><li><span>Casca: &lt; R$ 59/sc</span></li></ul>
+      <div class="sc-prob">Prob. 25% — Estoque + câmbio</div></div>
+  </div>
+  <div class="chart-card"><h3>⚖️ Preço de Mercado × Mínimo × Custo (R$/sc) — A Conta do Produtor Gaúcho</h3>
+    <canvas id="chartViab" height="85"></canvas>
+    <p class="nf">Fonte: Cepea, Conab. Casca abaixo do mínimo e do custo estimado — daí a importância do Pepro/PEP. Custo é estimativa de referência. Elaboração: Rural IN.</p></div>
+  <div class="chart-card"><h3>🎯 Projeção de Preço Junho 2026 — Casca RS por Cenário (R$/sc)</h3>
+    <canvas id="chartProjecao" height="85"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Faixas por cenário, baseadas em câmbio, estoque industrial e leilões.</p></div>
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista para Junho — Dr. Sidney Souza</h3>
+    <p>O arroz é o <span class="hl" style="background:linear-gradient(transparent 60%,rgba(163,184,106,.55) 60%)">oposto do trigo</span> no meu radar: é um mercado quase totalmente doméstico, blindado da geopolítica de grãos, mas justamente por isso refém de duas forças muito brasileiras — o câmbio e a política pública. E hoje as duas trabalham contra e a favor ao mesmo tempo.</p>
+    <p>Contra: o real valorizado travou a exportação (−67% em abril) bem na hora em que a colheita gaúcha terminou e jogou toda a oferta no mercado. Com o beneficiador de estoque cheio e a demanda interna morna, o preço escorregou para baixo do mínimo. É o retrato clássico do pico de safra, agravado pelo câmbio.</p>
+    <p>A favor: existe um piso institucional. O preço mínimo de R$ 63,74 e os prêmios Pepro/PEP não são detalhe — são o que separa o produtor gaúcho do prejuízo puro neste momento. Quem usa esses instrumentos transforma uma venda abaixo do custo numa renda no piso oficial. Ignorá-los é deixar dinheiro na mesa.</p>
+    <p>Olhando para frente, o fundamento de médio prazo melhora: o USDA vê produção global menor e consumo recorde, e a safra brasileira veio 12,4% menor. Quando a indústria esgotar o estoque atual e voltar a comprar — e se o real ceder — a casca tende a reencontrar o mínimo e talvez superá-lo. A chave é atravessar o vale do pico de safra sem queimar a produção a preço de banana.</p>
+    <div class="quote">"No arroz, em 2026, quem entende de Pepro e PEP ganha mais que quem entende de gráfico. O mercado livre está abaixo do custo — mas o produtor que escalona vendas, calcula o custo real por saca e usa os instrumentos do governo atravessa a entressafra sem vender no prejuízo. Disciplina de caixa vale mais que pressa."</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 6: RECOMENDAÇÕES -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">✅</div><h2>Recomendações Práticas para o Produtor</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px">
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--azul-l)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">🏛️</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--azul)">Use o Pepro/PEP</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Com o mercado abaixo do piso, os prêmios de equalização da Conab são a ferramenta número um. Eles cobrem a diferença até o mínimo (R$ 63,74). Acompanhe os Avisos no portal de comercialização e participe — é renda que está sendo deixada na mesa por quem não usa.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--amarelo)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📌</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--marrom-l)">Escalonar vendas</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Não venda tudo no pico da safra com o preço no fundo. Calcule o custo real por saca antes de fechar negócio e escalone as vendas. Quem tem fôlego de caixa segura parte da produção para a retomada das compras industriais.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #16a34a">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">🏚️</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--verde-s)">Armazenagem própria/cooperada</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Guardar o arroz em armazém próprio ou cooperado reduz a exposição à pressão do pico de colheita. Permite esperar a virada — mas atenção ao custo de carrego com a Selic em 14,5%: o juro precisa caber na conta.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #dc2626">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📡</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--vermelho)">O que monitorar em junho</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75"><strong>1.</strong> Novos leilões Pepro/PEP da Conab.<br><strong>2.</strong> Câmbio (real x dólar) e a exportação.<br><strong>3.</strong> Esgotamento do estoque das beneficiadoras.<br><strong>4.</strong> Relatórios de oferta global (USDA).<br><strong>5.</strong> Custo de carrego (Selic) vs preço esperado.</p></div>
+  </div>
+
+  <div class="chart-card"><h3>🚦 Semáforo do Arroz — Indicadores-Chave no Fechamento de Maio 2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Casca RS</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">R$59,70 — abaixo do mínimo</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Exportação</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">−67% — real forte trava</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Demanda interna</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">fraca — estoque cheio</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Suporte do governo</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">Pepro/PEP — R$70 mi ativos</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><div><strong style="font-size:.85rem">Oferta global</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">USDA −0,9% — suporte futuro</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Rentabilidade</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">menor desde 2022</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Câmbio</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">R$5,03 — real forte pesa</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><div><strong style="font-size:.85rem">Indústria recomprar</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">gatilho da virada</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl"><div class="brand">Rural<span> IN</span></div><div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p></div>
+      <div class="fc"><h4>Análise e Construção</h4>
+        <p><strong>Dr. Sidney Souza</strong><br>Economista e Adm. Agrícola<br>Estrategista Econômico do Produtor<br>Especialista em economia da fazenda e gestão de risco no agro<br>Transformamos dados da fazenda em decisões econômicas<br>Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+        🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>📱 @ruralin.ai<br>✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>📞 (64) 9 9226-6886</p></div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO ARROZ · EDIÇÃO MAIO 2026 + PERSPECTIVAS JUNHO · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CEPEA/ESALQ · IRGA-RS · CONAB · MAPA · SECEX/MDIC · USDA · BANCO CENTRAL · BROTO NOTÍCIAS
+    </div>
+  </div>
+</footer>
+
+<script>
+Chart.defaults.color='#6b7280';Chart.defaults.borderColor='rgba(0,0,0,.06)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const am='#7d9142',amL='#a3b86a',verde='#16a34a',verm='#dc2626',azul='#1e40af',azulL='#3b82f6';
+
+new Chart(document.getElementById('chartMaio'),{type:'line',
+ data:{labels:['01/05','05/05','08/05','12/05','15/05','19/05','22/05','26/05','29/05'],
+  datasets:[
+   {label:'Casca Cepea/Irga-RS (R$/sc)',data:[62.3,62.0,61.9,61.84,61.2,60.5,60.1,59.70,59.7],
+    borderColor:am,backgroundColor:'rgba(125,145,66,.12)',borderWidth:3,tension:.35,fill:true,pointRadius:4},
+   {label:'Preço mínimo Conab (R$63,74)',data:[63.74,63.74,63.74,63.74,63.74,63.74,63.74,63.74,63.74],
+    borderColor:'#dc2626',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:57,max:65,ticks:{callback:v=>'R$ '+v.toFixed(2)},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartAnual'),{type:'line',
+ data:{labels:['Jan','Fev','Mar','Abr','Mai/26'],
+  datasets:[
+   {label:'Casca Cepea/Irga-RS (R$/sc)',data:[68,66,64,62,59.7],borderColor:am,backgroundColor:'rgba(125,145,66,.12)',borderWidth:3,tension:.3,fill:true,pointRadius:5},
+   {label:'Preço mínimo Conab (R$63,74)',data:[63.74,63.74,63.74,63.74,63.74],borderColor:'#dc2626',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:56,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartGlobal'),{type:'bar',
+ data:{labels:['Março/2026','Abril/2026'],
+  datasets:[{label:'Exportação BR (mil t)',data:[240.7,78.79],
+   backgroundColor:['rgba(125,145,66,.5)','rgba(220,38,38,.8)'],borderRadius:8}]},
+ options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' mil t'}}},
+  scales:{y:{ticks:{callback:v=>v+' kt'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartShare'),{type:'doughnut',
+ data:{labels:['África','Venezuela','Caribe/Am. Central','Peru','Outros'],
+  datasets:[{data:[30,20,18,12,20],
+   backgroundColor:['rgba(125,145,66,.85)','rgba(163,184,106,.8)','rgba(245,158,11,.7)','rgba(30,64,175,.6)','rgba(180,180,180,.5)'],
+   borderWidth:2,borderColor:'#fff'}]},
+ options:{responsive:true,plugins:{legend:{position:'right',labels:{usePointStyle:true,padding:12}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}});
+
+new Chart(document.getElementById('chartCambio'),{type:'line',
+ data:{labels:['Jan','Fev','Mar','Abr','Mai/26'],
+  datasets:[
+   {label:'USD/BRL',data:[5.95,5.78,5.62,5.20,5.03],borderColor:azulL,backgroundColor:'rgba(59,130,246,.08)',borderWidth:3,tension:.35,fill:true,pointRadius:5},
+   {label:'Piso crítico R$5,00',data:[5,5,5,5,5],borderColor:'#dc2626',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:4.5,max:6.5,ticks:{callback:v=>'R$ '+v.toFixed(2)},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartViab'),{type:'bar',
+ data:{labels:['Casca atual','Mínimo Conab','Custo est. (ref.)'],
+  datasets:[{label:'R$/sc',data:[59.70,63.74,64.00],
+   backgroundColor:['rgba(220,38,38,.8)','rgba(22,163,74,.7)','rgba(107,114,128,.55)'],borderRadius:6}]},
+ options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R$ '+c.raw.toFixed(2)+'/sc'}}},
+  scales:{y:{min:55,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartProjecao'),{type:'bar',
+ data:{labels:['1ª sem jun','2ª sem jun','3ª sem jun','4ª sem jun'],
+  datasets:[
+   {label:'Pessimista',data:[59,58,58,59],backgroundColor:'rgba(220,38,38,.55)',borderRadius:6},
+   {label:'Base',data:[60,60,61,61],backgroundColor:'rgba(125,145,66,.85)',borderRadius:6},
+   {label:'Otimista',data:[62,63,64,64],backgroundColor:'rgba(22,163,74,.6)',borderRadius:6}]},
+ options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+  tooltip:{callbacks:{label:c=>c.dataset.label+': R$ '+c.raw+'/sc'}}},
+  scales:{y:{min:56,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+</script>
+</body>
+</html>
