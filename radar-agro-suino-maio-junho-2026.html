@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Suíno | Fechamento Maio 2026 + Perspectivas Junho | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --rosa:         #c0392b;
+  --rosa-l:       #e74c3c;
+  --rosa-dark:    #7b1e14;
+  --laranja:      #d35400;
+  --laranja-l:    #e67e22;
+  --dourado:      #c8931a;
+  --dourado-l:    #f0b429;
+  --verde:        #1a6b3c;
+  --verde-c:      #2d9e5f;
+  --azul:         #1a4a7a;
+  --azul-l:       #2980b9;
+  --creme:        #fdf8f5;
+  --cinza:        #4a4a4a;
+  --cinza-l:      #f4f0ed;
+  --bord:         rgba(192,57,43,.18);
+  --sombra:       0 4px 24px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Serif 4',Georgia,serif;background:var(--creme);color:var(--cinza);line-height:1.75;font-size:16px}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,var(--rosa-dark) 0%,#8b2219 40%,var(--laranja) 100%);color:#fff;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-70px;right:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(240,180,41,.2) 0%,transparent 70%);border-radius:50%}
+.header::after{content:'';position:absolute;bottom:-50px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.06) 0%,transparent 70%);border-radius:50%}
+.h-inner{max-width:1100px;margin:0 auto;padding:36px 24px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:18px}
+.logo-svg{width:70px;height:70px;flex-shrink:0}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1;color:#fff}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--dourado-l);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--dourado-l);font-weight:700;margin-top:4px}
+.ticker{background:var(--rosa-dark);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;border-top:3px solid var(--dourado)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.77rem;color:#fff;font-weight:600}
+.ticker .sep{opacity:.3}
+
+/* ── EDITION BANNER ── */
+.ed-banner{background:linear-gradient(135deg,#3d1209,#6b1c10);border-bottom:4px solid var(--dourado);padding:22px 24px;text-align:center}
+.ed-inner{max-width:1100px;margin:0 auto}
+.ed-banner h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;font-weight:700}
+.ed-banner p{font-size:.87rem;color:rgba(255,255,255,.65);margin-top:6px}
+
+/* ── ALERTA HISTÓRICO ── */
+.hist-alert{background:linear-gradient(135deg,#fff0ee,#fde8e6);border:2px solid var(--rosa);border-radius:14px;padding:22px 26px;margin:24px 0;display:flex;gap:18px;align-items:flex-start;max-width:1100px;margin-left:auto;margin-right:auto}
+.hist-alert .ha-icon{font-size:2.2rem;flex-shrink:0}
+.hist-alert h3{font-family:'Playfair Display',serif;color:var(--rosa-dark);font-size:1.1rem;margin-bottom:6px}
+.hist-alert p{font-size:.87rem;color:#666;line-height:1.7}
+
+/* ── CONTAINER / SECTIONS ── */
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:46px 0 34px;border-bottom:1px solid var(--bord)}
+.section:last-of-type{border-bottom:none}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:var(--rosa)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--rosa-dark);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--rosa),transparent)}
+
+/* ── PRICE CARDS ── */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(192px,1fr));gap:16px;margin-bottom:24px}
+.pc{background:#fff;border-radius:12px;padding:20px 18px;box-shadow:var(--sombra);border-top:4px solid var(--rosa);position:relative}
+.pc.orange{border-top-color:var(--laranja)}
+.pc.green{border-top-color:var(--verde-c)}
+.pc.blue{border-top-color:var(--azul)}
+.pc.gold{border-top-color:var(--dourado)}
+.pc .lbl{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:1.5px;text-transform:uppercase;color:#aaa;margin-bottom:6px}
+.pc .val{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:700;color:var(--rosa-dark);line-height:1}
+.pc .var{font-family:'JetBrains Mono',monospace;font-size:.78rem;margin-top:6px;font-weight:600}
+.up{color:var(--verde-c)}.dn{color:var(--rosa)}.nt{color:#999}
+.pc .src{font-size:.68rem;color:#ccc;margin-top:8px}
+
+/* ── KPI ROW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:#fff;border-radius:12px;padding:18px 16px;box-shadow:var(--sombra);text-align:center;border-bottom:3px solid var(--rosa)}
+.kpi.orange{border-bottom-color:var(--laranja)}
+.kpi.green{border-bottom-color:var(--verde-c)}
+.kpi.blue{border-bottom-color:var(--azul)}
+.kpi .kv{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--rosa-dark);line-height:1}
+.kpi .kl{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-top:6px}
+
+/* ── ANALISE BOX ── */
+.abox{background:#fff;border-radius:14px;padding:24px 26px;box-shadow:var(--sombra);margin-bottom:18px;border-left:5px solid var(--rosa)}
+.abox.orange{border-left-color:var(--laranja)}
+.abox.green{border-left-color:var(--verde)}
+.abox.blue{border-left-color:var(--azul)}
+.abox.gold{border-left-color:var(--dourado)}
+.abox.warning{border-left-color:var(--dourado);background:linear-gradient(135deg,#fffdf5,#fff8e7)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--rosa-dark);font-size:1.1rem;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.abox.orange h3{color:var(--laranja)}
+.abox.green h3{color:var(--verde)}
+.abox.blue h3{color:var(--azul)}
+.abox.gold h3{color:var(--dourado)}
+.abox p{color:#555;line-height:1.8;font-size:.93rem}
+.abox p+p{margin-top:10px}
+
+/* ── CHART WRAPPER ── */
+.cw{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--sombra);margin-bottom:20px}
+.cw h3{font-family:'Playfair Display',serif;color:var(--rosa-dark);font-size:1rem;margin-bottom:16px;border-bottom:1px solid var(--cinza-l);padding-bottom:10px}
+.cw .nf{font-size:.72rem;color:#aaa;font-style:italic;margin-top:8px}
+
+/* ── TABLE ── */
+.tw{overflow-x:auto;border-radius:12px;box-shadow:var(--sombra);margin-bottom:18px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.85rem}
+thead th{background:var(--rosa-dark);color:#fff;padding:12px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.8px;text-transform:uppercase}
+tbody td{padding:11px 14px;border-bottom:1px solid #eee;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.82rem}
+tbody tr:nth-child(even){background:var(--cinza-l)}
+.tv{color:var(--verde-c);font-weight:700}
+.tr{color:var(--rosa);font-weight:700}
+.tn{color:var(--cinza)}
+
+/* ── ALERTAS ── */
+.al{border-radius:12px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:flex-start;gap:14px;border:1px solid}
+.al.yellow{background:linear-gradient(135deg,#fff8e7,#fffdf5);border-color:rgba(200,147,26,.4)}
+.al.red{background:#fff5f5;border-color:rgba(192,57,43,.35)}
+.al.green{background:#f0faf4;border-color:rgba(45,158,95,.35)}
+.al.blue{background:#f0f5ff;border-color:rgba(26,74,122,.3)}
+.al .ai{font-size:1.5rem;flex-shrink:0;margin-top:2px}
+.al .at h4{font-size:.92rem;font-weight:700;margin-bottom:4px}
+.al.yellow .at h4{color:var(--dourado)}
+.al.red .at h4{color:var(--rosa)}
+.al.green .at h4{color:var(--verde)}
+.al.blue .at h4{color:var(--azul)}
+.al .at p{font-size:.85rem;color:#666;line-height:1.65}
+
+/* ── TIMELINE ── */
+.tl{position:relative;padding-left:28px;margin-bottom:20px}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--rosa),var(--laranja))}
+.tl-item{position:relative;margin-bottom:22px}
+.tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--rosa);border:2px solid #fff;box-shadow:0 0 0 2px var(--rosa)}
+.tl-item .ti-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--rosa);font-weight:600;letter-spacing:1px;margin-bottom:3px}
+.tl-item .ti-val{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--rosa-dark)}
+.tl-item .ti-text{font-size:.87rem;color:#555;line-height:1.65;margin-top:3px}
+
+/* ── SCENARIO CARDS ── */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(252px,1fr));gap:16px;margin-bottom:20px}
+.sc{border-radius:12px;padding:22px 20px;border-left:5px solid}
+.sc.opt{background:linear-gradient(135deg,#e8f5ee,#d4ede0);border-color:var(--verde-c)}
+.sc.neu{background:linear-gradient(135deg,#fef9ec,#fdf3d0);border-color:var(--dourado)}
+.sc.pes{background:linear-gradient(135deg,#fde8e6,#fbd5d2);border-color:var(--rosa)}
+.sc h4{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:10px}
+.sc.opt h4{color:var(--verde)}.sc.neu h4{color:#7a4a00}.sc.pes h4{color:var(--rosa)}
+.sc ul{list-style:none;font-size:.85rem;color:#555;line-height:1.85}
+.sc ul li::before{content:'→ ';font-weight:700}
+.sc .prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:12px;opacity:.65}
+
+/* ── BAR VISUAL ── */
+.bar-r{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.bar-l{min-width:125px;font-size:.82rem;color:#555}
+.bar-t{flex:1;background:#eee;border-radius:6px;height:13px;overflow:hidden}
+.bar-f{height:100%;border-radius:6px}
+.bar-v{min-width:55px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.77rem;font-weight:600}
+
+/* ── SEMAFORO ── */
+.sem{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.sv{background:var(--verde-c)}.sa{background:var(--dourado-l)}.sr{background:var(--rosa)}
+
+/* ── BADGES ── */
+.br-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:100px;font-weight:600}
+.bg{background:#fde8e6;color:var(--rosa-dark);border:1px solid var(--rosa)}
+.bd{background:#fef3dc;color:#7a4a00;border:1px solid var(--dourado)}
+.bv{background:#e6f4ee;color:var(--verde);border:1px solid var(--verde-c)}
+.bb{background:#e6eeff;color:var(--azul);border:1px solid var(--azul)}
+.bo{background:#fef0e6;color:var(--laranja);border:1px solid var(--laranja-l)}
+
+/* ── GRID 2 ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--rosa),transparent);margin:26px 0}
+.nf{font-size:.73rem;color:#aaa;font-style:italic;margin-top:8px}
+.hl{background:linear-gradient(transparent 60%,rgba(192,57,43,.18) 60%)}
+
+/* ── FOOTER ── */
+.footer{background:var(--rosa-dark);color:#fff;padding:52px 24px 32px}
+.fi{max-width:1100px;margin:0 auto}
+.ft{display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:24px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:900;color:var(--dourado-l)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.78rem;color:rgba(255,255,255,.5);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--dourado-l);font-size:1.1rem;margin-bottom:8px}
+.fc p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.9}
+.fc a{color:var(--dourado-l);text-decoration:none}
+.fc a:hover{text-decoration:underline}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:rgba(255,255,255,.28);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .g2{grid-template-columns:1fr}
+  .logo-txt h1{font-size:1.5rem}
+  .h-inner{flex-direction:column;align-items:flex-start}
+  .h-meta{text-align:left}
+  .pc .val,.kpi .kv{font-size:1.5rem}
+  .ft{flex-direction:column}
+  .hist-alert{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-inner">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="70" height="70" rx="13" fill="#c8931a"/>
+        <text x="7" y="42" font-family="Georgia,serif" font-size="27" font-weight="900" fill="#7b1e14">RI</text>
+        <rect x="6" y="48" width="58" height="3" rx="1.5" fill="#7b1e14" opacity=".7"/>
+        <text x="6" y="62" font-family="Arial,sans-serif" font-size="8" font-weight="700" fill="#7b1e14" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt">
+        <h1>Radar Agro do Suíno</h1>
+        <div class="sub">Suinocultura · Análise &amp; Mercado</div>
+      </div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">Edição Especial</div>
+      <div class="dt">Fechamento Maio 2026</div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>SP-5 (Cepea): <strong>≈ R$ 5,40/kg</strong></span>
+    <span class="sep">|</span>
+    <span>SC: <strong>≈ R$ 4,99/kg</strong></span>
+    <span class="sep">|</span>
+    <span>PR: <strong>≈ R$ 4,85/kg</strong></span>
+    <span class="sep">|</span>
+    <span>Carcaça especial SP: <strong>≈ R$ 8,71/kg</strong></span>
+    <span class="sep">|</span>
+    <span>Var. no ano: <strong>−36% a −40%</strong></span>
+    <span class="sep">|</span>
+    <span>DÓLAR: <strong>R$ 5,02</strong></span>
+  </div>
+</header>
+
+<!-- ── EDITION BANNER ── -->
+<div class="ed-banner">
+  <div class="ed-inner">
+    <h2>🐷 Fechamento de Maio 2026 · Perspectivas para Junho 2026</h2>
+    <p>Como se comportou o mercado ao longo do mês · Pior queda real da série histórica Cepea (desde 2002) · Análise técnica e fundamentalista · Cenários para junho · Geopolítica e Macroeconomia</p>
+  </div>
+</div>
+
+<!-- ── ALERTA HISTÓRICO ── -->
+<div class="container">
+<div class="hist-alert">
+  <div class="ha-icon">🚨</div>
+  <div>
+    <h3>ALERTA HISTÓRICO — Pior Queda Real da Série Histórica Cepea (2002–2026)</h3>
+    <p>O preço do suíno vivo em 2026 acumula a <strong>desvalorização real mais intensa já registrada</strong> desde o início da série do Cepea, em 2002. Em SP-5, o recuo real chega a <strong>−32,8%</strong> no acumulado do ano (vs. dez/25, deflacionado pelo IGP-DI). Em termos nominais, a queda frente ao fechamento de 2025 (R$ 8,91/kg) é de <strong>−36% a −40%</strong>, com o suíno cotado em torno de R$ 5,36–5,45/kg na segunda quinzena de maio. A carcaça especial atingiu o menor patamar desde fevereiro de 2019.</p>
+  </div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 1: COMO FOI MAIO
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📅</div>
+    <h2>Como Foi Maio 2026 — O Mês em Análise</h2>
+    <div class="ln"></div>
+  </div>
+
+  <!-- KPI DO MÊS -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kv" style="color:var(--rosa)">R$ 4,85</div>
+      <div class="kl">Menor cotação mai (PR — fundo)</div>
+    </div>
+    <div class="kpi">
+      <div class="kv" style="color:var(--laranja)">R$ 4,99</div>
+      <div class="kl">SC após Dia das Mães (6/mai)</div>
+    </div>
+    <div class="kpi">
+      <div class="kv" style="color:var(--rosa)">R$ 5,36</div>
+      <div class="kv" style="font-size:1rem;color:#888">→ R$ 5,45</div>
+      <div class="kl">Média SP parcial (fundo → fechamento)</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kv" style="color:var(--laranja)">R$ 8,71</div>
+      <div class="kl">Carcaça especial SP (6/mai)</div>
+    </div>
+    <div class="kpi">
+      <div class="kv" style="color:var(--rosa)">−36,3%</div>
+      <div class="kl">Var. nominal vs. mai/25 (R$ 8,56/kg)</div>
+    </div>
+    <div class="kpi green">
+      <div class="kv" style="color:var(--verde)">+15,3%</div>
+      <div class="kl">Exportação 1T26 vs. 1T25 (volume)</div>
+    </div>
+  </div>
+
+  <!-- TIMELINE MAIO -->
+  <div class="cw">
+    <h3>🗓️ Linha do Tempo — Principais Movimentos de Maio 2026</h3>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="ti-date">Início Mai — Herança de Abril</div>
+        <div class="ti-val" style="color:var(--rosa)">SP-5 ≈ R$ 5,40/kg | Carcaça ≈ R$ 8,30/kg</div>
+        <div class="ti-text">Maio começa já no fundo. Abril fechou com queda em todas as praças — queda real de 32,8% no ano. Suíno vivo em SP abaixo de R$ 6/kg pela primeira vez desde 2022. Frigoríficos com escalas curtas. Consumo interno fraco após série de feriados.</div>
+      </div>
+      <div class="tl-item">
+        <div class="ti-date">01–09 / Mai — Salários + Dia das Mães</div>
+        <div class="ti-val" style="color:var(--laranja)">SC: +1,63% · PR: +3,41% na semana</div>
+        <div class="ti-text">Entrada de salários e proximidade do Dia das Mães (10/mai) reaquecem a demanda. Procura por lombo e costela puxa a carcaça especial em SP para R$ 8,71/kg (+3,44% em 3 pregões). SC atinge R$ 4,99/kg, PR vai a R$ 4,85/kg. Expectativa de estabilização se consolida.</div>
+      </div>
+      <div class="tl-item">
+        <div class="ti-date">11–19 / Mai — Efeito Dia das Mães se encerra</div>
+        <div class="ti-val" style="color:var(--rosa)">SP-5 fecha em R$ 5,36/kg — mínima do ano</div>
+        <div class="ti-text">Passada a sazonalidade positiva, a demanda volta a ceder. O repique de preço foi tímido e não sustentou a média acima de abril. SP-5 fecha o dia 20/mai em R$ 5,36/kg — mínima de 2026 e menor valor desde junho de 2020. Poder de compra do suinocultor cai pelo 8º mês consecutivo em Campinas.</div>
+      </div>
+      <div class="tl-item">
+        <div class="ti-date">20–26 / Mai — Competitividade histórica da carne suína</div>
+        <div class="ti-val" style="color:var(--verde)">Suína vs. Bovina: spread recorde favorável ao suíno</div>
+        <div class="ti-text">Carne suína abre vantagem histórica sobre a bovina e o frango no atacado. Cepea aponta que em maio/26 os dois indicadores de competitividade (spread suíno/boi e suíno/frango) apontam recorde ou quase-recorde de vantagem para a carne de porco. A virada na competitividade pode ser um catalisador de demanda para junho.</div>
+      </div>
+      <div class="tl-item">
+        <div class="ti-date">Fechamento / 30 mai</div>
+        <div class="ti-val">SP-5 ≈ R$ 5,40–5,45/kg | Média mensal ≈ R$ 5,45/kg</div>
+        <div class="ti-text">Maio fecha com média de R$ 5,45/kg em SP — menor valor nominal para maio desde 2020, e 36,3% abaixo de maio/25 (R$ 8,56/kg). Apesar do ambiente desfavorável, o setor exportou 140 mil t em abril/26 (recorde), o que ajudou a sustentar a demanda por animais nas granjas exportadoras.</div>
+      </div>
+    </div>
+    <p class="nf">Fontes: Cepea/Esalq, Broto Notícias, Farmnews, ABCS, Agrolink. Elaboração: Rural IN.</p>
+  </div>
+
+  <!-- GRÁFICO EVOLUÇÃO MAIO -->
+  <div class="cw">
+    <h3>📈 Evolução Diária do Suíno Vivo em Maio 2026 — Indicador Cepea SP-5 (R$/kg)</h3>
+    <canvas id="chartMaio" height="95"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq / Farmnews. Elaboração: Rural IN. Dados referência 26/05/2026.</p>
+  </div>
+
+  <!-- ANÁLISE FUNDAMENTALISTA -->
+  <div class="abox">
+    <h3>🔍 Análise Fundamentalista do Mês — Dr. Sidney Souza</h3>
+    <p>Maio de 2026 confirma o diagnóstico que vínhamos fazendo desde o início do ano: o mercado suíno brasileiro enfrenta um <span class="hl">desequilíbrio estrutural entre oferta e demanda</span> que nenhum evento sazonal isolado consegue resolver. A combinação de produção recorde projetada (5,88 Mt em 2026, +4% a/a), custo de insumos em queda (milho e soja pressionados) e consumo interno fragilizado pela Selic em 13,25% e IPCA em 4,86% criou a tempestade perfeita para o pior desempenho real da série histórica Cepea (desde 2002).</p>
+    <p>O paradoxo do setor em 2026 é que <strong>as exportações estão excelentes — e isso não está sendo suficiente</strong>. As exportações de carne suína in natura cresceram 15,3% no 1T26, abril bateu 140 mil toneladas (recorde), e o setor caminha para um novo recorde anual. Porém, como a produção cresceu ainda mais, o excedente de oferta no mercado interno seguiu pressionando o preço do animal vivo. É um caso clássico de <em>treadmill tecnológico</em>: a eficiência aumenta, mas os preços caem na mesma proporção, não deixando nada para o produtor.</p>
+    <p>O único alívio de maio foi o efeito sazonalidade do Dia das Mães (primeira semana), que trouxe repique de demanda — mas efêmero. O fechamento do mês consolida que o ajuste estrutural ainda não se encerrou.</p>
+  </div>
+
+  <!-- ANÁLISE TÉCNICA / GRAFISTA -->
+  <div class="abox orange">
+    <h3>📉 Análise Técnica — Grafismo do Suíno em Maio 2026</h3>
+    <p><strong>Tendência:</strong> baixista estrutural intacta. O movimento desde janeiro/26 é de queda consistente sem reversão técnica confirmada. O "repique" do Dia das Mães (6 a 10/mai) foi insuficiente para romper qualquer resistência relevante — configurou um <em>dead cat bounce</em> sem confirmação de volume.</p>
+    <p><strong>Suportes testados em maio:</strong> R$ 4,85/kg (PR, mínima do mês) e R$ 5,36/kg (SP, fundo em 19–20/mai). Esses dois níveis são suportes críticos: o rompimento abaixo de R$ 4,80–4,85/kg em SC/PR abriria espaço para R$ 4,50 — fundo de 2020.</p>
+    <p><strong>Resistências para junho:</strong> R$ 5,60/kg (SP-5) → R$ 5,80/kg → R$ 6,00/kg (psicológico). A superação de R$ 6/kg seria o primeiro sinal técnico relevante de reversão de tendência.</p>
+    <p><strong>RSI estimado:</strong> ~35–40 — zona de sobrevenda moderada, mas ainda sem cruzamento altista. <strong>MACD:</strong> negativo, sem sinal de cruzamento a curto prazo. O grafismo ainda aponta para <em>fundo em construção</em>, não confirmado.</p>
+  </div>
+
+  <!-- GRÁFICO HISTÓRICO -->
+  <div class="cw">
+    <h3>📊 Preço Médio Mensal do Suíno Vivo SP-5 — Histórico 2020–2026 (R$/kg)</h3>
+    <canvas id="chartHistorico" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq. Elaboração: Rural IN. 2026 parcial (mai/26 = estimativa).</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 2: DRIVERS DO MERCADO
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">⚙️</div>
+    <h2>Drivers do Mercado — O que Está por Trás da Queda</h2>
+    <div class="ln"></div>
+  </div>
+
+  <!-- TABELA DRIVERS -->
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>Driver</th><th>Status Maio/26</th><th>Direção</th><th>Impacto no Preço</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="text-align:left"><strong>1. Produção record</strong></td><td>5,88 Mt projetadas em 2026 (+4% a/a)</td><td class="tr">▼ Oferta alta</td><td class="tr">Negativo forte</td></tr>
+        <tr><td style="text-align:left"><strong>2. Consumo interno</strong></td><td>Fraco — Selic 13,25%, IPCA 4,86%</td><td class="tr">▼ Demanda fraca</td><td class="tr">Negativo forte</td></tr>
+        <tr><td style="text-align:left"><strong>3. Exportação</strong></td><td>Recorde — 140 kt abr, +15,3% 1T26</td><td class="tv">▲ Escoamento</td><td class="tv">Positivo parcial</td></tr>
+        <tr><td style="text-align:left"><strong>4. Custo milho/soja</strong></td><td>Em queda — favorece produção, mais oferta</td><td class="tr">▼ Estimula produção</td><td class="tr">Negativo (paradoxal)</td></tr>
+        <tr><td style="text-align:left"><strong>5. Câmbio R$/US$</strong></td><td>R$ 5,02 — sustenta receita exportador</td><td class="tv">▲ Exportações</td><td class="tv">Positivo indireto</td></tr>
+        <tr><td style="text-align:left"><strong>6. Competitividade da carne</strong></td><td>Suína vs. bovina: spread recorde fav. suíno</td><td class="tv">▲ Substituto</td><td class="tv">Positivo gradual</td></tr>
+        <tr><td style="text-align:left"><strong>7. Poder de compra produtor</strong></td><td>Pior patamar desde fev/23 (rel. troca milho)</td><td class="tr">▼ Margem negativa</td><td class="tr">Negativo (desânimo)</td></tr>
+        <tr><td style="text-align:left"><strong>8. Peso médio abate</strong></td><td>Animais acima do ideal pressionam carcaça</td><td class="tr">▼ Desconto frigorífico</td><td class="tr">Negativo</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nf">Fontes: Cepea, ABCS, Farmnews, Safras&Mercado. Elaboração: Rural IN.</p>
+
+  <!-- BARRAS CUSTO DE PRODUÇÃO -->
+  <div class="abox" style="margin-top:6px">
+    <h3>📊 Composição do Custo de Produção — Suinocultura (% do custo total)</h3>
+    <div style="margin-top:14px">
+      <div class="bar-r"><span class="bar-l">Nutrição (milho+soja)</span><div class="bar-t"><div class="bar-f" style="width:65%;background:var(--laranja)"></div></div><span class="bar-v" style="color:var(--laranja)">65%</span></div>
+      <div class="bar-r"><span class="bar-l">Material genético</span><div class="bar-t"><div class="bar-f" style="width:10%;background:#8b5cf6"></div></div><span class="bar-v">10%</span></div>
+      <div class="bar-r"><span class="bar-l">Mão de obra</span><div class="bar-t"><div class="bar-f" style="width:8%;background:var(--azul)"></div></div><span class="bar-v">8%</span></div>
+      <div class="bar-r"><span class="bar-l">Sanidade</span><div class="bar-t"><div class="bar-f" style="width:7%;background:#22d3ee"></div></div><span class="bar-v">7%</span></div>
+      <div class="bar-r"><span class="bar-l">Energia / outros</span><div class="bar-t"><div class="bar-f" style="width:10%;background:#ccc"></div></div><span class="bar-v">10%</span></div>
+    </div>
+    <p class="nf" style="margin-top:12px">A nutrição representa 65% do custo total. Com milho e soja em queda, o custo recuou — mas o preço do animal caiu mais do que o custo, resultando em margem negativa para boa parte dos produtores em 2026.</p>
+  </div>
+
+  <!-- GRÁFICO RELAÇÃO TROCA -->
+  <div class="cw">
+    <h3>📊 Relação de Troca: Suíno vs. Milho (kg suíno/kg milho) — Evolução 2025–2026</h3>
+    <canvas id="chartTroca" height="90"></canvas>
+    <p class="nf">Maior o índice = melhor poder de compra para o produtor. Fonte: Cepea/Esalq. Elaboração: Rural IN.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 3: EXPORTAÇÃO E MERCADO EXTERNO
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌍</div>
+    <h2>Exportação — O Destaque Positivo do Setor em 2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi green">
+      <div class="kv" style="color:var(--verde)">140 kt</div>
+      <div class="kl">Exportação carne suína abr/26</div>
+    </div>
+    <div class="kpi green">
+      <div class="kv" style="color:var(--verde)">+15,3%</div>
+      <div class="kl">Crescimento export. 1T26 vs. 1T25</div>
+    </div>
+    <div class="kpi orange">
+      <div class="kv" style="color:var(--laranja)">5,88 Mt</div>
+      <div class="kl">Produção projetada 2026 (recorde)</div>
+    </div>
+    <div class="kpi blue">
+      <div class="kv" style="color:var(--azul)">R$ 5,02</div>
+      <div class="kl">Câmbio atual — sustenta exportadores</div>
+    </div>
+  </div>
+
+  <!-- DESTINOS EXPORTAÇÃO -->
+  <div class="cw">
+    <h3>🌏 Principais Destinos da Exportação de Carne Suína Brasileira — 2025 vs Tendências 2026</h3>
+    <canvas id="chartExport" height="90"></canvas>
+    <p class="nf">Fonte: Secex/MDIC / ABCS. *2026: projeções com base em 1T26 e abr/26. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="g2">
+    <div class="abox green">
+      <h3>✅ Pontos Positivos da Exportação em 2026</h3>
+      <p><strong>Filipinas:</strong> 392,9 kt em 2025 (+54,5% a/a) — maior comprador do Brasil. Tendência de manter ou ampliar em 2026.<br><br>
+      <strong>Japão:</strong> +22,4% em 2025 — mercado premium que valoriza rastreabilidade e padrão sanitário. Brasil avança.<br><br>
+      <strong>Sudeste Asiático:</strong> Vietnã, Indonésia e Tailândia em expansão — oportunidade para cortes de menor valor agregado.<br><br>
+      <strong>Abril/26:</strong> 140 kt exportadas — um dos maiores volumes históricos, sustentado pelo câmbio favorável (R$ 5,02).</p>
+    </div>
+    <div class="abox red">
+      <h3>⚠️ Riscos e Restrições da Exportação</h3>
+      <p><strong>China:</strong> recompondo rebanho doméstico. Em 2025 foi −33% nas compras. Em 2026, ainda há incerteza sobre o nível de reposição. Mercados asiáticos estão cada vez mais exigentes em padrão sanitário.<br><br>
+      <strong>Habilitação sanitária:</strong> exportar para China, Japão e SE Asiático exige habilitação específica (não basta o SIF). Frigoríficos sem habilitação não conseguem acessar esses mercados.<br><br>
+      <strong>Exportação não resolve o preço:</strong> mesmo com recordes de embarque, o volume exportado não absorve o excesso de oferta interna — demonstrando a profundidade do desequilíbrio produtivo.</p>
+    </div>
+  </div>
+
+  <div class="al yellow">
+    <div class="ai">🇨🇳</div>
+    <div class="at">
+      <h4>China: Risco ou Oportunidade para o Suíno Brasileiro?</h4>
+      <p>Diferentemente do boi gordo (que tem cota de salvaguarda), o suíno não enfrenta teto de cota na China, mas sim <strong>barreiras sanitárias e habilitação de plantas</strong>. A China reduziu compras em 2025 (−33%) porque seu rebanho se recuperou após a Peste Suína Africana (ASF). Para 2026, o setor monitora: (1) se há novo surto de ASF na China — o que derrubaria o rebanho local e abriria janela de exportação enorme para o Brasil; (2) o ritmo de ampliação de habilitações de frigoríficos brasileiros para exportar ao mercado chinês. A aprovação de mais plantas pelo GACC seria um catalisador positivo significativo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 4: PERSPECTIVAS PARA JUNHO
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🔭</div>
+    <h2>Perspectivas para Junho 2026 — O que Esperar</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="br-row">
+    <span class="badge bg">🐷 Preços no fundo histórico</span>
+    <span class="badge bo">🌽 Milho em queda</span>
+    <span class="badge bv">🌍 Exportação firme</span>
+    <span class="badge bg">📉 Consumo interno fraco</span>
+    <span class="badge bb">💵 Dólar R$ 5,02</span>
+    <span class="badge bd">🥩 Competitividade recorde</span>
+  </div>
+
+  <div class="g2">
+    <div class="abox green">
+      <h3>📈 Fatores de Alta para Junho</h3>
+      <p>
+        <strong>1. Competitividade histórica:</strong> com o spread suíno/boi e suíno/frango em recorde de vantagem para o suíno, há uma janela de substituição de proteína no consumo que pode se abrir em junho com a entrada de novos salários e o aquecimento típico do início do mês.<br><br>
+        <strong>2. Sazonalidade de junho:</strong> com o resfriamento típico do inverno, o consumo de carnes gordas (como a suína em churrasco e sopas) tende a subir. Junho é historicamente melhor que maio para o suíno.<br><br>
+        <strong>3. Dólar favorável:</strong> R$ 5,02 sustenta receita dos exportadores, que seguem acelerando embarques e demandando mais animais.<br><br>
+        <strong>4. Milho em queda:</strong> safrinha chegando ao mercado em junho, com oferta robusta. Isso reduz o custo de produção e pode melhorar margens mesmo sem alta no preço do animal.
+      </p>
+    </div>
+    <div class="abox red">
+      <h3>📉 Fatores de Risco para Junho</h3>
+      <p>
+        <strong>1. Excesso estrutural de oferta:</strong> com produção projetada de 5,88 Mt em 2026 e rebanho crescendo, o excesso de animais não se resolve em um mês.<br><br>
+        <strong>2. Demanda interna deprimida:</strong> Selic em 13,25% e IPCA em 4,86% continuam comprimindo a renda real. O consumidor vai substituir proteínas mais caras por mais baratas — o suíno ganha nisso, mas ainda lentamente.<br><br>
+        <strong>3. Peso médio dos animais:</strong> lotes com peso acima do ideal penalizam a tabela do frigorífico. Produtores que seguraram animais esperando reação podem enfrentar desconto no abate.<br><br>
+        <strong>4. Frigoríficos sem pressão de compra:</strong> com oferta farta, os frigoríficos não têm urgência para pagar mais. O poder de barganha segue favorável à indústria.
+      </p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO PREVISÃO JUNHO -->
+  <div class="cw">
+    <h3>📊 Preço Médio do Suíno em Junho — Histórico e Projeção 2026 (R$/kg SP-5)</h3>
+    <canvas id="chartJunho" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq histórico (2020–2025). Projeção 2026 baseada nos fundamentos atuais. Elaboração: Rural IN.</p>
+  </div>
+
+  <!-- PERCEPÇÃO DO ANALISTA -->
+  <div class="abox warning">
+    <h3>🧭 Percepção Analítica para Junho — Dr. Sidney Souza</h3>
+    <p>Junho de 2026 será um mês de <span class="hl">tentativa de fundo</span>. Os fundamentos estruturais seguem negativos (excesso de oferta, demanda interna fraca), mas há elementos que podem apoiar uma estabilização ou leve reação: a competitividade histórica da carne suína frente à bovina, a sazonalidade de inverno, e o câmbio favorável que mantém o ritmo de exportação.</p>
+    <p>Minha projeção técnica e fundamentalista para o indicador SP-5 em junho é de <strong>oscilação entre R$ 5,30 e R$ 5,75/kg</strong>, com viés de leve alta em relação à média de maio (R$ 5,45/kg). Não espero uma reversão estrutural — isso dependeria de uma desaceleração expressiva do ritmo de produção (o que não ocorre do dia para a noite) ou de um choque positivo de demanda (como um surto de ASF na China ou uma aceleração das exportações para o SE Asiático).</p>
+    <p>Para o suinocultor, a mensagem prática para junho é: <strong>vender no ponto de abate, não segurar animais esperando preço</strong>. Cada quilo acima do peso ideal resulta em desconto do frigorífico e piora a margem já negativa. O momento exige gestão de fluxo de caixa e controle de custo variável, com atenção especial ao custo da ração (milho da safrinha chegando — oportunidade de compra para os próximos meses).</p>
+    <p>O segundo semestre pode ser diferente, se a exportação sustentar ritmo e a produção começar a se ajustar à nova realidade de preços. Mas para isso é preciso que os produtores aceitem reduzir o ritmo de alojamento — e os dados ainda mostram o setor crescendo.</p>
+  </div>
+
+  <!-- CENÁRIOS JUNHO -->
+  <h3 style="font-family:'Playfair Display',serif;color:var(--rosa-dark);font-size:1.2rem;margin:24px 0 16px">🎯 Cenários para o Suíno em Junho 2026</h3>
+  <div class="scen">
+    <div class="sc opt">
+      <h4>🟢 Otimista</h4>
+      <ul>
+        <li>SP-5 vai a R$ 5,70–6,00/kg</li>
+        <li>Sazonalidade inverno reage</li>
+        <li>Exportações mantêm 130–140 kt/mês</li>
+        <li>Surto ASF na China reabre janela</li>
+        <li>Rel. troca melhora com milho safrinha</li>
+        <li>Frigoríficos ampliavam escala</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 20%</div>
+    </div>
+    <div class="sc neu">
+      <h4>🟡 Base (mais provável)</h4>
+      <ul>
+        <li>SP-5 oscila R$ 5,30–5,75/kg</li>
+        <li>Estabilização leve — fundo construindo</li>
+        <li>Export. sustentada pelo câmbio</li>
+        <li>Demanda interna ainda tímida</li>
+        <li>Frigoríficos mantêm poder de barganha</li>
+        <li>Custo cai com milho safrinha</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 55%</div>
+    </div>
+    <div class="sc pes">
+      <h4>🔴 Pessimista</h4>
+      <ul>
+        <li>SP-5 recua para R$ 4,80–5,10/kg</li>
+        <li>Animais pesados pressionam tabela</li>
+        <li>Export. cede com câmbio apreciado</li>
+        <li>Demanda interna sem reação</li>
+        <li>Novas mínimas desde 2020</li>
+        <li>Margem do produtor se aprofunda</li>
+      </ul>
+      <div class="prob">Probabilidade estimada: 25%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 5: MACRO, GEOPOLÍTICA E AGENDA
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌐</div>
+    <h2>Macroeconomia, Geopolítica e Agenda para Junho</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox blue">
+      <h3>🏦 Cenário Macro Brasil — Junho</h3>
+      <p>A <strong>Selic em 13,25% a.a.</strong> com postura do Copom ainda restritiva é o principal inimigo do suíno no mercado interno. Juros altos comprimem renda real, crédito ao consumidor fica caro e o gasto com proteína de maior valor unitário (mesmo sendo a mais barata entre boi, frango e suíno em carne) recua.</p>
+      <p>O <strong>IPCA em 4,86–4,92% para 2026</strong> já supera o teto da meta, e o fiscal pressionado não permite alívio rápido de juros. A reunião do Copom em junho é um evento crítico — qualquer sinalização de alta adicional piora ainda mais o cenário de consumo interno.</p>
+      <p>O <strong>câmbio em R$ 5,02</strong>, porém, é o grande aliado do exportador de carne suína. Cada R$ 0,10 de alta no dólar melhora a rentabilidade dos frigoríficos exportadores em aproximadamente 2% — o que os mantém comprando animais.</p>
+    </div>
+    <div class="abox red">
+      <h3>🌏 Geopolítica — O que Monitorar em Junho</h3>
+      <p><strong>🇨🇳 China — CRÍTICO para o suíno:</strong> monitorar qualquer notícia de reemergência da Peste Suína Africana (ASF) na China. Em 2019, um surto derrubou 50% do rebanho chinês — o que alavancou as exportações brasileiras de forma histórica. Qualquer novo foco representa oportunidade imediata. Também monitorar: ampliação de habilitações de frigoríficos pelo GACC.</p>
+      <p><strong>🇪🇺 Europa:</strong> o acordo Mercosul-UE, em fase avançada, pode abrir novo mercado premium para a carne suína brasileira. A UE é um dos maiores consumidores mundiais de proteína suína — uma abertura seria transformacional.</p>
+      <p><strong>🇺🇸 EUA:</strong> produção americana de suíno estável, sem choques. A guerra comercial EUA-China pode favorecer o Brasil indiretamente se a China buscar substituir fornecedores americanos.</p>
+    </div>
+  </div>
+
+  <div class="al yellow">
+    <div class="ai">⚡</div>
+    <div class="at">
+      <h4>Fato para Monitorar: Acordo Mercosul–UE e Abertura do Mercado Europeu</h4>
+      <p>Se o acordo Mercosul-UE avançar no segundo semestre (sinalização política em andamento), a carne suína brasileira poderia acessar um mercado de mais de 400 milhões de consumidores com padrão de renda elevado. A Europa paga preços muito acima dos mercados asiáticos. <strong>Para o suíno, esse seria um game-changer estrutural</strong> — mais relevante inclusive do que a China, dado que a UE tem demanda mais estável e previsível.</p>
+    </div>
+  </div>
+
+  <div class="al green">
+    <div class="ai">🦠</div>
+    <div class="at">
+      <h4>Vigilância Sanitária — Gripe Aviária e ASF</h4>
+      <p>A <strong>Gripe Aviária (HPAI H5N1)</strong> no mundo segue sendo monitorada. Surtos em poedeiras nos EUA e Europa já impactaram proteínas alternativas ao suíno. No Brasil, o status livre de influenza aviária é um trunfo sanitário. A <strong>Peste Suína Africana (ASF)</strong>, ausente no Brasil, é monitorada com rigor — qualquer foco doméstico seria desastroso para as exportações. Para o mercado externo, o principal risco sanitário para o suíno brasileiro é a <strong>rastreabilidade e habilitação de plantas</strong> para exportação a mercados premium.</p>
+    </div>
+  </div>
+
+  <div class="al blue">
+    <div class="ai">🌎</div>
+    <div class="at">
+      <h4>Outros Mercados Estratégicos para Monitorar</h4>
+      <p><strong>Filipinas (+54,5% em 2025):</strong> maior comprador do Brasil — monitorar demanda interna e possível concorrência da Espanha e UE. <strong>México:</strong> crescimento consistente — mercado de alto volume e boa frequência. <strong>Japão (+22,4%):</strong> premium, valoriza rastreabilidade e resfriados. <strong>Chile e Peru:</strong> mercados vizinhos em expansão, logística favorável. <strong>Oriente Médio:</strong> restrições religiosas (halal) limitam acesso, mas há nichos (carne processada, embutidos com certificação).</p>
+    </div>
+  </div>
+
+  <!-- RADAR MACRO -->
+  <div class="cw">
+    <h3>🌐 Radar Macro — Intensidade de Impacto na Precificação do Suíno em Junho (0–10)</h3>
+    <canvas id="chartRadar" height="90"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala de intensidade de impacto esperado para junho/2026.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 6: RENTABILIDADE DO PRODUTOR
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">💰</div>
+    <h2>Rentabilidade do Produtor — O Impacto Real na Granja</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="al red">
+    <div class="ai">📉</div>
+    <div class="at">
+      <h4>Margem do Produtor Integrado vs. Independente</h4>
+      <p>O produtor integrado (que produz para agroindústrias como BRF, Seara, Aurora) está parcialmente protegido — o contrato de integração define preço por quilo de carcaça com base em índices, isolando-o parcialmente da volatilidade. O <strong>independente (spot)</strong>, porém, vende direto ao frigorífico pelo mercado e absorve 100% da queda. Em 2026, esse produtor está, em muitos casos, <strong>vendendo abaixo do custo de produção</strong> — especialmente em SP e MG, onde o suíno vivo está a R$ 5,36–5,50/kg e o custo médio de produção em sistema confinado gira em torno de R$ 5,20–5,80/kg (com milho em queda, mas ainda pressionado nos próximos meses).</p>
+    </div>
+  </div>
+
+  <!-- SIMULAÇÃO DE MARGEM -->
+  <div class="cw">
+    <h3>💰 Simulação de Margem — Suinocultura em Ciclo Completo (100 kg PV) — Referência Junho/26</h3>
+    <canvas id="chartMargem" height="90"></canvas>
+    <p class="nf">Simulação com parâmetros médios. Custo variável principal: 65% nutrição (milho + soja). Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>📊 Sistema Integrado</h3>
+      <p><strong>Preço recebido:</strong> R$ 5,40–5,70/kg (contrato índice)</p>
+      <p><strong>Custo médio:</strong> R$ 5,10–5,30/kg</p>
+      <p><strong>Margem:</strong> R$ 0,10–0,40/kg (estreita, porém positiva)</p>
+      <p><strong>Relação troca suíno/milho:</strong> 4,96 kg milho/kg suíno</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#888">⚠ Integrado está no limite. Qualquer alta de insumo ou nova queda de preço torna a atividade inviável. Agroindústrias monitoram e podem reduzir o ritmo de alojamento em 2026.</p>
+    </div>
+    <div class="abox red">
+      <h3>📊 Sistema Independente (Mercado Spot)</h3>
+      <p><strong>Preço recebido:</strong> R$ 5,10–5,45/kg (SP, SC, PR)</p>
+      <p><strong>Custo médio:</strong> R$ 5,20–5,80/kg (ciclo completo)</p>
+      <p><strong>Margem:</strong> <span style="color:var(--rosa);font-weight:700">−R$ 0,10 a −R$ 0,70/kg (negativa)</span></p>
+      <p><strong>Prejuízo estimado por lote de 100 animais:</strong> R$ 3.000–7.000</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#888">O produtor independente está sangrando caixa. A manutenção do alojamento depende de expectativa de recuperação futura e de capital de giro. Muitos já reduziram lotes.</p>
+    </div>
+  </div>
+
+  <div class="abox gold">
+    <h3>💡 Recomendações Práticas para o Suinocultor — Junho/26</h3>
+    <p><strong>1. Vender no ponto de abate, sem segurar:</strong> cada dia extra acima do peso ótimo (115–125 kg PV) gera desconto de frigorífico e piora a relação de conversão alimentar. O preço não vai subir o suficiente para compensar o custo extra de dieta.</p>
+    <p><strong>2. Aproveitar o milho da safrinha:</strong> junho–julho é a janela de maior oferta de milho da safrinha. Com preço da saca caindo (projeção R$ 40–45 em MT), é o momento de repor estoques de grãos e fechar preço para o 2º semestre.</p>
+    <p><strong>3. Revisar o ritmo de alojamento:</strong> produtores independentes com margem negativa persistente devem avaliar reduzir temporariamente os alojamentos. Menos oferta no mercado acelera a recomposição de preços.</p>
+    <p><strong>4. Monitorar competitividade da proteína:</strong> o spread histórico favorável do suíno em relação ao boi e ao frango pode puxar a demanda do varejo nas próximas semanas — acompanhar diariamente o Cepea e negociar com antecedência com os frigoríficos.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SEÇÃO 7: SEMÁFORO FINAL
+════════════════════════════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🎯</div>
+    <h2>Visão Estratégica — Síntese do Analista</h2>
+    <div class="ln"></div>
+  </div>
+
+  <!-- SEMÁFORO -->
+  <div class="cw">
+    <h3>🚦 Semáforo do Suíno — Indicadores-Chave no Fechamento de Maio 2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px;margin-top:14px">
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Preço SP-5 Maio</strong><br><span style="font-size:.75rem;color:#777">R$ 5,45/kg — pior desde jun/2020</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Queda Real no Ano</strong><br><span style="font-size:.75rem;color:#777">−32,8% SP-5 — pior da série Cepea (2002)</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sv"></span><div><strong style="font-size:.87rem">Exportação</strong><br><span style="font-size:.75rem;color:#777">Recorde — 140 kt abr · +15,3% 1T26</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Consumo Interno</strong><br><span style="font-size:.75rem;color:#777">Fraco — Selic 13,25% comprime renda</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sa"></span><div><strong style="font-size:.87rem">Competitividade</strong><br><span style="font-size:.75rem;color:#777">Suíno vs boi: spread recorde FAVORÁVEL</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Rel. Troca Milho</strong><br><span style="font-size:.75rem;color:#777">Pior patamar desde fev/23</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sv"></span><div><strong style="font-size:.87rem">Câmbio R$/$</strong><br><span style="font-size:.75mm;color:#777">R$ 5,02 — sustenta exportadores</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Margem Produtor</strong><br><span style="font-size:.75rem;color:#777">Negativa para independentes</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sa"></span><div><strong style="font-size:.87rem">Custo Produção</strong><br><span style="font-size:.75rem;color:#777">Em queda — milho safrinha chegando</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--cinza-l);border-radius:10px">
+        <span class="sem sr"></span><div><strong style="font-size:.87rem">Oferta/Produção</strong><br><span style="font-size:.75rem;color:#777">Recorde projetado 5,88 Mt — excesso</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SÍNTESE FINAL -->
+  <div class="abox" style="background:linear-gradient(135deg,#fff5f4,#fff0ee);border-left-color:var(--rosa)">
+    <h3>🧭 Síntese Final — Dr. Sidney Souza</h3>
+    <p>O mercado suíno brasileiro em maio de 2026 viveu o episódio mais intenso de sua história recente: <span class="hl">a pior queda real desde o início da série Cepea em 2002</span>. Não é uma coincidência — é o resultado de um ciclo vicioso que se construiu ao longo dos últimos 18 meses: custo de grãos em queda → mais suínos alojados → mais oferta → preço cai → produtor perde margem → mas ainda aloja mais (porque o custo variável ainda permite) → ciclo se aprofunda.</p>
+    <p>O setor tem fundamentos estruturais muito sólidos: Brasil é o 3º maior exportador mundial, a produção é eficiente, o câmbio está favorável, e a competitividade da proteína suína frente à bovina nunca foi tão alta. Mas <strong>no curto prazo, o mercado é governado pelo excesso de oferta e pelo consumo interno fraco</strong> — e nenhum dos dois muda rapidamente.</p>
+    <p>Para junho, espero uma <strong>estabilização com possibilidade de leve reação</strong>, sustentada pela sazonalidade de inverno, competitividade da carne suína e câmbio. Mas a reversão estrutural exige ajuste de produção — o que começa a acontecer lentamente à medida que os produtores independentes reduzem alojamentos diante da margem negativa.</p>
+    <p>O segundo semestre de 2026 pode ser o início da virada: se a exportação seguir recorde e o consumo interno recuperar com eventual flexibilização monetária, o preço do suíno pode retornar ao patamar de R$ 6,50–7,00/kg ao final do ano. Mas isso ainda é expectativa — o mercado precisa provar.</p>
+    <p style="margin-top:12px"><em>"O suinocultor que sobreviver a 2026 vai emergir mais eficiente. Crise é filtro. Mas para sobreviver, é preciso gestão de custo, fluxo de caixa controlado e estratégia de comercialização — não apenas fé na recuperação do preço." — Dr. Sidney Souza</em></p>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl">
+        <div class="brand">Rural<span> IN</span></div>
+        <div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="fc">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br>
+          Transformamos dados da fazenda em decisões econômicas<br>
+          Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO SUÍNO — EDIÇÃO ESPECIAL FECHAMENTO MAIO 2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CEPEA/ESALQ · FARMNEWS · PORTAL DBO · ABCS · BROTO NOTÍCIAS · AGROLINK · PORCINEWS · SCOT CONSULTORIA · SAFRAS&MERCADOS · SECEX/MDIC · CHINA2BRAZIL
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS GRÁFICOS ── -->
+<script>
+Chart.defaults.color = '#7a7a7a';
+Chart.defaults.borderColor = 'rgba(0,0,0,.05)';
+Chart.defaults.font.family = "'Source Serif 4', Georgia, serif";
+
+const rosa = '#c0392b', rosaD = '#7b1e14', laranja = '#d35400', laranjaL = '#e67e22';
+const verde = '#1a6b3c', verdeC = '#2d9e5f', azul = '#1a4a7a', dourado = '#c8931a';
+
+// ─── 1. Evolução Maio 2026 ───
+new Chart(document.getElementById('chartMaio').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: ['01/05','05/05','06/05','08/05','10/05','12/05','14/05','16/05','19/05','20/05','22/05','26/05','30/05'],
+    datasets: [
+      {
+        label: 'Suíno vivo SP-5 (R$/kg)',
+        data: [5.52, 5.48, 5.55, 5.50, 5.48, 5.44, 5.41, 5.38, 5.36, 5.36, 5.38, 5.40, 5.43],
+        borderColor: rosa, backgroundColor: 'rgba(192,57,43,.08)',
+        borderWidth: 3, tension: .3, fill: true, pointRadius: 4,
+        pointBackgroundColor: [
+          '#e67e22','#e67e22','#c8931a','#c8931a','#c8931a','#c0392b','#c0392b',
+          '#c0392b','#c0392b','#c0392b','#c0392b','#2d9e5f','#2d9e5f'
+        ]
+      },
+      {
+        label: 'Carcaça especial SP (R$/kg) ÷ 2',
+        data: [4.15, 4.20, 4.36, 4.30, 4.25, 4.20, 4.17, 4.15, 4.13, 4.13, 4.15, 4.17, 4.20],
+        borderColor: laranja, backgroundColor: 'rgba(211,84,0,.05)',
+        borderWidth: 2.5, borderDash: [7,4], tension: .3, fill: false, pointRadius: 3,
+      }
+    ]
+  },
+  options: {
+    responsive: true, plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 14 } }, tooltip: { mode: 'index', intersect: false } },
+    scales: { y: { min: 4.00, ticks: { callback: v => 'R$ ' + v.toFixed(2) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+
+// ─── 2. Histórico Mensal 2020–2026 ───
+new Chart(document.getElementById('chartHistorico').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: ['Jan/20','Jul/20','Jan/21','Jul/21','Jan/22','Jul/22','Jan/23','Jul/23','Jan/24','Jul/24','Jan/25','Jul/25','Jan/26','Mai/26*'],
+    datasets: [{
+      label: 'Preço suíno SP-5 (R$/kg)',
+      data: [4.72,4.45,7.65,9.20,7.80,6.50,5.20,6.30,6.80,8.10,7.90,8.40,8.60,5.45],
+      borderColor: rosa, backgroundColor: 'rgba(192,57,43,.07)',
+      borderWidth: 3, tension: .35, fill: true, pointRadius: 4,
+      pointBackgroundColor: (ctx) => ctx.dataIndex === 13 ? '#c0392b' : 'rgba(192,57,43,.5)',
+      pointRadius: (ctx) => ctx.dataIndex === 13 ? 8 : 4,
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => 'R$ ' + c.raw.toFixed(2) + '/kg' } } },
+    scales: { y: { min: 4.00, ticks: { callback: v => 'R$ ' + v.toFixed(2) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+
+// ─── 3. Relação de Troca Suíno/Milho ───
+new Chart(document.getElementById('chartTroca').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: ['Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'],
+    datasets: [
+      {
+        label: 'Suíno / Milho (kg suíno paga kg milho)',
+        data: [6.8, 7.1, 6.9, 6.2, 5.8, 5.5, 5.1, 4.96],
+        borderColor: rosa, backgroundColor: 'rgba(192,57,43,.08)',
+        borderWidth: 3, tension: .3, fill: true, pointRadius: 5,
+      },
+      {
+        label: 'Mínimo sustentável (6,0)',
+        data: [6.0,6.0,6.0,6.0,6.0,6.0,6.0,6.0],
+        borderColor: 'rgba(200,147,26,.5)', borderDash: [6,4],
+        borderWidth: 2, pointRadius: 0, fill: false,
+      }
+    ]
+  },
+  options: {
+    responsive: true, plugins: { legend: { position: 'top', labels: { usePointStyle: true, padding: 14 } }, tooltip: { mode: 'index', intersect: false } },
+    scales: { y: { min: 4.5, ticks: { callback: v => v + ' kg/kg' }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+
+// ─── 4. Exportação por destino ───
+new Chart(document.getElementById('chartExport').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Filipinas','China','Chile','Japão','Hong Kong','Vietnã','México'],
+    datasets: [
+      { label: '2025 (kt)', data: [392.9, 159.2, 118.6, 114.4, 110.9, 85.0, 72.0], backgroundColor: 'rgba(192,57,43,.55)', borderRadius: 6 },
+      { label: '2026 proj. (kt)', data: [420.0, 140.0, 125.0, 135.0, 115.0, 100.0, 85.0], backgroundColor: 'rgba(211,84,0,.80)', borderRadius: 6 }
+    ]
+  },
+  options: {
+    responsive: true, plugins: { legend: { position: 'top', labels: { usePointStyle: true } }, tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.raw + ' kt' } } },
+    scales: { y: { ticks: { callback: v => v + ' kt' }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+
+// ─── 5. Histórico e projeção junho ───
+new Chart(document.getElementById('chartJunho').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Jun/20','Jun/21','Jun/22','Jun/23','Jun/24','Jun/25','Jun/26*'],
+    datasets: [{
+      label: 'Preço médio suíno em Junho (R$/kg)',
+      data: [4.47, 8.15, 7.20, 5.50, 7.20, 8.30, 5.65],
+      backgroundColor: ['rgba(192,57,43,.55)','rgba(192,57,43,.60)','rgba(192,57,43,.65)',
+        'rgba(192,57,43,.55)','rgba(192,57,43,.60)','rgba(192,57,43,.70)','rgba(200,147,26,.85)'],
+      borderRadius: 8, borderSkipped: false,
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => 'R$ ' + c.raw.toFixed(2) + '/kg' } } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toFixed(2) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+
+// ─── 6. Radar Macro ───
+new Chart(document.getElementById('chartRadar').getContext('2d'), {
+  type: 'radar',
+  data: {
+    labels: ['Excesso Oferta','Consumo Interno','Exportação','Câmbio R$/$','Custo Grãos','Competitividade','Selic/Crédito','Sanidade/ASF China'],
+    datasets: [{
+      label: 'Intensidade de impacto Jun/26',
+      data: [9.5, 8.5, 7.0, 6.5, 5.5, 6.0, 7.5, 6.0],
+      borderColor: rosa, backgroundColor: 'rgba(192,57,43,.15)',
+      pointBackgroundColor: rosa, borderWidth: 2.5,
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.07)' }, pointLabels: { font: { size: 11 }, color: '#555' } } },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// ─── 7. Simulação de Margem ───
+new Chart(document.getElementById('chartMargem').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['Custo Nutrição (R$/kg)', 'Custo Total (R$/kg)', 'Preço Integrado (R$/kg)', 'Preço Spot SP (R$/kg)', 'Margem Integrado (R$/kg)', 'Margem Spot (R$/kg)'],
+    datasets: [{
+      label: 'R$/kg',
+      data: [3.50, 5.40, 5.55, 5.36, 0.15, -0.04],
+      backgroundColor: [
+        'rgba(211,84,0,.7)','rgba(192,57,43,.7)',
+        'rgba(45,158,95,.75)','rgba(26,74,122,.65)',
+        'rgba(45,158,95,.7)','rgba(192,57,43,.85)',
+      ],
+      borderRadius: 7,
+    }]
+  },
+  options: {
+    responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => 'R$ ' + c.raw.toFixed(2) + '/kg' } } },
+    scales: { y: { ticks: { callback: v => 'R$ ' + v.toFixed(2) }, grid: { color: 'rgba(0,0,0,.04)' } }, x: { grid: { display: false } } }
+  }
+});
+</script>
+</body>
+</html>

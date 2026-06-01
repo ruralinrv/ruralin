@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Sorgo | Maio 2026 + Perspectivas Junho | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --amarelo:#bb6a2a;--amarelo-l:#d68f4f;--amarelo-xl:#f3d9bd;--amarelo-pale:#fbf3ea;
+  --verde-s:#1a5c2a;--verde-l:#2d9e5f;--verde-xl:#52b788;
+  --marrom:#3c2008;--marrom-l:#7a4214;
+  --cinza-esc:#1e1e2e;--cinza:#374151;--cinza-l:#6b7280;--cinza-xl:#f9fafb;
+  --azul:#1e40af;--azul-l:#3b82f6;--vermelho:#991b1b;--vermelho-l:#ef4444;
+  --laranja:#c2410c;--laranja-l:#f97316;--bg:#fafaf7;--sombra:0 4px 20px rgba(0,0,0,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#3c2008 0%,var(--marrom-l) 45%,var(--amarelo-l) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.h-top{max-width:1100px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--amarelo-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--amarelo-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.h-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-up{background:rgba(34,197,94,.25);color:#4ade80;border:1px solid rgba(74,222,128,.4)}
+.hb-dn{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(248,113,113,.4)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--amarelo-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#e5e7eb;font-weight:600}
+.ticker .sep{color:rgba(255,255,255,.2)}.t-nt{color:var(--amarelo-l)!important}
+.hl-strip{background:linear-gradient(135deg,#3c2008,#4a2a0c);padding:18px 24px;text-align:center;border-bottom:2px solid var(--amarelo-l)}
+.hl-strip .hs-inner{max-width:1100px;margin:0 auto}
+.hl-strip h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:#fff;font-weight:700}
+.hl-strip p{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:5px}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:44px 0 32px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;background:var(--amarelo-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--marrom-l);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--amarelo-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--amarelo-l),transparent)}
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:24px}
+.p-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.p-card.up::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.p-card.dn::before{background:linear-gradient(90deg,#dc2626,#f87171)}
+.p-card.nt::before{background:linear-gradient(90deg,var(--amarelo),var(--amarelo-l))}
+.p-lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.p-val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.p-sub{font-size:.74rem;color:var(--cinza-l);margin-top:5px}
+.p-var{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;margin-top:5px}
+.v-up{color:#16a34a}.v-dn{color:#dc2626}.v-nt{color:var(--amarelo)}
+.p-src{font-size:.64rem;color:#ccc;margin-top:6px}
+.termometros{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.termo{background:#fff;border-radius:14px;padding:20px 16px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:12px}
+.termo-body{display:flex;flex-direction:column;align-items:center;gap:8px}
+.termo-gauge{width:110px;height:70px}.termo-gauge svg{width:110px;height:70px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--cinza-esc);margin-top:2px}
+.termo-desc{font-size:.75rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+.chart-card{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:20px}
+.chart-card h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.chart-card .nf{font-size:.69rem;color:#bbb;font-style:italic;margin-top:8px}
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:18px;border-left:5px solid var(--amarelo-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.vermelho{border-left-color:var(--vermelho-l)}.abox.azul{border-left-color:var(--azul-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--marrom-l);font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.abox.verde h3{color:var(--verde-s)}.abox.vermelho h3{color:var(--vermelho)}.abox.azul h3{color:var(--azul)}
+.abox p{color:var(--cinza);line-height:1.8;font-size:.9rem}.abox p+p{margin-top:8px}
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.yellow{background:var(--amarelo-pale);border-color:rgba(187,106,42,.3)}
+.al.red{background:#fef2f2;border-color:rgba(239,68,68,.3)}
+.al.green{background:#f0fdf4;border-color:rgba(34,197,94,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(59,130,246,.3)}
+.al .ai{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.al .at h4{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.al.yellow .at h4{color:var(--marrom-l)}.al.red .at h4{color:var(--vermelho)}.al.green .at h4{color:var(--verde-s)}.al.blue .at h4{color:var(--azul)}
+.al .at p{font-size:.82rem;color:var(--cinza-l);line-height:1.6}
+.scen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#16a34a}
+.sc.neu{background:linear-gradient(135deg,#fbf3ea,var(--amarelo-xl));border-color:var(--amarelo)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#dc2626}
+.sc-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:#16a34a}.sc.neu .sc-dot{background:var(--amarelo)}.sc.pes .sc-dot{background:#dc2626}
+.sc h4{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700}
+.sc.opt h4{color:#166534}.sc.neu h4{color:var(--marrom-l)}.sc.pes h4{color:var(--vermelho)}
+.sc ul{list-style:none;font-size:.83rem;color:var(--cinza);line-height:1.85}
+.sc ul li{display:flex;align-items:flex-start;gap:6px}.sc ul li::before{content:'›';font-weight:700;flex-shrink:0}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:6px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:#166534}.sc.neu .sc-prob{background:var(--amarelo-xl);color:var(--marrom-l)}.sc.pes .sc-prob{background:#fee2e2;color:var(--vermelho)}
+.geo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.geo-card{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sombra);display:flex;gap:12px;align-items:flex-start}
+.geo-flag{font-size:1.6rem;flex-shrink:0}
+.geo-info h5{font-weight:700;font-size:.85rem;color:var(--cinza-esc);margin-bottom:3px}
+.geo-info p{font-size:.78rem;color:var(--cinza-l);line-height:1.55}
+.geo-status{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:700}
+.gs-up{background:#dcfce7;color:#16a34a}.gs-dn{background:#fee2e2;color:#dc2626}.gs-nt{background:var(--amarelo-xl);color:var(--marrom-l)}
+.price-termo{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--sombra);margin-bottom:20px}
+.price-termo h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.pt-bar{margin-bottom:14px}
+.pt-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:.82rem}
+.pt-label .pl-name{font-weight:600;color:var(--cinza)}.pt-label .pl-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem}
+.pt-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pt-fill{height:100%;border-radius:8px;position:relative}
+.pt-marker{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px;transform:translateX(-50%)}
+.pt-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cinza-l)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.percepcao{background:linear-gradient(135deg,#3c2008,var(--marrom-l));border-radius:16px;padding:32px;margin-bottom:20px;color:#fff}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:14px;color:var(--amarelo-xl)}
+.percepcao p{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.85)}.percepcao p+p{margin-top:10px}
+.percepcao .quote{border-left:3px solid var(--amarelo-l);padding-left:16px;font-style:italic;margin-top:16px;color:var(--amarelo-xl);font-size:.92rem}
+.footer{background:var(--cinza-esc);color:#fff;padding:52px 24px 32px}
+.fi{max-width:1100px;margin:0 auto}
+.ft{display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:24px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:900;color:var(--amarelo-l)}
+.fl .brand span{color:#fff}.fl .tag{font-size:.78rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--amarelo-l);font-size:1.1rem;margin-bottom:8px}
+.fc p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.9}.fc a{color:var(--amarelo-l);text-decoration:none}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:rgba(255,255,255,.27);letter-spacing:.8px;text-align:center;line-height:1.8}
+.hl{background:linear-gradient(transparent 60%,rgba(214,143,79,.4) 60%)}
+.badge-neon{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:5px 14px;border-radius:20px;font-weight:700;display:inline-block;margin:3px}
+.bn-gold{background:rgba(187,106,42,.12);color:var(--marrom-l);border:1px solid var(--amarelo)}
+.bn-dn{background:rgba(239,68,68,.12);color:#dc2626;border:1px solid rgba(248,113,113,.5)}
+.bn-green{background:rgba(34,197,94,.12);color:#16a34a;border:1px solid rgba(74,222,128,.5)}
+.bn-blue{background:rgba(59,130,246,.12);color:#1e40af;border:1px solid rgba(147,197,253,.6)}
+@media(max-width:720px){.g2{grid-template-columns:1fr}.logo-txt h1{font-size:1.55rem}.h-top{flex-direction:column;align-items:flex-start}.h-meta{text-align:left}.h-badges{justify-content:flex-start}.ft{flex-direction:column}.p-val{font-size:1.3rem}}
+@media print{body{background:#fff}.header,.footer,.percepcao,.hl-strip{-webkit-print-color-adjust:exact;print-color-adjust:exact}.section{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#bb6a2a"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#3c2008">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#3c2008" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#3c2008" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt"><h1>Radar Agro do Sorgo</h1><div class="sub">Análise Mensal · Maio 2026 · Rural IN</div></div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">PhD em Mercado Agro · Análise de Risco</div>
+      <div class="dt">Fechamento Maio 2026</div>
+      <div class="h-badges">
+        <span class="h-badge hb-dn">Segue o milho fraco</span>
+        <span class="h-badge hb-nt">Relação: 82,3% do milho</span>
+        <span class="h-badge hb-up">Produção: +23,8%</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🌾 <span class="t-nt">Sorgo GO:</span> <strong>≈R$ 56/sc (ref.)</strong></span>
+    <span class="sep">|</span>
+    <span>🌽 <span class="t-nt">Milho Cepea:</span> <strong>&lt; R$ 70/sc</strong></span>
+    <span class="sep">|</span>
+    <span>📊 <span class="t-nt">Relação sorgo/milho:</span> <strong>~82,3%</strong></span>
+    <span class="sep">|</span>
+    <span>📦 <span class="t-nt">Produção 2026:</span> <strong>7,56 Mt (+23,8%)</strong></span>
+    <span class="sep">|</span>
+    <span>🐔 <span class="t-nt">Demanda ração:</span> <strong>firme (+3,4%)</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-nt">Dólar:</span> <strong>R$ 5,03</strong></span>
+  </div>
+</header>
+
+<div class="hl-strip"><div class="hs-inner">
+  <h2>🌾 Fechamento de Maio 2026 + Perspectivas para Junho</h2>
+  <p>O primo do milho na sombra do irmão: preço ancorado num milho fraco · produção em forte expansão · mas a demanda de ração segura o piso</p>
+</div></div>
+
+<div class="container">
+
+<!-- SEÇÃO 1: PLACAR -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">💰</div><h2>Placar de Cotações — Fechamento Maio 2026</h2><div class="ln"></div></div>
+  <div class="placar">
+    <div class="p-card dn"><div class="p-lbl">Sorgo — Goiás (ref.)</div><div class="p-val">≈R$ 56</div><div class="p-sub">saca 60kg · principal produtor</div><div class="p-var v-dn">▼ pressionado junto com o milho</div><div class="p-src">Fonte: Conab/Cepea (referência)</div></div>
+    <div class="p-card dn"><div class="p-lbl">Milho — Cepea (âncora)</div><div class="p-val">&lt;R$ 70</div><div class="p-sub">saca 60kg · define o sorgo</div><div class="p-var v-dn">▼ mínimas de 2026</div><div class="p-src">Fonte: Cepea/Esalq</div></div>
+    <div class="p-card nt"><div class="p-lbl">Relação sorgo/milho</div><div class="p-val">82,3%</div><div class="p-sub">média 2022–26 (GO)</div><div class="p-var v-nt">◆ desconto atrai confinamento</div><div class="p-src">Fonte: Conab</div></div>
+    <div class="p-card up"><div class="p-lbl">Produção BR 2026</div><div class="p-val">7,56 Mt</div><div class="p-sub">safra em expansão</div><div class="p-var v-up">▲ +23,8% — área crescente</div><div class="p-src">Fonte: Conab</div></div>
+    <div class="p-card nt"><div class="p-lbl">Demanda — ração</div><div class="p-val">+3,4%</div><div class="p-sub">necessidade extra (~5 Mt)</div><div class="p-var v-nt">◆ avicultura e suinocultura firmes</div><div class="p-src">Fonte: Conab</div></div>
+    <div class="p-card nt"><div class="p-lbl">Câmbio — Dólar</div><div class="p-val">R$ 5,03</div><div class="p-sub">milho fraco limita export</div><div class="p-var v-nt">◆ excedente sobra no interno</div><div class="p-src">Fonte: Banco Central</div></div>
+  </div>
+
+  <div class="price-termo">
+    <h3>🌡️ Termômetro do Sorgo — preso à âncora do milho</h3>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🌾 Sorgo Goiás (físico)</span><span class="pl-val" style="color:#dc2626">≈R$ 56/sc</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:34%;background:linear-gradient(90deg,#dc2626,#f97316)"></div><div class="pt-marker" style="left:40%"></div></div>
+      <div class="pt-scale"><span>R$ 40 (fundo)</span><span style="font-weight:700;color:var(--cinza)">Custo est.: ~R$ 50–55/sc</span><span>R$ 85 (teto)</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🌽 Milho Cepea (a âncora)</span><span class="pl-val" style="color:#dc2626">&lt;R$ 70/sc</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:38%;background:linear-gradient(90deg,#dc2626,#f97316)"></div></div>
+      <div class="pt-scale"><span>baixo</span><span style="font-weight:700;color:var(--cinza)">mínimas de 2026 puxam o sorgo</span><span>alto</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🐔 Demanda de ração (o piso)</span><span class="pl-val" style="color:#16a34a">firme</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:65%;background:linear-gradient(90deg,#f59e0b,#16a34a)"></div></div>
+      <div class="pt-scale"><span>fraca</span><span style="font-weight:700;color:var(--cinza)">avicultura/suíno sustentam o consumo</span><span>forte</span></div></div>
+    <div style="margin-top:10px;padding:12px;background:#f9fafb;border-radius:8px;font-size:.78rem;color:var(--cinza-l)">
+      <strong style="color:var(--marrom-l)">Leitura:</strong> o sorgo está <strong style="color:#dc2626">colado no milho fraco</strong> e próximo ao próprio custo. O alívio vem da demanda de ração, que dá um piso, e do desconto sobre o milho, que atrai o confinador. A margem é apertada — gestão de custo é tudo.
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>📈 Sorgo × Milho em Maio 2026 — A Sombra do Irmão Maior (R$/sc)</h3>
+    <canvas id="chartMaio" height="95"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq, Conab. O sorgo (referência) acompanha de perto o milho, com desconto médio de ~18%. Série de referência. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 2: FATOS -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">📰</div><h2>Os 6 Fatos que Moveram o Sorgo em Maio</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin-bottom:20px">
+    <div class="al red"><div class="ai">🌽</div><div class="at"><h4>1. Milho fraco arrasta o sorgo</h4><p>O Indicador Cepea do milho opera em recuo, <strong>abaixo de R$ 70/sc</strong>, pressionado pela colheita robusta da safra de verão e pelos estoques cheios. Como o sorgo é precificado em relação ao milho, ele segue o irmão maior para baixo.</p></div></div>
+    <div class="al yellow"><div class="ai">📊</div><div class="at"><h4>2. A relação de 82,3% é a régua</h4><p>A Conab confirma que o preço do sorgo segue uma relação média de <strong>82,3%</strong> do milho em Goiás (2022–2026), principal estado produtor. É essa régua que define onde a saca de sorgo negocia em cada praça.</p></div></div>
+    <div class="al green"><div class="ai">📦</div><div class="at"><h4>3. Produção em forte expansão</h4><p>A safra brasileira de sorgo 2026 deve crescer <strong>+23,8%</strong> (≈7,56 Mt), com área em alta. Parte vem da migração de produtores que perderam a janela ideal da safrinha de milho e plantaram sorgo, mais resistente à seca.</p></div></div>
+    <div class="al blue"><div class="ai">🐔</div><div class="at"><h4>4. Ração sustenta o piso</h4><p>O sorgo responde por 5,4% das rações e a Conab estima necessidade extra de <strong>+3,4% (~5 Mt)</strong>. Avicultura e suinocultura firmes garantem demanda — é o que impede o preço de desabar junto com o excedente.</p></div></div>
+    <div class="al yellow"><div class="ai">💧</div><div class="at"><h4>5. Estresse hídrico no Centro-Sul</h4><p>O estresse hídrico em cinco estados do Centro-Sul (monitorado pela Conab) evita uma queda mais intensa no milho — e, por tabela, dá algum suporte ao sorgo. O clima da safrinha é o curinga de curto prazo.</p></div></div>
+    <div class="al blue"><div class="ai">⚙️</div><div class="at"><h4>6. Etanol de milho abre porta ao sorgo</h4><p>O avanço das plantas de etanol de milho no Centro-Oeste cria demanda adicional por grãos energéticos, incluindo o sorgo como matéria-prima alternativa — um vetor estrutural de consumo nos próximos anos.</p></div></div>
+  </div>
+  <div class="chart-card"><h3>📊 Sorgo e Milho em 2026 — Trajetória dos Preços (R$/sc)</h3>
+    <canvas id="chartAnual" height="95"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq, Conab. Os dois grãos recuam juntos em 2026. Sorgo em referência (~82% do milho). Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 3: ANÁLISE -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔬</div><h2>Análise Técnica + Fundamentalista — Dupla Visão</h2><div class="ln"></div></div>
+  <div class="termometros">
+    <div class="termo"><h4>Físico sorgo</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="36" y2="23" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">35 / 100</div><div class="termo-desc">Segue o milho fraco; próximo ao próprio custo</div></div></div>
+    <div class="termo"><h4>Milho (a âncora)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="34" y2="25" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">32 / 100</div><div class="termo-desc">Mínimas de 2026: safra de verão + estoques cheios</div></div></div>
+    <div class="termo"><h4>Demanda de ração (piso)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g3)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="64" y2="23" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">65 / 100</div><div class="termo-desc">Avicultura/suíno firmes; +3,4% de necessidade</div></div></div>
+    <div class="termo"><h4>Vantagem do desconto</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g4)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="68" y2="26" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">70 / 100</div><div class="termo-desc">~18% mais barato que o milho atrai o confinador</div></div></div>
+    <div class="termo"><h4>Oferta (produção em alta)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#ef4444"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g5)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="69" y2="26" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">72 / 100</div><div class="termo-desc">+23,8% de produção amplia a oferta interna</div></div></div>
+    <div class="termo"><h4>Custo financeiro (Selic)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#ef4444"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g6)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="68" y2="26" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">70 / 100</div><div class="termo-desc">Selic 14,5% pressiona carregar grão de baixo valor</div></div></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>📉 Análise de Curto Prazo — Sorgo na Esteira do Milho</h3>
+      <p><strong>Tendência:</strong> baixa, atrelada ao milho. Com o cereal nas mínimas de 2026 (safra de verão entrando, estoques cheios), o sorgo é arrastado para baixo na mesma proporção da relação de ~82%.</p>
+      <p><strong>O suporte de curto prazo:</strong> o estresse hídrico em cinco estados do Centro-Sul evita uma queda mais intensa do milho — e qualquer frustração climática na safrinha pode dar fôlego aos dois grãos.</p>
+      <p>⚠ <span class="hl">O sorgo está próximo do próprio custo de produção.</span> A margem é apertada e a gestão de custo (por hectare) define quem fica no positivo.</p>
+    </div>
+    <div class="abox verde">
+      <h3>🌎 Análise Estrutural — Oferta Cheia, Demanda Firme</h3>
+      <p><strong>Oferta:</strong> produção 2026 em forte alta (+23,8%, ≈7,56 Mt). A migração de quem perdeu a janela do milho safrinha — o sorgo tolera melhor a seca e a janela tardia — engrossou a área.</p>
+      <p><strong>Demanda:</strong> a ração é o sustentáculo. Com 5,4% das rações e necessidade extra de +3,4%, a avicultura e a suinocultura mantêm o consumo. O desconto sobre o milho torna o sorgo atrativo no confinamento.</p>
+      <p><strong>O vetor de futuro:</strong> <span class="hl">o etanol de milho</span>, que avança no Centro-Oeste e abre demanda adicional por grãos energéticos — o sorgo entra como matéria-prima alternativa.</p>
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>🐔 Destino do Sorgo no Brasil — Para Onde Vai o Grão (aprox)</h3>
+    <canvas id="chartShare" height="75"></canvas>
+    <p class="nf">A ração animal é o principal destino. Valores aproximados. Fonte: Conab. Elaboração: Rural IN.</p></div>
+  <div class="chart-card"><h3>📊 Relação de Preço Sorgo/Milho — A Régua Estável (~82%)</h3>
+    <canvas id="chartRelacao" height="75"></canvas>
+    <p class="nf">A relação média foi de 82,3% em GO (2022–2026). É o que define o preço do sorgo. Fonte: Conab. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 4: MACRO -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🌐</div><h2>Fatores de Mercado — O que Monitorar</h2><div class="ln"></div></div>
+  <div class="geo-grid">
+    <div class="geo-card"><div class="geo-flag">🌽</div><div class="geo-info"><h5>Preço do Milho — A Âncora</h5><p>É o termômetro do sorgo. Enquanto o milho ficar nas mínimas de 2026 por safra cheia e estoques, o sorgo segue pressionado. Todo o resto é secundário.</p><span class="geo-status gs-dn">Define tudo</span></div></div>
+    <div class="geo-card"><div class="geo-flag">💧</div><div class="geo-info"><h5>Clima da Safrinha (Centro-Sul)</h5><p>Estresse hídrico em cinco estados evita queda mais forte do milho. Frustração climática na safrinha é o curinga de alta de curto prazo para os dois grãos.</p><span class="geo-status gs-nt">Curinga</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🐔</div><div class="geo-info"><h5>Demanda de Ração</h5><p>Avicultura e suinocultura firmes (produção de frango e suínos em alta) sustentam o piso. O desconto do sorgo sobre o milho atrai o confinador.</p><span class="geo-status gs-up">O piso</span></div></div>
+    <div class="geo-card"><div class="geo-flag">⚙️</div><div class="geo-info"><h5>Etanol de Milho/Grãos</h5><p>A expansão das plantas no Centro-Oeste cria demanda estrutural por grãos energéticos. O sorgo entra como matéria-prima alternativa — vetor de consumo dos próximos anos.</p><span class="geo-status gs-up">Estrutural</span></div></div>
+    <div class="geo-card"><div class="geo-flag">📦</div><div class="geo-info"><h5>Produção em Expansão</h5><p>+23,8% em 2026. A migração de área do milho safrinha frustrado para o sorgo amplia a oferta interna e pesa sobre o preço.</p><span class="geo-status gs-dn">Mais oferta</span></div></div>
+    <div class="geo-card"><div class="geo-flag">💵</div><div class="geo-info"><h5>Câmbio e Selic 14,5%</h5><p>Com o milho fraco e export contida, o excedente sobra no mercado interno. Selic alta encarece carregar um grão de baixo valor unitário.</p><span class="geo-status gs-nt">Pressão</span></div></div>
+  </div>
+  <div class="chart-card"><h3>🎯 Projeção de Preço Junho 2026 — Sorgo Goiás por Cenário (R$/sc, referência)</h3>
+    <canvas id="chartProjecao" height="85"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Faixas por cenário, atreladas à trajetória do milho. Valores de referência.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 5: PERSPECTIVAS JUNHO -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔭</div><h2>Perspectivas para Junho 2026 — Cenários e Projeções</h2><div class="ln"></div></div>
+  <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px">
+    <span class="badge-neon bn-gold">🌾 Sorgo GO: R$ 50–64/sc</span>
+    <span class="badge-neon bn-dn">🌽 Atrelado ao milho fraco</span>
+    <span class="badge-neon bn-green">🐔 Ração: o piso</span>
+    <span class="badge-neon bn-blue">💧 Safrinha: o curinga</span>
+    <span class="badge-neon bn-gold">⚙️ Etanol: vetor de futuro</span>
+  </div>
+  <div class="scen-grid">
+    <div class="sc opt"><div class="sc-header"><div class="sc-dot"></div><h4>🟢 Cenário Otimista</h4></div>
+      <ul><li><span>Frustração climática na safrinha de milho</span></li><li><span>Milho reage e puxa o sorgo</span></li><li><span>Demanda de ração se intensifica</span></li><li><span>Sorgo GO: R$ 60–64/sc</span></li></ul>
+      <div class="sc-prob">Prob. 30% — Depende do clima</div></div>
+    <div class="sc neu"><div class="sc-header"><div class="sc-dot"></div><h4>🟡 Cenário Base (mais provável)</h4></div>
+      <ul><li><span>Milho lateral nas mínimas</span></li><li><span>Ração sustenta o piso do sorgo</span></li><li><span>Desconto atrai confinamento</span></li><li><span>Sorgo GO: R$ 54–58/sc</span></li></ul>
+      <div class="sc-prob">Prob. 50% — Acomodação em baixa</div></div>
+    <div class="sc pes"><div class="sc-header"><div class="sc-dot"></div><h4>🔴 Cenário Pessimista</h4></div>
+      <ul><li><span>Safrinha de milho confirma recorde</span></li><li><span>Oferta de sorgo +23,8% pressiona</span></li><li><span>Excedente sobra no interno</span></li><li><span>Sorgo GO: R$ 50–54/sc</span></li></ul>
+      <div class="sc-prob">Prob. 20% — Oferta cheia manda</div></div>
+  </div>
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista para Junho — Dr. Sidney Souza</h3>
+    <p>O sorgo é o que eu chamo de <span class="hl" style="background:linear-gradient(transparent 60%,rgba(214,143,79,.5) 60%)">commodity-sombra</span>: ele não tem vida própria de preço, vive na esteira do milho. E o milho está nas mínimas de 2026, com safra de verão entrando forte e estoques cheios. Logo, o sorgo desce junto — é matemática da relação de 82%.</p>
+    <p>Mas o sorgo tem duas defesas que o milho puro não tem na mesma intensidade. A primeira é a <strong>demanda de ração</strong>: avicultura e suinocultura firmes garantem consumo, e isso coloca um piso. A segunda é o <strong>próprio desconto</strong>: quando o sorgo fica ~18% mais barato que o milho, o confinador e a fábrica de ração trocam um pelo outro — o desconto é o seu maior aliado comercial.</p>
+    <p>Para quem plantou sorgo por ter perdido a janela do milho safrinha, a notícia é dupla: o preço não está bom, mas a cultura cumpriu seu papel de aproveitar a área e a água que sobrou. <strong>É grão de margem apertada</strong> — quem controla custo por hectare e tem demanda de ração na porta (integração, confinamento próprio) sai melhor.</p>
+    <p>O curinga de junho é o clima da safrinha de milho. Se o estresse hídrico no Centro-Sul piorar, o milho reage e leva o sorgo junto. Por isso, vale acompanhar o milho de perto — <strong>é nele que está o gatilho do seu sorgo</strong>.</p>
+    <div class="quote">"Em sorgo, não adianta olhar só para o sorgo: olhe para o milho. Quem entende que está vendendo um derivado do milho com 18% de desconto comercializa melhor — usa o desconto como argumento de venda para ração e confinamento, e controla custo como se a margem fosse de centavos. Porque é."</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 6: RECOMENDAÇÕES -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">✅</div><h2>Recomendações Práticas para o Produtor</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px">
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--amarelo)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">🌽</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--marrom-l)">Acompanhe o milho</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Seu sorgo é precificado pelo milho. Use a relação de ~82% como referência de venda: se o milho reage por frustração na safrinha, o sorgo vai junto. Defina gatilhos de venda atrelados ao Cepea do milho, não a uma expectativa isolada.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #16a34a">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">🐔</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--verde-s)">Venda direto para a ração</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">O desconto sobre o milho é seu melhor argumento. Negocie direto com fábricas de ração, integradoras e confinamentos — o comprador que substitui milho por sorgo paga prêmio sobre o spot e encurta a cadeia. Demanda firme = piso garantido.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--azul-l)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📐</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--azul)">Custo por hectare é tudo</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Com preço próximo do custo, a margem se ganha na lavoura, não no balcão. O sorgo brilha como cultura de baixo custo e resistência à seca — explore essa vocação: menos insumo, aproveitamento de área e água residuais da safrinha.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #dc2626">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📡</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--vermelho)">O que monitorar em junho</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75"><strong>1.</strong> Indicador Cepea do milho.<br><strong>2.</strong> Clima/estresse hídrico na safrinha.<br><strong>3.</strong> Demanda de avicultura e suíno.<br><strong>4.</strong> Avanço do etanol de milho/grãos.<br><strong>5.</strong> Boletins de safra da Conab.</p></div>
+  </div>
+
+  <div class="chart-card"><h3>🚦 Semáforo do Sorgo — Indicadores-Chave no Fechamento de Maio 2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Sorgo GO</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">≈R$56 — segue milho fraco</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Milho (âncora)</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">&lt;R$70 — mínimas de 2026</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Demanda ração</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">firme — o piso</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Desconto vs milho</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">~18% — atrai confinador</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Produção 2026</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">+23,8% — mais oferta</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><div><strong style="font-size:.85rem">Clima safrinha</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">estresse hídrico — curinga</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Etanol de grãos</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">vetor de demanda futura</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Selic 14,5%</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">custo de carrego alto</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl"><div class="brand">Rural<span> IN</span></div><div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p></div>
+      <div class="fc"><h4>Análise e Construção</h4>
+        <p><strong>Dr. Sidney Souza</strong><br>Economista e Adm. Agrícola<br>Estrategista Econômico do Produtor<br>Especialista em economia da fazenda e gestão de risco no agro<br>Transformamos dados da fazenda em decisões econômicas<br>Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+        🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>📱 @ruralin.ai<br>✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>📞 (64) 9 9226-6886</p></div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO SORGO · EDIÇÃO MAIO 2026 + PERSPECTIVAS JUNHO · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CONAB · CEPEA/ESALQ · FARMNEWS · BROTO NOTÍCIAS · BANCO CENTRAL
+    </div>
+  </div>
+</footer>
+
+<script>
+Chart.defaults.color='#6b7280';Chart.defaults.borderColor='rgba(0,0,0,.06)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const am='#bb6a2a',amL='#d68f4f',verde='#16a34a',verm='#dc2626',azul='#1e40af',azulL='#3b82f6';
+
+new Chart(document.getElementById('chartMaio'),{type:'line',
+ data:{labels:['01/05','05/05','08/05','12/05','15/05','19/05','22/05','26/05','29/05'],
+  datasets:[
+   {label:'Milho Cepea (R$/sc)',data:[68,67.5,67,66.5,66,66.5,66,65.5,66],
+    borderColor:'#374151',backgroundColor:'rgba(55,65,81,.05)',borderWidth:2.5,tension:.3,fill:false,pointRadius:4,borderDash:[6,3]},
+   {label:'Sorgo GO (R$/sc, ref.)',data:[57,56.5,56,55,55,55.5,55,54.5,55],
+    borderColor:am,backgroundColor:'rgba(187,106,42,.12)',borderWidth:3,tension:.35,fill:true,pointRadius:4}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:50,max:72,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartAnual'),{type:'line',
+ data:{labels:['Jan','Fev','Mar','Abr','Mai/26'],
+  datasets:[
+   {label:'Milho (R$/sc)',data:[69.5,69,70.4,68.8,66],borderColor:'#374151',backgroundColor:'rgba(55,65,81,.05)',borderWidth:2.5,tension:.3,fill:false,pointRadius:5,borderDash:[6,3]},
+   {label:'Sorgo (R$/sc, ref.)',data:[57,57,58,57,55],borderColor:am,backgroundColor:'rgba(187,106,42,.12)',borderWidth:3,tension:.3,fill:true,pointRadius:5}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:48,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartShare'),{type:'doughnut',
+ data:{labels:['Ração animal (~80%)','Etanol/energia (~12%)','Sementes/outros (~8%)'],
+  datasets:[{data:[80,12,8],backgroundColor:['rgba(187,106,42,.85)','rgba(214,143,79,.8)','rgba(180,180,180,.55)'],borderWidth:2,borderColor:'#fff'}]},
+ options:{responsive:true,plugins:{legend:{position:'right',labels:{usePointStyle:true,padding:12}},tooltip:{callbacks:{label:c=>c.label}}}}});
+
+new Chart(document.getElementById('chartRelacao'),{type:'line',
+ data:{labels:['2022','2023','2024','2025','2026'],
+  datasets:[{label:'Relação sorgo/milho (%)',data:[83,81,82,83,82.3],
+   borderColor:am,backgroundColor:'rgba(187,106,42,.10)',borderWidth:3,tension:.3,fill:true,pointRadius:5}]},
+ options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+  tooltip:{callbacks:{label:c=>c.raw+'%'}}},
+  scales:{y:{min:70,max:95,ticks:{callback:v=>v+'%'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartProjecao'),{type:'bar',
+ data:{labels:['1ª sem jun','2ª sem jun','3ª sem jun','4ª sem jun'],
+  datasets:[
+   {label:'Pessimista',data:[54,52,50,51],backgroundColor:'rgba(220,38,38,.55)',borderRadius:6},
+   {label:'Base',data:[56,57,55,57],backgroundColor:'rgba(187,106,42,.85)',borderRadius:6},
+   {label:'Otimista',data:[60,62,63,64],backgroundColor:'rgba(22,163,74,.6)',borderRadius:6}]},
+ options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+  tooltip:{callbacks:{label:c=>c.dataset.label+': R$ '+c.raw+'/sc'}}},
+  scales:{y:{min:45,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+</script>
+</body>
+</html>

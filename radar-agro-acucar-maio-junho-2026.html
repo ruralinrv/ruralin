@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Açúcar | Maio 2026 + Perspectivas Junho | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --amarelo:#2f8f86;--amarelo-l:#4fb3a9;--amarelo-xl:#bce8e2;--amarelo-pale:#eefaf8;
+  --verde-s:#1a5c2a;--verde-l:#2d9e5f;--verde-xl:#52b788;
+  --marrom:#0d3b37;--marrom-l:#1d6b63;
+  --cinza-esc:#1e1e2e;--cinza:#374151;--cinza-l:#6b7280;--cinza-xl:#f9fafb;
+  --azul:#1e40af;--azul-l:#3b82f6;
+  --vermelho:#991b1b;--vermelho-l:#ef4444;
+  --laranja:#c2410c;--laranja-l:#f97316;
+  --bg:#fafaf7;--sombra:0 4px 20px rgba(0,0,0,.08);--sombra2:0 8px 40px rgba(0,0,0,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+.header{background:linear-gradient(135deg,#062b28 0%,var(--marrom-l) 45%,var(--amarelo-l) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.h-top{max-width:1100px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2.1rem;font-weight:900;line-height:1;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--amarelo-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--amarelo-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.h-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-up{background:rgba(34,197,94,.25);color:#4ade80;border:1px solid rgba(74,222,128,.4)}
+.hb-dn{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(248,113,113,.4)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--amarelo-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:#e5e7eb;font-weight:600}
+.ticker .sep{color:rgba(255,255,255,.2)}.t-nt{color:var(--amarelo-l)!important}
+.hl-strip{background:linear-gradient(135deg,#062b28,#0d3b37);padding:18px 24px;text-align:center;border-bottom:2px solid var(--amarelo-l)}
+.hl-strip .hs-inner{max-width:1100px;margin:0 auto}
+.hl-strip h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:#fff;font-weight:700}
+.hl-strip p{font-size:.85rem;color:rgba(255,255,255,.6);margin-top:5px}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+.section{padding:44px 0 32px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;background:var(--amarelo-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--marrom-l);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--amarelo-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--amarelo-l),transparent)}
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:24px}
+.p-card{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.p-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.p-card.up::before{background:linear-gradient(90deg,#16a34a,#4ade80)}
+.p-card.dn::before{background:linear-gradient(90deg,#dc2626,#f87171)}
+.p-card.nt::before{background:linear-gradient(90deg,var(--amarelo),var(--amarelo-l))}
+.p-lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.p-val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.p-sub{font-size:.74rem;color:var(--cinza-l);margin-top:5px}
+.p-var{font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:700;margin-top:5px}
+.v-up{color:#16a34a}.v-dn{color:#dc2626}.v-nt{color:var(--amarelo)}
+.p-src{font-size:.64rem;color:#ccc;margin-top:6px}
+.termometros{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.termo{background:#fff;border-radius:14px;padding:20px 16px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:12px}
+.termo-body{display:flex;flex-direction:column;align-items:center;gap:8px}
+.termo-gauge{width:110px;height:70px}.termo-gauge svg{width:110px;height:70px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--cinza-esc);margin-top:2px}
+.termo-desc{font-size:.75rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+.chart-card{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:20px}
+.chart-card h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.chart-card .nf{font-size:.69rem;color:#bbb;font-style:italic;margin-top:8px}
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:18px;border-left:5px solid var(--amarelo-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.vermelho{border-left-color:var(--vermelho-l)}.abox.azul{border-left-color:var(--azul-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--marrom-l);font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.abox.verde h3{color:var(--verde-s)}.abox.vermelho h3{color:var(--vermelho)}.abox.azul h3{color:var(--azul)}
+.abox p{color:var(--cinza);line-height:1.8;font-size:.9rem}.abox p+p{margin-top:8px}
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.yellow{background:var(--amarelo-pale);border-color:rgba(47,143,134,.3)}
+.al.red{background:#fef2f2;border-color:rgba(239,68,68,.3)}
+.al.green{background:#f0fdf4;border-color:rgba(34,197,94,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(59,130,246,.3)}
+.al .ai{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.al .at h4{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.al.yellow .at h4{color:var(--marrom-l)}.al.red .at h4{color:var(--vermelho)}.al.green .at h4{color:var(--verde-s)}.al.blue .at h4{color:var(--azul)}
+.al .at p{font-size:.82rem;color:var(--cinza-l);line-height:1.6}
+.scen-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:20px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#16a34a}
+.sc.neu{background:linear-gradient(135deg,#eefaf8,var(--amarelo-xl));border-color:var(--amarelo)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#dc2626}
+.sc-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:#16a34a}.sc.neu .sc-dot{background:var(--amarelo)}.sc.pes .sc-dot{background:#dc2626}
+.sc h4{font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700}
+.sc.opt h4{color:#166534}.sc.neu h4{color:var(--marrom-l)}.sc.pes h4{color:var(--vermelho)}
+.sc ul{list-style:none;font-size:.83rem;color:var(--cinza);line-height:1.85}
+.sc ul li{display:flex;align-items:flex-start;gap:6px}.sc ul li::before{content:'›';font-weight:700;flex-shrink:0}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:6px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:#166534}.sc.neu .sc-prob{background:var(--amarelo-xl);color:var(--marrom-l)}.sc.pes .sc-prob{background:#fee2e2;color:var(--vermelho)}
+.geo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.geo-card{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sombra);display:flex;gap:12px;align-items:flex-start}
+.geo-flag{font-size:1.6rem;flex-shrink:0}
+.geo-info h5{font-weight:700;font-size:.85rem;color:var(--cinza-esc);margin-bottom:3px}
+.geo-info p{font-size:.78rem;color:var(--cinza-l);line-height:1.55}
+.geo-status{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:2px 8px;border-radius:10px;margin-top:4px;font-weight:700}
+.gs-up{background:#dcfce7;color:#16a34a}.gs-dn{background:#fee2e2;color:#dc2626}.gs-nt{background:var(--amarelo-xl);color:var(--marrom-l)}
+.price-termo{background:#fff;border-radius:14px;padding:24px;box-shadow:var(--sombra);margin-bottom:20px}
+.price-termo h3{font-family:'Playfair Display',serif;font-size:1rem;color:var(--marrom-l);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #f3f4f6}
+.pt-bar{margin-bottom:14px}
+.pt-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:.82rem}
+.pt-label .pl-name{font-weight:600;color:var(--cinza)}
+.pt-label .pl-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem}
+.pt-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pt-fill{height:100%;border-radius:8px;position:relative}
+.pt-marker{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px;transform:translateX(-50%)}
+.pt-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--cinza-l)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.percepcao{background:linear-gradient(135deg,#062b28,var(--marrom-l));border-radius:16px;padding:32px;margin-bottom:20px;color:#fff}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:14px;color:var(--amarelo-xl)}
+.percepcao p{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.85)}.percepcao p+p{margin-top:10px}
+.percepcao .quote{border-left:3px solid var(--amarelo-l);padding-left:16px;font-style:italic;margin-top:16px;color:var(--amarelo-xl);font-size:.92rem}
+.footer{background:var(--cinza-esc);color:#fff;padding:52px 24px 32px}
+.fi{max-width:1100px;margin:0 auto}
+.ft{display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:24px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.85rem;font-weight:900;color:var(--amarelo-l)}
+.fl .brand span{color:#fff}.fl .tag{font-size:.78rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--amarelo-l);font-size:1.1rem;margin-bottom:8px}
+.fc p{font-size:.82rem;color:rgba(255,255,255,.7);line-height:1.9}.fc a{color:var(--amarelo-l);text-decoration:none}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.63rem;color:rgba(255,255,255,.27);letter-spacing:.8px;text-align:center;line-height:1.8}
+.hl{background:linear-gradient(transparent 60%,rgba(79,179,169,.35) 60%)}
+.badge-neon{font-family:'JetBrains Mono',monospace;font-size:.72rem;padding:5px 14px;border-radius:20px;font-weight:700;display:inline-block;margin:3px}
+.bn-gold{background:rgba(47,143,134,.12);color:var(--marrom-l);border:1px solid var(--amarelo)}
+.bn-dn{background:rgba(239,68,68,.12);color:#dc2626;border:1px solid rgba(248,113,113,.5)}
+.bn-green{background:rgba(34,197,94,.12);color:#16a34a;border:1px solid rgba(74,222,128,.5)}
+.bn-blue{background:rgba(59,130,246,.12);color:#1e40af;border:1px solid rgba(147,197,253,.6)}
+@media(max-width:720px){.g2{grid-template-columns:1fr}.logo-txt h1{font-size:1.55rem}.h-top{flex-direction:column;align-items:flex-start}.h-meta{text-align:left}.h-badges{justify-content:flex-start}.ft{flex-direction:column}.p-val{font-size:1.3rem}}
+@media print{body{background:#fff}.header,.footer,.percepcao,.hl-strip{-webkit-print-color-adjust:exact;print-color-adjust:exact}.section{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#2f8f86"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#062b28">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#062b28" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#062b28" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt"><h1>Radar Agro do Açúcar</h1><div class="sub">Análise Mensal · Maio 2026 · Rural IN</div></div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">PhD em Mercado Agro · Análise de Risco</div>
+      <div class="dt">Fechamento Maio 2026</div>
+      <div class="h-badges">
+        <span class="h-badge hb-dn">NY #11: ≈13,8 ¢/lb</span>
+        <span class="h-badge hb-dn">Cristal SP: em queda</span>
+        <span class="h-badge hb-nt">Cana CS: 709 Mt</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🍬 <span class="t-nt">NY #11 (ICE):</span> <strong>≈13,8 ¢/lb</strong></span>
+    <span class="sep">|</span>
+    <span>🇬🇧 <span class="t-nt">Branco Londres:</span> <strong>≈US$ 414/t</strong></span>
+    <span class="sep">|</span>
+    <span>🇧🇷 <span class="t-nt">Cristal SP:</span> <strong>em queda · liquidez baixa</strong></span>
+    <span class="sep">|</span>
+    <span>🌱 <span class="t-nt">Cana CS 26/27:</span> <strong>709,1 Mt (Conab)</strong></span>
+    <span class="sep">|</span>
+    <span>⛽ <span class="t-nt">Mix:</span> <strong>mais etanol</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-nt">Dólar:</span> <strong>R$ 5,03</strong></span>
+  </div>
+</header>
+
+<div class="hl-strip"><div class="hs-inner">
+  <h2>🍬 Fechamento de Maio 2026 + Perspectivas para Junho</h2>
+  <p>Moagem a todo vapor no Centro-Sul · superávit global com Índia e Tailândia · comprador retraído derruba o cristal · o petróleo como único coringa de alta</p>
+</div></div>
+
+<div class="container">
+
+<!-- SEÇÃO 1: PLACAR -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">💰</div><h2>Placar de Cotações — Fechamento Maio 2026</h2><div class="ln"></div></div>
+  <div class="placar">
+    <div class="p-card dn"><div class="p-lbl">NY #11 (ICE) — bruto</div><div class="p-val">≈13,8 ¢</div><div class="p-sub">centavos de US$ por libra</div><div class="p-var v-dn">▼ perto das mínimas de anos</div><div class="p-src">Fonte: ICE / Barchart</div></div>
+    <div class="p-card dn"><div class="p-lbl">Cristal — Cepea (SP)</div><div class="p-val">em queda</div><div class="p-sub">saca 50kg · Icumsa 130–180</div><div class="p-var v-dn">▼ liquidez baixa, comprador retraído</div><div class="p-src">Fonte: Cepea/Esalq mai/26</div></div>
+    <div class="p-card dn"><div class="p-lbl">Branco — Londres (#5)</div><div class="p-val">≈US$ 414</div><div class="p-sub">por tonelada</div><div class="p-var v-dn">▼ pressionado por Tailândia</div><div class="p-src">Fonte: ICE Londres</div></div>
+    <div class="p-card nt"><div class="p-lbl">Cana CS — safra 26/27</div><div class="p-val">709,1 Mt</div><div class="p-sub">moagem projetada (Conab)</div><div class="p-var v-nt">◆ oferta cheia amplia o adoçante</div><div class="p-src">Fonte: Conab 1º levantamento</div></div>
+    <div class="p-card nt"><div class="p-lbl">Açúcar BR — 26/27</div><div class="p-val">41–44 Mt</div><div class="p-sub">produção projetada</div><div class="p-var v-nt">◆ acima de 39,17 Mt em 25/26</div><div class="p-src">Fonte: Cepea / Unica</div></div>
+    <div class="p-card nt"><div class="p-lbl">Índice FAO açúcar</div><div class="p-val">89,8</div><div class="p-sub">pontos (jan/26)</div><div class="p-var v-dn">▼ patamar baixo — oferta folgada</div><div class="p-src">Fonte: FAO</div></div>
+  </div>
+
+  <div class="price-termo">
+    <h3>🌡️ Termômetro do Açúcar — onde estão os preços e a pressão de oferta</h3>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🍬 NY #11 (posição na faixa de anos)</span><span class="pl-val" style="color:#dc2626">≈13,8 ¢/lb</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:24%;background:linear-gradient(90deg,#dc2626,#f97316)"></div></div>
+      <div class="pt-scale"><span>mínimas plurianuais</span><span style="font-weight:700;color:var(--cinza)">zona de pressão</span><span>topo recente</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">🇧🇷 Cristal SP (físico)</span><span class="pl-val" style="color:#dc2626">em queda</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:30%;background:linear-gradient(90deg,#dc2626,#f97316)"></div></div>
+      <div class="pt-scale"><span>baixo</span><span style="font-weight:700;color:var(--cinza)">comprador adia, vendedor com pressa</span><span>alto</span></div></div>
+    <div class="pt-bar"><div class="pt-label"><span class="pl-name">⛽ Paridade açúcar × etanol</span><span class="pl-val" style="color:#d97706">etanol ganha espaço</span></div>
+      <div class="pt-track"><div class="pt-fill" style="width:55%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div></div>
+      <div class="pt-scale"><span>açúcar</span><span style="font-weight:700;color:var(--cinza)">petróleo alto favorece o álcool</span><span>etanol</span></div></div>
+    <div style="margin-top:10px;padding:12px;background:#f9fafb;border-radius:8px;font-size:.78rem;color:var(--cinza-l)">
+      <strong style="color:var(--marrom-l)">Leitura:</strong> tanto NY #11 quanto o cristal interno operam em <strong style="color:#dc2626">zona de pressão</strong> por oferta cheia. O único contrapeso é a <strong>paridade do etanol</strong>: com petróleo elevado, o álcool fica mais atrativo e a usina pode migrar o mix, tirando açúcar do mercado.
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>📈 Açúcar em Maio 2026 — NY #11 (¢/lb) × Cristal SP (índice de referência R$/sc)</h3>
+    <canvas id="chartMaio" height="95"></canvas>
+    <p class="nf">Fonte: ICE, Cepea/Esalq. A série do cristal é uma referência ilustrativa de tendência (indicador em queda). Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 2: FATOS -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">📰</div><h2>Os 6 Fatos que Moveram o Açúcar em Maio</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin-bottom:20px">
+    <div class="al red"><div class="ai">📉</div><div class="at"><h4>1. Cristal trava em SP com comprador retraído</h4><p>O Cepea aponta liquidez baixa no spot paulista: compradores recuaram das mesas à espera de novas baixas, enquanto a maior moagem reforça a percepção de <strong>oferta cheia</strong>. Vendedor terá pressa nas próximas semanas.</p></div></div>
+    <div class="al red"><div class="ai">🌍</div><div class="at"><h4>2. Superávit global pressiona o demerara</h4><p>O avanço das exportações da <strong>Tailândia</strong> nos primeiros 4 meses de 2026 derrubou o NY #11 na ICE. A <strong>Índia</strong> confirmou que não vai restringir exportações. O Índice FAO de açúcar em patamar baixo confirma a oferta folgada.</p></div></div>
+    <div class="al yellow"><div class="ai">🌱</div><div class="at"><h4>3. Moagem 26/27 a todo vapor</h4><p>A Conab projeta <strong>709,1 Mt de cana</strong> no Centro-Sul. O tempo firme e o baixo volume de chuvas anteciparam o calendário industrial — mais usinas ofertando açúcar e etanol ao mesmo tempo.</p></div></div>
+    <div class="al red"><div class="ai">⛽</div><div class="at"><h4>4. Etanol na menor média real desde 2024</h4><p>O hidratado abriu a safra 26/27 no menor patamar real desde jun/2024, com volume comercializado <strong>+75,1%</strong> no mês. Açúcar e etanol saem do mesmo colmo — a pressão de oferta é via de mão dupla.</p></div></div>
+    <div class="al blue"><div class="ai">🛢️</div><div class="at"><h4>5. Petróleo alto: o coringa de alta</h4><p>A escalada do Brent (crise no Golfo) e a alta pontual do NY #11 abrem espaço para recuperação dos preços internos. Petróleo caro torna o <strong>etanol mais atrativo</strong> e pode puxar o mix para o álcool.</p></div></div>
+    <div class="al yellow"><div class="ai">🔧</div><div class="at"><h4>6. ATR menor e mix mais alcooleiro</h4><p>Projeções apontam recuo no <strong>ATR médio</strong> da cana e mix mais voltado ao etanol (reforçado pelo E30 e pelo etanol de milho). Isso pode limitar a oferta interna de açúcar no curto prazo — único alívio para o preço.</p></div></div>
+  </div>
+  <div class="chart-card"><h3>📊 Produção Brasileira de Açúcar por Safra (Mt) — Oferta em Expansão</h3>
+    <canvas id="chartAnual" height="95"></canvas>
+    <p class="nf">Fonte: Unica/Cepea. 26/27 projetada entre 41 e 44 Mt, acima das 39,17 Mt de 25/26. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 3: ANÁLISE -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔬</div><h2>Análise Técnica + Fundamentalista — Dupla Visão</h2><div class="ln"></div></div>
+  <div class="termometros">
+    <div class="termo"><h4>Sentimento NY #11</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g1)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="34" y2="25" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">32 / 100</div><div class="termo-desc">Perto de mínimas plurianuais; superávit global pesa</div></div></div>
+    <div class="termo"><h4>Cristal BR (físico)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g2)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="31" y2="27" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">28 / 100</div><div class="termo-desc">Em queda; comprador adia, oferta cheia no spot paulista</div></div></div>
+    <div class="termo"><h4>Aperto da oferta global</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g3)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="27" y2="31" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">22 / 100</div><div class="termo-desc">Superávit elevado: Índia e Tailândia abastecem o mundo</div></div></div>
+    <div class="termo"><h4>Petróleo/etanol (suporte)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g4)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="57" y2="21" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">58 / 100</div><div class="termo-desc">Brent alto valoriza o etanol e pode puxar o mix</div></div></div>
+    <div class="termo"><h4>Demanda etanol interna</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#ef4444"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g5)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="41" y2="22" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">40 / 100</div><div class="termo-desc">Distribuidoras retraídas; E30 e anidro firmes amortecem</div></div></div>
+    <div class="termo"><h4>Custo financeiro (Selic)</h4><div class="termo-body">
+      <svg viewBox="0 0 100 60" class="termo-gauge"><defs><linearGradient id="g6" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#ef4444"/></linearGradient></defs>
+      <path d="M10 50 A40 40 0 0 1 90 50" fill="none" stroke="url(#g6)" stroke-width="10" stroke-linecap="round"/><line x1="50" y1="50" x2="68" y2="26" stroke="#1e1e2e" stroke-width="3" stroke-linecap="round"/><circle cx="50" cy="50" r="5" fill="#1e1e2e"/></svg>
+      <div class="termo-val">70 / 100</div><div class="termo-desc">Selic 14,5% pressiona caixa e acelera vendas na oferta cheia</div></div></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>📉 Análise Técnica — NY #11 (Maio 2026)</h3>
+      <p><strong>Tendência:</strong> baixa estrutural. O contrato bruto opera perto de mínimas plurianuais, na casa dos 13–14 ¢/lb, pressionado pela expectativa de superávit. Repiques pontuais (petróleo, dados de moagem) não revertem a tendência de fundo.</p>
+      <p><strong>Suportes:</strong> 13,0 ¢/lb → 12,5 ¢/lb. <strong>Resistências:</strong> 14,5 ¢/lb → 15,5 ¢/lb.</p>
+      <p>⚠ <span class="hl">A liquidação de posições (open interest caindo) sugere desmonte de comprados</span>, não formação de vendas novas — o que pode preparar terreno para repiques técnicos se o petróleo der suporte.</p>
+    </div>
+    <div class="abox vermelho">
+      <h3>🌎 Análise Fundamentalista — Oferta Domina</h3>
+      <p><strong>Global:</strong> superávit elevado. Índia mantém exportações abertas e a Tailândia embarca forte. Estoques confortáveis e o Índice FAO em patamar baixo confirmam um mundo bem abastecido de açúcar.</p>
+      <p><strong>Brasil:</strong> moagem 26/27 a todo vapor (709 Mt de cana). A produção de açúcar deve subir para 41–44 Mt. Açúcar e etanol chegam juntos ao mercado e a pressão de preço é dupla.</p>
+      <p><strong>O alívio:</strong> o <span class="hl">mix</span>. Com ATR menor e direcionamento ao etanol (E30 + etanol de milho), a oferta interna de açúcar pode ficar limitada no curto prazo — e o petróleo alto reforça essa migração.</p>
+    </div>
+  </div>
+
+  <div class="chart-card"><h3>⛽ Mix da Cana no Centro-Sul 2026/27 — Açúcar × Etanol (aprox)</h3>
+    <canvas id="chartShare" height="75"></canvas>
+    <p class="nf">Com petróleo alto e oferta cheia de açúcar, o mix tende a se inclinar para o etanol. Valores aproximados. Fonte: Unica/Cepea. Elaboração: Rural IN.</p></div>
+  <div class="chart-card"><h3>💵 Câmbio (R$/US$) em 2026 — Competitividade da Exportação</h3>
+    <canvas id="chartCambio" height="75"></canvas>
+    <p class="nf">Dólar firme melhora a paridade de exportação e dá algum piso ao adoçante. Fonte: Banco Central. Elaboração: Rural IN.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 4: GEOPOLÍTICA -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🌐</div><h2>Geopolítica e Macro — O que Monitorar</h2><div class="ln"></div></div>
+  <div class="geo-grid">
+    <div class="geo-card"><div class="geo-flag">🛢️</div><div class="geo-info"><h5>Petróleo / Brent</h5><p>O grande coringa. Brent elevado pela crise no Golfo valoriza o etanol e pode puxar o mix usineiro para o álcool, tirando açúcar do mercado e dando suporte ao preço.</p><span class="geo-status gs-up">Coringa de alta</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🇮🇳</div><div class="geo-info"><h5>Índia — Sem Restrição</h5><p>Confirmou que não vai banir exportações em 2026. Como 2º maior produtor mundial, mantém a oferta global folgada e o sentimento baixista.</p><span class="geo-status gs-dn">Bearish</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🇹🇭</div><div class="geo-info"><h5>Tailândia</h5><p>Exportações fortes nos primeiros meses de 2026 derrubaram o demerara em NY. Junto com Índia e Brasil, dita o piso global do adoçante.</p><span class="geo-status gs-dn">Pressão</span></div></div>
+    <div class="geo-card"><div class="geo-flag">🇨🇳</div><div class="geo-info"><h5>China — Importação</h5><p>O apetite chinês pode dar fôlego pontual ao branco/demerara. Monitorar o ritmo de compras como possível ponto de inflexão da curva.</p><span class="geo-status gs-nt">Monitorar</span></div></div>
+    <div class="geo-card"><div class="geo-flag">⚡</div><div class="geo-info"><h5>Política do Etanol (E30)</h5><p>Mistura obrigatória de anidro a 30% na gasolina + avanço do etanol de milho elevam a demanda estrutural por álcool e reforçam o peso do mix na decisão das usinas.</p><span class="geo-status gs-up">Estrutural</span></div></div>
+    <div class="geo-card"><div class="geo-flag">💵</div><div class="geo-info"><h5>Câmbio e Selic 14,5%</h5><p>Dólar firme melhora a exportação; Selic alta pressiona o caixa das usinas e acelera vendas num mercado já de oferta cheia.</p><span class="geo-status gs-nt">Câmbio crítico</span></div></div>
+  </div>
+  <div class="chart-card"><h3>🎯 Projeção de Preço Junho 2026 — NY #11 por Cenário (¢/lb)</h3>
+    <canvas id="chartProjecao" height="85"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Faixas por cenário, baseadas em análise técnica + fundamentalista.</p></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 5: PERSPECTIVAS JUNHO -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">🔭</div><h2>Perspectivas para Junho 2026 — Cenários e Projeções</h2><div class="ln"></div></div>
+  <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px">
+    <span class="badge-neon bn-dn">🍬 NY #11: 12,8–15,5 ¢/lb</span>
+    <span class="badge-neon bn-dn">🇧🇷 Cristal SP: pressionado</span>
+    <span class="badge-neon bn-green">🌱 Oferta cheia (cana 709 Mt)</span>
+    <span class="badge-neon bn-blue">⛽ Petróleo: o coringa</span>
+    <span class="badge-neon bn-gold">🔧 Mix etanol: o alívio</span>
+  </div>
+  <div class="scen-grid">
+    <div class="sc opt"><div class="sc-header"><div class="sc-dot"></div><h4>🟢 Cenário Otimista</h4></div>
+      <ul><li><span>Brent alto valoriza o etanol</span></li><li><span>Usina migra mix para o álcool</span></li><li><span>Clima adverso em Índia/Tailândia</span></li><li><span>NY #11 reage a 14,5–15,5 ¢/lb</span></li></ul>
+      <div class="sc-prob">Prob. 20% — Depende do petróleo</div></div>
+    <div class="sc neu"><div class="sc-header"><div class="sc-dot"></div><h4>🟡 Cenário Base (mais provável)</h4></div>
+      <ul><li><span>NY #11 lateral 13,5–14,0 ¢/lb</span></li><li><span>Mix mais etanol limita oferta de açúcar</span></li><li><span>Demanda pontual ainda fraca</span></li><li><span>Cristal SP segue pressionado</span></li></ul>
+      <div class="sc-prob">Prob. 35% — Acomodação em baixa</div></div>
+    <div class="sc pes"><div class="sc-header"><div class="sc-dot"></div><h4>🔴 Cenário Pessimista</h4></div>
+      <ul><li><span>Superávit global se confirma</span></li><li><span>Tailândia e Índia mantêm oferta</span></li><li><span>Moagem CS acelera e despeja produto</span></li><li><span>NY #11 cede a 12,8–13,2 ¢/lb</span></li></ul>
+      <div class="sc-prob">Prob. 45% — Oferta cheia manda</div></div>
+  </div>
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista para Junho — Dr. Sidney Souza</h3>
+    <p>O açúcar entra em junho com o <span class="hl" style="background:linear-gradient(transparent 60%,rgba(79,179,169,.45) 60%)">vento contra</span>: oferta cheia dentro e fora do Brasil. A moagem do Centro-Sul acelerou com o tempo seco, Índia e Tailândia abastecem o mundo, e o comprador interno tem o luxo de esperar a baixa, porque sabe que o vendedor terá pressa.</p>
+    <p>Do ponto de vista fundamentalista, o cenário é de superávit. Mas há um detalhe técnico que pode salvar parte da receita: o <strong>mix</strong>. Açúcar e etanol saem do mesmo colmo, e a decisão de quanto produzir de cada um responde à paridade. Com petróleo elevado pela crise no Golfo, o etanol fica mais atrativo — e a usina que migra o mix para o álcool tira açúcar do mercado, limitando a oferta e dando algum suporte ao preço.</p>
+    <p>Esse é o fio de esperança altista, e ele mora num lugar inesperado: no barril de petróleo, não no canavial. Por isso minha leitura é de <strong>baixa com possibilidade de repiques</strong> — não conte com a alta, mas esteja pronto para capturá-la se o petróleo disparar.</p>
+    <p>Para o produtor de cana e o fornecedor, a decisão central é de <strong>ritmo de comercialização e gestão de caixa</strong>. Num mercado de oferta cheia, fixar preço em parcelas e travar etanol nas janelas de recuperação vale mais do que apostar numa virada rápida.</p>
+    <div class="quote">"Em mercado de oferta cheia, segurar produto esperando a virada custa caro — o vendedor sempre tem mais pressa que o comprador. A jogada é fixar aos poucos, acompanhar a paridade açúcar-etanol e deixar o petróleo ser um bônus, não uma aposta."</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SEÇÃO 6: RECOMENDAÇÕES -->
+<section class="section">
+  <div class="sec-title"><div class="sec-icon">✅</div><h2>Recomendações Práticas para o Produtor</h2><div class="ln"></div></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px">
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--amarelo)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📌</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--marrom-l)">Ritmo de fixação</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Em oferta cheia, fixe preço <strong>em parcelas</strong>, não tudo de uma vez. Aproveite repiques pontuais (petróleo, dados de moagem) para travar etanol e açúcar. Segurar produto esperando a virada tende a custar caro quando o vendedor tem pressa de caixa.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #16a34a">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">⛽</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--verde-s)">Calibrar o mix</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">Acompanhe semanalmente a diferença entre o cristal interno e o demerara em NY, e a paridade do etanol. Com petróleo alto, o álcool pode justificar o redirecionamento. O mix é a alavanca de receita mais importante da usina em 2026.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid var(--azul-l)">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">💧</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--azul)">ATR e produtividade</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75">O recuo do ATR médio reduz o açúcar por tonelada de cana e impacta a receita por hectare (Consecana). Manejo de qualidade e produtividade agrícola é o que protege a margem do fornecedor num ano de preço fraco.</p></div>
+    <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:var(--sombra);border-top:4px solid #dc2626">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:1.5rem">📡</span><h4 style="font-family:'Playfair Display',serif;font-size:.98rem;color:var(--vermelho)">O que monitorar em junho</h4></div>
+      <p style="font-size:.84rem;color:var(--cinza);line-height:1.75"><strong>1.</strong> Preço do Brent / petróleo.<br><strong>2.</strong> Relatórios quinzenais de moagem da Unica.<br><strong>3.</strong> Exportações de Índia e Tailândia.<br><strong>4.</strong> Importações da China.<br><strong>5.</strong> Câmbio e a paridade de exportação.</p></div>
+  </div>
+
+  <div class="chart-card"><h3>🚦 Semáforo do Açúcar — Indicadores-Chave no Fechamento de Maio 2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">NY #11</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">≈13,8¢ — perto de mínimas</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Cristal SP</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">em queda · liquidez baixa</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Oferta global</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">superávit — bearish</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Petróleo/etanol</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">Brent alto — coringa de alta</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><div><strong style="font-size:.85rem">Mix da cana</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">mais etanol — limita açúcar</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><div><strong style="font-size:.85rem">Câmbio</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">R$5,03 — dá algum piso</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#ef4444;flex-shrink:0"></span><div><strong style="font-size:.85rem">Selic 14,5%</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">pressão de caixa nas usinas</span></div></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f9fafb;border-radius:10px"><span style="width:12px;height:12px;border-radius:50%;background:#f59e0b;flex-shrink:0"></span><div><strong style="font-size:.85rem">Demanda etanol</strong><br><span style="font-size:.73rem;color:var(--cinza-l)">E30 e anidro firmes</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl"><div class="brand">Rural<span> IN</span></div><div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.78rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p></div>
+      <div class="fc"><h4>Análise e Construção</h4>
+        <p><strong>Dr. Sidney Souza</strong><br>Economista e Adm. Agrícola<br>Estrategista Econômico do Produtor<br>Especialista em economia da fazenda e gestão de risco no agro<br>Transformamos dados da fazenda em decisões econômicas<br>Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+        🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>📱 @ruralin.ai<br>✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>📞 (64) 9 9226-6886</p></div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO AÇÚCAR · EDIÇÃO MAIO 2026 + PERSPECTIVAS JUNHO · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: ICE · CEPEA/ESALQ · CONAB · UNICA · FAO · BANCO CENTRAL · BROTO NOTÍCIAS · REUTERS
+    </div>
+  </div>
+</footer>
+
+<script>
+Chart.defaults.color='#6b7280';Chart.defaults.borderColor='rgba(0,0,0,.06)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const am='#2f8f86',amL='#4fb3a9',verde='#16a34a',verm='#dc2626',azul='#1e40af',azulL='#3b82f6';
+
+new Chart(document.getElementById('chartMaio'),{type:'line',
+ data:{labels:['01/05','05/05','08/05','12/05','15/05','19/05','22/05','26/05','29/05'],
+  datasets:[
+   {label:'NY #11 (¢/lb)',data:[14.2,14.0,13.9,13.7,13.8,13.9,13.8,13.7,13.8],
+    borderColor:am,backgroundColor:'rgba(47,143,134,.10)',borderWidth:3,tension:.35,fill:true,pointRadius:4,yAxisID:'y'},
+   {label:'Cristal SP (índice ref. R$/sc)',data:[120,119,118,116,115,114,113,112,112],
+    borderColor:'#dc2626',backgroundColor:'rgba(220,38,38,.04)',borderWidth:2.5,tension:.3,fill:false,pointRadius:4,yAxisID:'y2',borderDash:[6,3]}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{position:'left',min:13,max:15,ticks:{callback:v=>v+' ¢'},grid:{color:'rgba(0,0,0,.04)'}},
+   y2:{position:'right',min:108,max:124,ticks:{callback:v=>'R$ '+v},grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartAnual'),{type:'bar',
+ data:{labels:['24/25','25/26','26/27 proj.'],
+  datasets:[{label:'Açúcar BR (Mt)',data:[40.0,39.17,42.5],
+   backgroundColor:['rgba(47,143,134,.5)','rgba(47,143,134,.65)','rgba(47,143,134,.9)'],borderRadius:8}]},
+ options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' Mt'}}},
+  scales:{y:{min:35,ticks:{callback:v=>v+' Mt'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartShare'),{type:'doughnut',
+ data:{labels:['Açúcar (~48%)','Etanol (~52%)'],
+  datasets:[{data:[48,52],backgroundColor:['rgba(47,143,134,.85)','rgba(245,158,11,.8)'],borderWidth:2,borderColor:'#fff'}]},
+ options:{responsive:true,plugins:{legend:{position:'right',labels:{usePointStyle:true,padding:12}},tooltip:{callbacks:{label:c=>c.label+': '+c.raw+'%'}}}}});
+
+new Chart(document.getElementById('chartCambio'),{type:'line',
+ data:{labels:['Jan','Fev','Mar','Abr','Mai/26'],
+  datasets:[
+   {label:'USD/BRL',data:[5.95,5.78,5.62,5.20,5.03],borderColor:azulL,backgroundColor:'rgba(59,130,246,.08)',borderWidth:3,tension:.35,fill:true,pointRadius:5},
+   {label:'Piso crítico R$5,00',data:[5,5,5,5,5],borderColor:'#dc2626',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false}]},
+ options:{responsive:true,interaction:{mode:'index',intersect:false},
+  plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+  scales:{y:{min:4.5,max:6.5,ticks:{callback:v=>'R$ '+v.toFixed(2)},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+
+new Chart(document.getElementById('chartProjecao'),{type:'bar',
+ data:{labels:['1ª sem jun','2ª sem jun','3ª sem jun','4ª sem jun'],
+  datasets:[
+   {label:'Pessimista',data:[13.2,13.0,12.8,13.0],backgroundColor:'rgba(220,38,38,.55)',borderRadius:6},
+   {label:'Base',data:[13.8,13.9,13.7,14.0],backgroundColor:'rgba(47,143,134,.85)',borderRadius:6},
+   {label:'Otimista',data:[14.5,15.0,15.3,15.5],backgroundColor:'rgba(22,163,74,.6)',borderRadius:6}]},
+ options:{responsive:true,plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+  tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+' ¢/lb'}}},
+  scales:{y:{min:12,ticks:{callback:v=>v+' ¢'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+</script>
+</body>
+</html>
