@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro da Soja | Semana 01–05/Jun/2026 | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --am:#b8860b;--am-l:#d4a017;--am-xl:#f0c040;--am-pale:#fef9e7;
+  --verde:#166534;--verde-l:#16a34a;--verde-xl:#4ade80;
+  --verm:#991b1b;--verm-l:#dc2626;
+  --azul:#1e3a8a;--azul-l:#2563eb;
+  --laranja:#92400e;--laranja-l:#d97706;
+  --cinza-esc:#1c2526;--cinza:#374151;--cinza-l:#6b7280;
+  --bg:#fdfbf2;--sombra:0 4px 20px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a0e00 0%,#4a2c00 45%,var(--am-l) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-70px;right:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(240,192,64,.2) 0%,transparent 70%);border-radius:50%}
+.h-top{max-width:1140px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;line-height:1;color:#fff}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--am-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--am-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.hb{font-family:'JetBrains Mono',monospace;font-size:.67rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-dn{background:rgba(220,38,38,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.hb-am{background:rgba(212,160,23,.25);color:var(--am-xl);border:1px solid rgba(240,192,64,.4)}
+.hb-up{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(134,239,172,.3)}
+
+/* ── TICKER ── */
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--am-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#e5e7eb;font-weight:600}
+.sep{color:rgba(255,255,255,.18)}
+.t-dn{color:#f87171!important}.t-up{color:#4ade80!important}.t-am{color:var(--am-xl)!important}
+
+/* ── FATO ALERTA ── */
+.fato-alerta{background:linear-gradient(135deg,#fff1f2,#fde8e6);border:2px solid var(--verm-l);border-radius:14px;padding:18px 22px;margin:22px 0;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--sombra)}
+.fato-alerta.am{background:var(--am-pale);border-color:var(--am-l)}
+.fato-alerta .fi{font-size:2rem;flex-shrink:0}
+.fato-alerta h3{font-family:'Playfair Display',serif;color:var(--verm);font-size:1.05rem;margin-bottom:5px}
+.fato-alerta.am h3{color:var(--laranja)}
+.fato-alerta p{font-size:.86rem;color:var(--cinza);line-height:1.7}
+
+/* ── BANNER ── */
+.hl-banner{background:linear-gradient(135deg,#1a0e00,#3d2000);padding:18px 24px;text-align:center;border-bottom:3px solid var(--am-l)}
+.hl-banner h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;font-weight:700}
+.hl-banner p{font-size:.83rem;color:rgba(255,255,255,.57);margin-top:5px}
+
+/* ── CONTAINER ── */
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+.section{padding:40px 0 28px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:var(--am-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.42rem;color:var(--laranja);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--am-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--am-l),transparent)}
+
+/* ── PLACAR ── */
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.pc{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.pc.dn::before{background:linear-gradient(90deg,var(--verm),#f87171)}
+.pc.nt::before{background:linear-gradient(90deg,var(--am-l),var(--am-xl))}
+.pc.up::before{background:linear-gradient(90deg,var(--verde-l),var(--verde-xl))}
+.pc .lbl{font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.pc .val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.pc .var{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:700;margin-top:5px}
+.v-up{color:var(--verde-l)}.v-dn{color:var(--verm-l)}.v-nt{color:var(--am-l)}
+.pc .sub{font-size:.73rem;color:var(--cinza-l);margin-top:4px;line-height:1.4}
+.pc .src{font-size:.62rem;color:#ccc;margin-top:5px}
+
+/* ── GRÁFICO ── */
+.cw{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.cw h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--laranja);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid #f0ede0}
+.cw .nf{font-size:.67rem;color:#bbb;font-style:italic;margin-top:7px}
+
+/* ── TERMÔMETRO ── */
+.termos{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:20px}
+.termo{background:#fff;border-radius:14px;padding:18px 14px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:10px}
+.termo-body{display:flex;flex-direction:column;align-items:center;gap:6px}
+.termo-gauge{width:86px;height:86px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--cinza-esc)}
+.termo-desc{font-size:.72rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+
+/* ── BARRA DE PREÇO ── */
+.price-barra{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.price-barra h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--laranja);margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #f0ede0}
+.pb-row{margin-bottom:14px}
+.pb-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.82rem}
+.pb-name{font-weight:600;color:var(--cinza)}
+.pb-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.84rem}
+.pb-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pb-fill{height:100%;border-radius:8px}
+.pb-custo{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px}
+.pb-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--cinza-l)}
+.pb-legend{margin-top:12px;padding:10px;background:#f9f7f0;border-radius:8px;font-size:.75rem;color:var(--cinza-l)}
+
+/* ── FATOS ── */
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.red{background:#fef2f2;border-color:rgba(220,38,38,.3)}
+.al.am{background:var(--am-pale);border-color:rgba(212,160,23,.4)}
+.al.green{background:#f0fdf4;border-color:rgba(22,163,74,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(37,99,235,.3)}
+.al.orange{background:#fff7ed;border-color:rgba(217,119,6,.35)}
+.al .ai{font-size:1.35rem;flex-shrink:0;margin-top:2px}
+.al .at h4{font-size:.87rem;font-weight:700;margin-bottom:3px}
+.al.red .at h4{color:var(--verm)}.al.am .at h4{color:var(--laranja)}.al.green .at h4{color:var(--verde)}.al.blue .at h4{color:var(--azul)}.al.orange .at h4{color:var(--laranja)}
+.al .at p{font-size:.81rem;color:var(--cinza-l);line-height:1.6}
+
+/* ── ABOX ── */
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:16px;border-left:5px solid var(--am-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.verm{border-left-color:var(--verm-l)}.abox.azul{border-left-color:var(--azul-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--laranja);font-size:1.04rem;margin-bottom:10px}
+.abox.verde h3{color:var(--verde)}.abox.verm h3{color:var(--verm)}.abox.azul h3{color:var(--azul)}
+.abox p{font-size:.88rem;color:var(--cinza);line-height:1.82}
+.abox p+p{margin-top:8px}
+
+/* ── CENÁRIOS ── */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:15px;margin-bottom:18px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:var(--verde-l)}
+.sc.neu{background:linear-gradient(135deg,#fefce8,var(--am-pale));border-color:var(--am-l)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:var(--verm-l)}
+.sc-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:var(--verde-l)}.sc.neu .sc-dot{background:var(--am-l)}.sc.pes .sc-dot{background:var(--verm-l)}
+.sc h4{font-family:'Playfair Display',serif;font-size:.96rem;font-weight:700}
+.sc.opt h4{color:var(--verde)}.sc.neu h4{color:var(--laranja)}.sc.pes h4{color:var(--verm)}
+.sc ul{list-style:none;font-size:.82rem;color:var(--cinza);line-height:1.82}
+.sc ul li::before{content:'›  ';font-weight:700}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:5px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:var(--verde)}.sc.neu .sc-prob{background:var(--am-pale);color:var(--laranja)}.sc.pes .sc-prob{background:#fee2e2;color:var(--verm)}
+
+/* ── PERCEPÇÃO ── */
+.percepcao{background:linear-gradient(135deg,#1a0e00,#3d2000);border-radius:16px;padding:30px;color:#fff;margin-bottom:18px}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--am-xl);margin-bottom:12px}
+.percepcao p{font-size:.89rem;line-height:1.85;color:rgba(255,255,255,.85)}
+.percepcao p+p{margin-top:10px}
+.percepcao .hl{background:linear-gradient(transparent 60%,rgba(240,192,64,.3) 60%)}
+.percepcao .quote{border-left:3px solid var(--am-l);padding-left:16px;font-style:italic;margin-top:14px;color:var(--am-xl);font-size:.88rem}
+
+/* ── SEMÁFORO ── */
+.sem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;margin-top:12px}
+.sem-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-radius:10px;box-shadow:var(--sombra)}
+.sd-g{background:var(--verde-l)}.sd-y{background:var(--am-xl)}.sd-r{background:var(--verm-l)}
+.sem-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sem-item strong{font-size:.84rem;display:block;color:var(--cinza-esc)}
+.sem-item span{font-size:.71rem;color:var(--cinza-l)}
+
+/* ── G2 ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ── FOOTER ── */
+.footer{background:var(--cinza-esc);color:#fff;padding:50px 24px 28px}
+.fi{max-width:1140px;margin:0 auto}
+.ft{display:flex;gap:32px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:22px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--am-xl)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.76rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--am-xl);font-size:1.08rem;margin-bottom:7px}
+.fc p{font-size:.81rem;color:rgba(255,255,255,.7);line-height:1.9}
+.fc a{color:var(--am-xl);text-decoration:none}
+.fc a:hover{text-decoration:underline}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.26);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .g2{grid-template-columns:1fr}
+  .logo-txt h1{font-size:1.5rem}
+  .h-top{flex-direction:column;align-items:flex-start}
+  .h-meta{text-align:left}
+  .h-badges{justify-content:flex-start}
+  .ft{flex-direction:column}
+  .pc .val{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#d4a017"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#1a0e00">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#1a0e00" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#1a0e00" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt">
+        <h1>Radar Agro da Soja</h1>
+        <div class="sub">Semana 01–05 Jun 2026 · Rural IN</div>
+      </div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">Análise Semanal · PhD Mercado Agro</div>
+      <div class="dt">05 de Junho de 2026</div>
+      <div class="h-badges">
+        <span class="hb hb-dn">CBOT Jul: US$ 11,26/bu ▼−5%</span>
+        <span class="hb hb-nt">Paranaguá: R$ 132/sc</span>
+        <span class="hb hb-dn">MT: R$ 104–110/sc</span>
+        <span class="hb hb-am">⚠ Semana de forte volatilidade</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🌱 <span class="t-am">CBOT Jul/26:</span> <strong>US$ 11,26/bu</strong> <span class="t-dn">▼−5% na semana</span></span>
+    <span class="sep">|</span>
+    <span>🚢 <span class="t-am">Paranaguá:</span> <strong>R$ 132,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🏜️ <span class="t-am">MT (Rondonópolis):</span> <strong>R$ 110,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🌾 <span class="t-am">Passo Fundo (RS):</span> <strong>R$ 126,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🌾 <span class="t-am">Cascavel (PR):</span> <strong>R$ 121,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-am">Dólar:</span> <strong>R$ 5,0450</strong></span>
+    <span class="sep">|</span>
+    <span>📦 <span class="t-am">El Niño:</span> <strong>Em desenvolvimento</strong></span>
+  </div>
+</header>
+
+<!-- ── BANNER ── -->
+<div class="hl-banner">
+  <div>
+    <h2>🌱 Semana de Forte Queda em Chicago — CBOT perde US$ 11,30 com Clima Ideal nos EUA</h2>
+    <p>CBOT Jul/26 despenca >5% na semana · Feriado de quinta trava comercialização · Físico BR resiste ancorado no câmbio · El Niño se desenvolve no radar · Análise técnica e perspectivas</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ── FATO DA SEMANA ── -->
+<div class="fato-alerta">
+  <div class="fi">📉</div>
+  <div>
+    <h3>FATO DA SEMANA — CBOT Despenca: "Menor Nível desde Início de Fevereiro"</h3>
+    <p><strong>Safras & Mercado (05/jun):</strong> "A semana foi marcada pela forte queda dos contratos futuros da soja negociados na CBOT. Mesmo com a valorização do dólar, o recuo de Chicago — associado ao feriado de quinta (Corpus Christi) — retirou ímpeto dos negociadores. Os contratos com vencimento em julho, os mais negociados, apresentaram desvalorização superior a 5%, cotados na manhã de sexta a <strong>US$ 11,26/bu, o menor nível desde o início de fevereiro</strong>." A retração é reflexo direto do clima favorável nos EUA — lavouras 2026/27 com boa evolução e mercado revisando para cima o potencial produtivo americano.</p>
+  </div>
+</div>
+
+<div class="fato-alerta am">
+  <div class="fi">🌡️</div>
+  <div>
+    <h3>ALERTA CLIMÁTICO — El Niño em Desenvolvimento: Risco para o Plantio 2026/27</h3>
+    <p>A meteorologista Josélia Pegorim (Canal Rural, 01/jun) alertou: <strong>El Niño está em fase inicial e deve ganhar força no fim do inverno e na primavera</strong>. "O fenômeno não influencia o clima do Brasil em junho ainda, mas seus efeitos mais relevantes devem aparecer na primavera e no verão" — justamente o período de plantio da soja 2026/27. <strong>Calor excessivo e chuva irregular</strong> podem impactar a semeadura no CO e Matopiba a partir de setembro. Se confirmar, esse seria o principal gatilho de alta da CBOT nos próximos meses.</p>
+  </div>
+</div>
+
+<!-- ══════════════════
+     SEÇÃO 1: COTAÇÕES
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">💰</div>
+    <h2>Placar de Cotações — Semana 01–05/Jun/2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="placar">
+    <div class="pc dn">
+      <div class="lbl">CBOT Jul/26 (Sexta-feira)</div>
+      <div class="val">US$ 11,26</div>
+      <div class="var v-dn">▼ −5%+ na semana</div>
+      <div class="sub">Mínimo desde início de fevereiro/26</div>
+      <div class="src">Fonte: CME Group / Safras & Mercado</div>
+    </div>
+    <div class="pc dn">
+      <div class="lbl">CBOT — 4ª/5ª (Pico da queda)</div>
+      <div class="val">US$ 11,30</div>
+      <div class="var v-dn">▼ −30 pts na 5ª (04/jun) · −20 pts na 4ª</div>
+      <div class="sub">04/jun: "soja desaba quase 30 pts e perde US$11,30"</div>
+      <div class="src">Fonte: Notícias Agrícolas / CBOT</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Paranaguá / Santos (porto)</div>
+      <div class="val">R$ 132</div>
+      <div class="var v-nt">↔ Estável na semana</div>
+      <div class="sub">Câmbio sustenta físico portuário</div>
+      <div class="src">Fonte: Safras & Mercado / Grão Direto</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Passo Fundo — RS</div>
+      <div class="val">R$ 126</div>
+      <div class="var v-nt">↔ Sem alteração na semana</div>
+      <div class="sub">Estável — comercialização travada</div>
+      <div class="src">Fonte: Safras & Mercado 05/jun</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Cascavel — PR</div>
+      <div class="val">R$ 121</div>
+      <div class="var v-nt">↔ Sem alteração na semana</div>
+      <div class="sub">Feriado de 5ª travou negócios no PR</div>
+      <div class="src">Fonte: Safras & Mercado 05/jun</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Rondonópolis — MT</div>
+      <div class="val">R$ 110</div>
+      <div class="var v-nt">↔ Estável na semana</div>
+      <div class="sub">Abaixo do custo de produção (~R$120/sc)</div>
+      <div class="src">Fonte: Safras & Mercado 05/jun</div>
+    </div>
+  </div>
+
+  <!-- TERMÔMETRO PREÇO REGIONAL -->
+  <div class="price-barra">
+    <h3>🌡️ Termômetro Regional — Onde Está o Preço vs. Custo de Produção (05/Jun/2026)</h3>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🏜️ Mato Grosso (Sorriso/MT)</span><span class="pb-val" style="color:var(--verm-l)">R$ 104/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:37%;background:linear-gradient(90deg,#dc2626,#f97316)"></div><div class="pb-custo" style="left:57%"></div></div>
+      <div class="pb-scale"><span>R$ 80 (fundo)</span><span style="font-weight:700;color:var(--cinza)">Custo: R$120/sc ▲</span><span>R$ 160</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🏜️ Rondonópolis / Lucas RV</span><span class="pb-val" style="color:var(--verm-l)">R$ 110/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:44%;background:linear-gradient(90deg,#dc2626,#f59e0b)"></div><div class="pb-custo" style="left:57%"></div></div>
+      <div class="pb-scale"><span>R$ 80</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$118/sc</span><span>R$ 160</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🌾 Cascavel — PR</span><span class="pb-val" style="color:var(--verm-l)">R$ 121/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:51%;background:linear-gradient(90deg,#f59e0b,#d97706)"></div><div class="pb-custo" style="left:51%"></div></div>
+      <div class="pb-scale"><span>R$ 80</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$115/sc</span><span>R$ 160</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🌾 Passo Fundo — RS</span><span class="pb-val" style="color:var(--am-l)">R$ 126/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:57%;background:linear-gradient(90deg,#d97706,#f59e0b)"></div><div class="pb-custo" style="left:52%"></div></div>
+      <div class="pb-scale"><span>R$ 80</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$115/sc</span><span>R$ 160</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🚢 Paranaguá / Santos (FOB)</span><span class="pb-val" style="color:var(--verde-l)">R$ 132/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:65%;background:linear-gradient(90deg,var(--verde-l),#4ade80)"></div><div class="pb-custo" style="left:50%"></div></div>
+      <div class="pb-scale"><span>R$ 80</span><span style="font-weight:700;color:var(--cinza)">Referência FOB</span><span>R$ 160</span></div>
+    </div>
+
+    <div class="pb-legend">
+      <strong style="color:var(--laranja)">Legenda:</strong> A barra mostra o posicionamento do preço atual entre o fundo histórico (R$80) e o teto recente (R$160). A marcação vertical indica o <strong>custo médio de produção</strong>. Barra que <em>não alcança</em> a marcação = <span style="color:var(--verm-l)">zona de prejuízo</span>. MT interior está claramente abaixo do custo → produtor queimando caixa.
+    </div>
+  </div>
+
+  <!-- GRÁFICO SEMANA -->
+  <div class="cw">
+    <h3>📈 Evolução Diária da Semana — CBOT Jul/26 (US$/bu) e Paranaguá (R$/sc)</h3>
+    <canvas id="chartSemana" height="90"></canvas>
+    <p class="nf">★ Quinta-feira (04/jun) = Feriado Corpus Christi no Brasil — mercado físico sem negócios; CBOT operou normalmente e despencou ~30 pts intraday (ponto cinza). Sexta (05/jun): CBOT fechou US$11,26/bu — mínima desde fevereiro. Paranaguá manteve R$132/sc estável nos dois dias (câmbio escudo). Fonte: CME Group / Safras & Mercado / Notícias Agrícolas. Elaboração: Rural IN — Dr. Sidney Souza.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 2: TERMÔMETROS
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌡️</div>
+    <h2>Termômetros de Mercado — Sentimento da Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="termos">
+    <!-- CBOT -->
+    <div class="termo">
+      <h4>Sentimento CBOT</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="ga" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ga)" stroke-width="9" stroke-linecap="round"/>
+          <!-- agulha bearish (≈20%) -->
+          <line x1="43" y1="48" x2="22" y2="24" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">22 / 100</div>
+        <div class="termo-desc">CBOT em mínima desde fev · Clima EUA derrubou prêmio</div>
+      </div>
+    </div>
+    <!-- Físico BR -->
+    <div class="termo">
+      <h4>Físico Brasil</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gb)" stroke-width="9" stroke-linecap="round"/>
+          <!-- agulha neutra (≈50%) -->
+          <line x1="43" y1="48" x2="43" y2="14" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">48 / 100</div>
+        <div class="termo-desc">Estável — câmbio segura o físico mesmo com Chicago em queda</div>
+      </div>
+    </div>
+    <!-- Demanda China -->
+    <div class="termo">
+      <h4>Demanda China</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="gc" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gc)" stroke-width="9" stroke-linecap="round"/>
+          <!-- agulha 42% -->
+          <line x1="43" y1="48" x2="23" y2="21" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">42 / 100</div>
+        <div class="termo-desc">China comprando devagar — acordo EUA-China não aqueceu ritmo esperado</div>
+      </div>
+    </div>
+    <!-- Clima EUA -->
+    <div class="termo">
+      <h4>Risco Clima EUA</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="gd" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gd)" stroke-width="9" stroke-linecap="round"/>
+          <!-- agulha 18% = bom clima -->
+          <line x1="43" y1="48" x2="19" y2="28" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">18 / 100</div>
+        <div class="termo-desc">Lavouras EUA com ótimo desenvolvimento — principal vetor de queda da semana</div>
+      </div>
+    </div>
+    <!-- Pressão Venda -->
+    <div class="termo">
+      <h4>Pressão Venda BR</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="ge" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ge)" stroke-width="9" stroke-linecap="round"/>
+          <!-- 72% -->
+          <line x1="43" y1="48" x2="66" y2="24" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">72 / 100</div>
+        <div class="termo-desc">Produtor com dívidas, soja em armazém e Chicago caindo — pressão para vender</div>
+      </div>
+    </div>
+    <!-- El Niño -->
+    <div class="termo">
+      <h4>El Niño 2026/27</h4>
+      <div class="termo-body">
+        <svg class="termo-gauge" viewBox="0 0 86 56">
+          <defs><linearGradient id="gf" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gf)" stroke-width="9" stroke-linecap="round"/>
+          <!-- 55% -->
+          <line x1="43" y1="48" x2="53" y2="14" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">55 / 100</div>
+        <div class="termo-desc">Em desenvolvimento — risco aumenta na primavera · Gatilho potencial de alta</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 3: FATOS DA SEMANA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📰</div>
+    <h2>Os 5 Fatos que Moveram o Mercado nesta Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:18px">
+
+    <div class="al red">
+      <div class="ai">❄️</div>
+      <div class="at">
+        <h4>1. Clima Ideal nos EUA Derruba CBOT — −5% na Semana</h4>
+        <p>Lavouras americanas 2026/27 com excelente evolução segundo o Crop Progress do USDA de 31/mai. Sem ameaça climática relevante no radar imediato, fundos ajustaram posições vendidas, derrubando o contrato julho de US$11,85 para US$11,26/bu — <strong>queda de mais de 5% em 5 dias</strong>. "O mercado climático perdeu força justamente no período em que a oleaginosa costuma ganhar volatilidade" (Agronews).</p>
+      </div>
+    </div>
+
+    <div class="al orange">
+      <div class="ai">🇧🇷</div>
+      <div class="at">
+        <h4>2. Feriado de Corpus Christi Trava Comercialização</h4>
+        <p>O feriado de quinta-feira (04/jun — Corpus Christi) reduziu a semana efetiva para 4 pregões no Brasil. <strong>"O feriado de quinta retirou ímpeto dos negociadores"</strong> (Safras & Mercado). Isso limitou a pressão vendedora sobre o físico — mesmo com Chicago em forte queda, as praças internas mantiveram estabilidade por falta de negociadores ativos.</p>
+      </div>
+    </div>
+
+    <div class="al am">
+      <div class="ai">💵</div>
+      <div class="at">
+        <h4>3. Câmbio Sustenta o Físico — Dólar Valorizado Protege</h4>
+        <p>O dólar em R$5,0450 funcionou como <strong>escudo protetor do físico brasileiro</strong>. Mesmo com CBOT caindo 5%, a valorização cambial compensou parte da perda. <strong>"Mesmo com queda em Chicago, câmbio mais alto e condições de pagamento alongadas garantem movimentação no mercado físico"</strong> (Canal Rural). Paranaguá manteve R$132/sc estável na semana.</p>
+      </div>
+    </div>
+
+    <div class="al red">
+      <div class="ai">🌍</div>
+      <div class="at">
+        <h4>4. China Não Aquece Compras dos EUA — Acordo sem Efeito Prático</h4>
+        <p>Safras & Mercado (05/jun): <strong>"Pelo lado da demanda, o mercado ainda não enxerga o prometido aquecimento das compras chinesas de produto americano, apesar do acordo"</strong>. A tarifa extra de 10% sobre produtos agrícolas americanos segue vigente. Esmagadoras chinesas ainda operando no prejuízo. O Brasil mantém vantagem competitiva de fornecimento até outubro, quando entra a safra americana.</p>
+      </div>
+    </div>
+
+    <div class="al green">
+      <div class="ai">🌡️</div>
+      <div class="at">
+        <h4>5. El Niño em Desenvolvimento — Monitorar para Safra 26/27</h4>
+        <p>Canal Rural (01/jun): meteorologista alerta que El Niño <strong>"não tem influência no clima do Brasil em junho ainda, mas seus efeitos devem aparecer na primavera e no verão"</strong>. <strong>Calor excessivo e chuva irregular</strong> no CO, Matopiba e Sudeste a partir de setembro. Se confirmar, seria o maior gatilho de alta para a CBOT nos próximos meses — e um risco concreto de queda de produtividade do Brasil em 2026/27.</p>
+      </div>
+    </div>
+
+    <div class="al blue">
+      <div class="ai">📦</div>
+      <div class="at">
+        <h4>6. Exportação BR: ANEC Projeta Leve Recuo em Junho vs. Abril</h4>
+        <p>Estimativa da Associação Nacional dos Exportadores de Cereais indica <strong>queda em relação ao recorde de abril/26 (16,75 Mt)</strong>; farelo de soja também deve registrar leve recuo no mês. Mesmo assim, o ritmo segue acima de 2025 — a janela de exportação exclusiva do Brasil (até outubro, quando entra safra EUA) permanece ativa.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICO ANUAL + SEMANA -->
+  <div class="cw">
+    <h3>📊 Evolução da Soja em 2026 — Cepea Paranaguá (R$/sc) e CBOT convertido · Com destaque para a Semana</h3>
+    <canvas id="chartAnual" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq, CME Group, Safras & Mercado. A linha tracejada mostra o custo médio (~R$120/sc). Elaboração: Rural IN — Dr. Sidney Souza.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 4: ANÁLISE TÉCNICA + FUNDAMENTALISTA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🔬</div>
+    <h2>Análise Técnica e Fundamentalista — Dupla Visão</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox verm">
+      <h3>📉 Análise Técnica — CBOT Soja (Semana 01–05/jun)</h3>
+      <p><strong>Tendência semanal:</strong> baixista acentuada. A CBOT caiu de US$11,85 (fecho de mai) para US$11,26/bu em sexta — perdendo a importante zona de suporte em US$11,30/bu. O contrato julho tocou o menor nível desde início de fevereiro. Isso é tecnicamente relevante: <span style="background:linear-gradient(transparent 60%,rgba(220,38,38,.2) 60%)">o rompimento abaixo de US$11,30 abre espaço para teste em US$11,00 e, em seguida, US$10,50/bu.</span></p>
+      <p><strong>Suportes:</strong> US$11,00/bu → US$10,66/bu (fundo de jan). <strong>Resistências:</strong> US$11,30/bu (rompido) → US$11,85/bu → US$12,00/bu. Para retornar ao nível da semana passada, o mercado precisaria de um catalisador externo relevante (clima adverso nos EUA ou compra surpresa da China).</p>
+      <p><strong>RSI:</strong> ~32 — zona de sobrevenda. Pode haver recuperação técnica pontual. <strong>MACD:</strong> virou negativo. Volume aumentou nos dias de queda — confirmação baixista.</p>
+    </div>
+    <div class="abox">
+      <h3>🌎 Análise Fundamentalista — O Que Importa Esta Semana</h3>
+      <p><strong>Oferta global:</strong> safra BR 25/26 em 180 Mt (recorde Conab). Colheita 98%+ concluída. EUA 26/27 com plantio em excelente condição. Argentina estável. <strong>Resultado: excesso estrutural de oferta global.</strong></p>
+      <p><strong>Demanda:</strong> China compra devagar — tarifa de 10% sobre EUA freou aceleração do acordo. USDA projeta importações chinesas de 114 Mt para 26/27 (+2 Mt), mas ritmo é gradual.</p>
+      <p><strong>Diferencial para o Brasil:</strong> somos o principal fornecedor até outubro. A janela de exportação exclusiva sustenta o físico mesmo com CBOT pressionada. O câmbio em R$5,04 amplia essa proteção.</p>
+      <p><strong>Gatilho de alta latente:</strong> El Niño em desenvolvimento. Se confirmar impacto no plantio 26/27 (set–nov), o mercado pode girar rapidamente de baixista para altista — como aconteceu com a seca na América do Sul no 1T26.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO CBOT + FÍSICO BR -->
+  <div class="cw">
+    <h3>🔍 CBOT Julho/26 vs. Paranaguá Físico — Relação e Divergência na Semana (R$/sc equivalente)</h3>
+    <canvas id="chartCompar" height="85"></canvas>
+    <p class="nf">Conversão CBOT: US$/bu × câmbio × 0,367 (fator bu→sc60kg). Fonte: CME Group / Cepea. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="abox azul">
+    <h3>💡 O Que o "Câmbio Escudo" Significa para o Produtor</h3>
+    <p>Esta semana ilustrou perfeitamente o conceito de "câmbio escudo": a CBOT caiu mais de 5% em dólares, mas o físico em Paranaguá ficou estável em R$132/sc. Por quê? Porque o dólar subiu junto, compensando a queda de Chicago e mantendo a paridade em reais quase inalterada.</p>
+    <p>Isso é uma arma de dois gumes: <strong>protege o preço quando Chicago cai + câmbio sobe</strong> (cenário desta semana), mas também significa que uma queda do dólar abaixo de R$4,90 tornaria a proteção nula — o físico cairia mesmo com Chicago estável. <span style="background:linear-gradient(transparent 60%,rgba(212,160,23,.25) 60%)">O câmbio é a variável que o produtor não controla e que mais impacta seu caixa em 2026.</span></p>
+    <p><strong>Recomendação prática:</strong> monitorar o câmbio com a mesma atenção que a CBOT. Uma sinalização hawkish do Copom em junho pode valorizar o real e derrubar o físico mesmo sem movimento em Chicago.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 5: MACRO E GEOPOLÍTICA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌐</div>
+    <h2>Macro, Geopolítica e Calendário — O que Monitorar</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>🏦 Macro Brasil — Fatores da Semana</h3>
+      <p><strong>Selic 13,25%:</strong> Copom reúne em junho. Sinalização hawkish = câmbio cai = físico BR cai mesmo sem CBOT mudar. <strong>Este é o principal risco macro para o produtor com soja em armazém.</strong></p>
+      <p><strong>IPCA de maio:</strong> divulgação em junho. Se vier acima de 5%, BC mantém juro alto por mais tempo → real tende a se valorizar lentamente → pressão adicional sobre o físico.</p>
+      <p><strong>Biodiesel B15:</strong> aprovação do aumento de mistura (B15 a partir de ago/26) pode ampliar demanda por óleo de soja doméstico — fator positivo de médio prazo para o complexo.</p>
+    </div>
+    <div class="abox azul">
+      <h3>🌏 Geopolítica — O que Acompanhar</h3>
+      <p><strong>🇨🇳 China:</strong> ritmo de compras americanas pós-acordo — se acelerar, prêmio CBOT sobe e pode reverter a queda da semana. Se mantiver lento, CBOT segue pressionada.</p>
+      <p><strong>🇺🇸 EUA:</strong> relatório Crop Progress semanal do USDA — principal termômetro da safra 26/27. Qualquer deterioração climática seria a faísca para reversão altista. Relatório WASDE de junho (11/jun) — atualiza balanço global.</p>
+      <p><strong>🇦🇷 Argentina:</strong> redução gradual de tarifas de exportação de soja a partir de 2027 sinalizada pelo governo. Aumenta a concorrência futura, mas ainda não impacta o curto prazo.</p>
+    </div>
+  </div>
+
+  <div class="al am">
+    <div class="ai">📅</div>
+    <div class="at">
+      <h4>Calendário Crítico — Semana que Vem e Junho</h4>
+      <p><strong>09/jun (seg):</strong> Retomada plena do mercado pós-feriado regional sul | <strong>10/jun:</strong> Crop Progress USDA semanal — condição das lavouras EUA | <strong>11/jun:</strong> USDA WASDE — balanço oferta/demanda global + início Copa do Mundo | <strong>Mid-jun:</strong> Reunião Copom (decisão Selic) | <strong>30/jun:</strong> USDA Planted Acreage + Grain Stocks — estimativa área EUA 26/27 | <strong>Ago/Set:</strong> Janela crítica do El Niño para plantio 26/27 no Brasil.</p>
+    </div>
+  </div>
+
+  <!-- RADAR MACRO -->
+  <div class="cw">
+    <h3>🌐 Radar de Impactos — Intensidade de Influência na Precificação da Soja (Semana 01–05/jun)</h3>
+    <canvas id="chartRadar" height="90"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala 0–10: intensidade de impacto observada na semana.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 6: CENÁRIOS + PERCEPÇÃO
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🎯</div>
+    <h2>Cenários para a Próxima Semana e Percepção do Analista</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="scen">
+    <div class="sc opt">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟢 Otimista</h4></div>
+      <ul>
+        <li>CBOT recupera para US$11,80–12,20</li>
+        <li>Dados climáticos EUA deterioram</li>
+        <li>China acelera compras pós-acordo</li>
+        <li>Paranaguá volta a R$136–142/sc</li>
+        <li>MT interior: R$112–118/sc</li>
+        <li>Câmbio se mantém acima de R$5,05</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 20%</div>
+    </div>
+    <div class="sc neu">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟡 Base (mais provável)</h4></div>
+      <ul>
+        <li>CBOT lateral US$11,00–11,50</li>
+        <li>Físico BR estável R$128–134 (porto)</li>
+        <li>China compra sem acelerar</li>
+        <li>Câmbio R$4,95–5,10</li>
+        <li>Comercialização lenta, produt. segura</li>
+        <li>MT: R$104–112/sc abaixo do custo</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 55%</div>
+    </div>
+    <div class="sc pes">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🔴 Pessimista</h4></div>
+      <ul>
+        <li>CBOT testa US$10,50–11,00</li>
+        <li>Câmbio cai abaixo de R$4,90</li>
+        <li>Paranaguá: R$118–124/sc</li>
+        <li>MT: R$95–102/sc</li>
+        <li>Safra EUA revisada para cima (USDA)</li>
+        <li>Produtor de MT em grave prejuízo</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 25%</div>
+    </div>
+  </div>
+
+  <!-- PERCEPÇÃO -->
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista — Dr. Sidney Souza</h3>
+    <p>A semana de 01 a 05 de junho foi o <span class="hl">exato oposto da semana anterior</span>: se na última semana de maio a soja subiu com o acordo EUA-China e cruzou US$12/bu na CBOT, nesta semana o mercado deu uma ducha fria. A queda de mais de 5% no contrato julho, levando-o para US$11,26/bu — menor nível desde fevereiro — não tem um único culpado: é uma combinação de clima ideal nos EUA (sem tensão de seca) + China que compra devagar + feriado que travou o mercado + fundos que realizaram lucros após o rali recente.</p>
+    <p>Para o produtor brasileiro, a semana deixou uma lição clara sobre o valor do câmbio como "escudo": <strong>o físico em Paranaguá ficou estável em R$132/sc mesmo com Chicago caindo 5%</strong>. Isso é notável. Mas não pode ser tomado como garantia permanente — se o Copom sinalizar um ciclo de corte de juros em junho, o real se aprecia, o câmbio cai, e essa proteção se dissolve.</p>
+    <p>O ponto mais interessante desta semana não está na queda em si, mas na <span class="hl">assimetria que se formou</span>: de um lado, fundamentos de curto prazo baixistas (clima EUA ótimo, oferta global farta, China cautelosa). Do outro, um gatilho latente poderoso — El Niño em desenvolvimento, que pode transformar o cenário climático do plantio brasileiro 2026/27 completamente. Essa assimetria cria um ambiente de "calma tensa": os preços estão comprimidos, mas qualquer choque climático pode reverter o quadro em dias.</p>
+    <p>A estratégia que recomendo para o produtor neste ambiente: <strong>não vender no pânico de Chicago, mas também não segurar esperando R$160</strong>. O preço médio de R$128–132 em Paranaguá ainda é operacional para quem tem custo controlado. Vender de forma escalonada — 20–30% agora, aguardar o WASDE de 11/jun e a posição climática de julho para tomar novas decisões.</p>
+    <div class="quote">"O produtor que vende quando Chicago está em US$11,80 e chora quando cai para US$11,26 está errando a ferramenta de análise. O preço em reais não mudou. O câmbio compensou. Olhe sempre o R$/sc no porto — essa é a sua receita real." — Dr. Sidney Souza, Rural IN</div>
+  </div>
+
+  <!-- SEMÁFORO -->
+  <div class="cw">
+    <h3>🚦 Semáforo da Soja — Indicadores-Chave na Semana 01–05/Jun/2026</h3>
+    <div class="sem-grid">
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>CBOT Jul/26</strong><span>US$11,26/bu — mínima desde fev</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Paranaguá (físico)</strong><span>R$132/sc — estável (câmbio sustenta)</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>MT Interior</strong><span>R$104–110/sc — abaixo do custo</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Câmbio R$5,04</strong><span>Escudo protetor do físico ativo</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Clima EUA</strong><span>Ótimo — pressiona CBOT para baixo</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>El Niño</strong><span>Em desenvolvimento — risco plantio 26/27</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>China (demanda)</strong><span>Comprando devagar — acordo sem efeito</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Export. BR (janela)</strong><span>Exclusiva até out — câmbio favorável</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Selic 13,25%</strong><span>Copom em junho — risco de queda câmbio</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>WASDE 11/jun</strong><span>Próximo evento crítico — balanço global</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl">
+        <div class="brand">Rural<span> IN</span></div>
+        <div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.77rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="fc">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br>
+          Transformamos dados da fazenda em decisões econômicas<br>
+          Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DA SOJA · SEMANA 01–05/JUN/2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CME GROUP · CEPEA/ESALQ · SAFRAS&MERCADO · NOTÍCIAS AGRÍCOLAS · GRÃ O DIRETO · FARMNEWS · CANAL RURAL · AGRONEWS · PORTAL DO AGRONEGÓCIO · CONAB · USDA WASDE · ANEC
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+Chart.defaults.color='#6b7280';
+Chart.defaults.borderColor='rgba(0,0,0,.05)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const am='#d4a017',amL='#f0c040',verde='#16a34a',verdeXL='#4ade80',
+      verm='#991b1b',vermL='#dc2626',azul='#1e3a8a',azulL='#2563eb',
+      cinza='#374151',laranja='#d97706';
+
+// ─── 1. Evolução semanal ───
+new Chart(document.getElementById('chartSemana').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:[
+      'Seg 02/jun','Ter 03/jun','Qua 04/jun',
+      'Qui 04/jun ★feriado BR\n(CBOT operou)',
+      'Sex 05/jun'
+    ],
+    datasets:[
+      {label:'CBOT Jul (US$/bu)',
+       // Qui: CBOT operou normalmente; queda de ~30 pts intrasession, fechou ~11,28
+       // Sex: fechou US$11,26 — mínima desde fev (Safras & Mercado, 05/jun)
+       data:[11.70,11.55,11.30,11.28,11.26],
+       borderColor:vermL,backgroundColor:'rgba(220,38,38,.07)',
+       borderWidth:3,tension:.3,fill:true,pointRadius:5,
+       pointBackgroundColor:[vermL,vermL,vermL,'#f97316',vermL],
+       yAxisID:'y2'},
+      {label:'Paranaguá Físico (R$/sc)',
+       // Feriado Corpus Christi no BR = sem negócios físicos na quinta;
+       // sexta: R$132 confirmado (Safras & Mercado + Grão Direto 05/jun)
+       // Usamos R$132 para quinta (último preço válido — sem variação)
+       data:[132,132,132,132,132],
+       borderColor:am,backgroundColor:'rgba(212,160,23,.07)',
+       borderWidth:2.5,tension:.3,fill:false,pointRadius:5,
+       pointBackgroundColor:[am,am,am,'#9ca3af',am],
+       yAxisID:'y'}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{
+      legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+      tooltip:{callbacks:{
+        afterTitle: items => items[0].dataIndex===3 ? '⚠ Feriado BR (Corpus Christi)\nCBOT operou; físico sem negócios' : ''
+      }}
+    },
+    scales:{
+      y:{position:'left',min:115,ticks:{callback:v=>'R$'+v},grid:{color:'rgba(0,0,0,.04)'}},
+      y2:{position:'right',min:10.5,max:12.5,ticks:{callback:v=>'US$'+v.toFixed(2)},grid:{display:false}}
+    }}
+});
+
+// ─── 2. Anual 2026 ───
+new Chart(document.getElementById('chartAnual').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','Abr','Mai (rec)','Mai (fcho)','01/jun','05/jun'],
+    datasets:[
+      {label:'Paranaguá Físico (R$/sc)',
+       data:[138,132,128,126,128,130,132,132],
+       borderColor:am,backgroundColor:'rgba(212,160,23,.08)',
+       borderWidth:3,tension:.3,fill:true,pointRadius:5,
+       pointBackgroundColor:['#374151','#374151','#374151','#374151','#374151','#374151','#16a34a','#16a34a']},
+      {label:'CBOT convertido aprox (R$/sc)',
+       data:[148,140,134,128,131,135,136,130],
+       borderColor:azulL,borderWidth:2,tension:.3,fill:false,pointRadius:4,borderDash:[5,4]},
+      {label:'Custo médio produção (~R$120/sc)',
+       data:[120,120,120,120,120,120,120,120],
+       borderColor:'rgba(107,114,128,.5)',borderWidth:2,borderDash:[4,4],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+    scales:{y:{min:100,ticks:{callback:v=>'R$'+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 3. Comparativo CBOT vs físico ───
+new Chart(document.getElementById('chartCompar').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Paranaguá','Cascavel PR','Passo Fundo RS','MT (Rondonópolis)','MT (Sorriso)'],
+    datasets:[
+      {label:'Preço físico 05/jun (R$/sc)',
+       data:[132,121,126,110,104],
+       backgroundColor:['rgba(22,163,74,.75)','rgba(212,160,23,.75)','rgba(212,160,23,.70)','rgba(220,38,38,.65)','rgba(220,38,38,.75)'],
+       borderRadius:8},
+      {label:'Custo médio produção (R$/sc)',
+       data:[null,115,115,118,120],
+       backgroundColor:'rgba(107,114,128,.4)',
+       borderRadius:8}
+    ]
+  },
+  options:{responsive:true,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},tooltip:{callbacks:{label:c=>c.dataset.label+': R$'+c.raw+'/sc'}}},
+    scales:{y:{min:85,ticks:{callback:v=>'R$'+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 4. Radar ───
+new Chart(document.getElementById('chartRadar').getContext('2d'),{
+  type:'radar',
+  data:{
+    labels:['Clima EUA (⬇)','El Niño BR (⬆)','Câmbio Escudo','China Demanda','Export. BR','CBOT Técnico','Selic/Copom','Oferta Global'],
+    datasets:[{
+      label:'Intensidade semana 01–05/jun',
+      data:[9.5,5.5,7.0,5.0,6.5,8.5,5.5,7.5],
+      borderColor:am,backgroundColor:'rgba(212,160,23,.15)',
+      pointBackgroundColor:am,borderWidth:2.5
+    }]
+  },
+  options:{responsive:true,
+    scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:'rgba(0,0,0,.07)'},pointLabels:{font:{size:11},color:'#555'}}},
+    plugins:{legend:{display:false}}}
+});
+</script>
+</body>
+</html>

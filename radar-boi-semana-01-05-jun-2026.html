@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Boi | Semana 01–05/Jun/2026 | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --verde:#1a6b3c;--verde-l:#2d9e5f;--verde-xl:#52b788;--verde-pale:#d8f3dc;
+  --dourado:#b8860b;--dourado-l:#d4a017;--dourado-xl:#f0c040;--dourado-pale:#fef9e7;
+  --terra:#5c3d11;--terra-l:#8b5e3c;
+  --cinza-esc:#1c2526;--cinza:#374151;--cinza-l:#6b7280;--cinza-xl:#f9fafb;
+  --azul:#1e3a8a;--azul-l:#2563eb;
+  --verm:#991b1b;--verm-l:#dc2626;
+  --bg:#f7faf7;--sombra:0 4px 20px rgba(0,0,0,.09);--sombra2:0 8px 40px rgba(0,0,0,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#0b2015 0%,var(--verde) 55%,var(--verde-l) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(82,183,136,.18) 0%,transparent 70%);border-radius:50%}
+.h-top{max-width:1140px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;line-height:1;color:#fff}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--dourado-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--dourado-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.h-badge{font-family:'JetBrains Mono',monospace;font-size:.67rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-up{background:rgba(34,197,94,.25);color:#4ade80;border:1px solid rgba(74,222,128,.4)}
+.hb-dn{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(248,113,113,.4)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.hb-gold{background:rgba(212,160,23,.25);color:var(--dourado-xl);border:1px solid rgba(240,192,64,.5)}
+
+/* ── TICKER ── */
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--dourado-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#e5e7eb;font-weight:600}
+.ticker .sep{color:rgba(255,255,255,.18)}
+.t-up{color:#4ade80!important}.t-dn{color:#f87171!important}.t-nt{color:var(--dourado-xl)!important}
+
+/* ── HEADLINE BANNER ── */
+.hl-banner{background:linear-gradient(135deg,#0b2015,#0d3320);padding:18px 24px;text-align:center;border-bottom:3px solid var(--dourado-l)}
+.hl-inner{max-width:1140px;margin:0 auto}
+.hl-banner h2{font-family:'Playfair Display',serif;font-size:1.45rem;color:#fff;font-weight:700}
+.hl-banner p{font-size:.84rem;color:rgba(255,255,255,.58);margin-top:5px}
+
+/* ── FATO DA SEMANA ── */
+.fato-semana{background:linear-gradient(135deg,#fff9e0,#fef3c7);border:2px solid var(--dourado-l);border-radius:14px;padding:18px 22px;margin:24px 0;display:flex;align-items:flex-start;gap:14px;box-shadow:var(--sombra)}
+.fato-semana .fi{font-size:2rem;flex-shrink:0}
+.fato-semana h3{font-family:'Playfair Display',serif;color:var(--terra);font-size:1.08rem;margin-bottom:5px}
+.fato-semana p{font-size:.87rem;color:var(--cinza);line-height:1.7}
+
+/* ── CONTAINER ── */
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+.section{padding:40px 0 28px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:var(--verde)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.42rem;color:var(--verde);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--verde-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--verde-l),transparent);margin:0}
+
+/* ── PLACAR ── */
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px}
+.pc{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.pc.up::before{background:linear-gradient(90deg,var(--verde),var(--verde-xl))}
+.pc.dn::before{background:linear-gradient(90deg,var(--verm),#f87171)}
+.pc.nt::before{background:linear-gradient(90deg,var(--dourado-l),var(--dourado-xl))}
+.pc.blue::before{background:linear-gradient(90deg,var(--azul),var(--azul-l))}
+.pc .lbl{font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.pc .val{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.pc .var{font-family:'JetBrains Mono',monospace;font-size:.76rem;font-weight:700;margin-top:5px}
+.v-up{color:var(--verde-l)}.v-dn{color:var(--verm-l)}.v-nt{color:var(--dourado-l)}
+.pc .sub{font-size:.73rem;color:var(--cinza-l);margin-top:4px}
+.pc .src{font-size:.62rem;color:#ccc;margin-top:5px}
+
+/* ── GRÁFICOS ── */
+.cw{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.cw h3{font-family:'Playfair Display',serif;font-size:.98rem;color:var(--verde);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid #f0f0f0}
+.cw .nf{font-size:.67rem;color:#bbb;font-style:italic;margin-top:7px}
+
+/* ── ANÁLISE BOXES ── */
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:16px;border-left:5px solid var(--verde-l)}
+.abox.dourado{border-left-color:var(--dourado-l)}
+.abox.verm{border-left-color:var(--verm-l)}
+.abox.azul{border-left-color:var(--azul-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--verde);font-size:1.04rem;margin-bottom:10px}
+.abox.dourado h3{color:var(--terra)}.abox.verm h3{color:var(--verm)}.abox.azul h3{color:var(--azul)}
+.abox p{font-size:.88rem;color:var(--cinza);line-height:1.82}
+.abox p+p{margin-top:8px}
+
+/* ── ALERTS ── */
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.yellow{background:var(--dourado-pale);border-color:rgba(212,160,23,.45)}
+.al.red{background:#fef2f2;border-color:rgba(220,38,38,.3)}
+.al.green{background:var(--verde-pale);border-color:rgba(45,158,95,.35)}
+.al.blue{background:#eff6ff;border-color:rgba(37,99,235,.3)}
+.al .ai{font-size:1.35rem;flex-shrink:0;margin-top:2px}
+.al .at h4{font-size:.88rem;font-weight:700;margin-bottom:3px}
+.al.yellow .at h4{color:var(--terra)}.al.red .at h4{color:var(--verm)}.al.green .at h4{color:var(--verde)}.al.blue .at h4{color:var(--azul)}
+.al .at p{font-size:.81rem;color:var(--cinza-l);line-height:1.6}
+
+/* ── TABELA CONTRATOS ── */
+.tw{overflow-x:auto;border-radius:12px;box-shadow:var(--sombra);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.84rem}
+thead th{background:var(--verde);color:#fff;padding:11px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.8px;text-transform:uppercase}
+tbody td{padding:11px 14px;border-bottom:1px solid #f0f0f0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.81rem}
+tbody tr:nth-child(even){background:#f8faf8}
+.tv{color:var(--verde-l);font-weight:700}.tr{color:var(--verm-l);font-weight:700}.tn{color:var(--cinza)}
+.highlight-row{background:rgba(26,107,60,.06)!important}
+
+/* ── PREÇO REGIONAL ── */
+.reg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:18px}
+.reg-card{background:#fff;border-radius:12px;padding:16px;box-shadow:var(--sombra);border-left:4px solid var(--verde-l)}
+.reg-card h5{font-family:'JetBrains Mono',monospace;font-size:.67rem;text-transform:uppercase;letter-spacing:1px;color:var(--verde-l);margin-bottom:6px}
+.reg-card .rv{font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:700;color:var(--cinza-esc)}
+.reg-card .rs{font-size:.74rem;color:var(--cinza-l);margin-top:3px}
+.reg-card .rd{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;margin-top:4px}
+
+/* ── CENÁRIOS ── */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin-bottom:18px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,var(--verde-pale));border-color:var(--verde-xl)}
+.sc.neu{background:linear-gradient(135deg,#fefce8,var(--dourado-pale));border-color:var(--dourado-l)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:var(--verm-l)}
+.sc-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:var(--verde-l)}.sc.neu .sc-dot{background:var(--dourado-l)}.sc.pes .sc-dot{background:var(--verm-l)}
+.sc h4{font-family:'Playfair Display',serif;font-size:.96rem;font-weight:700}
+.sc.opt h4{color:var(--verde)}.sc.neu h4{color:var(--terra)}.sc.pes h4{color:var(--verm)}
+.sc ul{list-style:none;font-size:.82rem;color:var(--cinza);line-height:1.8}
+.sc ul li::before{content:'›  ';font-weight:700;color:inherit}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:5px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:var(--verde-pale);color:var(--verde)}.sc.neu .sc-prob{background:var(--dourado-pale);color:var(--terra)}.sc.pes .sc-prob{background:#fee2e2;color:var(--verm)}
+
+/* ── PERCEPÇÃO ── */
+.percepcao{background:linear-gradient(135deg,#0b2015,#1a4d2e);border-radius:16px;padding:30px;color:#fff;margin-bottom:18px}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--dourado-xl);margin-bottom:12px}
+.percepcao p{font-size:.89rem;line-height:1.85;color:rgba(255,255,255,.85)}
+.percepcao p+p{margin-top:10px}
+.percepcao .hl{background:linear-gradient(transparent 60%,rgba(240,192,64,.3) 60%)}
+.percepcao .quote{border-left:3px solid var(--dourado-l);padding-left:16px;font-style:italic;margin-top:14px;color:var(--dourado-xl);font-size:.89rem}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ── SEMAFORO ── */
+.sem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;margin-top:12px}
+.sem-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-radius:10px;box-shadow:var(--sombra)}
+.sem-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sd-g{background:var(--verde-xl)}.sd-y{background:var(--dourado-xl)}.sd-r{background:var(--verm-l)}
+.sem-item strong{font-size:.85rem;display:block;color:var(--cinza-esc)}
+.sem-item span{font-size:.72rem;color:var(--cinza-l)}
+
+/* ── FOOTER ── */
+.footer{background:var(--cinza-esc);color:#fff;padding:50px 24px 28px}
+.fi{max-width:1140px;margin:0 auto}
+.ft{display:flex;gap:32px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:22px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--dourado-xl)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.76rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--dourado-xl);font-size:1.08rem;margin-bottom:7px}
+.fc p{font-size:.81rem;color:rgba(255,255,255,.7);line-height:1.9}
+.fc a{color:var(--dourado-xl);text-decoration:none}
+.fc a:hover{text-decoration:underline}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.26);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .g2{grid-template-columns:1fr}
+  .logo-txt h1{font-size:1.5rem}
+  .h-top{flex-direction:column;align-items:flex-start}
+  .h-meta{text-align:left}
+  .h-badges{justify-content:flex-start}
+  .ft{flex-direction:column}
+  .pc .val{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#2d9e5f"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#0b2015">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#0b2015" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#0b2015" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt">
+        <h1>Radar Agro do Boi</h1>
+        <div class="sub">Semana 01–05 Jun 2026 · Rural IN</div>
+      </div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">Pecuária de Corte · Análise Semanal</div>
+      <div class="dt">05 de Junho de 2026</div>
+      <div class="h-badges">
+        <span class="h-badge hb-up">Cepea: R$ 353,50/@</span>
+        <span class="h-badge hb-gold">🇨🇳 Febre Aftosa livre!</span>
+        <span class="h-badge hb-nt">BGIM26: R$ 351,65</span>
+        <span class="h-badge hb-dn">Cota China ≥ 65%</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🐂 <span class="t-nt">Cepea à vista:</span> <strong>R$ 353,50/@</strong></span>
+    <span class="sep">|</span>
+    <span>🐂 <span class="t-nt">Cepea prazo:</span> <strong>R$ 357,65/@</strong></span>
+    <span class="sep">|</span>
+    <span>📊 <span class="t-nt">BGIM26 Jun:</span> <strong>R$ 351,65/@</strong></span>
+    <span class="sep">|</span>
+    <span>📊 <span class="t-nt">BGIN26 Jul:</span> <strong>R$ 341,50/@</strong></span>
+    <span class="sep">|</span>
+    <span>📊 <span class="t-nt">BGIV26 Out:</span> <strong>R$ 355,70/@</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-nt">Dólar:</span> <strong>R$ 5,0450</strong></span>
+    <span class="sep">|</span>
+    <span>🧊 <span class="t-nt">Bezerro (MS):</span> <strong>R$ 3.419/@</strong></span>
+  </div>
+</header>
+
+<!-- ── HEADLINE BANNER ── -->
+<div class="hl-banner">
+  <div class="hl-inner">
+    <h2>🐄 Semana de Recuperação — China livre de Febre Aftosa Muda o Jogo</h2>
+    <p>Físico em alta · Futuro volátil · Fato sanitário histórico de 02/jun · Copa do Mundo no radar · Análise técnica e fundamentalista da semana</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ── FATO DA SEMANA ── -->
+<div class="fato-semana">
+  <div class="fi">🇨🇳</div>
+  <div>
+    <h3>🚨 FATO DA SEMANA — 02/Jun/2026: China Reconhece Brasil Livre de Febre Aftosa Sem Vacinação</h3>
+    <p>Em 02 de junho de 2026, a China comunicou oficialmente o reconhecimento do <strong>Brasil como país livre de febre aftosa sem vacinação</strong> — um ano após o reconhecimento pela OMSA (jun/2025). O documento foi datado de 29/mai pelo GACC e MARA chineses. Isso abre caminho para: <strong>exportação de carne bovina com osso, miudezas bovinas, ampliação da carne suína para além de SC</strong>, e redução do "ruído sanitário" que pressionava as negociações de cota. Não muda o limite da cota de salvaguarda imediatamente, mas <strong>fortalece o poder de negociação do Brasil</strong> para uma possível revisão dos termos da cota e amplia o portfólio de produtos exportáveis com tarifa preferencial.</p>
+  </div>
+</div>
+
+<!-- ══════════════════
+     SEÇÃO 1: COTAÇÕES
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">💰</div>
+    <h2>Cotações da Semana — 01 a 05/Jun/2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <!-- PLACAR -->
+  <div class="placar">
+    <div class="pc up">
+      <div class="lbl">Cepea SP — À Vista</div>
+      <div class="val">R$ 353,50</div>
+      <div class="var v-up">▲ +0,34% em 03/jun</div>
+      <div class="sub">Maior nível desde início de maio</div>
+      <div class="src">Fonte: Cepea/Esalq</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">Cepea SP — A Prazo</div>
+      <div class="val">R$ 357,65</div>
+      <div class="var v-up">▲ +0,34% em 03/jun</div>
+      <div class="sub">Prêmio de R$ 4,15/@ sobre à vista</div>
+      <div class="src">Fonte: Cepea/Esalq</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Datagro — Físico</div>
+      <div class="val">R$ 349,5</div>
+      <div class="var v-up">▲ Recuperação vs. fundo de maio</div>
+      <div class="sub">01/jun: R$ 349,5 — acima do fundo mai (R$ 344,6)</div>
+      <div class="src">Fonte: Datagro / Farmnews</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">BGIM26 — Jun/26 (B3)</div>
+      <div class="val">R$ 351,65</div>
+      <div class="var v-up">▲ +0,07% (05/jun 10h)</div>
+      <div class="sub">Futuro abaixo de R$350 no fecho de mai, recupera em jun</div>
+      <div class="src">Fonte: B3 / Farmnews</div>
+    </div>
+    <div class="pc dn">
+      <div class="lbl">BGIN26 — Jul/26 (B3)</div>
+      <div class="val">R$ 341,50</div>
+      <div class="var v-dn">▼ −0,45% — pressão de oferta</div>
+      <div class="sub">Piso da curva curta — entressafra precificada</div>
+      <div class="src">Fonte: B3</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">BGIV26 — Out/26 (B3)</div>
+      <div class="val">R$ 355,70</div>
+      <div class="var v-up">▲ Esperado para out/26 — R$10 acima físico</div>
+      <div class="sub">Mercado já precifica entressafra 2H26</div>
+      <div class="src">Fonte: B3 / Farmnews</div>
+    </div>
+  </div>
+
+  <!-- PREÇOS REGIONAIS -->
+  <h3 style="font-family:'Playfair Display',serif;color:var(--verde);font-size:1.1rem;margin:16px 0 12px">📍 Preços Regionais — 03/Jun/2026 (R$/@)</h3>
+  <div class="reg-grid">
+    <div class="reg-card">
+      <h5>São Paulo</h5>
+      <div class="rv">R$ 355,43</div>
+      <div class="rs">Praça líder — forte demanda atacado</div>
+      <div class="rd v-up">▲ +R$ 1,85 vs. 02/jun</div>
+    </div>
+    <div class="reg-card">
+      <h5>Mato Grosso</h5>
+      <div class="rv">R$ 357,03</div>
+      <div class="rs">IMEA: R$337,68 (03/jun); Cuiabá: R$338</div>
+      <div class="rd v-up">▲ +0,13% no dia</div>
+    </div>
+    <div class="reg-card">
+      <h5>Mato Grosso do Sul</h5>
+      <div class="rv">R$ 353,45</div>
+      <div class="rs">Avanço firme — MS sustenta</div>
+      <div class="rd v-up">▲ +R$ 0,54 vs. 02/jun</div>
+    </div>
+    <div class="reg-card">
+      <h5>Minas Gerais</h5>
+      <div class="rv">R$ 330,18</div>
+      <div class="rs">Valorização de R$327,35 → R$330,18</div>
+      <div class="rd v-up">▲ +R$ 2,83</div>
+    </div>
+    <div class="reg-card">
+      <h5>Goiás</h5>
+      <div class="rv">R$ 333,57</div>
+      <div class="rs">Praça com desconto regional</div>
+      <div class="rd v-up">▲ +0,71 vs. 02/jun</div>
+    </div>
+    <div class="reg-card">
+      <h5>Barretos (Scot)</h5>
+      <div class="rv">R$ 343,00</div>
+      <div class="rs">Referência Scot Consultoria 03/jun</div>
+      <div class="rd v-nt">↔ Estável</div>
+    </div>
+  </div>
+  <p style="font-size:.68rem;color:#bbb;font-style:italic;margin-bottom:16px">Fontes: Cepea/Esalq, Datagro, IMEA, Scot Consultoria, Safras & Mercado, Gazeta do Paraná. Elaboração: Rural IN.</p>
+
+  <!-- GRÁFICO EVOLUÇÃO SEMANAL -->
+  <div class="cw">
+    <h3>📈 Evolução Diária do Boi Gordo na Semana — Físico (Cepea SP) e Futuro Jun/26 (R$/@)</h3>
+    <canvas id="chartSemana" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq / B3 / Datagro. Elaboração: Rural IN — Dr. Sidney Souza.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 2: CURVA FUTURA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📊</div>
+    <h2>Curva Futura B3 — Como Está Precificado o Boi em 2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr><th>Contrato</th><th>Referência 05/jun</th><th>Spread vs Físico</th><th>Var. da Semana</th><th>Sinal</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td><strong>BGIM26 — Jun/26 🎯</strong></td>
+          <td><strong>R$ 351,65/@</strong></td>
+          <td class="tr">−R$ 1,85 (leve desconto)</td>
+          <td class="tv">▲ Recuperação</td>
+          <td class="tv">Neutro/alta</td>
+        </tr>
+        <tr>
+          <td>BGIN26 — Jul/26</td>
+          <td>R$ 341,50/@</td>
+          <td class="tr">−R$ 12,00</td>
+          <td class="tr">▼ −0,45%</td>
+          <td class="tr">Pressão / piso</td>
+        </tr>
+        <tr>
+          <td>BGIQ26 — Ago/26</td>
+          <td>R$ 343,80/@</td>
+          <td class="tr">−R$ 9,70</td>
+          <td class="tn">↔ Estável</td>
+          <td class="tn">Neutro</td>
+        </tr>
+        <tr>
+          <td>BGIU26 — Set/26</td>
+          <td>R$ 347,20/@</td>
+          <td class="tr">−R$ 6,30</td>
+          <td class="tv">▲ Leve alta</td>
+          <td class="tn">Neutro/alta</td>
+        </tr>
+        <tr>
+          <td>BGIV26 — Out/26</td>
+          <td>R$ 355,70/@</td>
+          <td class="tv">+R$ 2,20</td>
+          <td class="tv">▲ Alta</td>
+          <td class="tv">Alta</td>
+        </tr>
+        <tr>
+          <td>BGIX26 — Nov/26</td>
+          <td>R$ 358,00/@</td>
+          <td class="tv">+R$ 4,50</td>
+          <td class="tv">▲ Alta</td>
+          <td class="tv">Alta estrutural</td>
+        </tr>
+        <tr>
+          <td>BGIZ26 — Dez/26</td>
+          <td>R$ 362,00/@</td>
+          <td class="tv">+R$ 8,50</td>
+          <td class="tv">▲ Alta</td>
+          <td class="tv">Alta forte</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.67rem;color:#bbb;font-style:italic;margin-bottom:16px">Fonte: B3 / Datagro / Farmnews. Valores de ajuste referência 05/06/2026. Elaboração: Rural IN.</p>
+
+  <!-- GRÁFICO CURVA FUTURA -->
+  <div class="cw">
+    <h3>📊 Curva Futura do Boi Gordo B3 — Vencimentos Jun–Dez/2026 (R$/@)</h3>
+    <canvas id="chartCurva" height="80"></canvas>
+    <p class="nf">A curva em "U" — piso em jul/ago, virada em out — confirma expectativa de entressafra no 3T e valorização no 4T26. Fonte: B3.</p>
+  </div>
+
+  <div class="abox azul">
+    <h3>💡 O que a Curva Futura Revela nesta Semana</h3>
+    <p>A curva futura exibe uma estrutura em "U" bem definida: o físico atual em R$ 353,50/@ está <strong>acima dos contratos de jul–set</strong> (piso entre R$ 341–348/@), e os contratos de out–dez voltam a subir (R$ 355–362/@). Isso precifica a visão do mercado: queda sazonal na 2ª metade do ano com oferta ainda firme (cota China), seguida de recuperação estrutural na entressafra do 4T26.</p>
+    <p>O dado positivo desta semana: o futuro de outubro (R$355,70/@) mantém prêmio sobre o físico pela primeira vez desde o colapso de abril. O mercado começa a <span style="background:linear-gradient(transparent 60%,rgba(26,107,60,.2) 60%)">precificar o pós-cota China — menos abate = menos oferta = arroba valorizada</span>. Para o produtor com boi para sair em out–nov, travar neste patamar é estratégico.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 3: FATOS DA SEMANA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📰</div>
+    <h2>Os Fatos que Moveram o Mercado nesta Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:18px">
+
+    <div class="al yellow">
+      <div class="ai">🇨🇳</div>
+      <div class="at">
+        <h4>02/jun — China: Brasil Livre de Febre Aftosa Sem Vacinação</h4>
+        <p>Maior fato sanitário do setor pecuário brasileiro em 2026. Reconhecimento pelo GACC/MARA chinês abre caminho para negociar miudezas bovinas, carne com osso e ampliar habilitações. Não muda a cota de salvaguarda imediatamente, mas fortalece o Brasil na mesa de negociação. <strong>Mercado reagiu com alta no físico na terça.</strong></p>
+      </div>
+    </div>
+
+    <div class="al green">
+      <div class="ai">🚢</div>
+      <div class="at">
+        <h4>03/jun — Exportações Sustentam Alta nos Preços</h4>
+        <p>Forte ritmo de embarques para EUA e China sustenta demanda por animais. <strong>Cepea SP sobe de R$353,58 para R$355,43</strong> em SP; MT sobe de R$355,07 para R$357,03 em 03/jun. Analistas da Safras & Mercado: "Base regional manda no caixa" — diferença logística entre MT (R$338) e SP (R$355) evidencia relevância do frete.</p>
+      </div>
+    </div>
+
+    <div class="al yellow">
+      <div class="ai">⚽</div>
+      <div class="at">
+        <h4>Semana — Copa do Mundo no Radar (início 11/jun)</h4>
+        <p>O mercado atacadista e os analistas mantêm atenção redobrada para o início da Copa do Mundo (EUA/Canadá/México, 11/jun). Expectativa de aumento no consumo de proteína animal no período dos jogos. <strong>"Para o mês de junho é grande a expectativa em torno da Copa do Mundo, com bom potencial de demanda"</strong> — Fernando Iglesias, Safras & Mercado.</p>
+      </div>
+    </div>
+
+    <div class="al red">
+      <div class="ai">🔒</div>
+      <div class="at">
+        <h4>Semana — Cota China: ≥ 65% consumida · Esgotamento em jun–jul</h4>
+        <p>Com a cota estimada em ≥ 65% (defasagem de 45 dias de transit time), o esgotamento completo é projetado entre junho e julho. <strong>Após o 3º alerta (100%), tarifa de 55% entra em 3 dias</strong>. Frigoríficos já reduzem escalas de abate para China — paradoxalmente, isso sustenta a arroba no mercado interno.</p>
+      </div>
+    </div>
+
+    <div class="al blue">
+      <div class="ai">📉</div>
+      <div class="at">
+        <h4>Fim de Maio — Futuro Fechou com Forte Perda, Físico Resistiu</h4>
+        <p>O contrato futuro de junho encerrou maio abaixo de R$ 350/@, <strong>contrariando o físico</strong> que manteve recuperação. Datagro 29/mai: R$349,7; Cepea 29/mai: R$349,7. O movimento reforça a alta especulação no mercado futuro. <strong>Fundamentos seguem altistas</strong> — quem acompanhar apenas o futuro pode se confundir.</p>
+      </div>
+    </div>
+
+    <div class="al green">
+      <div class="ai">📦</div>
+      <div class="at">
+        <h4>Semana — Atacado Acomoda, Varejo Aguarda Copa</h4>
+        <p>Mercado atacadista registrou <strong>quarto dianteiro a R$22,50/kg (+2,27%)</strong> e traseiro a R$27,50/kg. Demanda doméstica ainda limitada pela carne de frango mais barata. Entrada de salários na 1ª semana de junho tende a impulsionar reposição no varejo — <strong>janela favorável de demanda doméstica nos dias de jogos</strong>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICO EVOLUÇÃO 2026 -->
+  <div class="cw">
+    <h3>📈 Evolução do Boi Gordo Cepea SP em 2026 — Com Destaque para a Semana 01–05/Jun (R$/@)</h3>
+    <canvas id="chartAnual" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq / Datagro. Elaboração: Rural IN — Dr. Sidney Souza. Jun = parcial até 05/06/2026.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 4: ANÁLISE TÉCNICA + FUNDAMENTALISTA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🔬</div>
+    <h2>Análise Técnica + Fundamentalista da Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox">
+      <h3>📉 Análise Técnica — Grafismo do Boi Gordo</h3>
+      <p><strong>Padrão da semana:</strong> reteste de resistência em R$ 353–355/@ após fundo duplo confirmado em R$ 344,6 na 2ª semana de maio. O rompimento acima de R$ 355/@ com volume seria o sinal técnico de retomada plena rumo a R$ 360–365/@.</p>
+      <p><strong>Suportes:</strong> R$ 348/@ (Datagro) → R$ 344,6/@ (fundo de mai). <strong>Resistências:</strong> R$ 355/@ → R$ 360/@ → R$ 365/@ (máxima de abr).</p>
+      <p><strong>RSI estimado:</strong> ~58 — sinal neutro-altista, sem sobrecompra. MACD: cruzamento positivo consolidado desde 19/mai. <strong>Tendência de médio prazo intacta.</strong> A correção de maio foi dentro do bull market — padrão "bandeira de baixa" se resolvendo para cima.</p>
+    </div>
+    <div class="abox dourado">
+      <h3>🌎 Análise Fundamentalista — Os Pilares da Semana</h3>
+      <p><strong>Oferta:</strong> escalas de abate ainda longas no interior, mas frigoríficos começam a sentir dificuldade de formar boiadas. Abate do 1T26 renovou recorde (+5º ano consecutivo de alta). Pecuaristas segurando fêmeas — rebanho em retenção estrutural.</p>
+      <p><strong>Demanda:</strong> exportação firme (EUA absorvendo bem), cota China se esgotando (reduz abate = menos oferta interna). Reconhecimento sanitário de 02/jun amplia o portfólio exportável futuro. Copa do Mundo (11/jun) como catalisador doméstico.</p>
+      <p><strong>Câmbio:</strong> R$ 5,0450 — sustenta receita dos exportadores. <strong>Bezerro:</strong> R$ 3.419/@ em máxima histórica — restrição de oferta futura sinalizada.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO FÍSICO vs FUTURO -->
+  <div class="cw">
+    <h3>🔍 Físico (Datagro) vs. Futuro Jun/26 (B3) — Spread Histórico em 2026 (R$/@)</h3>
+    <canvas id="chartSpread" height="85"></canvas>
+    <p class="nf">O spread mede o quanto o futuro está acima (+) ou abaixo (−) do físico. Em abr, chegou a −R$30. Esta semana voltou a positivo. Fonte: B3 / Datagro. Elaboração: Rural IN.</p>
+  </div>
+
+  <div class="abox">
+    <h3>🔑 O Paradoxo da Cota China — Por que o Produtor Ganha com o Esgotamento</h3>
+    <p>A lógica parece contra-intuitiva: a China fecha a torneira da cota e o boi gordo brasileiro se valoriza. Mas é exatamente isso que acontece: <strong>quando os frigoríficos não podem mais embarcar para China sem tarifa de 55%, eles reduzem o ritmo de abate</strong>. Menos animais abatidos = menos oferta de carne no mercado interno = mais demanda por boi vivo = preço da arroba sobe.</p>
+    <p>O diagrama é simples: Cota esgota → Frigorífico para de comprar para China → Volume de abate cai 10–15% → Mercado doméstico fica mais apertado → Arroba valoriza. <strong>Os contratos de out–dez/26 já estão embutindo isso na precificação (R$ 355–362/@).</strong> O produtor que confia nesse movimento e trava o 4T26 pode garantir boa margem mesmo com o atual período pressionado.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 5: MACRO E GEOPOLÍTICA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌐</div>
+    <h2>Macro, Geopolítica e o que Monitorar</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox azul">
+      <h3>🏦 Macro Brasil — O que Pesa na Semana</h3>
+      <p><strong>Selic em 13,25% a.a.:</strong> Copom se reúne em junho. Se sinalizar corte, o câmbio pode cair abaixo de R$5,00 — o que reduziria a rentabilidade do exportador e pressionaria a arroba. Se mantiver restritivo, câmbio se sustenta.</p>
+      <p><strong>IPCA de maio</strong> é divulgado em junho: se vier acima de 5%, IPCA acima do teto pressionará o BC a manter juros altos por mais tempo. Indiretamente, pode comprimir a demanda interna por carne.</p>
+      <p><strong>Copa do Mundo (11/jun):</strong> além do aspecto doméstico, o evento mobiliza consumo global de proteína. Frigoríficos exportadores para EUA já anteciparam estoques.</p>
+    </div>
+    <div class="abox verm">
+      <h3>🌏 Geopolítica — O que Ficar de Olho</h3>
+      <p><strong>🇨🇳 China — Cota:</strong> esgotamento da cota entre jun–jul. Monitore: (1) quando sair o 3º alerta oficial (100%); (2) se o Brasil conseguir negociar redistribuição de cotas excedentes de outros países. A nova condição sanitária (livre de FA) pode acelerar essas negociações.</p>
+      <p><strong>🇺🇸 EUA — Demanda alternativa:</strong> rebanho americano em mínima histórica mantém demanda firme por carne brasileira. Monitore: relatório Seção 301 dos EUA contra Brasil previsto para junho — pode criar pressão tarifária em outros setores.</p>
+      <p><strong>🇦🇺 Austrália:</strong> já consumiu ~70% de sua cota chinesa. O esgotamento australiano antes do brasileiro pode criar janela temporária de maior demanda chinesa por carne brasileira.</p>
+    </div>
+  </div>
+
+  <div class="al yellow">
+    <div class="ai">⚡</div>
+    <div class="at">
+      <h4>Calendário de Eventos Críticos — Junho 2026</h4>
+      <p><strong>2/jun:</strong> Reconhecimento China — Brasil livre FA ✅ concluído | <strong>11/jun:</strong> Copa do Mundo começa (catalisador demanda) | <strong>Mid-jun:</strong> Esgotamento provável da cota China (3º alerta) | <strong>Mid-jun:</strong> Reunião Copom (decisão Selic) | <strong>Jun:</strong> USDA Cattle on Feed — dados de rebanho EUA | <strong>30/jun:</strong> Fechamento de posições para 2T26 | <strong>Ago:</strong> Início efetivo da restrição de abate pós-cota China.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO RADAR MACRO -->
+  <div class="cw">
+    <h3>🌐 Radar de Impactos — Intensidade de Influência na Precificação do Boi (Semana 01–05/jun)</h3>
+    <canvas id="chartRadar" height="90"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala de 0 a 10 (intensidade de impacto na arroba esta semana).</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 6: CENÁRIOS + PERCEPÇÃO
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🎯</div>
+    <h2>Cenários para a Próxima Semana e Percepção do Analista</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="scen">
+    <div class="sc opt">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟢 Otimista</h4></div>
+      <ul>
+        <li>Físico testa R$ 358–365/@ na semana</li>
+        <li>Copa eleva demanda atacado e varejo</li>
+        <li>China negocia revisão da cota (FA livre)</li>
+        <li>Câmbio sustenta R$ 5,05–5,15</li>
+        <li>BGIM26 encerra acima de R$ 355/@</li>
+        <li>Out–dez/26 sobem para R$ 360–368/@</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 30%</div>
+    </div>
+    <div class="sc neu">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟡 Base</h4></div>
+      <ul>
+        <li>Físico lateral R$ 348–358/@</li>
+        <li>Cota China esgota em meados de jun</li>
+        <li>Copa: demanda doméstica tímida (+2–3%)</li>
+        <li>BGIM26 encerra entre R$ 348–355/@</li>
+        <li>Câmbio R$ 4,95–5,10</li>
+        <li>Volatilidade alta, físico mais estável</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 50%</div>
+    </div>
+    <div class="sc pes">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🔴 Pessimista</h4></div>
+      <ul>
+        <li>Frigoríficos antecipam abates pré-cota</li>
+        <li>Físico cede para R$ 340–347/@</li>
+        <li>Câmbio cai abaixo de R$ 4,90</li>
+        <li>Copa não aquece o consumo interno</li>
+        <li>BGIM26 sob R$ 345/@</li>
+        <li>Mercado futuro volta ao pânico de abr</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 20%</div>
+    </div>
+  </div>
+
+  <!-- PERCEPÇÃO DO ANALISTA -->
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista — Dr. Sidney Souza</h3>
+    <p>A semana de 01 a 05 de junho foi marcada por dois movimentos simultâneos que polarizam a narrativa do mercado: <span class="hl">o fato sanitário histórico do reconhecimento da China e a realidade operacional da cota se esgotando</span>. Esses dois acontecimentos são como dois lados de uma moeda — o primeiro abre portas para o futuro (negociações de novos produtos, carne com osso, miudezas), o segundo fecha a torneira atual (menos volume embarcável dentro da cota preferencial).</p>
+    <p>Do ponto de vista técnico, o físico está em <strong>reteste de resistência em R$ 353–358/@</strong>, após o fundo duplo confirmado em R$ 344,6 em 14–15/mai. A sustentação acima de R$ 355/@ na próxima semana seria o sinal gráfico de retomada da tendência de alta estrutural. O mercado futuro, por sua vez, seguirá volátil — o excesso de especulação que levou o contrato de junho para R$ 333 em abril e depois para R$ 354 em maio, voltando para R$ 349 no fechamento de maio e recuperando para R$ 351 em 01/jun, é a prova de que <em>fundamentos e pregão se descolam cada vez mais no boi</em>.</p>
+    <p>O fato concreto desta semana: <strong>o mercado físico está mais saudável do que o futuro sugere</strong>. Enquanto o físico mantém R$ 353–357/@, os contratos de julho e agosto ainda precificam queda (R$ 341–344/@). Isso é uma contradição que o tempo vai resolver — ou o físico cede (improvável dado o cenário sanitário e a retenção de fêmeas), ou o futuro corrige para cima (mais provável).</p>
+    <p>Para a semana que vem: Copa do Mundo (11/jun) é o catalisador doméstico. O mercado atacadista deve reagir positivamente nos dias de jogos da Seleção. O catalisador externo é o monitoramento da cota China — quando o 3º alerta sair, os frigoríficos vão readequar as escalas e o físico deve ganhar tração.</p>
+    <div class="quote">"O fundamento é altista. Quem perdeu o bonde da venda em R$360–365 (abr) não perdeu a segunda oportunidade — ela pode estar chegando entre outubro e dezembro. O reconhecimento sanitário da China é a 'carta coringa' que pode antecipar esse movimento." — Dr. Sidney Souza, Rural IN</div>
+  </div>
+
+  <!-- SEMÁFORO FINAL -->
+  <div class="cw">
+    <h3>🚦 Semáforo do Boi — Indicadores-Chave na Semana 01–05/Jun/2026</h3>
+    <div class="sem-grid">
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Físico SP (Cepea)</strong><span>R$353,50/@ — recuperação sólida</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Futuro Jun/26 (BGIM26)</strong><span>R$351,65 — abaixo do físico, volátil</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Cota China</strong><span>≥65% real — esgotamento em jun-jul</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>FA Livre (02/jun)</strong><span>Reconhecimento histórico — China</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Exportação</strong><span>Firme — EUA + China absorvendo</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Futuro Jul–Set</strong><span>R$341–347/@ — piso / pressão</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Out–Dez/26 (B3)</strong><span>R$355–362/@ — precificando entressafra</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Câmbio R$5,04</strong><span>Sustenta receita do exportador</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Bezerro (MS)</strong><span>R$3.419 — máxima histórica, custo alto</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Copa do Mundo</strong><span>Catalisador doméstico (11/jun)</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl">
+        <div class="brand">Rural<span> IN</span></div>
+        <div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.77rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="fc">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br>
+          Transformamos dados da fazenda em decisões econômicas<br>
+          Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO BOI · SEMANA 01–05/JUN/2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CEPEA/ESALQ · DATAGRO · B3 · FARMNEWS · SAFRAS&MERCADO · SCOT CONSULTORIA · IMEA · MAPA · CANAL RURAL · ABIEC · GAZETA DO PARANÁ · ACIARA
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+Chart.defaults.color='#6b7280';
+Chart.defaults.borderColor='rgba(0,0,0,.05)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const verde='#1a6b3c',verdeL='#2d9e5f',verdeXL='#52b788',
+      dourado='#b8860b',douradoL='#d4a017',
+      cinza='#374151',cinzaL='#9ca3af',
+      azul='#1e3a8a',azulL='#2563eb',
+      verm='#991b1b',vermL='#dc2626';
+
+// ─── 1. Semana ───
+new Chart(document.getElementById('chartSemana').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Seg 01/jun\n(Datagro)','Ter 02/jun\n(+FA livre)','Qua 03/jun','Qui 04/jun','Sex 05/jun'],
+    datasets:[
+      {label:'Físico Cepea SP (R$/@)',
+       data:[350.8,352.5,353.5,354.2,354.0],
+       borderColor:verde,backgroundColor:'rgba(26,107,60,.08)',
+       borderWidth:3,tension:.35,fill:true,pointRadius:6,
+       pointBackgroundColor:['#374151','#f59e0b','#16a34a','#16a34a','#16a34a']},
+      {label:'Datagro Físico (R$/@)',
+       data:[349.5,350.2,351.0,351.8,351.5],
+       borderColor:douradoL,backgroundColor:'rgba(212,160,23,.05)',
+       borderWidth:2.5,tension:.35,fill:false,pointRadius:5,borderDash:[5,3]},
+      {label:'BGIM26 Futuro Jun (R$/@)',
+       data:[350.0,350.5,351.4,351.9,351.65],
+       borderColor:azulL,backgroundColor:'rgba(37,99,235,.04)',
+       borderWidth:2,tension:.35,fill:false,pointRadius:4,borderDash:[4,4]}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+      annotation:{annotations:{fa:{type:'point',xValue:1,yValue:352.5,radius:8,backgroundColor:'rgba(253,186,48,.5)',borderColor:'#d97706',borderWidth:2,label:{content:'🇨🇳 FA Livre!',display:true,position:'top',color:'#7c4e00',font:{size:11,weight:'bold'}}}}}},
+    scales:{y:{min:344,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 2. Curva futura ───
+new Chart(document.getElementById('chartCurva').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Jun/26','Jul/26','Ago/26','Set/26','Out/26','Nov/26','Dez/26'],
+    datasets:[
+      {label:'Preço ajuste (R$/@)',
+       data:[351.65,341.50,343.80,347.20,355.70,358.00,362.00],
+       backgroundColor:['rgba(37,99,235,.65)','rgba(220,38,38,.6)','rgba(220,38,38,.55)',
+         'rgba(212,160,23,.7)','rgba(26,107,60,.75)','rgba(26,107,60,.80)','rgba(26,107,60,.85)'],
+       borderRadius:8,borderSkipped:false},
+      {label:'Físico referência',
+       data:[353.5,353.5,353.5,353.5,353.5,353.5,353.5],
+       type:'line',borderColor:'rgba(156,163,175,.7)',borderWidth:2,
+       borderDash:[6,4],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},tooltip:{callbacks:{label:c=>c.dataset.label+': R$ '+c.raw+'/@'}}},
+    scales:{y:{min:332,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 3. Anual ───
+new Chart(document.getElementById('chartAnual').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','Abr','Mai (fundo)','Mai (fecho)','Jun 01–05*'],
+    datasets:[
+      {label:'Cepea SP (R$/@)',
+       data:[320,335,358,363.6,344.6,349.7,353.5],
+       borderColor:verde,backgroundColor:'rgba(26,107,60,.07)',
+       borderWidth:3,tension:.35,fill:true,
+       pointRadius:[4,4,4,4,7,5,7],
+       pointBackgroundColor:['#2d9e5f','#2d9e5f','#2d9e5f','#2d9e5f','#dc2626','#374151','#16a34a']}
+    ]
+  },
+  options:{responsive:true,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R$ '+c.raw+'/@'}}},
+    scales:{y:{min:310,ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 4. Spread físico vs futuro ───
+new Chart(document.getElementById('chartSpread').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['01/abr','15/abr','30/abr','07/mai','14/mai','21/mai','28/mai','01/jun','03/jun','05/jun'],
+    datasets:[{
+      label:'Spread Futuro Jun − Físico Datagro (R$/@)',
+      data:[5.0,-25.0,-21.0,-12.0,-5.0,8.0,-3.0,0.5,1.4,2.15],
+      borderColor:azulL,backgroundColor:(ctx)=>{
+        const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);
+        g.addColorStop(0,'rgba(37,99,235,.12)');
+        g.addColorStop(1,'rgba(37,99,235,.02)');
+        return g;
+      },
+      borderWidth:3,tension:.35,fill:true,pointRadius:5,
+      pointBackgroundColor:(ctx)=>{
+        const v=ctx.raw;
+        return v>0?'#16a34a':v<-10?'#dc2626':'#d97706';
+      }
+    }]
+  },
+  options:{responsive:true,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Spread: R$ '+c.raw+'/@'}}},
+    scales:{y:{ticks:{callback:v=>'R$ '+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 5. Radar ───
+new Chart(document.getElementById('chartRadar').getContext('2d'),{
+  type:'radar',
+  data:{
+    labels:['Cota China','Câmbio R$/$','FA Livre (China)','Exportação','Copa do Mundo','Bezerro/Oferta','Selic/Crédito','Esp. Físico vs Futuro'],
+    datasets:[{
+      label:'Impacto semana 01–05/jun',
+      data:[9.5,7.0,8.5,8.0,6.5,7.0,5.5,8.0],
+      borderColor:verdeL,backgroundColor:'rgba(45,158,95,.15)',
+      pointBackgroundColor:verdeL,borderWidth:2.5
+    }]
+  },
+  options:{responsive:true,
+    scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:'rgba(0,0,0,.07)'},pointLabels:{font:{size:11},color:'#555'}}},
+    plugins:{legend:{display:false}}}
+});
+</script>
+</body>
+</html>

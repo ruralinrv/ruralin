@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Milho | Semana 01–05/Jun/2026 | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --larj:#c2410c;--larj-l:#ea580c;--larj-xl:#fb923c;--larj-pale:#fff7ed;
+  --amarelo:#a16207;--amarelo-l:#ca8a04;--amarelo-xl:#fbbf24;--amarelo-pale:#fefce8;
+  --verde:#166534;--verde-l:#16a34a;--verde-xl:#4ade80;
+  --verm:#991b1b;--verm-l:#dc2626;
+  --azul:#1e3a8a;--azul-l:#3b82f6;
+  --cinza-esc:#1c2526;--cinza:#374151;--cinza-l:#6b7280;
+  --bg:#fdf8f3;--sombra:0 4px 20px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a0800 0%,#7c2d12 40%,var(--larj) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-70px;right:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(251,146,60,.2) 0%,transparent 70%);border-radius:50%}
+.h-top{max-width:1140px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;line-height:1;color:#fff}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--larj-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--larj-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.hb{font-family:'JetBrains Mono',monospace;font-size:.67rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-dn{background:rgba(220,38,38,.2);color:#fca5a5;border:1px solid rgba(252,165,165,.3)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.hb-warn{background:rgba(251,146,60,.25);color:var(--larj-xl);border:1px solid rgba(251,146,60,.4)}
+.hb-up{background:rgba(34,197,94,.2);color:#86efac;border:1px solid rgba(134,239,172,.3)}
+
+/* ── TICKER ── */
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--larj-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#e5e7eb;font-weight:600}
+.sep{color:rgba(255,255,255,.18)}
+.t-dn{color:#f87171!important}.t-up{color:#4ade80!important}.t-am{color:var(--larj-xl)!important}
+
+/* ── ALERTA TOP ── */
+.alerta-top{background:linear-gradient(135deg,#fff7ed,#ffedd5);border:2px solid var(--larj-l);border-radius:14px;padding:18px 22px;margin:22px 0;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--sombra)}
+.alerta-top.verde{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:var(--verde-l)}
+.alerta-top .fi{font-size:2rem;flex-shrink:0}
+.alerta-top h3{font-family:'Playfair Display',serif;color:var(--larj);font-size:1.05rem;margin-bottom:5px}
+.alerta-top.verde h3{color:var(--verde)}
+.alerta-top p{font-size:.86rem;color:var(--cinza);line-height:1.7}
+
+/* ── BANNER ── */
+.hl-banner{background:linear-gradient(135deg,#1a0800,#7c2d12);padding:18px 24px;text-align:center;border-bottom:3px solid var(--larj-l)}
+.hl-banner h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;font-weight:700}
+.hl-banner p{font-size:.83rem;color:rgba(255,255,255,.57);margin-top:5px}
+
+/* ── CONTAINER ── */
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+.section{padding:40px 0 28px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:var(--larj-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.42rem;color:var(--larj);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--larj-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--larj-l),transparent)}
+
+/* ── PLACAR ── */
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-bottom:22px}
+.pc{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.pc.dn::before{background:linear-gradient(90deg,var(--verm),#f97316)}
+.pc.nt::before{background:linear-gradient(90deg,var(--larj-l),var(--larj-xl))}
+.pc.up::before{background:linear-gradient(90deg,var(--verde-l),var(--verde-xl))}
+.pc.warn::before{background:linear-gradient(90deg,var(--amarelo-l),var(--amarelo-xl))}
+.pc .lbl{font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.pc .val{font-family:'JetBrains Mono',monospace;font-size:1.55rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.pc .var{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;margin-top:5px}
+.v-up{color:var(--verde-l)}.v-dn{color:var(--verm-l)}.v-nt{color:var(--larj-l)}
+.pc .sub{font-size:.72rem;color:var(--cinza-l);margin-top:4px;line-height:1.4}
+.pc .src{font-size:.62rem;color:#ccc;margin-top:5px}
+
+/* ── GRÁFICO ── */
+.cw{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.cw h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--larj);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid #f5ede0}
+.cw .nf{font-size:.67rem;color:#bbb;font-style:italic;margin-top:7px}
+
+/* ── TERMÔMETROS ── */
+.termos{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:20px}
+.termo{background:#fff;border-radius:14px;padding:18px 14px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:10px}
+.termo-body{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tg{width:86px;height:86px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--cinza-esc)}
+.termo-desc{font-size:.72rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+
+/* ── BARRA PREÇO ── */
+.preco-barra{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.preco-barra h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--larj);margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #f5ede0}
+.pb-row{margin-bottom:14px}
+.pb-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.82rem}
+.pb-name{font-weight:600;color:var(--cinza)}
+.pb-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.84rem}
+.pb-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pb-fill{height:100%;border-radius:8px}
+.pb-mark{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px}
+.pb-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--cinza-l)}
+.pb-legend{margin-top:12px;padding:10px;background:#fdf5ec;border-radius:8px;font-size:.75rem;color:var(--cinza-l)}
+
+/* ── ALERTAS FATOS ── */
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.red{background:#fef2f2;border-color:rgba(220,38,38,.3)}
+.al.orange{background:var(--larj-pale);border-color:rgba(234,88,12,.35)}
+.al.green{background:#f0fdf4;border-color:rgba(22,163,74,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(59,130,246,.3)}
+.al.yellow{background:var(--amarelo-pale);border-color:rgba(202,138,4,.4)}
+.al .ai{font-size:1.35rem;flex-shrink:0;margin-top:2px}
+.al .at h4{font-size:.87rem;font-weight:700;margin-bottom:3px}
+.al.red .at h4{color:var(--verm)}.al.orange .at h4{color:var(--larj)}.al.green .at h4{color:var(--verde)}.al.blue .at h4{color:var(--azul)}.al.yellow .at h4{color:var(--amarelo)}
+.al .at p{font-size:.81rem;color:var(--cinza-l);line-height:1.6}
+
+/* ── ABOX ── */
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:16px;border-left:5px solid var(--larj-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.verm{border-left-color:var(--verm-l)}.abox.azul{border-left-color:var(--azul-l)}.abox.warn{border-left-color:var(--amarelo-l)}
+.abox h3{font-family:'Playfair Display',serif;color:var(--larj);font-size:1.04rem;margin-bottom:10px}
+.abox.verde h3{color:var(--verde)}.abox.verm h3{color:var(--verm)}.abox.azul h3{color:var(--azul)}.abox.warn h3{color:var(--amarelo)}
+.abox p{font-size:.88rem;color:var(--cinza);line-height:1.82}
+.abox p+p{margin-top:8px}
+
+/* ── TABELA ── */
+.tw{overflow-x:auto;border-radius:12px;box-shadow:var(--sombra);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.84rem}
+thead th{background:var(--larj);color:#fff;padding:11px 14px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.8px;text-transform:uppercase}
+tbody td{padding:11px 14px;border-bottom:1px solid #f5ede0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.81rem}
+tbody tr:nth-child(even){background:#fdf8f0}
+.tv{color:var(--verde-l);font-weight:700}.tr{color:var(--verm-l);font-weight:700}.tn{color:var(--cinza)}
+.highlight-row{background:rgba(234,88,12,.06)!important}
+
+/* ── CENÁRIOS ── */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:15px;margin-bottom:18px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:var(--verde-l)}
+.sc.neu{background:linear-gradient(135deg,#fff7ed,#ffedd5);border-color:var(--larj-l)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:var(--verm-l)}
+.sc-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:var(--verde-l)}.sc.neu .sc-dot{background:var(--larj-l)}.sc.pes .sc-dot{background:var(--verm-l)}
+.sc h4{font-family:'Playfair Display',serif;font-size:.96rem;font-weight:700}
+.sc.opt h4{color:var(--verde)}.sc.neu h4{color:var(--larj)}.sc.pes h4{color:var(--verm)}
+.sc ul{list-style:none;font-size:.82rem;color:var(--cinza);line-height:1.82}
+.sc ul li::before{content:'›  ';font-weight:700}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:5px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:var(--verde)}.sc.neu .sc-prob{background:#ffedd5;color:var(--larj)}.sc.pes .sc-prob{background:#fee2e2;color:var(--verm)}
+
+/* ── PERCEPÇÃO ── */
+.percepcao{background:linear-gradient(135deg,#1a0800,#7c2d12);border-radius:16px;padding:30px;color:#fff;margin-bottom:18px}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--larj-xl);margin-bottom:12px}
+.percepcao p{font-size:.89rem;line-height:1.85;color:rgba(255,255,255,.85)}
+.percepcao p+p{margin-top:10px}
+.percepcao .hl{background:linear-gradient(transparent 60%,rgba(251,146,60,.3) 60%)}
+.percepcao .quote{border-left:3px solid var(--larj-l);padding-left:16px;font-style:italic;margin-top:14px;color:var(--larj-xl);font-size:.88rem}
+
+/* ── SEMÁFORO ── */
+.sem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;margin-top:12px}
+.sem-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-radius:10px;box-shadow:var(--sombra)}
+.sd-g{background:var(--verde-l)}.sd-y{background:var(--amarelo-xl)}.sd-r{background:var(--verm-l)}
+.sem-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sem-item strong{font-size:.84rem;display:block;color:var(--cinza-esc)}
+.sem-item span{font-size:.71rem;color:var(--cinza-l)}
+
+/* ── G2 ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ── FOOTER ── */
+.footer{background:var(--cinza-esc);color:#fff;padding:50px 24px 28px}
+.fi{max-width:1140px;margin:0 auto}
+.ft{display:flex;gap:32px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:22px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--larj-xl)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.76rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--larj-xl);font-size:1.08rem;margin-bottom:7px}
+.fc p{font-size:.81rem;color:rgba(255,255,255,.7);line-height:1.9}
+.fc a{color:var(--larj-xl);text-decoration:none}
+.fc a:hover{text-decoration:underline}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.26);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .g2{grid-template-columns:1fr}
+  .logo-txt h1{font-size:1.5rem}
+  .h-top{flex-direction:column;align-items:flex-start}
+  .h-meta{text-align:left}
+  .h-badges{justify-content:flex-start}
+  .ft{flex-direction:column}
+  .pc .val{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#ea580c"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#1a0800">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#1a0800" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#1a0800" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt">
+        <h1>Radar Agro do Milho</h1>
+        <div class="sub">Semana 01–05 Jun 2026 · Rural IN</div>
+      </div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">Análise Semanal · PhD Mercado Agro</div>
+      <div class="dt">05 de Junho de 2026</div>
+      <div class="h-badges">
+        <span class="hb hb-dn">Cepea Campinas: R$64,51/sc ▼ mín. 8 meses</span>
+        <span class="hb hb-warn">Safrinha: colheita iniciando</span>
+        <span class="hb hb-up">Geada PR: quebra confirmada</span>
+        <span class="hb hb-nt">CBOT Jul: US$4,46/bu</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🌽 <span class="t-am">Cepea Campinas SP:</span> <strong>R$ 64,51/sc</strong> <span class="t-dn">▼ mín. desde out/25</span></span>
+    <span class="sep">|</span>
+    <span>🌽 <span class="t-am">Rondonópolis MT:</span> <strong>R$ 51,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🌽 <span class="t-am">Cascavel PR:</span> <strong>R$ 60,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🌽 <span class="t-am">Erechim RS:</span> <strong>R$ 69,00/sc</strong></span>
+    <span class="sep">|</span>
+    <span>🌽 <span class="t-am">Santos/Paranaguá:</span> <strong>R$ 65–69/sc</strong></span>
+    <span class="sep">|</span>
+    <span>📊 <span class="t-am">CBOT Jul/26:</span> <strong>US$ 4,46/bu</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-am">Dólar:</span> <strong>R$ 5,01</strong></span>
+  </div>
+</header>
+
+<!-- ── BANNER ── -->
+<div class="hl-banner">
+  <div>
+    <h2>🌽 Mínima em 8 Meses — Comprador Sumiu, Safrinha Chega</h2>
+    <p>Cepea Campinas: menor patamar desde 1º de outubro · Colheita safrinha pressiona · Geadas confirmadas no Paraná · Cabo de guerra: vender ou esperar? · Análise técnica completa</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ── ALERTAS ── -->
+<div class="alerta-top">
+  <div class="fi">📉</div>
+  <div>
+    <h3>FATO DA SEMANA — Milho bate mínima em 8 meses: R$ 64,51/sc em Campinas</h3>
+    <p><strong>Reuters / Cepea (05/jun):</strong> "Os preços do milho seguem em queda neste começo de junho na maior parte das regiões produtoras do Brasil, com indicador referencial no país marcando <strong>o menor patamar nominal em oito meses nesta semana</strong> — R$ 64,51/sc em Campinas — enquanto compradores estão afastados do mercado 'spot' e a colheita da segunda safra está em fase inicial." Segundo o Cepea: "Agentes aguardam novas baixas. Do lado vendedor, quem não precisa fazer caixa ou liberar armazém aguarda sustentações nos valores, fundamentados na menor produção em 2025/26 e nos possíveis impactos climáticos em Goiás e partes de MS, além das geadas no Paraná."</p>
+  </div>
+</div>
+
+<div class="alerta-top verde">
+  <div class="fi">❄️</div>
+  <div>
+    <h3>GEADA CONFIRMADA NO PARANÁ — Quebra na Safrinha do SW/Oeste/Centro-Oeste PR</h3>
+    <p><strong>Conab / Broto Notícias (21/mai–01/jun):</strong> A colheita da safrinha 2026 revela <strong>quebra confirmada</strong> em Goiás, partes de Minas Gerais e Matopiba (seca). No Paraná, <strong>geadas pontuais no Sudoeste, Oeste e Centro-Oeste paranaense prejudicaram o potencial produtivo</strong> do milho em lavouras em estádio reprodutivo. Mato Grosso do Sul se recuperou com o retorno das chuvas. Apesar dos danos localizados, a safra total nacional segue projetada em 140+ Mt (2ª maior da história) — o que segura o viés estrutural de baixa dos preços.</p>
+  </div>
+</div>
+
+<!-- ══════════════════
+     SEÇÃO 1: COTAÇÕES
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">💰</div>
+    <h2>Placar de Cotações — Semana 01–05/Jun/2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="placar">
+    <div class="pc dn">
+      <div class="lbl">Cepea Campinas SP (04/jun)</div>
+      <div class="val">R$ 64,51</div>
+      <div class="var v-dn">▼ Menor desde 01/out/25</div>
+      <div class="sub">Referência nacional — mínima em 8 meses</div>
+      <div class="src">Fonte: Cepea/Esalq / Reuters 05/jun</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Média BR (03/jun — Safras)</div>
+      <div class="val">R$ 61,22</div>
+      <div class="var v-dn">▼ −0,05% vs. semana anterior</div>
+      <div class="sub">Média ponderada entre regiões — viés baixista</div>
+      <div class="src">Fonte: Safras & Mercado 03/jun</div>
+    </div>
+    <div class="pc dn">
+      <div class="lbl">Rondonópolis — MT</div>
+      <div class="val">R$ 51,00</div>
+      <div class="var v-dn">▼ −1,92% vs. semana ant. (R$52)</div>
+      <div class="sub">Menor praça — frete eleva competitividade no porto</div>
+      <div class="src">Fonte: Safras & Mercado 03/jun</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">Cascavel — PR</div>
+      <div class="val">R$ 60,00</div>
+      <div class="var v-nt">↔ Inalterado vs. semana ant.</div>
+      <div class="sub">Geadas localizadas sustentam preço regional</div>
+      <div class="src">Fonte: Safras & Mercado 03/jun</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">Erechim — RS</div>
+      <div class="val">R$ 69,00</div>
+      <div class="var v-up">▲ +2,22% vs. mês ant. (R$67,50)</div>
+      <div class="sub">Melhor praça — demanda de aves e suínos</div>
+      <div class="src">Fonte: Safras & Mercado 03/jun</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">CBOT Jul/26</div>
+      <div class="val">US$ 4,46</div>
+      <div class="var v-dn">▼ −0,75¢ | −0,16% na 2ª (01/jun)</div>
+      <div class="sub">Clima EUA bom + safrinha BR = pressão global</div>
+      <div class="src">Fonte: CME Group / Safras & Mercado</div>
+    </div>
+  </div>
+
+  <!-- TERMÔMETRO REGIONAL -->
+  <div class="preco-barra">
+    <h3>🌡️ Termômetro Regional — Preço vs. Custo de Produção (05/Jun/2026)</h3>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🏜️ Mato Grosso Norte (Lucas RV/Sorriso)</span><span class="pb-val" style="color:var(--verm-l)">R$ 42/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:28%;background:linear-gradient(90deg,#dc2626,#f97316)"></div><div class="pb-mark" style="left:57%"></div></div>
+      <div class="pb-scale"><span>R$ 30 (fundo)</span><span style="font-weight:700;color:var(--cinza)">Custo: R$63/sc ▲</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🏜️ Rondonópolis — MT</span><span class="pb-val" style="color:var(--verm-l)">R$ 51/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:30%;background:linear-gradient(90deg,#dc2626,#ea580c)"></div><div class="pb-mark" style="left:48%"></div></div>
+      <div class="pb-scale"><span>R$ 30</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$58/sc</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🌾 Cascavel — PR</span><span class="pb-val" style="color:var(--amarelo-l)">R$ 60/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:44%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div><div class="pb-mark" style="left:44%"></div></div>
+      <div class="pb-scale"><span>R$ 30</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$58/sc</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🌽 Campinas CIF — SP</span><span class="pb-val" style="color:var(--amarelo-l)">R$ 65,50/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:51%;background:linear-gradient(90deg,#d97706,var(--amarelo-xl))"></div><div class="pb-mark" style="left:48%"></div></div>
+      <div class="pb-scale"><span>R$ 30</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$62/sc</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🌾 Erechim — RS</span><span class="pb-val" style="color:var(--verde-l)">R$ 69/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:56%;background:linear-gradient(90deg,var(--verde-l),var(--verde-xl))"></div><div class="pb-mark" style="left:45%"></div></div>
+      <div class="pb-scale"><span>R$ 30</span><span style="font-weight:700;color:var(--cinza)">Custo: ~R$58/sc</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🚢 Porto Santos / Paranaguá (CIF)</span><span class="pb-val" style="color:var(--verde-l)">R$ 65–69/sc</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:52%;background:linear-gradient(90deg,var(--verde-l),var(--verde-xl))"></div><div class="pb-mark" style="left:46%"></div></div>
+      <div class="pb-scale"><span>R$ 30</span><span style="font-weight:700;color:var(--cinza)">Referência porto CIF</span><span>R$ 100</span></div>
+    </div>
+
+    <div class="pb-legend">
+      <strong style="color:var(--larj)">Legenda:</strong> Barra = posição do preço entre o fundo (R$30) e teto recente (R$100). A marcação vertical indica o custo médio de produção. MT Norte está <span style="color:var(--verm-l);font-weight:700">muito abaixo do custo</span> (prejuízo grave). RS opera no lucro. PR e SP no limite.
+    </div>
+  </div>
+
+  <!-- GRÁFICO SEMANAL -->
+  <div class="cw">
+    <h3>📈 Evolução Diária da Semana — Indicador Cepea Campinas SP (R$/sc 60kg)</h3>
+    <canvas id="chartSemana" height="85"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq / Safras & Mercado / Reuters. Elaboração: Rural IN — Dr. Sidney Souza.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 2: TERMÔMETROS
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌡️</div>
+    <h2>Termômetros de Mercado — Sentimento da Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="termos">
+    <div class="termo">
+      <h4>Sentimento Físico BR</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="ga" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ga)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="66" y2="26" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">72 / 100</div>
+        <div class="termo-desc">Alta pressão baixista — comprador sumiu, safrinha chegando</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Oferta Safrinha</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gb)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="68" y2="29" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">75 / 100</div>
+        <div class="termo-desc">Oferta crescente — safrinha inicia colheita em MT e PR</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Risco Climático BR</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gc" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gc)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="58" y2="17" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">60 / 100</div>
+        <div class="termo-desc">Geadas PR confirmadas + seca Goiás/MS = perdas localizadas</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>CBOT Milho</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gd" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gd)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="28" y2="23" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">35 / 100</div>
+        <div class="termo-desc">US$4,46/bu — clima EUA favorável deprime cotação</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Pressão Venda</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="ge" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ge)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="62" y2="21" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">68 / 100</div>
+        <div class="termo-desc">Armazéns cheios + safrinha chegando = produtor cede no preço</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Demanda Interna</h4>
+      <div class="termo-body">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gf" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gf)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="57" y2="16" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">65 / 100</div>
+        <div class="termo-desc">Etanol + ração + suinocultura mantêm absorção — base de suporte</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 3: FATOS DA SEMANA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📰</div>
+    <h2>Os Fatos que Moveram o Milho nesta Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:18px">
+
+    <div class="al red">
+      <div class="ai">📉</div>
+      <div class="at">
+        <h4>1. Comprador Sumiu — Mercado "Spot" Paralisa</h4>
+        <p>A semana foi marcada pela <strong>ausência de compradores no mercado físico</strong> à vista. Consumidores (frigoríficos, avicultores, fabricantes de ração) aguardam a chegada da safrinha para negociar com preços mais baixos — estratégia clássica de "compasso de espera". Resultado: <strong>liquidez mínima, vendedor cede, preço cai</strong>. Cepea: "Compradores indicam facilidade na realização de efetivações e aguardam novas baixas."</p>
+      </div>
+    </div>
+
+    <div class="al orange">
+      <div class="ai">🌽</div>
+      <div class="at">
+        <h4>2. Colheita Safrinha Inicia em MT e PR — Pressão de Oferta</h4>
+        <p>Cepea (01/jun): <strong>"Início de colheita em MT e no PR pressiona cotações"</strong>. Com a chegada dos primeiros lotes da safrinha no mercado, a pressão de oferta se intensifica. Conab projeta <strong>109 Mt na segunda safra</strong> — mesmo com perdas localizadas em GO e PR, o volume é suficiente para manter o mercado abastecido até o 1T27. A entrada do grão novo nos armazéns empurra a comercialização do estoque antigo para baixo.</p>
+      </div>
+    </div>
+
+    <div class="al yellow">
+      <div class="ai">❄️</div>
+      <div class="at">
+        <h4>3. Geadas no SW/Oeste/Centro-Oeste do Paraná — Quebra Localizada</h4>
+        <p>As geadas confirmadas no Paraná afetaram <strong>lavouras em estádio reprodutivo</strong> — o pior momento para ocorrer o frio. Perdas localizadas no Sudoeste, Oeste e Centro-Oeste paranaense reduzem o potencial produtivo do estado. <strong>Esse fator impede quedas ainda mais agressivas</strong> — o mercado mantém prêmio regional sobre as praças do PR. A Conab confirma a quebra, mas Mato Grosso do Sul se recuperou com retorno das chuvas.</p>
+      </div>
+    </div>
+
+    <div class="al red">
+      <div class="ai">🏜️</div>
+      <div class="at">
+        <h4>4. Seca em Goiás Deixa Rastro — Perdas Acima de 20%</h4>
+        <p>Segundo a Conab, lavouras semeadas tardiamente no Centro-Oeste e Matopiba <strong>não devem ser colhidas</strong>. Em Goiás, a seca durante o enchimento de grãos pode reduzir produtividade em <strong>20%+ nas áreas mais afetadas</strong>. Esse é o principal contrapeso ao excesso de oferta — sem as perdas de GO, a queda dos preços seria ainda mais intensa nesta semana.</p>
+      </div>
+    </div>
+
+    <div class="al orange">
+      <div class="ai">🚢</div>
+      <div class="at">
+        <h4>5. Porto "Não Está Ajudando" — Paridade Desfavorável</h4>
+        <p>Analista Paulo Molinari (Safras & Mercado): <strong>"O porto não está ajudando e as colheitas da safrinha trazem o foco para junho e julho. Não há nenhum novo fator climático e o mercado está aguardando os preços se ajustarem ao porto."</strong> A paridade de exportação do porto de Santos/Paranaguá não está atraente o suficiente para puxar os preços do interior — o diferencial logístico segue elevado.</p>
+      </div>
+    </div>
+
+    <div class="al green">
+      <div class="ai">⛽</div>
+      <div class="at">
+        <h4>6. B15 de Biodiesel (ago/26) — Catalisador de Médio Prazo</h4>
+        <p>A aprovação do aumento da mistura de biodiesel para <strong>B15 a partir de 1º de agosto de 2026</strong> amplia a demanda por óleos vegetais (soja) e, indiretamente, por milho na cadeia de etanol. Junto com o B15, o <strong>E30 de etanol</strong> também foi aprovado. Para o milho, esse é um fator de demanda de médio prazo — impacto real começa em agosto, mas já começa a ser precificado nas projeções de 2S26.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICO ANUAL -->
+  <div class="cw">
+    <h3>📊 Evolução do Milho em 2026 — Cepea Campinas SP (R$/sc) · Com Destaque para a Semana</h3>
+    <canvas id="chartAnual" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq. A linha tracejada indica o custo médio de produção (~R$62/sc). Elaboração: Rural IN — Dr. Sidney Souza.</p>
+  </div>
+
+  <!-- TABELA CONTRATOS B3 -->
+  <h3 style="font-family:'Playfair Display',serif;color:var(--larj);font-size:1.15rem;margin:20px 0 14px">📊 Mercado Futuro B3 — Contratos de Milho (Referência 05/Jun/2026)</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Contrato</th><th>Ref. 05/jun (R$/sc)</th><th>Spread vs Físico</th><th>Tendência</th><th>Obs.</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td><strong>CCMU26 — Jul/26 🎯</strong></td>
+          <td>R$ 70,00</td>
+          <td class="tv">+R$ 5,49 vs Campinas</td>
+          <td class="tv">Prêmio sobre o físico</td>
+          <td>Vence em julho — janela de hedge safrinha</td>
+        </tr>
+        <tr>
+          <td>CCMQ26 — Ago/26</td>
+          <td>R$ 66,00</td>
+          <td class="tv">+R$ 1,49</td>
+          <td class="tn">Neutro</td>
+          <td>Pós-colheita safrinha</td>
+        </tr>
+        <tr>
+          <td>CCMV26 — Out/26</td>
+          <td>R$ 68,50</td>
+          <td class="tv">+R$ 3,99</td>
+          <td class="tv">Leve alta esperada</td>
+          <td>Demanda B15 + etanol E30 (ago)</td>
+        </tr>
+        <tr>
+          <td>CCMX26 — Nov/26</td>
+          <td>R$ 70,00</td>
+          <td class="tv">+R$ 5,49</td>
+          <td class="tv">Alta — entressafra</td>
+          <td>Período de menor oferta</td>
+        </tr>
+        <tr>
+          <td>CCMZ26 — Dez/26</td>
+          <td>R$ 72,00</td>
+          <td class="tv">+R$ 7,49</td>
+          <td class="tv">Alta forte entressafra</td>
+          <td>Janela de travamento atraente</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:.67rem;color:#bbb;font-style:italic;margin-bottom:18px">Fonte: B3 / Safras & Mercado. Valores de referência 05/06/2026. Elaboração: Rural IN.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 4: ANÁLISE TÉCNICA + FUNDAMENTALISTA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🔬</div>
+    <h2>Análise Técnica e Fundamentalista — O Cabo de Guerra</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox verm">
+      <h3>📉 Análise Técnica — Cepea Campinas</h3>
+      <p><strong>Tendência semanal:</strong> baixista. O indicador Cepea rompeu o suporte de R$65/sc e testou R$64,51 — menor patamar desde 1º de outubro de 2025. O rompimento abaixo de R$65 é um <span style="background:linear-gradient(transparent 60%,rgba(220,38,38,.2) 60%)">sinal técnico de fraqueza</span>: o mercado não tem base compradora suficiente para segurar neste nível.</p>
+      <p><strong>Suportes:</strong> R$64,00 → R$63,00 → R$60,00 (psicológico). <strong>Resistências:</strong> R$65,50 → R$67,00 → R$70,00 (futuro jul/26).</p>
+      <p><strong>RSI estimado:</strong> ~30 — zona de sobrevenda. Tecnicamente, o mercado está "esticado" para baixo — risco de repique técnico se qualquer notícia positiva (clima adverso em GO/PR, compra surpresa para exportação) surgir.</p>
+      <p><strong>Padrão:</strong> canal de baixa estruturado desde meados de maio. Não há sinal de reversão confirmado.</p>
+    </div>
+    <div class="abox">
+      <h3>🌽 Análise Fundamentalista — Os Dois Lados</h3>
+      <p><strong>Fatores baixistas (dominantes):</strong> safra 25/26 projetada em 140+ Mt (2ª maior da história); colheita safrinha iniciando em MT e PR; compradores afastados aguardando queda; estoques de passagem elevados; CBOT pressionada por clima ideal nos EUA; porto sem paridade atraente para exportação.</p>
+      <p><strong>Fatores altistas (limitadores da queda):</strong> geadas confirmadas no PR (quebra localizada); seca em GO (perdas 20%+); demanda interna de ração (suinocultura e avicultura firmes); B15 e E30 aprovados para agosto; dólar em R$5,01 sustenta paridade de exportação; etanol de milho em expansão no MT.</p>
+      <p><strong>Balanço:</strong> baixistas vencem no curto prazo. O fato de a queda não ter sido mais intensa mostra que os fatores altistas (clima) funcionam como freio, não como acelerador.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO CABO DE GUERRA -->
+  <div class="cw">
+    <h3>⚖️ Cabo de Guerra — Fatores Baixistas vs. Altistas no Milho (Intensidade 05/jun/2026)</h3>
+    <canvas id="chartCabo" height="80"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala 0–10: quanto maior a barra, mais intenso o fator.</p>
+  </div>
+
+  <div class="abox warn">
+    <h3>💡 O Dilema do Produtor: Vender Agora ou Esperar?</h3>
+    <p>Esta semana resume o dilema que todo produtor de milho enfrenta em 2026: <strong>vender agora a R$60–65/sc (abaixo ou no limite do custo para muitos) ou segurar esperando uma reação que pode não vir antes de agosto</strong>.</p>
+    <p>A análise racional aponta para uma <em>estratégia de venda escalonada</em>: (1) vender imediatamente quem <strong>precisa de caixa ou paga armazenagem terceirizada</strong> — o custo financeiro corrói o eventual ganho de R$3–5/sc que pode vir em julho; (2) <strong>segurar quem tem armazenagem própria e fluxo de caixa folgado</strong> — a janela de reação existe entre junho e julho, puxada pela definição climática da safrinha e pelo início da demanda de B15/E30 em agosto.</p>
+    <p>O futuro de julho (R$70/sc) já oferece um prêmio de R$5,49 sobre o Cepea Campinas. Quem pode travar via B3 ou contrato a termo nesse nível — <span style="background:linear-gradient(transparent 60%,rgba(234,88,12,.2) 60%)">R$70 já cobre o custo de produção para a maioria das regiões produtoras</span>.</p>
+  </div>
+
+  <!-- GRÁFICO RADAR -->
+  <div class="cw">
+    <h3>🌐 Radar de Impactos — Intensidade de Influência na Precificação do Milho (01–05/jun)</h3>
+    <canvas id="chartRadar" height="90"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala 0–10: intensidade de impacto observada na semana.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 5: MACRO E MONITORAMENTOS
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌐</div>
+    <h2>Macro, Geopolítica e Calendário — O que Monitorar</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox azul">
+      <h3>🏦 Macro Brasil — Impacto no Milho</h3>
+      <p><strong>Selic 13,25%:</strong> crédito caro pressiona produtor a vender mesmo com preço desfavorável para honrar dívidas de custeio. Principal driver da "pressão de venda" registrada esta semana.</p>
+      <p><strong>Câmbio R$5,01:</strong> mantém paridade de exportação parcialmente sustentada. Abaixo de R$4,90, o porto perde competitividade e a pressão interna piora. O câmbio é o "amortecedor" da CBOT para o físico brasileiro.</p>
+      <p><strong>B15 e E30 (agosto):</strong> catalisadores de demanda. O aumento da mistura de biodiesel e etanol a partir de agosto cria demanda adicional por milho (especialmente MT, que tem usinas de etanol de milho). Isso deve ser o principal suporte para a reação de preço no 2S26.</p>
+    </div>
+    <div class="abox">
+      <h3>🌍 Fatores Externos a Monitorar</h3>
+      <p><strong>🇺🇸 CBOT Milho:</strong> US$4,46/bu — clima EUA ideal segura a baixa. O Crop Progress semanal (segunda-feira) é o evento mais importante para definir se a CBOT tem suporte ou continua caindo.</p>
+      <p><strong>🇺🇸 USDA WASDE (11/jun):</strong> primeiro balanço completo com projeções da safra EUA 26/27. Expectativa de área maior que 2025 — se confirmada, pode derrubar ainda mais a CBOT e o físico interno.</p>
+      <p><strong>🇦🇷 Argentina:</strong> concorrência crescente — governo sinaliza redução de tarifas de exportação de milho. Volume exportável argentino aumenta no 2S26.</p>
+      <p><strong>🇧🇷 Conab (jun):</strong> relatório mensal de safra — atualiza projeção de 140 Mt. Qualquer revisão para baixo por conta das perdas climáticas seria fator de suporte importante.</p>
+    </div>
+  </div>
+
+  <div class="al yellow">
+    <div class="ai">📅</div>
+    <div class="at">
+      <h4>Calendário Crítico — Próximas Semanas</h4>
+      <p><strong>09/jun:</strong> Crop Progress USDA — condição das lavouras americanas | <strong>11/jun:</strong> USDA WASDE — balanço global 25/26 e projeções 26/27 (evento mais importante para o milho) | <strong>Mid-jun:</strong> Reunião Copom — decisão Selic (impacta câmbio e pressão de venda) | <strong>Jun–Jul:</strong> Pico da colheita safrinha PR, MT e MS | <strong>30/jun:</strong> USDA Planted Acreage + Grain Stocks — estimativa área e estoques EUA | <strong>01/ago:</strong> Entrada em vigor do B15 e E30 — demanda adicional por milho (etanol MT).</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 6: CENÁRIOS + PERCEPÇÃO
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🎯</div>
+    <h2>Cenários para a Próxima Semana e Percepção do Analista</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="scen">
+    <div class="sc opt">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟢 Otimista</h4></div>
+      <ul>
+        <li>USDA WASDE (11/jun) reduz estoques EUA</li>
+        <li>Perdas GO/PR maiores que esperado</li>
+        <li>Conab revisa safra para baixo</li>
+        <li>Campinas reage para R$67–70/sc</li>
+        <li>MT interior: R$54–58/sc</li>
+        <li>Câmbio sobe para R$5,10–5,20</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 20%</div>
+    </div>
+    <div class="sc neu">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟡 Base (mais provável)</h4></div>
+      <ul>
+        <li>Campinas lateral R$63–66/sc</li>
+        <li>Safrinha continua pressionando</li>
+        <li>Porto melhora gradualmente</li>
+        <li>CBOT US$4,30–4,60</li>
+        <li>Câmbio R$4,95–5,10</li>
+        <li>MT interior: R$49–53/sc</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 55%</div>
+    </div>
+    <div class="sc pes">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🔴 Pessimista</h4></div>
+      <ul>
+        <li>USDA amplifica área EUA 26/27</li>
+        <li>Safrinha supera projeções em MT</li>
+        <li>Câmbio cai abaixo de R$4,85</li>
+        <li>Campinas testa R$60–62/sc</li>
+        <li>MT interior: R$44–48/sc</li>
+        <li>Safra 25/26 revisada para 145 Mt+</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 25%</div>
+    </div>
+  </div>
+
+  <!-- PERCEPÇÃO -->
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista — Dr. Sidney Souza</h3>
+    <p>O milho de 01 a 05 de junho entregou exatamente o que os fundamentos anunciavam: <span class="hl">preço no menor patamar em 8 meses, comprador ausente e safrinha batendo à porta</span>. Esse é o ciclo clássico de baixa da safrinha brasileira — que se repete todo ano entre maio e julho, quando a colheita da segunda safra (80% da produção nacional) pressiona os preços para baixo antes de a demanda absorver o volume novo.</p>
+    <p>O que diferencia 2026 dos anos anteriores é a combinação de dois fatores simultâneos que atuam em sentidos opostos: de um lado, a <strong>safra que pode superar 140 Mt</strong> (segunda maior da história) — fator de pressão estrutural. Do outro, as <strong>perdas climáticas confirmadas em Goiás (20%+), Matopiba e Paraná (geadas)</strong> — fatores que impedem a queda ser ainda mais agressiva. É esse cabo de guerra que mantém o físico em R$64–65/sc em vez de R$55–58/sc.</p>
+    <p>Para o produtor, a mensagem desta semana é clara: <strong>o patamar atual de R$64/sc em Campinas está abaixo do custo de produção para a maioria das regiões</strong>. A decisão de segurar ou vender depende exclusivamente do custo de carregamento individual (juros do financiamento + armazenagem). Quem tem custo de carregamento acima de R$0,80/sc/mês não tem vantagem em segurar — o ganho esperado de R$5–8/sc ao longo do semestre não compensa o custo financeiro.</p>
+    <p>O evento mais importante da próxima semana é o <strong>USDA WASDE de 11/jun</strong>. Se confirmar área americana recorde para 26/27, a CBOT pode cair mais e arrastar o físico brasileiro. Se o relatório trouxer alguma surpresa altista (estoques menores, demanda maior), pode ser o gatilho para o repique técnico que o mercado espera.</p>
+    <div class="quote">"No milho, o produtor que vender escalonado — 30% agora, 30% em julho (com o futuro em R$70) e 40% em setembro/outubro (quando o B15/E30 traz demanda) — tem a melhor estratégia de média de preço para 2026." — Dr. Sidney Souza, Rural IN</div>
+  </div>
+
+  <!-- SEMÁFORO -->
+  <div class="cw">
+    <h3>🚦 Semáforo do Milho — Indicadores-Chave na Semana 01–05/Jun/2026</h3>
+    <div class="sem-grid">
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Cepea Campinas</strong><span>R$64,51/sc — mínima em 8 meses</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>MT Norte (Lucas RV)</strong><span>R$42/sc — grave prejuízo</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>RS (Erechim)</strong><span>R$69/sc — única praça no lucro</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>Colheita Safrinha</strong><span>Iniciando MT e PR — pressão oferta</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Geadas Paraná</strong><span>Quebra confirmada — freio da queda</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Seca Goiás</strong><span>Perdas 20%+ — contrapeso altista</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>B15 / E30 (ago)</strong><span>Demanda adicional — catalisador futuro</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Câmbio R$5,01</strong><span>Sustenta paridade exportação</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Futuro Jul/26 (B3)</strong><span>R$70/sc — prêmio sobre físico</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-r"></div><div><strong>WASDE 11/jun</strong><span>Evento chave — risco de área EUA recorde</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl">
+        <div class="brand">Rural<span> IN</span></div>
+        <div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.77rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="fc">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br>
+          Transformamos dados da fazenda em decisões econômicas<br>
+          Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO MILHO · SEMANA 01–05/JUN/2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CEPEA/ESALQ · SAFRAS&MERCADO · CONAB · REUTERS · NOTÍCIAS AGRÍCOLAS · GRÃ O DIRETO · BROTO NOTÍCIAS · FARMNEWS · CME GROUP · B3 · IMEA · PORTAL AGRONEGÓCIO
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+Chart.defaults.color='#6b7280';
+Chart.defaults.borderColor='rgba(0,0,0,.05)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const larj='#c2410c',larjL='#ea580c',larjXL='#fb923c',
+      verde='#166534',verdeL='#16a34a',verdeXL='#4ade80',
+      verm='#991b1b',vermL='#dc2626',azul='#1e3a8a',azulL='#3b82f6',
+      cinza='#374151',cinzaL='#9ca3af',amarelo='#d97706';
+
+// ─── 1. Evolução semanal Campinas ───
+new Chart(document.getElementById('chartSemana').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Sex 29/mai','Seg 02/jun','Ter 03/jun','Qua 04/jun','Sex 05/jun'],
+    datasets:[
+      {label:'Cepea Campinas SP (R$/sc)',
+       data:[65.50,65.20,65.00,64.51,64.60],
+       borderColor:larjL,backgroundColor:'rgba(234,88,12,.08)',
+       borderWidth:3,tension:.3,fill:true,pointRadius:5,
+       pointBackgroundColor:['#374151','#d97706','#d97706','#dc2626','#dc2626']},
+      {label:'Custo prod. referência (R$/sc)',
+       data:[62,62,62,62,62],
+       borderColor:'rgba(107,114,128,.5)',borderWidth:2,borderDash:[5,4],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+    scales:{y:{min:60,ticks:{callback:v=>'R$'+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 2. Anual 2026 ───
+new Chart(document.getElementById('chartAnual').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan','Fev','Mar','Abr','Mai 1ª sem','Mai final','01/jun','05/jun*'],
+    datasets:[
+      {label:'Cepea Campinas SP (R$/sc)',
+       data:[68.0,66.5,72.0,68.5,67.0,65.5,65.2,64.51],
+       borderColor:larjL,backgroundColor:'rgba(234,88,12,.07)',
+       borderWidth:3,tension:.3,fill:true,pointRadius:5,
+       pointBackgroundColor:['#374151','#374151','#16a34a','#374151','#374151','#d97706','#d97706','#dc2626']},
+      {label:'Custo prod. médio (~R$62/sc)',
+       data:[62,62,62,62,62,62,62,62],
+       borderColor:'rgba(107,114,128,.5)',borderWidth:2,borderDash:[4,4],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+    scales:{y:{min:40,ticks:{callback:v=>'R$'+v},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 3. Cabo de guerra ───
+new Chart(document.getElementById('chartCabo').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Colheita safrinha iniciando','Comprador afastado','Estoques elevados','CBOT pressionada','Geadas PR (freia queda)','Seca GO (freia queda)','B15/E30 (futuro)','Demanda ração/etanol'],
+    datasets:[
+      {label:'Fator baixista (verme)',
+       data:[8.5,8.0,7.5,7.0,0,0,0,0],
+       backgroundColor:'rgba(220,38,38,.7)',borderRadius:6},
+      {label:'Fator altista (verde)',
+       data:[0,0,0,0,6.0,5.5,5.0,6.5],
+       backgroundColor:'rgba(22,163,74,.7)',borderRadius:6}
+    ]
+  },
+  options:{responsive:true,indexAxis:'y',
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+'/10'}}},
+    scales:{x:{min:0,max:10,ticks:{callback:v=>v+'/10'},grid:{color:'rgba(0,0,0,.04)'}},y:{grid:{display:false}}}}
+});
+
+// ─── 4. Radar ───
+new Chart(document.getElementById('chartRadar').getContext('2d'),{
+  type:'radar',
+  data:{
+    labels:['Oferta Safrinha','Comprador Afastado','Geadas PR','Seca Goiás','CBOT EUA','Câmbio R$/$','B15/E30 Ago','Selic/Crédito'],
+    datasets:[{
+      label:'Intensidade semana 01–05/jun',
+      data:[8.5,8.0,6.0,5.5,7.0,5.5,5.0,6.5],
+      borderColor:larjL,backgroundColor:'rgba(234,88,12,.15)',
+      pointBackgroundColor:larjL,borderWidth:2.5
+    }]
+  },
+  options:{responsive:true,
+    scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:'rgba(0,0,0,.07)'},pointLabels:{font:{size:11},color:'#555'}}},
+    plugins:{legend:{display:false}}}
+});
+</script>
+</body>
+</html>

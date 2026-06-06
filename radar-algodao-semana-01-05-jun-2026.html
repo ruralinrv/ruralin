@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar Agro do Algodão | Semana 01–05/Jun/2026 | Rural IN</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --cotton:#6b3f9e;--cotton-l:#8b5cf6;--cotton-xl:#c4b5fd;--cotton-pale:#f5f3ff;
+  --creme:#e8d5a3;--creme-l:#f5e6c8;--creme-xl:#fdf8ed;
+  --verde:#166534;--verde-l:#16a34a;--verde-xl:#4ade80;
+  --verm:#991b1b;--verm-l:#dc2626;
+  --azul:#1e3a8a;--azul-l:#3b82f6;
+  --rosa:#9f1239;--rosa-l:#e11d48;
+  --cinza-esc:#1c2526;--cinza:#374151;--cinza-l:#6b7280;
+  --bg:#fdfaf7;--sombra:0 4px 20px rgba(0,0,0,.09);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--cinza);font-size:15px;line-height:1.6}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a0a2e 0%,#4c1d95 45%,var(--cotton) 100%);position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;top:-70px;right:-70px;width:300px;height:300px;background:radial-gradient(circle,rgba(196,181,253,.18) 0%,transparent 70%);border-radius:50%}
+/* cotton boll decorativo */
+.header::after{content:'🌿';position:absolute;bottom:10px;right:24px;font-size:2.5rem;opacity:.15}
+.h-top{max-width:1140px;margin:0 auto;padding:32px 24px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:1}
+.logo-w{display:flex;align-items:center;gap:16px}
+.logo-svg{width:66px;height:66px;flex-shrink:0}
+.logo-txt h1{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;line-height:1;color:#fff}
+.logo-txt .sub{font-family:'JetBrains Mono',monospace;font-size:.67rem;letter-spacing:3px;text-transform:uppercase;color:var(--cotton-xl);margin-top:5px}
+.h-meta{text-align:right}
+.h-meta .ed{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.h-meta .dt{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cotton-xl);font-weight:700;margin-top:4px}
+.h-badges{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px;justify-content:flex-end}
+.hb{font-family:'JetBrains Mono',monospace;font-size:.67rem;padding:4px 10px;border-radius:20px;font-weight:700}
+.hb-up{background:rgba(139,92,246,.3);color:var(--cotton-xl);border:1px solid rgba(196,181,253,.4)}
+.hb-nt{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.hb-gold{background:rgba(245,230,200,.2);color:var(--creme);border:1px solid rgba(245,230,200,.35)}
+
+/* ── TICKER ── */
+.ticker{background:var(--cinza-esc);padding:11px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;border-top:3px solid var(--cotton-l)}
+.ticker span{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:#e5e7eb;font-weight:600}
+.sep{color:rgba(255,255,255,.18)}
+.t-up{color:#a78bfa!important}.t-dn{color:#f87171!important}.t-am{color:var(--cotton-xl)!important}
+
+/* ── DESTAQUE POSITIVO ── */
+.fato-destaque{background:linear-gradient(135deg,var(--cotton-pale),#ede9fe);border:2px solid var(--cotton-l);border-radius:14px;padding:18px 22px;margin:22px 0;display:flex;gap:14px;align-items:flex-start;box-shadow:var(--sombra)}
+.fato-destaque h3{font-family:'Playfair Display',serif;color:var(--cotton);font-size:1.05rem;margin-bottom:5px}
+.fato-destaque p{font-size:.86rem;color:var(--cinza);line-height:1.7}
+
+/* ── BANNER ── */
+.hl-banner{background:linear-gradient(135deg,#1a0a2e,#4c1d95);padding:18px 24px;text-align:center;border-bottom:3px solid var(--cotton-l)}
+.hl-banner h2{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;font-weight:700}
+.hl-banner p{font-size:.83rem;color:rgba(255,255,255,.57);margin-top:5px}
+
+/* ── CONTAINER ── */
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+.section{padding:40px 0 28px}
+.sec-title{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.sec-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;background:var(--cotton-l)}
+.sec-title h2{font-family:'Playfair Display',serif;font-size:1.42rem;color:var(--cotton);font-weight:700}
+.sec-title .ln{flex:1;height:2px;background:linear-gradient(90deg,var(--cotton-l),transparent)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--cotton-l),transparent)}
+
+/* ── PLACAR ── */
+.placar{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin-bottom:22px}
+.pc{background:#fff;border-radius:14px;padding:18px 16px;box-shadow:var(--sombra);position:relative;overflow:hidden}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.pc.up::before{background:linear-gradient(90deg,var(--cotton),var(--cotton-l))}
+.pc.dn::before{background:linear-gradient(90deg,var(--verm),#f87171)}
+.pc.nt::before{background:linear-gradient(90deg,var(--cotton-l),var(--cotton-xl))}
+.pc.gold::before{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.pc .lbl{font-family:'JetBrains Mono',monospace;font-size:.63rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:5px}
+.pc .val{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--cinza-esc);line-height:1}
+.pc .var{font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700;margin-top:5px}
+.v-up{color:var(--cotton)}.v-dn{color:var(--verm-l)}.v-nt{color:var(--cinza-l)}
+.pc .sub{font-size:.72rem;color:var(--cinza-l);margin-top:4px;line-height:1.4}
+.pc .src{font-size:.62rem;color:#ccc;margin-top:5px}
+
+/* ── GRÁFICOS ── */
+.cw{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.cw h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--cotton);margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid #f0ecfa}
+.cw .nf{font-size:.67rem;color:#bbb;font-style:italic;margin-top:7px}
+
+/* ── TERMÔMETROS ── */
+.termos{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:14px;margin-bottom:20px}
+.termo{background:#fff;border-radius:14px;padding:18px 14px;box-shadow:var(--sombra);text-align:center}
+.termo h4{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:1px;text-transform:uppercase;color:var(--cinza-l);margin-bottom:10px}
+.tg{width:86px;height:86px}
+.termo-val{font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--cinza-esc)}
+.termo-desc{font-size:.72rem;color:var(--cinza-l);text-align:center;line-height:1.4}
+
+/* ── BARRA PREÇO ── */
+.preco-barra{background:#fff;border-radius:14px;padding:22px;box-shadow:var(--sombra);margin-bottom:18px}
+.preco-barra h3{font-family:'Playfair Display',serif;font-size:.97rem;color:var(--cotton);margin-bottom:16px;padding-bottom:9px;border-bottom:1px solid #f0ecfa}
+.pb-row{margin-bottom:14px}
+.pb-label{display:flex;justify-content:space-between;margin-bottom:5px;font-size:.82rem}
+.pb-name{font-weight:600;color:var(--cinza)}
+.pb-val{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.84rem}
+.pb-track{height:16px;background:#f3f4f6;border-radius:8px;overflow:hidden;position:relative}
+.pb-fill{height:100%;border-radius:8px}
+.pb-mark{position:absolute;top:-4px;height:24px;width:3px;background:var(--cinza-esc);border-radius:2px}
+.pb-scale{display:flex;justify-content:space-between;margin-top:4px;font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--cinza-l)}
+.pb-legend{margin-top:12px;padding:10px;background:var(--cotton-pale);border-radius:8px;font-size:.75rem;color:var(--cinza-l)}
+
+/* ── ALERTAS ── */
+.al{border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:flex-start;gap:12px;border:1px solid}
+.al.purple{background:var(--cotton-pale);border-color:rgba(139,92,246,.35)}
+.al.green{background:#f0fdf4;border-color:rgba(22,163,74,.3)}
+.al.red{background:#fef2f2;border-color:rgba(220,38,38,.3)}
+.al.blue{background:#eff6ff;border-color:rgba(59,130,246,.3)}
+.al.gold{background:var(--creme-xl);border-color:rgba(217,119,6,.35)}
+.al .ai{font-size:1.35rem;flex-shrink:0;margin-top:2px}
+.al .at h4{font-size:.87rem;font-weight:700;margin-bottom:3px}
+.al.purple .at h4{color:var(--cotton)}.al.green .at h4{color:var(--verde)}.al.red .at h4{color:var(--verm)}.al.blue .at h4{color:var(--azul)}.al.gold .at h4{color:#92400e}
+.al .at p{font-size:.81rem;color:var(--cinza-l);line-height:1.6}
+
+/* ── ABOX ── */
+.abox{background:#fff;border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:16px;border-left:5px solid var(--cotton-l)}
+.abox.verde{border-left-color:var(--verde-l)}.abox.verm{border-left-color:var(--verm-l)}.abox.azul{border-left-color:var(--azul-l)}.abox.gold{border-left-color:#d97706}
+.abox h3{font-family:'Playfair Display',serif;color:var(--cotton);font-size:1.04rem;margin-bottom:10px}
+.abox.verde h3{color:var(--verde)}.abox.verm h3{color:var(--verm)}.abox.azul h3{color:var(--azul)}.abox.gold h3{color:#92400e}
+.abox p{font-size:.88rem;color:var(--cinza);line-height:1.82}
+.abox p+p{margin-top:8px}
+
+/* ── TIMELINE ── */
+.tl{position:relative;padding-left:28px;margin-bottom:16px}
+.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--cotton-l),var(--verde-l))}
+.tl-item{position:relative;margin-bottom:20px}
+.tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--cotton-l);border:2px solid #fff;box-shadow:0 0 0 2px var(--cotton-l)}
+.tl-item.pos::before{background:var(--verde-l);box-shadow:0 0 0 2px var(--verde-l)}
+.tl-item.neg::before{background:var(--verm-l);box-shadow:0 0 0 2px var(--verm-l)}
+.ti-dt{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--cotton-l);font-weight:600;letter-spacing:1px;margin-bottom:2px}
+.tl-item.pos .ti-dt{color:var(--verde-l)}.tl-item.neg .ti-dt{color:var(--verm-l)}
+.ti-tit{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--cinza-esc);margin-bottom:3px}
+.ti-txt{font-size:.86rem;color:var(--cinza);line-height:1.65}
+
+/* ── CENÁRIOS ── */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:15px;margin-bottom:18px}
+.sc{border-radius:14px;padding:20px;border:2px solid}
+.sc.opt{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:var(--verde-l)}
+.sc.neu{background:linear-gradient(135deg,var(--cotton-pale),#ede9fe);border-color:var(--cotton-l)}
+.sc.pes{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:var(--verm-l)}
+.sc-head{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.sc-dot{width:12px;height:12px;border-radius:50%}
+.sc.opt .sc-dot{background:var(--verde-l)}.sc.neu .sc-dot{background:var(--cotton-l)}.sc.pes .sc-dot{background:var(--verm-l)}
+.sc h4{font-family:'Playfair Display',serif;font-size:.96rem;font-weight:700}
+.sc.opt h4{color:var(--verde)}.sc.neu h4{color:var(--cotton)}.sc.pes h4{color:var(--verm)}
+.sc ul{list-style:none;font-size:.82rem;color:var(--cinza);line-height:1.82}
+.sc ul li::before{content:'›  ';font-weight:700}
+.sc-prob{font-family:'JetBrains Mono',monospace;font-size:.7rem;margin-top:10px;padding:5px 10px;border-radius:6px;text-align:center;font-weight:700}
+.sc.opt .sc-prob{background:#dcfce7;color:var(--verde)}.sc.neu .sc-prob{background:var(--cotton-pale);color:var(--cotton)}.sc.pes .sc-prob{background:#fee2e2;color:var(--verm)}
+
+/* ── PERCEPÇÃO ── */
+.percepcao{background:linear-gradient(135deg,#1a0a2e,#4c1d95);border-radius:16px;padding:30px;color:#fff;margin-bottom:18px}
+.percepcao h3{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--cotton-xl);margin-bottom:12px}
+.percepcao p{font-size:.89rem;line-height:1.85;color:rgba(255,255,255,.85)}
+.percepcao p+p{margin-top:10px}
+.percepcao .hl{background:linear-gradient(transparent 60%,rgba(139,92,246,.3) 60%)}
+.percepcao .quote{border-left:3px solid var(--cotton-l);padding-left:16px;font-style:italic;margin-top:14px;color:var(--cotton-xl);font-size:.88rem}
+
+/* ── SEMÁFORO ── */
+.sem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:11px;margin-top:12px}
+.sem-item{display:flex;align-items:center;gap:10px;padding:12px 14px;background:#fff;border-radius:10px;box-shadow:var(--sombra)}
+.sd-g{background:var(--verde-l)}.sd-y{background:#f59e0b}.sd-r{background:var(--verm-l)}
+.sem-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.sem-item strong{font-size:.84rem;display:block;color:var(--cinza-esc)}
+.sem-item span{font-size:.71rem;color:var(--cinza-l)}
+
+/* ── G2 ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+/* ── EXPORTAÇÃO DESTINOS ── */
+.dest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.dest-card{background:#fff;border-radius:12px;padding:14px;box-shadow:var(--sombra);border-left:4px solid var(--cotton-l);text-align:center}
+.dest-card .flag{font-size:1.6rem;margin-bottom:4px}
+.dest-card .country{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--cinza-l);margin-bottom:4px}
+.dest-card .vol{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--cotton)}
+.dest-card .pct{font-size:.73rem;color:var(--cinza-l);margin-top:2px}
+
+/* ── FOOTER ── */
+.footer{background:var(--cinza-esc);color:#fff;padding:50px 24px 28px}
+.fi{max-width:1140px;margin:0 auto}
+.ft{display:flex;gap:32px;flex-wrap:wrap;padding-bottom:26px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:22px}
+.fl .brand{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--cotton-xl)}
+.fl .brand span{color:#fff}
+.fl .tag{font-size:.76rem;color:rgba(255,255,255,.45);font-style:italic;margin-top:4px}
+.fc h4{font-family:'Playfair Display',serif;color:var(--cotton-xl);font-size:1.08rem;margin-bottom:7px}
+.fc p{font-size:.81rem;color:rgba(255,255,255,.7);line-height:1.9}
+.fc a{color:var(--cotton-xl);text-decoration:none}
+.fc a:hover{text-decoration:underline}
+.fb{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.26);letter-spacing:.8px;text-align:center;line-height:1.8}
+
+/* ── RESPONSIVE ── */
+@media(max-width:720px){
+  .g2{grid-template-columns:1fr}
+  .logo-txt h1{font-size:1.5rem}
+  .h-top{flex-direction:column;align-items:flex-start}
+  .h-meta{text-align:left}
+  .h-badges{justify-content:flex-start}
+  .ft{flex-direction:column}
+  .pc .val{font-size:1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="h-top">
+    <div class="logo-w">
+      <svg class="logo-svg" viewBox="0 0 66 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="66" height="66" rx="13" fill="#8b5cf6"/>
+        <text x="7" y="40" font-family="Georgia,serif" font-size="26" font-weight="900" fill="#1a0a2e">RI</text>
+        <rect x="6" y="46" width="54" height="3" rx="1.5" fill="#1a0a2e" opacity=".7"/>
+        <text x="6" y="60" font-family="Arial,sans-serif" font-size="7.5" font-weight="700" fill="#1a0a2e" letter-spacing="2">RURAL IN</text>
+      </svg>
+      <div class="logo-txt">
+        <h1>Radar Agro do Algodão 🌿</h1>
+        <div class="sub">Semana 01–05 Jun 2026 · Rural IN</div>
+      </div>
+    </div>
+    <div class="h-meta">
+      <div class="ed">Análise Semanal · PhD Mercado Agro</div>
+      <div class="dt">05 de Junho de 2026</div>
+      <div class="h-badges">
+        <span class="hb hb-up">Cepea 8d: R$4,2793/lp ▲ máx. 12 meses</span>
+        <span class="hb hb-gold">4ª alta mensal seguida</span>
+        <span class="hb hb-nt">ICE NY Jul: ~77,7¢/lb</span>
+      </div>
+    </div>
+  </div>
+  <div class="ticker">
+    <span>🌿 <span class="t-am">Cepea 8d (29/mai):</span> <strong>R$ 4,2793/lp</strong> <span class="t-up">▲ máx. desde jun/25</span></span>
+    <span class="sep">|</span>
+    <span>🌿 <span class="t-am">ICE NY Jul/26:</span> <strong>~77,7 ¢/lb</strong></span>
+    <span class="sep">|</span>
+    <span>🌿 <span class="t-am">Cepea @ (arroba):</span> <strong>R$ 141,66/@</strong></span>
+    <span class="sep">|</span>
+    <span>📦 <span class="t-am">Export. abr/26:</span> <strong>370 kt (+54,9% a/a)</strong></span>
+    <span class="sep">|</span>
+    <span>🇧🇷 <span class="t-am">Safra 25/26:</span> <strong>3,82 Mt pluma (−10% vs. 24/25)</strong></span>
+    <span class="sep">|</span>
+    <span>💵 <span class="t-am">Dólar:</span> <strong>R$ 5,04</strong></span>
+  </div>
+</header>
+
+<!-- ── BANNER ── -->
+<div class="hl-banner">
+  <div>
+    <h2>🌿 4ª Alta Mensal Consecutiva — Entressafra + Exportações Recordes Sustentam Preços</h2>
+    <p>Cepea bate maior nível nominal em 12 meses · Safra 25/26 menor (−10%) · Exportações 54,9% acima de 2025 · ICE NY resiliente acima de 77¢ · Análise técnica + macro + perspectivas</p>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ── DESTAQUE DA SEMANA ── -->
+<div class="fato-destaque">
+  <div style="font-size:2rem;flex-shrink:0">🏆</div>
+  <div>
+    <h3>DESTAQUE DA SEMANA — Algodão Acumula 4ª Alta Mensal Consecutiva e Bate Máxima em 12 Meses</h3>
+    <p><strong>Cepea/AF News (03/jun):</strong> "O Indicador Cepea/Esalq do algodão em pluma (pagamento em oito dias) avançou <strong>3,31% entre 30 de abril e 29 de maio</strong>, encerrando o período a <strong>R$ 4,2793/lp</strong> — o maior valor nominal desde 16 de junho de 2025." O algodão contrasta com soja e milho: enquanto os grãos recuam com excesso de oferta, a pluma acumula quatro meses de alta sustentada pela combinação de <strong>entressafra restritiva + postura firme dos vendedores + exportações em ritmo recorde</strong>. O mercado físico segue com poucos lotes disponíveis — especialmente de qualidade superior — e compradores dispostos a pagar mais para garantir abastecimento.</p>
+  </div>
+</div>
+
+<!-- ══════════════════
+     SEÇÃO 1: COTAÇÕES
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">💰</div>
+    <h2>Placar de Cotações — Semana 01–05/Jun/2026</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="placar">
+    <div class="pc up">
+      <div class="lbl">Cepea/Esalq — 8 dias (29/mai)</div>
+      <div class="val">R$ 4,2793</div>
+      <div class="var v-up">▲ +3,31% em maio · máx. 12 meses</div>
+      <div class="sub">Maior nível nominal desde 16/jun/2025</div>
+      <div class="src">Fonte: Cepea/Esalq / AF News 03/jun</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">Cepea — Arroba (@ 33,069 lp)</div>
+      <div class="val">R$ 141,66</div>
+      <div class="var v-up">▲ Equivalência R$/arroba</div>
+      <div class="sub">Algodão em pluma tipo 41-4 posto SP</div>
+      <div class="src">Conversão: R$ 4,2793 × 33,069</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">ICE NY — Jul/26 (05/jun)</div>
+      <div class="val">77,7 ¢/lb</div>
+      <div class="var v-up">▲ Sustentado acima de 77¢</div>
+      <div class="sub">Range 52 semanas: 60,71–88,88 ¢/lb</div>
+      <div class="src">Fonte: ICE Futures / Investing.com</div>
+    </div>
+    <div class="pc nt">
+      <div class="lbl">ICE NY — Out/26</div>
+      <div class="val">78,5 ¢/lb</div>
+      <div class="var v-up">▲ Prêmio de +0,8¢ sobre jul</div>
+      <div class="sub">Mercado antecipa nova safra mais apertada</div>
+      <div class="src">Fonte: ICE Futures</div>
+    </div>
+    <div class="pc up">
+      <div class="lbl">Rondonópolis — MT (físico)</div>
+      <div class="val">R$ 3,49</div>
+      <div class="var v-up">▲ Interior MT sustenta</div>
+      <div class="sub">por libra-peso (equivale ~R$115/@ pluma)</div>
+      <div class="src">Fonte: Souza Lima Cotton / Safras</div>
+    </div>
+    <div class="pc gold">
+      <div class="lbl">Paridade Export. BR vs. NY</div>
+      <div class="val">+6,6%</div>
+      <div class="var v-up">▲ Maior vantagem dom. desde ago/25</div>
+      <div class="sub">Algodão BR negociado 6,6% acima da paridade (abr)</div>
+      <div class="src">Fonte: Cepea abr/26</div>
+    </div>
+  </div>
+
+  <!-- TERMÔMETRO DE PREÇO HISTÓRICO -->
+  <div class="preco-barra">
+    <h3>🌡️ Termômetro Histórico — Onde Está o Cepea 8d vs. Referências (R$/lp)</h3>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">Fundo recente (jan/26)</span><span class="pb-val" style="color:var(--verm-l)">R$ 3,22/lp</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:12%;background:linear-gradient(90deg,#dc2626,#f97316)"></div></div>
+      <div class="pb-scale"><span>R$ 3,00 (mín. 2026)</span><span style="font-weight:700;color:var(--cinza)">Custo médio BR: ~R$3,80/lp</span><span>R$ 5,00 (máx. hist.)</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">Cepea fevereiro/26</span><span class="pb-val" style="color:#d97706">R$ 3,52/lp</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:26%;background:linear-gradient(90deg,#d97706,#fbbf24)"></div><div class="pb-mark" style="left:40%"></div></div>
+      <div class="pb-scale"><span>R$ 3,00</span><span></span><span>R$ 5,00</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">Cepea abril/26</span><span class="pb-val" style="color:var(--cotton)">R$ 4,14/lp</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:57%;background:linear-gradient(90deg,var(--cotton),var(--cotton-l))"></div><div class="pb-mark" style="left:40%"></div></div>
+      <div class="pb-scale"><span>R$ 3,00</span><span></span><span>R$ 5,00</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">🏆 Cepea Atual (29/mai — 05/jun)</span><span class="pb-val" style="color:var(--verde-l)">R$ 4,2793/lp</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:64%;background:linear-gradient(90deg,var(--verde-l),#4ade80)"></div><div class="pb-mark" style="left:40%"></div></div>
+      <div class="pb-scale"><span>R$ 3,00</span><span style="font-weight:700;color:var(--cinza)">Custo ~R$3,80 ▲</span><span>R$ 5,00</span></div>
+    </div>
+
+    <div class="pb-row">
+      <div class="pb-label"><span class="pb-name">Máx. recente (jun/25)</span><span class="pb-val" style="color:var(--cotton)">R$ 4,3643/lp</span></div>
+      <div class="pb-track"><div class="pb-fill" style="width:68%;background:linear-gradient(90deg,var(--cotton),var(--cotton-l))"></div><div class="pb-mark" style="left:40%"></div></div>
+      <div class="pb-scale"><span>R$ 3,00</span><span></span><span>R$ 5,00</span></div>
+    </div>
+
+    <div class="pb-legend">
+      <strong style="color:var(--cotton)">Legenda:</strong> A barra mostra o posicionamento do Cepea atual entre o fundo de 2026 (R$3,00) e o teto histórico recente (R$5,00). A marcação vertical indica o custo médio de produção (~R$3,80/lp). O Cepea atual está <span style="color:var(--verde-l);font-weight:700">acima do custo</span> — margem operacional positiva. Distância de apenas <strong style="color:var(--cotton)">R$0,085/lp para o máximo de jun/25</strong>.
+    </div>
+  </div>
+
+  <!-- GRÁFICO EVOLUÇÃO MENSAL 2026 -->
+  <div class="cw">
+    <h3>📈 Evolução do Indicador Cepea/Esalq (8 dias) em 2026 — R$/libra-peso · 4 Altas Consecutivas</h3>
+    <canvas id="chartCepea" height="90"></canvas>
+    <p class="nf">Fonte: Cepea/Esalq. Elaboração: Rural IN — Dr. Sidney Souza. Jun/26 = parcial (dados 03–05/jun).</p>
+  </div>
+
+  <!-- GRÁFICO SEMANA -->
+  <div class="cw">
+    <h3>📊 Evolução Semanal — ICE NY Jul/26 (¢/lb) e Cepea BR (R$/lp) · Semana 01–05/Jun</h3>
+    <canvas id="chartSemana" height="85"></canvas>
+    <p class="nf">★ Quinta-feira (04/jun) = Feriado Corpus Christi no Brasil. ICE NY operou; físico BR sem negócios — Cepea repetido com ponto cinza. Fonte: ICE Futures / Cepea/Esalq. Elaboração: Rural IN.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 2: TERMÔMETROS
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌡️</div>
+    <h2>Termômetros de Mercado — Sentimento da Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="termos">
+    <div class="termo">
+      <h4>Sentimento Físico BR</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="ga" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ga)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="62" y2="19" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">75 / 100</div>
+        <div class="termo-desc">Alta sustentada — vendedor firme, comprador paga mais</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Oferta Física</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gb)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="66" y2="26" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">72 / 100</div>
+        <div class="termo-desc">Oferta restrita — entressafra 25/26 com poucos lotes</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>ICE NY Sentiment</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gc" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gc)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="54" y2="17" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">62 / 100</div>
+        <div class="termo-desc">NY resiliente acima de 77¢ — plantio EUA avança mas não derruba</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Exportação BR</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gd" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gd)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="68" y2="24" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">85 / 100</div>
+        <div class="termo-desc">Exportação em ritmo recorde — abr +54,9% a/a (370 kt)</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Margem Produtor</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="ge" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#16a34a"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#ge)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="58" y2="17" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">68 / 100</div>
+        <div class="termo-desc">+12,6% acima do custo (~R$3,80) — margem positiva</div>
+      </div>
+    </div>
+    <div class="termo">
+      <h4>Risco Baixista</h4>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <svg class="tg" viewBox="0 0 86 56">
+          <defs><linearGradient id="gf" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#16a34a"/><stop offset="50%" style="stop-color:#d97706"/><stop offset="100%" style="stop-color:#dc2626"/></linearGradient></defs>
+          <path d="M8 48 A36 36 0 0 1 78 48" fill="none" stroke="url(#gf)" stroke-width="9" stroke-linecap="round"/>
+          <line x1="43" y1="48" x2="38" y2="18" stroke="#1c2526" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="43" cy="48" r="4" fill="#1c2526"/>
+        </svg>
+        <div class="termo-val">42 / 100</div>
+        <div class="termo-desc">Plantio EUA avançando + possível nova safra BR: riscos moderados</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 3: FATOS DA SEMANA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">📰</div>
+    <h2>Os Fatos que Definiram o Algodão nesta Semana</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="cw">
+    <h3>🗓️ Linha do Tempo — Algodão de Fevereiro a Junho 2026</h3>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="ti-dt">Jan–Fev/26 — Fundo do Ciclo</div>
+        <div class="ti-tit">R$ 3,22–3,52/lp — Preços no menor nível do ano</div>
+        <div class="ti-txt">Início de 2026 com herança baixista de 2025. Excesso de oferta da safra 24/25 (recorde histórico de 3,89 Mt), câmbio apreciado e demanda moderada mantinham o Cepea deprimido. Vendedores resistem, mas mercado físico trava com poucos compradores dispostos.</div>
+      </div>
+      <div class="tl-item pos">
+        <div class="ti-dt">Mar/26 (+10,7%) — Virada</div>
+        <div class="ti-tit">Cepea sobe 10,7% no mês · ICE NY em alta · Exportações explodem</div>
+        <div class="ti-txt">Primeiro sinal de virada: Cepea/Esalq em dólar fechou março em 75,46¢/lp, alta de 10,7% no mês. Exportações de março: 347,8 kt (+45,4% a/a). China e Índia foram os grandes compradores. A combinação de oferta restrita da entressafra + demanda chinesa firme + câmbio favorável criou o primeiro impulso de alta do ciclo.</div>
+      </div>
+      <div class="tl-item pos">
+        <div class="ti-dt">Abr/26 — Aceleração</div>
+        <div class="ti-tit">Brasil 6,6% acima da paridade de exportação</div>
+        <div class="ti-txt">Abril consolidou a alta: o algodão brasileiro foi negociado 6,6% acima da paridade de exportação — a maior vantagem registrada para o mercado doméstico desde agosto de 2025. Exportações de abril: 370,4 kt (+54,9% vs. abr/25). Cepea acumula 2ª alta mensal consecutiva. Safra 25/26 confirmada menor: 3,82 Mt (−10% vs. 24/25).</div>
+      </div>
+      <div class="tl-item pos">
+        <div class="ti-dt">Mai/26 (+3,31%) — 4ª Alta</div>
+        <div class="ti-tit">R$ 4,2793/lp — Máxima nominal em 12 meses</div>
+        <div class="ti-txt">Cepea avança 3,31% em maio — quarta alta mensal consecutiva. Indicador encerra em R$ 4,2793/lp, o maior patamar nominal desde 16/jun/25 (quando atingiu R$ 4,3643). "Vendedores com qualidade superior mantêm posição firme nas negociações" (Cepea 03/jun). Exportações de maio preliminares já superam todo o volume de maio de 2025 segundo a Secex.</div>
+      </div>
+      <div class="tl-item pos">
+        <div class="ti-dt">01–05/Jun/26 — Semana atual</div>
+        <div class="ti-tit">ICE NY sustenta ~77¢ · Cepea físico firme · Entressafra prolonga</div>
+        <div class="ti-txt">Na semana de 01 a 05 de junho, o algodão mantém trajetória altista. ICE NY (algodão #2) opera ao redor de 77,7¢/lb — resiliente apesar do avanço do plantio americano (41% da área concluída, acima da média de 40%). O Cepea físico BR sustenta os níveis de maio. A distância para a máxima de junho/25 (R$4,3643/lp) é de apenas R$0,085 — mercado sinaliza possibilidade de rompimento desta resistência nas próximas semanas.</div>
+      </div>
+    </div>
+    <p class="nf">Fontes: Cepea/Esalq, AF News, Broto Notícias, CNN Brasil, Radar Digital Brasília, Capital News. Elaboração: Rural IN.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:18px">
+
+    <div class="al purple">
+      <div class="ai">📉</div>
+      <div class="at">
+        <h4>1. Safra 25/26 Menor: 3,82 Mt (−10%) — Oferta Estruturalmente Restrita</h4>
+        <p>A Abrapa projeta <strong>3,82 Mt de algodão em pluma para a safra 25/26</strong>, queda de 10% em relação ao recorde de 2024/25 (3,89 Mt). A área plantada caiu 5,5% (2,05 mi ha). Esse é o principal motor da alta de preços: <strong>menos algodão disponível + exportações recordes = preços em alta</strong>. O produtor que não vendeu toda a safra em 2025 está se beneficiando agora.</p>
+      </div>
+    </div>
+
+    <div class="al green">
+      <div class="ai">🚢</div>
+      <div class="at">
+        <h4>2. Exportações em Ritmo Histórico — Média Diária +67,8% vs. Maio/25</h4>
+        <p>Cepea (27/mai): <strong>"Embarques parciais já ultrapassam os de toda a temporada anterior."</strong> StoneX elevou previsão de exportação de algodão do Brasil (26/mai). Em abril, o Brasil exportou 370,4 kt — alta de 54,9% sobre abril/2025. A média diária de maio ficou 67,8% superior à de maio/2025. <strong>O Brasil consolida sua posição como maior exportador mundial</strong> de algodão em pluma nesta temporada.</p>
+      </div>
+    </div>
+
+    <div class="al gold">
+      <div class="ai">🇨🇳</div>
+      <div class="at">
+        <h4>3. China: Principal Comprador em 2026 — 30% do Volume Exportado</h4>
+        <p>Em março/26, <strong>a China importou 30% do total exportado pelo Brasil</strong>. China e Índia juntas aumentaram em 125,3 kt o volume embarcado na comparação com março/25. <strong>O acordo EUA-China não afetou negativamente a demanda chinesa pelo algodão brasileiro</strong> — ao contrário, a tarifa de 10% sobre o algodão americano mantém o Brasil competitivo frente ao concorrente americano.</p>
+      </div>
+    </div>
+
+    <div class="al red">
+      <div class="ai">🌱</div>
+      <div class="at">
+        <h4>4. Plantio EUA Avança 41% — Pressão Baixista Potencial</h4>
+        <p>O relatório semanal do USDA apontou que o plantio de algodão nos EUA atingiu <strong>41% da área prevista</strong> (acima da média de 40% e dos 38% de 2025). A aceleração do plantio americano pressiona a ICE NY. Em maio, NY chegou a ceder: <strong>contratos de julho fecharam a 82,33¢/lb em 22/mai</strong> (Radar Digital), recuo de 1,6%. Porém, após ajuste técnico, NY se recuperou e opera acima de 77¢ na semana atual.</p>
+      </div>
+    </div>
+
+    <div class="al purple">
+      <div class="ai">💎</div>
+      <div class="at">
+        <h4>5. Qualidade Superior: Prêmio no Físico Brasileiro</h4>
+        <p>Um diferencial importante desta entressafra: compradores pagam prêmio específico por lotes com <strong>qualidade superior</strong> (fibra longa, resistência, uniformidade). Os produtores mais tecnificados do Mato Grosso e Goiás que colheram com qualidade premium estão obtendo preços acima da média do Cepea. "A diferença entre os valores pedidos pelos vendedores e os ofertados resulta em negociações pontuais e maior disputa pelos preços" (Cepea).</p>
+      </div>
+    </div>
+
+    <div class="al blue">
+      <div class="ai">📊</div>
+      <div class="at">
+        <h4>6. USDA WASDE (11/jun) — Primeiro Balanço 26/27 no Radar</h4>
+        <p>O próximo WASDE (11/jun) trará as <strong>primeiras projeções da safra 2026/27</strong> para o algodão. O USDA projeta globalmente: produção 26/27 −3% (116 Mi fardos) e consumo +0,9% (120 Mi fardos) — balanço <strong>deficitário de ~4 Mi fardos</strong> que, se confirmado, seria catalisador de alta estrutural para NY acima de 85¢. O mercado aguarda ansioso.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 4: EXPORTAÇÃO
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🌍</div>
+    <h2>Exportações — Brasil é o Maior Exportador Mundial desta Safra</h2>
+    <div class="ln"></div>
+  </div>
+
+  <h3 style="font-family:'Playfair Display',serif;color:var(--cotton);font-size:1.1rem;margin-bottom:14px">🗺️ Principais Destinos — Algodão Brasileiro (Referência Mar/Abr/2026)</h3>
+  <div class="dest-grid">
+    <div class="dest-card"><div class="flag">🇨🇳</div><div class="country">China</div><div class="vol">30%</div><div class="pct">Maior comprador em mar/26</div></div>
+    <div class="dest-card"><div class="flag">🇮🇳</div><div class="country">Índia</div><div class="vol">Alta</div><div class="pct">+destaque em mar/26 com China</div></div>
+    <div class="dest-card"><div class="flag">🇧🇩</div><div class="country">Bangladesh</div><div class="vol">Top 5</div><div class="pct">Parceiro têxtil estratégico</div></div>
+    <div class="dest-card"><div class="flag">🇻🇳</div><div class="country">Vietnã</div><div class="vol">Top 5</div><div class="pct">Polo têxtil em expansão</div></div>
+    <div class="dest-card"><div class="flag">🇹🇷</div><div class="country">Turquia</div><div class="vol">Top 5</div><div class="pct">Indústria têxtil premium</div></div>
+    <div class="dest-card"><div class="flag">🇵🇰</div><div class="country">Paquistão</div><div class="vol">⬇ Recuo</div><div class="pct">Queda em mar/26 vs. 25</div></div>
+  </div>
+  <p class="nf" style="margin-bottom:20px">Fonte: Abrapa / Secex/MDIC / CNN Brasil (abr/2026). Elaboração: Rural IN.</p>
+
+  <!-- GRÁFICO EXPORTAÇÕES -->
+  <div class="cw">
+    <h3>📦 Exportações Mensais de Algodão Pluma — 2025 vs. 2026 (mil toneladas)</h3>
+    <canvas id="chartExport" height="85"></canvas>
+    <p class="nf">Fonte: Secex/MDIC / Abrapa / StoneX. *Mai/26 = estimativa parcial. Elaboração: Rural IN.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 5: ANÁLISE TÉCNICA + FUNDAMENTALISTA
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🔬</div>
+    <h2>Análise Técnica e Fundamentalista — Visão Dupla</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox verde">
+      <h3>📈 Análise Técnica — ICE NY e Cepea BR</h3>
+      <p><strong>Tendência:</strong> altista estruturada. O Cepea BR registra 4 meses consecutivos de alta — padrão de tendência sólida, não especulativa. O suporte em R$4,20/lp foi testado em meados de maio (quando NY caiu com plantio EUA) e segurou com firmeza.</p>
+      <p><strong>Suportes BR:</strong> R$4,20/lp → R$4,00/lp → R$3,80/lp (custo). <strong>Resistências BR:</strong> R$4,3643/lp (máx. jun/25) → R$4,50/lp → R$4,80/lp.</p>
+      <p><strong>ICE NY:</strong> suporte em 75¢/lb → 72¢/lb. Resistência em 80¢/lb → 85¢/lb. A estrutura futura (julho < outubro) indica contango leve — mercado precifica que a nova safra 26/27 (menor oferta global) vai sustentar preços.</p>
+      <p><strong>RSI estimado:</strong> ~62 — altista moderado, sem sobrecompra imediata. Espaço para subida até a máxima de jun/25.</p>
+    </div>
+    <div class="abox">
+      <h3>🌍 Análise Fundamentalista — O que Sustenta</h3>
+      <p><strong>Oferta:</strong> safra 25/26 do Brasil em 3,82 Mt (−10%). Entressafra com poucos lotes no balcão. Produtores seguram estoque aguardando altas adicionais. Globalmente: USDA projeta produção 26/27 −3%.</p>
+      <p><strong>Demanda:</strong> exportações brasileiras em ritmo recorde (aprox. 370 kt/mês em abr). China comprando 30% do total. Indústria têxtil global aquecida — recuperação pós-COVID consolidada. Acordo EUA-China não deslocou demanda chinesa do Brasil (tarifa 10% sobre EUA ainda vigente).</p>
+      <p><strong>Câmbio:</strong> R$5,04 sustenta paridade de exportação. Brasil negociado 6,6% acima da paridade — posição privilegiada.</p>
+      <p><strong>Diferencial com soja/milho:</strong> enquanto grãos sofrem com excesso de oferta, o algodão opera no sentido oposto — <span style="background:linear-gradient(transparent 60%,rgba(139,92,246,.2) 60%)">déficit de oferta + demanda firme = a commodity que mais valoriza em 2026</span>.</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICO RADAR MACRO -->
+  <div class="cw">
+    <h3>🌐 Radar de Impactos — Intensidade de Influência na Precificação do Algodão (01–05/jun)</h3>
+    <canvas id="chartRadar" height="90"></canvas>
+    <p class="nf">Elaboração: Rural IN — Dr. Sidney Souza. Escala 0–10: intensidade de impacto observada esta semana.</p>
+  </div>
+
+  <div class="abox gold">
+    <h3>💡 O Algodão vs. Soja e Milho: Por que a Fibra Vai na Contramão dos Grãos?</h3>
+    <p>Em 2026, o Brasil vive uma curiosa inversão de tendências no agro: <strong>soja e milho pressionados para baixo por excesso de oferta; algodão em alta por restrição de oferta</strong>. Por quê? Porque o algodão tem um ciclo de produção mais longo (12–14 meses do plantio à pluma comercializável) e sua safra 25/26 foi 10% menor que o recorde anterior. Não há safrinha de algodão — uma única colheita ao ano, no centro-norte do MT.</p>
+    <p>Além disso, a demanda global têxtil seguiu firme em 2026, ao contrário de 2025 quando estava desaquecida. Com a China representando 30% das compras do algodão brasileiro e operando com estoques baixos, qualquer sinal de aquecimento adicional da economia chinesa pode ser o gatilho para a próxima perna de alta.</p>
+    <p>Para o cotonicultor, a mensagem é de <strong>cautela disciplinada</strong>: os preços estão bons (acima do custo), a tendência é altista, mas os riscos de reversão existem (plantio EUA avançando; possível nova safra BR maior em 26/27). Estratégia ideal: vender escalonado — parte agora (garantir margem) e parte travada via contratos a termo com a indústria para capturar eventual avanço adicional.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══════════════════
+     SEÇÃO 6: MACRO + CENÁRIOS
+══════════════════════ -->
+<section class="section">
+  <div class="sec-title">
+    <div class="sec-icon">🎯</div>
+    <h2>Macro, Cenários e Percepção do Analista</h2>
+    <div class="ln"></div>
+  </div>
+
+  <div class="g2">
+    <div class="abox azul">
+      <h3>🏦 Macro Brasil — O que Impacta o Algodão</h3>
+      <p><strong>Câmbio R$5,04:</strong> fundamental para o algodão exportado. Cada R$0,10 a mais no dólar equivale a ~R$0,06/lp adicional para o produtor. Com R$5,04, a paridade segue favorável.</p>
+      <p><strong>Selic 13,25% + Copom jun:</strong> custo financeiro elevado pressiona o custeio da safra 26/27. Produtores avaliam se valem os insumos para a próxima safra dado o custo do dinheiro. Mas com o preço em alta, a margem ainda compensa.</p>
+      <p><strong>Reforma tributária (cesta básica):</strong> não afeta diretamente o algodão, mas indiretamente via poder de compra de vestuário (demanda têxtil doméstica).</p>
+    </div>
+    <div class="abox verm">
+      <h3>⚠️ Riscos para Monitorar</h3>
+      <p><strong>🇺🇸 Plantio EUA acelera:</strong> se o plantio americano superar projeções e NY cair abaixo de 73¢/lb, o Cepea BR sentiria a pressão externa. O Crop Progress de segunda-feira (09/jun) é o dado crítico.</p>
+      <p><strong>📊 USDA WASDE (11/jun):</strong> se o balanço 26/27 global for mais folgado que o esperado (acima dos 120 Mi fardos), NY pode recuar significativamente.</p>
+      <p><strong>🇨🇳 Demanda China:</strong> qualquer desaceleração da economia chinesa ou cancelamento de contratos reduziria a pressão exportadora que sustenta o físico.</p>
+      <p><strong>💵 Câmbio:</strong> valorização do real abaixo de R$4,90 corrói a paridade de exportação e pode desincentivar vendedores a manter postura firme.</p>
+    </div>
+  </div>
+
+  <!-- CENÁRIOS -->
+  <div class="scen">
+    <div class="sc opt">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟢 Otimista</h4></div>
+      <ul>
+        <li>WASDE confirma deficit global 26/27</li>
+        <li>NY rompe resistência de 80¢/lb</li>
+        <li>Cepea testa R$ 4,40–4,60/lp</li>
+        <li>Exportações mai/jun superam 400 kt</li>
+        <li>China acelera compras pós-acordo</li>
+        <li>Câmbio sustenta R$ 5,05–5,20</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 35%</div>
+    </div>
+    <div class="sc neu">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🟣 Base (mais provável)</h4></div>
+      <ul>
+        <li>Cepea lateral R$ 4,18–4,40/lp</li>
+        <li>NY opera 75–80¢/lb (plantio EUA trava)</li>
+        <li>Exportações sustentadas em 320–370 kt/mês</li>
+        <li>Entressafra segura físico até ago</li>
+        <li>Câmbio R$ 4,95–5,10</li>
+        <li>Liquidez física baixa — negócios pontuais</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 45%</div>
+    </div>
+    <div class="sc pes">
+      <div class="sc-head"><div class="sc-dot"></div><h4>🔴 Pessimista</h4></div>
+      <ul>
+        <li>NY cai abaixo de 73¢ com safra EUA boa</li>
+        <li>WASDE traz oferta 26/27 maior</li>
+        <li>Câmbio cai abaixo de R$ 4,90</li>
+        <li>Cepea recua para R$ 3,90–4,10/lp</li>
+        <li>China desacelera importações</li>
+        <li>Vendedores BR precisam ceder nos preços</li>
+      </ul>
+      <div class="sc-prob">Probabilidade: 20%</div>
+    </div>
+  </div>
+
+  <!-- PERCEPÇÃO ANALISTA -->
+  <div class="percepcao">
+    <h3>🧭 Percepção do Analista — Dr. Sidney Souza</h3>
+    <p>O algodão de 01 a 05 de junho de 2026 é <span class="hl">a exceção positiva no portfólio de commodities agropecuárias brasileiras</span>. Enquanto o produtor de soja se angustia com R$103–132/sc e o de milho com R$51–65/sc abaixo ou no limite do custo, o cotonicultor opera com o Cepea em R$4,2793/lp — <strong>acima do custo de produção em 12,6%</strong> e na máxima nominal de 12 meses. Esse contraste não é casual: é o resultado de uma combinação de oferta menor (safra 10% abaixo do recorde) com demanda exportadora em ritmo histórico.</p>
+    <p>A narrativa técnica desta semana é a de uma <strong>tendência altista madura em busca da resistência de R$4,3643/lp</strong> — a máxima de junho de 2025. A distância para esse nível é de apenas R$0,085, equivalente a menos de 2%. Em um mercado com fundamentos altistas, essa resistência pode ser rompida nas próximas semanas, especialmente se o WASDE de 11/jun confirmar o deficit global de 4 Mi fardos projetado pelo USDA para a safra 26/27.</p>
+    <p>A ressalva fundamentalista importante: <strong>o algodão é, de longe, a commodity agropecuária mais correlacionada com a economia global</strong>. Um sinal de desaceleração econômica na China ou nos EUA (o principal consumidor de vestuário do mundo) pode reverter a demanda têxtil e pressionar NY rapidamente abaixo de 75¢/lb. O produtor brasileiro deve usar o bom momento para <strong>vender escalonado e garantir margem</strong> — não esperar o "pico perfeito" que raramente existe.</p>
+    <p>Para a próxima semana, o evento mais importante é o <strong>USDA WASDE de 11/jun</strong>. Se confirmar o balanço deficitário para 26/27, expect-me que NY rompa os 80¢/lb e o Cepea BR avance para R$4,35–4,50/lp. Se surpreender com oferta maior, NY pode recuar para 73–75¢ e o Cepea testará o suporte em R$4,15–4,20/lp.</p>
+    <div class="quote">"Em 2026, o algodão virou a 'proteína' do portfólio do produtor diversificado: é ele que entrega margem enquanto os grãos sangram. Mas toda tendência termina — venda com disciplina, não com ganância." — Dr. Sidney Souza, Rural IN</div>
+  </div>
+
+  <!-- SEMÁFORO -->
+  <div class="cw">
+    <h3>🚦 Semáforo do Algodão — Indicadores-Chave na Semana 01–05/Jun/2026</h3>
+    <div class="sem-grid">
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Cepea 8d</strong><span>R$4,2793/lp — máx. 12 meses</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>4ª Alta Mensal</strong><span>Tendência altista consolidada</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Exportações</strong><span>370 kt em abr (+54,9%) — recorde</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Safra 25/26 menor</strong><span>3,82 Mt (−10%) — oferta restrita</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>ICE NY</strong><span>~77,7¢/lb — sustentado mas vigilante</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Plantio EUA</strong><span>41% concluído — pressão moderada</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>Câmbio R$5,04</strong><span>Paridade exportação favorável</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-g"></div><div><strong>China demanda</strong><span>30% das exportações BR — firme</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>WASDE 11/jun</strong><span>Evento crítico — deficit 26/27?</span></div></div>
+      <div class="sem-item"><div class="sem-dot sd-y"></div><div><strong>Resistência R$4,36</strong><span>Máx. jun/25 — apenas R$0,085 acima</span></div></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="fi">
+    <div class="ft">
+      <div class="fl">
+        <div class="brand">Rural<span> IN</span></div>
+        <div class="tag">Inteligência Econômica para o Produtor Rural</div>
+        <p style="font-size:.77rem;color:rgba(255,255,255,.4);margin-top:10px;max-width:260px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="fc">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br>
+          Transformamos dados da fazenda em decisões econômicas<br>
+          Ajudamos produtores a entender se o mercado sustenta seu negócio<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="fb">
+      RADAR AGRO DO ALGODÃO · SEMANA 01–05/JUN/2026 · RURAL IN · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO E ESTRATÉGICO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.<br>
+      FONTES: CEPEA/ESALQ · ICE FUTURES / INVESTING.COM · AF NEWS · CAPITAL NEWS MS · BROTO NOTÍCIAS · RADAR DIGITAL BRASÍLIA · CNN BRASIL · SAFRAS&MERCADO · ABRAPA · SECEX/MDIC · STONEX · NOTÍCIAS AGRÍCOLAS · CONAB
+    </div>
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ── -->
+<script>
+Chart.defaults.color='#6b7280';
+Chart.defaults.borderColor='rgba(0,0,0,.05)';
+Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+const cotton='#6b3f9e',cottonL='#8b5cf6',cottonXL='#c4b5fd',
+      verde='#166534',verdeL='#16a34a',verdeXL='#4ade80',
+      verm='#991b1b',vermL='#dc2626',azul='#1e3a8a',azulL='#3b82f6',
+      gold='#d97706',cinza='#374151';
+
+// ─── 1. Evolução Cepea 2026 ───
+new Chart(document.getElementById('chartCepea').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Jan/26','Fev/26','Mar/26','Abr/26','Mai/26','Jun/26*'],
+    datasets:[
+      {label:'Cepea 8d (R$/lp)',
+       data:[3.22,3.52,3.98,4.14,4.2793,4.30],
+       borderColor:cottonL,backgroundColor:'rgba(139,92,246,.1)',
+       borderWidth:3,tension:.35,fill:true,pointRadius:6,
+       pointBackgroundColor:['#dc2626','#d97706','#16a34a','#16a34a','#16a34a','rgba(139,92,246,.6)']},
+      {label:'Custo médio prod. (~R$3,80/lp)',
+       data:[3.80,3.80,3.80,3.80,3.80,3.80],
+       borderColor:'rgba(107,114,128,.5)',borderWidth:2,borderDash:[4,4],pointRadius:0,fill:false},
+      {label:'Máx. jun/25 (R$4,3643)',
+       data:[4.3643,4.3643,4.3643,4.3643,4.3643,4.3643],
+       borderColor:'rgba(220,38,38,.5)',borderWidth:1.5,borderDash:[3,3],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}}},
+    scales:{y:{min:3.0,ticks:{callback:v=>'R$'+v.toFixed(2)},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 2. Evolução semanal ───
+new Chart(document.getElementById('chartSemana').getContext('2d'),{
+  type:'line',
+  data:{
+    labels:['Seg 02/jun','Ter 03/jun','Qua 04/jun','Qui ★ feriado BR','Sex 05/jun'],
+    datasets:[
+      {label:'ICE NY Jul (¢/lb)',
+       data:[77.8,77.5,77.6,77.5,77.7],
+       borderColor:cottonL,backgroundColor:'rgba(139,92,246,.07)',
+       borderWidth:3,tension:.3,fill:true,pointRadius:5,
+       pointBackgroundColor:[cottonL,cottonL,cottonL,'#9ca3af',cottonL],
+       yAxisID:'y2'},
+      {label:'Cepea Físico BR (R$/lp)',
+       data:[4.28,4.28,4.28,4.28,4.28],
+       borderColor:gold,backgroundColor:'rgba(217,119,6,.07)',
+       borderWidth:2.5,tension:.3,fill:false,pointRadius:5,
+       pointBackgroundColor:[gold,gold,gold,'#9ca3af',gold],
+       yAxisID:'y'}
+    ]
+  },
+  options:{responsive:true,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},
+      tooltip:{callbacks:{
+        afterTitle:items=>items[0].dataIndex===3?'★ Feriado BR — ICE operou; físico sem negócios':''
+      }}
+    },
+    scales:{
+      y:{position:'left',min:4.0,max:4.6,ticks:{callback:v=>'R$'+v.toFixed(2)},grid:{color:'rgba(0,0,0,.04)'}},
+      y2:{position:'right',min:74,max:82,ticks:{callback:v=>v+'¢'},grid:{display:false}}
+    }}
+});
+
+// ─── 3. Exportações ───
+new Chart(document.getElementById('chartExport').getContext('2d'),{
+  type:'bar',
+  data:{
+    labels:['Jan','Fev','Mar','Abr','Mai*'],
+    datasets:[
+      {label:'2025 (kt)',data:[195,210,239,239,250],backgroundColor:'rgba(139,92,246,.45)',borderRadius:6},
+      {label:'2026 (kt)',data:[285,310,348,370,390],backgroundColor:'rgba(139,92,246,.85)',borderRadius:6}
+    ]
+  },
+  options:{responsive:true,
+    plugins:{legend:{position:'top',labels:{usePointStyle:true,padding:14}},tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.raw+' kt'}}},
+    scales:{y:{ticks:{callback:v=>v+' kt'},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+});
+
+// ─── 4. Radar macro ───
+new Chart(document.getElementById('chartRadar').getContext('2d'),{
+  type:'radar',
+  data:{
+    labels:['Entressafra BR','Exportações','China Demanda','ICE NY','Câmbio R$/$','Plantio EUA','WASDE 11/jun','Qualidade Fibra'],
+    datasets:[{
+      label:'Intensidade semana 01–05/jun',
+      data:[8.5,9.0,7.5,6.5,7.0,5.5,6.5,7.0],
+      borderColor:cottonL,backgroundColor:'rgba(139,92,246,.15)',
+      pointBackgroundColor:cottonL,borderWidth:2.5
+    }]
+  },
+  options:{responsive:true,
+    scales:{r:{min:0,max:10,ticks:{stepSize:2,font:{size:10}},grid:{color:'rgba(0,0,0,.07)'},pointLabels:{font:{size:11},color:'#555'}}},
+    plugins:{legend:{display:false}}}
+});
+</script>
+</body>
+</html>

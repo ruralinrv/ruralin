@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rural IN | Portal de Informativos Agro — Jun/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c8931a;--gold-l:#d4a017;--gold-xl:#f0c040;--gold-pale:#fef9e7;
+  --dark:#0d0d0d;--dark2:#1a1a1a;--dark3:#242424;
+  --cinza:#9ca3af;--cinza-l:#d1d5db;
+  --bg:#0f0f0f;
+  --verde:#16a34a;--azul:#0e7490;--laranja:#c2410c;
+  --roxo:#7c3aed;--rosa:#be123c;--teal:#0f766e;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(180deg,#000 0%,#0d0900 50%,#0f0f0f 100%);
+  padding:60px 24px 50px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid rgba(200,147,26,.2)
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);
+  width:800px;height:600px;
+  background:radial-gradient(ellipse,rgba(200,147,26,.12) 0%,transparent 65%);
+  pointer-events:none
+}
+.logo-hero{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:32px}
+.logo-svg-hero{width:78px;height:78px;filter:drop-shadow(0 0 20px rgba(200,147,26,.4))}
+.logo-right h1{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;color:#fff;line-height:1;letter-spacing:-1px}
+.logo-right .tagline{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold-xl);margin-top:6px}
+
+.hero-titulo{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:700;color:var(--gold-xl);margin-bottom:10px}
+.hero-sub{font-size:.95rem;color:var(--cinza);max-width:560px;margin:0 auto 28px;line-height:1.7}
+
+.data-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(200,147,26,.1);border:1px solid rgba(200,147,26,.35);border-radius:30px;padding:8px 20px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--gold-xl);margin-bottom:10px}
+.data-badge::before{content:'📅';font-size:1rem}
+
+.stats-row{display:flex;align-items:center;justify-content:center;gap:32px;margin-top:28px;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .sv{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-xl)}
+.stat .sl{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--cinza);margin-top:3px}
+.stat-sep{width:1px;height:40px;background:rgba(200,147,26,.2)}
+
+/* ── CONTAINER ── */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* ── SEÇÃO SEMANAL ── */
+.sec-label{
+  display:flex;align-items:center;gap:12px;
+  padding:32px 0 20px;
+  position:relative
+}
+.sec-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(200,147,26,.35),transparent)}
+.sec-label h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-xl);white-space:nowrap}
+.sec-label .sl-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;background:rgba(200,147,26,.12);border:1px solid rgba(200,147,26,.3);color:var(--gold-l);padding:4px 12px;border-radius:20px;font-weight:600}
+
+/* ── GRID DE CARDS ── */
+.grid-semanal{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;margin-bottom:20px}
+.grid-mensal{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-bottom:40px}
+
+/* ── CARD ── */
+.card{
+  background:var(--dark2);
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.07);
+  overflow:hidden;
+  transition:all .25s ease;
+  cursor:pointer;
+  position:relative;
+  text-decoration:none;
+  display:block
+}
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(255,255,255,.18);
+  box-shadow:0 12px 40px rgba(0,0,0,.5)
+}
+.card-accent{height:4px;width:100%}
+.card-body{padding:20px 22px}
+.card-icon{font-size:2rem;margin-bottom:10px;display:block}
+.card-titulo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:6px}
+.card-desc{font-size:.82rem;color:var(--cinza);line-height:1.65;margin-bottom:14px}
+.card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+.card-tag{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:var(--cinza);font-weight:600}
+.card-cta{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px;transition:all .2s;text-decoration:none}
+.card-cta:hover{filter:brightness(1.15)}
+
+/* NOVO badge */
+.badge-novo{position:absolute;top:14px;right:14px;background:var(--verde);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+.badge-semanal{position:absolute;top:14px;right:14px;background:var(--azul);color:#fff;font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+
+/* CORES DOS ACCENTS E CTAs */
+.ac-boi{background:linear-gradient(90deg,#1a6b3c,#52b788)}
+.ac-soja{background:linear-gradient(90deg,#b8860b,#f0c040)}
+.ac-milho{background:linear-gradient(90deg,#c2410c,#fb923c)}
+.ac-algodao{background:linear-gradient(90deg,#6b3f9e,#c4b5fd)}
+.ac-leite{background:linear-gradient(90deg,#155e75,#22d3ee)}
+.ac-suino{background:linear-gradient(90deg,#9f1239,#f87171)}
+.ac-aves{background:linear-gradient(90deg,#92400e,#fde68a)}
+.ac-peixes{background:linear-gradient(90deg,#0e4f6b,#38b2d8)}
+.ac-ovinos{background:linear-gradient(90deg,#2d6a4f,#52b788)}
+
+.cta-boi{background:rgba(26,107,60,.2);color:#52b788;border:1px solid rgba(82,183,136,.3)}
+.cta-soja{background:rgba(184,134,11,.15);color:#f0c040;border:1px solid rgba(240,192,64,.3)}
+.cta-milho{background:rgba(194,65,12,.2);color:#fb923c;border:1px solid rgba(251,146,60,.3)}
+.cta-algodao{background:rgba(107,63,158,.2);color:#c4b5fd;border:1px solid rgba(196,181,253,.3)}
+.cta-leite{background:rgba(14,116,144,.2);color:#22d3ee;border:1px solid rgba(34,211,238,.3)}
+.cta-suino{background:rgba(159,18,57,.2);color:#f87171;border:1px solid rgba(248,113,113,.3)}
+.cta-aves{background:rgba(146,64,14,.2);color:#fde68a;border:1px solid rgba(253,230,138,.3)}
+.cta-peixes{background:rgba(14,79,107,.2);color:#38b2d8;border:1px solid rgba(56,178,216,.3)}
+.cta-ovinos{background:rgba(45,106,79,.2);color:#52b788;border:1px solid rgba(82,183,136,.3)}
+
+/* ── DESTAQUE (CARD LARGO) ── */
+.card-wide{
+  grid-column:1 / -1;
+  display:flex;gap:0;
+  background:linear-gradient(135deg,#1a0800,#4a1c00);
+  border-color:rgba(200,147,26,.2)
+}
+.card-wide .card-accent{width:6px;height:auto;flex-shrink:0;background:linear-gradient(180deg,#c8931a,#f0c040)}
+.card-wide .card-body{display:flex;align-items:center;gap:20px;flex:1;flex-wrap:wrap}
+.card-wide .card-icon{font-size:2.8rem;margin:0;flex-shrink:0}
+.card-wide .card-info{flex:1}
+.card-wide .card-titulo{font-size:1.3rem}
+.card-wide .card-badge-destaque{font-family:'JetBrains Mono',monospace;font-size:.68rem;background:rgba(200,147,26,.15);border:1px solid rgba(200,147,26,.4);color:var(--gold-xl);padding:4px 12px;border-radius:20px;display:inline-block;margin-bottom:8px}
+.card-wide:hover{box-shadow:0 12px 60px rgba(200,147,26,.15)}
+
+/* ── AVISO DE METODOLOGIA ── */
+.nota-metodologia{
+  background:var(--dark2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  padding:18px 22px;
+  margin:32px 0;
+  display:flex;gap:14px;align-items:flex-start
+}
+.nota-metodologia .ni{font-size:1.4rem;flex-shrink:0}
+.nota-metodologia p{font-size:.82rem;color:var(--cinza);line-height:1.7}
+.nota-metodologia strong{color:var(--cinza-l)}
+
+/* ── FOOTER ── */
+.footer{
+  background:var(--dark2);
+  border-top:1px solid rgba(200,147,26,.15);
+  padding:48px 24px 32px;
+  margin-top:20px
+}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:flex;gap:40px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:24px}
+.footer-brand .fname{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--gold-xl)}
+.footer-brand .fname span{color:#fff}
+.footer-brand .ftag{font-size:.76rem;color:var(--cinza);font-style:italic;margin-top:4px}
+.footer-contact h4{font-family:'Playfair Display',serif;color:var(--gold-xl);font-size:1rem;margin-bottom:8px}
+.footer-contact p{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.9}
+.footer-contact a{color:var(--gold-xl);text-decoration:none}
+.footer-contact a:hover{text-decoration:underline}
+.footer-bottom{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.22);text-align:center;letter-spacing:.8px;line-height:1.8}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#0f0f0f}
+::-webkit-scrollbar-thumb{background:rgba(200,147,26,.4);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(200,147,26,.6)}
+
+/* ── DIVIDER ANIMADO ── */
+.gold-line{height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent);margin:8px 0 0}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .logo-right h1{font-size:1.9rem}
+  .hero-titulo{font-size:1.3rem}
+  .stats-row{gap:18px}
+  .stat .sv{font-size:1.5rem}
+  .card-wide{flex-direction:column}
+  .card-wide .card-accent{width:100%;height:4px}
+  .footer-top{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="logo-hero">
+    <svg class="logo-svg-hero" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="78" height="78" rx="16" fill="#c8931a"/>
+      <text x="8" y="48" font-family="Georgia,serif" font-size="30" font-weight="900" fill="#1a0800">RI</text>
+      <rect x="7" y="55" width="64" height="3.5" rx="1.75" fill="#1a0800" opacity=".7"/>
+      <text x="7" y="70" font-family="Arial,sans-serif" font-size="8.5" font-weight="700" fill="#1a0800" letter-spacing="2.5">RURAL IN</text>
+    </svg>
+    <div class="logo-right">
+      <h1>Rural IN</h1>
+      <div class="tagline">Inteligência Econômica para o Produtor Rural</div>
+    </div>
+  </div>
+
+  <div class="data-badge">Edição Semanal · 01–05 de Junho de 2026</div>
+  <h2 class="hero-titulo">Portal de Informativos Agro</h2>
+  <p class="hero-sub">Análises semanais e fechamentos mensais com cotações, gráficos, análise técnica e fundamentalista para o produtor tomar melhores decisões.</p>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="sv">11</div>
+      <div class="sl">Informativos</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="sv">6</div>
+      <div class="sl">Semanais</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="sv">5</div>
+      <div class="sl">Mensais</div>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <div class="sv">PhD</div>
+      <div class="sl">Análise de Risco</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ══════════════════
+     INFORMATIVOS SEMANAIS
+══════════════════════ -->
+<div class="sec-label">
+  <h2>📡 Semana 01–05/Jun/2026</h2>
+  <span class="sl-badge">Análise semanal atualizada</span>
+</div>
+<div class="gold-line" style="margin-bottom:24px"></div>
+
+<div class="grid-semanal">
+
+  <!-- BOI SEMANAL — DESTAQUE -->
+  <a href="radar-boi-semana-01-05-jun-2026.html" class="card card-wide" target="_blank">
+    <div class="card-accent ac-boi"></div>
+    <div class="card-body">
+      <span class="card-icon">🐄</span>
+      <div class="card-info">
+        <div class="card-badge-destaque">🚨 Fato histórico da semana</div>
+        <div class="card-titulo">Radar do Boi Gordo — Semana 01–05/Jun</div>
+        <div class="card-desc">China reconhece Brasil livre de febre aftosa sem vacinação (02/jun). Cepea SP: R$353,50/@. BGIM26: R$351,65. Curva B3 em "U" com piso em jul e topo em dez (R$362). Análise técnica, spread físico vs futuro, cota China e Copa do Mundo.</div>
+      </div>
+      <span class="card-cta cta-boi" style="white-space:nowrap">Abrir ↗</span>
+    </div>
+    <span class="badge-novo">🆕 NOVO</span>
+  </a>
+
+  <!-- SOJA SEMANAL -->
+  <a href="radar-soja-semana-01-05-jun-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-soja"></div>
+    <span class="badge-semanal">SEMANAL</span>
+    <div class="card-body">
+      <span class="card-icon">🌱</span>
+      <div class="card-titulo">Radar da Soja — Semana 01–05/Jun</div>
+      <div class="card-desc">CBOT despenca >5% na semana — US$11,26/bu, mínima desde fevereiro. Físico BR resiste com câmbio escudo: Paranaguá R$132/sc. Feriado trava comercialização. El Niño no radar para o plantio 26/27.</div>
+      <div class="card-footer">
+        <span class="card-tag">Grãos · Chicago · Câmbio</span>
+        <span class="card-cta cta-soja">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- MILHO SEMANAL -->
+  <a href="radar-milho-semana-01-05-jun-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-milho"></div>
+    <span class="badge-semanal">SEMANAL</span>
+    <div class="card-body">
+      <span class="card-icon">🌽</span>
+      <div class="card-titulo">Radar do Milho — Semana 01–05/Jun</div>
+      <div class="card-desc">Cepea Campinas: R$64,51/sc — mínima em 8 meses. Comprador sumiu, safrinha inicia colheita em MT e PR. Geadas confirmadas no SW do Paraná. B15/E30 aprovados para agosto: catalisador de demanda futuro.</div>
+      <div class="card-footer">
+        <span class="card-tag">Safrinha · Clima · B15/E30</span>
+        <span class="card-cta cta-milho">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- ALGODÃO SEMANAL -->
+  <a href="radar-algodao-semana-01-05-jun-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-algodao"></div>
+    <span class="badge-semanal">SEMANAL</span>
+    <div class="card-body">
+      <span class="card-icon">🌿</span>
+      <div class="card-titulo">Radar do Algodão — Semana 01–05/Jun</div>
+      <div class="card-desc">4ª alta mensal consecutiva! Cepea 8d: R$4,2793/lp — maior patamar em 12 meses. ICE NY ~77,7¢/lb. Exportações +54,9% em abril. Safra 25/26 menor (−10%). Vai na contramão dos grãos.</div>
+      <div class="card-footer">
+        <span class="card-tag">Fibra · ICE NY · Exportação</span>
+        <span class="card-cta cta-algodao">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- LEITE SEMANAL -->
+  <a href="radar-leite-semana-01-05-jun-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-leite"></div>
+    <span class="badge-semanal">SEMANAL</span>
+    <div class="card-body">
+      <span class="card-icon">🥛</span>
+      <div class="card-titulo">Radar do Leite — Semana 01–05/Jun</div>
+      <div class="card-desc">5ª alta consecutiva! MG: R$3,34/L em abr — maior do Brasil. Goiás com maior alta % do país em fev (+9,61%). Derivados puxam a cadeia: UHT +19,3%, muçarela +7%. Importação +33% é o freio da alta. Destaque especial para GO e MG.</div>
+      <div class="card-footer">
+        <span class="card-tag">Leite · MG · GO · Derivados</span>
+        <span class="card-cta cta-leite">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<!-- ══════════════════
+     FECHAMENTOS MENSAIS
+══════════════════════ -->
+<div class="sec-label">
+  <h2>📅 Fechamento Maio + Perspectivas Junho</h2>
+  <span class="sl-badge">Análise mensal completa</span>
+</div>
+<div class="gold-line" style="margin-bottom:24px"></div>
+
+<div class="grid-mensal">
+
+  <!-- BOI MENSAL -->
+  <a href="radar-agro-boi-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-boi"></div>
+    <div class="card-body">
+      <span class="card-icon">🐄</span>
+      <div class="card-titulo">Boi Gordo — Fechamento Mai/26</div>
+      <div class="card-desc">Dois tempos de maio: fundo R$344,6 → fechamento R$347,8. Curva futura B3. Exportação 16,13 Mt. Cota China 55,4%. Cenários 3T26.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-boi">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- SOJA MENSAL -->
+  <a href="radar-agro-soja-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-soja"></div>
+    <div class="card-body">
+      <span class="card-icon">🌱</span>
+      <div class="card-titulo">Soja — Fechamento Mai/26</div>
+      <div class="card-desc">CBOT acima de US$12 com acordo EUA-China. Safra BR 180,1 Mt (Conab recorde). Exportação 16,13 Mt. MT abaixo do custo. Câmbio escudo.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-soja">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- SUÍNO MENSAL -->
+  <a href="radar-agro-suino-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-suino"></div>
+    <div class="card-body">
+      <span class="card-icon">🐖</span>
+      <div class="card-titulo">Suíno — Fechamento Mai/26</div>
+      <div class="card-desc">Pior queda real da série histórica (2002–2026): −32,8% real. SP-5 R$5,45/sc. Paradoxo: produção e exportação recordes com preço no piso. Filipinas e concorrência do frango.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-suino">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- AVES MENSAL -->
+  <a href="radar-agro-aves-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-aves"></div>
+    <div class="card-body">
+      <span class="card-icon">🐔</span>
+      <div class="card-titulo">Aves — Fechamento Mai/26</div>
+      <div class="card-desc">Virada! Frango vivo SP: R$5,07/kg (+13,8%). Interrompe 6 meses de queda. Ovos no menor nível em 4 anos. Copa do Mundo como catalisador. MBRF e JBS otimistas.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-aves">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- PEIXES MENSAL -->
+  <a href="radar-agro-peixes-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-peixes"></div>
+    <div class="card-body">
+      <span class="card-icon">🐟</span>
+      <div class="card-titulo">Peixes — Fechamento Mai/26</div>
+      <div class="card-desc">Brasil supera 1 Mt de produção (recorde 2025). Tilápia Norte PR R$10,45/kg. Tarifa EUA 10–15%. Concorrência vietnamita R$21/kg. Aquishow jun. Mercosul-UE.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-peixes">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- OVINOS E CAPRINOS MENSAL -->
+  <a href="radar-agro-ovinos-caprinos-maio-junho-2026.html" class="card" target="_blank">
+    <div class="card-accent ac-ovinos"></div>
+    <div class="card-body">
+      <span class="card-icon">🐑</span>
+      <div class="card-titulo">Ovinos e Caprinos — Fechamento Mai/26</div>
+      <div class="card-desc">Brasil supre só 30% da demanda. Cordeiro NE R$14–18/kg. Leite de cabra R$3,40–4,45/L. Festas juninas: pico de demanda. Mercosul-UE como game-changer.</div>
+      <div class="card-footer">
+        <span class="card-tag">Mensal · Mai/Jun</span>
+        <span class="card-cta cta-ovinos">Abrir ↗</span>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<!-- ── NOTA ── -->
+<div class="nota-metodologia">
+  <div class="ni">ℹ️</div>
+  <p><strong>Sobre os informativos:</strong> todos os Radares Agro são produzidos com análise de fontes primárias (Cepea/Esalq, B3, CME Group, Conab, USDA WASDE, ANEC, Safras & Mercado, Scot Consultoria, entre outras) combinada com análise técnica e fundamentalista. <strong>Caráter informativo e estratégico — não constituem recomendação formal de investimento.</strong> Para dúvidas ou análises personalizadas, entre em contato com o Dr. Sidney Souza.</p>
+</div>
+
+</div><!-- /container -->
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="fname">Rural<span> IN</span></div>
+        <div class="ftag">Gestão Inteligente com Tecnologia no Agro</div>
+        <p style="font-size:.79rem;color:rgba(255,255,255,.38);margin-top:10px;max-width:280px;line-height:1.7">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+      </div>
+      <div class="footer-contact">
+        <h4>Análise e Construção</h4>
+        <p>
+          <strong>Dr. Sidney Souza</strong><br>
+          Economista e Adm. Agrícola<br>
+          Estrategista Econômico do Produtor<br>
+          Especialista em economia da fazenda e gestão de risco no agro<br><br>
+          🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a><br>
+          📱 @ruralin.ai<br>
+          ✉ <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a><br>
+          📞 (64) 9 9226-6886
+        </p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      PORTAL RURAL IN · EDIÇÃO SEMANA 01–05/JUN/2026 · TODOS OS DIREITOS RESERVADOS<br>
+      ANÁLISE COM CARÁTER INFORMATIVO. NÃO CONSTITUI RECOMENDAÇÃO FORMAL DE INVESTIMENTO.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
