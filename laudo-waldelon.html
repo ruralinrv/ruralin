@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laudo Técnico de Viabilidade Econômico-Financeira — Waldelon Alves Gomes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pine:#13352a;        /* deep forest green */
+    --pine-2:#1d4a37;
+    --moss:#3e6b4f;
+    --gold:#c89b34;        /* harvest gold / grain */
+    --gold-soft:#e7d29a;
+    --clay:#9a6b43;
+    --paper:#faf8f2;
+    --paper-2:#f2efe5;
+    --card:#ffffff;
+    --ink:#1b231e;
+    --ink-soft:#48564d;
+    --line:#ddd8c9;
+    --line-2:#e9e4d6;
+    --crit:#b1392c;
+    --crit-bg:#f7e6e2;
+    --warn:#b8801f;
+    --warn-bg:#f7ecd5;
+    --ok:#2c7350;
+    --ok-bg:#e0efe5;
+    --neutral-bg:#eceadf;
+    --shadow:0 1px 2px rgba(19,53,42,.05),0 8px 28px -14px rgba(19,53,42,.28);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:15px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  /* ---------- top progress / nav ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(19,53,42,.97);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid rgba(231,210,154,.18);
+    color:#f3efe2;
+  }
+  .topbar-inner{
+    max-width:1080px;margin:0 auto;padding:11px 28px;
+    display:flex;align-items:center;gap:18px;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:11px;font-weight:600;letter-spacing:.2px;}
+  .brand .leaf{width:26px;height:26px;flex:none;}
+  .brand b{font-weight:700;}
+  .brand .tag{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);}
+  .topnav{display:flex;gap:4px;flex-wrap:wrap;font-size:12.5px;}
+  .topnav a{
+    color:#d9e0d4;text-decoration:none;padding:5px 10px;border-radius:6px;
+    font-family:'IBM Plex Mono',monospace;letter-spacing:.02em;transition:.18s;
+  }
+  .topnav a:hover{background:rgba(231,210,154,.14);color:#fff;}
+  .progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--gold);width:0%;}
+  /* ---------- cover ---------- */
+  .cover{
+    background:
+      radial-gradient(120% 120% at 85% -10%, rgba(200,155,52,.22), transparent 55%),
+      linear-gradient(160deg,#0f2c22 0%, #14352a 45%, #1b4334 100%);
+    color:#f3efe2;
+    padding:64px 28px 52px;
+    position:relative;overflow:hidden;
+  }
+  .cover-grid-lines{
+    position:absolute;inset:0;opacity:.10;
+    background-image:linear-gradient(rgba(231,210,154,.5) 1px,transparent 1px);
+    background-size:100% 34px;
+    pointer-events:none;
+  }
+  .cover-inner{max-width:1080px;margin:0 auto;position:relative;}
+  .doc-kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.34em;
+    text-transform:uppercase;color:var(--gold-soft);margin-bottom:22px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .doc-kicker::before{content:"";width:46px;height:1px;background:var(--gold);}
+  .cover h1{
+    font-family:'Spectral',serif;font-weight:700;
+    font-size:clamp(30px,5.4vw,54px);line-height:1.04;letter-spacing:-.01em;
+    margin:0 0 18px;max-width:18ch;
+  }
+  .cover h1 em{font-style:italic;color:var(--gold-soft);font-weight:600;}
+  .cover-sub{font-size:16px;color:#cdd6cb;max-width:62ch;margin:0 0 38px;}
+  .meta-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+    gap:1px;background:rgba(231,210,154,.16);border:1px solid rgba(231,210,154,.16);
+    border-radius:12px;overflow:hidden;
+  }
+  .meta-cell{background:rgba(8,26,20,.42);padding:16px 20px;}
+  .meta-cell .k{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:5px;}
+  .meta-cell .v{font-size:15px;font-weight:600;color:#f3efe2;line-height:1.3;}
+  /* ---------- key metrics band ---------- */
+  .metrics{
+    max-width:1080px;margin:-30px auto 0;padding:0 28px;position:relative;z-index:5;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:16px;
+  }
+  .metric{
+    background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);
+    border-radius:12px;padding:18px 18px 16px;box-shadow:var(--shadow);
+  }
+  .metric.bad{border-top-color:var(--crit);}
+  .metric.good{border-top-color:var(--ok);}
+  .metric .label{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:9px;line-height:1.3;}
+  .metric .num{font-family:'Spectral',serif;font-size:30px;font-weight:700;line-height:1;letter-spacing:-.02em;}
+  .metric.bad .num{color:var(--crit);}
+  .metric.good .num{color:var(--ok);}
+  .metric .foot{font-size:12px;color:var(--ink-soft);margin-top:8px;}
+  /* ---------- layout ---------- */
+  main{max-width:1080px;margin:0 auto;padding:30px 28px 10px;}
+  .section{padding:46px 0;border-top:1px solid var(--line-2);}
+  .section:first-of-type{border-top:none;}
+  .sec-head{display:flex;gap:20px;align-items:baseline;margin-bottom:8px;}
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:13px;
+    color:var(--gold);letter-spacing:.05em;flex:none;
+    border:1px solid var(--gold);border-radius:7px;padding:5px 9px;line-height:1;
+    align-self:flex-start;margin-top:7px;
+  }
+  h2{font-family:'Spectral',serif;font-weight:700;font-size:clamp(22px,3vw,29px);letter-spacing:-.01em;line-height:1.15;margin:0;}
+  h3{font-family:'Spectral',serif;font-weight:600;font-size:19px;margin:34px 0 12px;color:var(--pine);}
+  h4{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--moss);margin:26px 0 10px;}
+  .lead{font-size:16.5px;color:var(--ink-soft);max-width:70ch;margin:4px 0 8px;}
+  p{max-width:74ch;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+  ul.clean{list-style:none;padding:0;margin:14px 0;max-width:74ch;}
+  ul.clean li{position:relative;padding-left:26px;margin-bottom:11px;}
+  ul.clean li::before{content:"";position:absolute;left:4px;top:9px;width:7px;height:7px;background:var(--gold);transform:rotate(45deg);}
+  ul.clean li b{color:var(--pine);}
+  /* ---------- tables ---------- */
+  .tbl-wrap{overflow-x:auto;margin:18px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px;}
+  caption{caption-side:top;text-align:left;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--moss);padding:14px 16px 0;}
+  thead th{
+    background:var(--pine);color:#eef2ea;font-weight:600;text-align:left;
+    padding:11px 14px;font-size:12px;letter-spacing:.02em;vertical-align:bottom;
+    position:sticky;top:0;
+  }
+  thead th.r{text-align:right;}
+  tbody td{padding:9px 14px;border-top:1px solid var(--line-2);vertical-align:top;}
+  tbody td.r{text-align:right;font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
+  tbody tr:nth-child(even){background:#fbfaf5;}
+  tbody tr:hover{background:#f4f1e6;}
+  tfoot td{padding:11px 14px;border-top:2px solid var(--pine);font-weight:700;background:var(--paper-2);}
+  tfoot td.r{text-align:right;font-family:'IBM Plex Mono',monospace;}
+  .num-pos{color:var(--ok);}
+  .num-neg{color:var(--crit);}
+  /* badges */
+  .badge{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.05em;padding:3px 8px;border-radius:5px;text-transform:uppercase;white-space:nowrap;}
+  .b-crit{background:var(--crit-bg);color:var(--crit);}
+  .b-warn{background:var(--warn-bg);color:var(--warn);}
+  .b-ok{background:var(--ok-bg);color:var(--ok);}
+  .b-neutral{background:var(--neutral-bg);color:var(--ink-soft);}
+  /* ---------- callouts ---------- */
+  .callout{
+    border-left:4px solid var(--gold);background:var(--paper-2);
+    padding:18px 22px;border-radius:0 12px 12px 0;margin:22px 0;
+  }
+  .callout.crit{border-left-color:var(--crit);background:var(--crit-bg);}
+  .callout.ok{border-left-color:var(--ok);background:var(--ok-bg);}
+  .callout .ct{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--moss);margin-bottom:7px;font-weight:600;}
+  .callout.crit .ct{color:var(--crit);}
+  .callout.ok .ct{color:var(--ok);}
+  .callout p{margin:0;max-width:none;}
+  .quote{
+    font-family:'Spectral',serif;font-style:italic;font-size:18px;line-height:1.5;
+    color:var(--pine);border-left:3px solid var(--gold);padding:6px 0 6px 22px;margin:24px 0;max-width:64ch;
+  }
+  .quote cite{display:block;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:var(--ink-soft);margin-top:10px;text-transform:uppercase;}
+  /* ---------- chart ---------- */
+  .chart-card{background:var(--pine);border-radius:14px;padding:26px 24px 18px;margin:22px 0;color:#eef2ea;box-shadow:var(--shadow);}
+  .chart-card h4{color:var(--gold-soft);margin-top:0;}
+  .chart-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:#cdd6cb;margin-top:14px;font-family:'IBM Plex Mono',monospace;}
+  .chart-legend span{display:inline-flex;align-items:center;gap:7px;}
+  .swatch{width:12px;height:12px;border-radius:3px;}
+  /* ---------- two-col helpers ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin:20px 0;}
+  .pillar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;box-shadow:var(--shadow);}
+  .pillar .pn{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--gold);font-weight:600;margin-bottom:6px;}
+  .pillar h5{font-family:'Spectral',serif;font-size:17px;margin:0 0 8px;color:var(--pine);font-weight:600;}
+  .pillar p{font-size:13.5px;color:var(--ink-soft);margin:0;max-width:none;}
+  /* details / annex */
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:14px 0;overflow:hidden;}
+  details summary{
+    cursor:pointer;padding:16px 22px;font-family:'Spectral',serif;font-weight:600;font-size:17px;color:var(--pine);
+    list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--paper-2);
+  }
+  details summary::-webkit-details-marker{display:none;}
+  details summary::after{content:"+";font-family:'IBM Plex Mono',monospace;font-size:20px;color:var(--gold);transition:.2s;}
+  details[open] summary::after{content:"–";}
+  details .det-body{padding:6px 22px 20px;}
+  /* ---------- footer / credentials ---------- */
+  .credentials{
+    background:
+      radial-gradient(120% 140% at 12% 0%, rgba(200,155,52,.16), transparent 55%),
+      linear-gradient(165deg,#13352a,#0e2920);
+    color:#f3efe2;margin-top:48px;padding:56px 28px;
+  }
+  .cred-inner{max-width:1080px;margin:0 auto;}
+  .cred-inner .eyebrow{color:var(--gold);}
+  .sig-line{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:8px 0 30px;max-width:420px;}
+  .cred-name{font-family:'Spectral',serif;font-size:28px;font-weight:700;margin:0 0 4px;}
+  .cred-role{color:var(--gold-soft);font-weight:600;font-size:15px;margin:0 0 18px;}
+  .cred-blurb{color:#cdd6cb;max-width:60ch;margin:0 0 8px;}
+  .cred-blurb.lead-it{font-family:'Spectral',serif;font-style:italic;font-size:18px;color:#e9e4d6;}
+  .cred-contact{
+    display:flex;gap:10px 26px;flex-wrap:wrap;margin-top:26px;
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.02em;
+  }
+  .cred-contact a{color:var(--gold-soft);text-decoration:none;border-bottom:1px solid rgba(231,210,154,.3);padding-bottom:2px;}
+  .cred-contact a:hover{color:#fff;}
+  .cred-contact .ci{display:inline-flex;align-items:center;gap:8px;color:#dfe4da;}
+  .doc-foot{max-width:1080px;margin:0 auto;padding:22px 28px;font-size:11.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;letter-spacing:.03em;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+  /* responsive */
+  @media (max-width:640px){
+    .topnav{display:none;}
+    .cover{padding:46px 20px 44px;}
+    main{padding:20px 18px 0;}
+    .metrics{padding:0 18px;}
+    .credentials,.doc-foot{padding-left:18px;padding-right:18px;}
+    .quote{font-size:16px;}
+  }
+  @media print{
+    .topbar{display:none;}
+    body{background:#fff;font-size:11px;}
+    .cover,.credentials{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .tbl-wrap{box-shadow:none;break-inside:avoid;}
+    .section{break-inside:auto;}
+    details{break-inside:avoid;}
+    details[open] summary::after,details summary::after{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= TOP NAV ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg class="leaf" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 29C9 24 6 18 6 11c0-3 1-6 2-8 4 1 8 3 11 8 2.5 4 2.5 12-3 18Z" fill="#c89b34" opacity=".9"/>
+        <path d="M16 29V9" stroke="#0f2c22" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="22" cy="6" r="2.4" fill="#e7d29a"/><circle cx="26" cy="11" r="1.6" fill="#e7d29a"/>
+      </svg>
+      <span>Rural<b>in</b> <span class="tag">· Laudo Técnico</span></span>
+    </div>
+    <nav class="topnav">
+      <a href="#s1">Identificação</a>
+      <a href="#s4">Passivo</a>
+      <a href="#s5">Caixa</a>
+      <a href="#s6">Indicadores</a>
+      <a href="#s8">Cenários</a>
+      <a href="#s10">Reestruturação</a>
+      <a href="#s13">Conclusão</a>
+      <a href="#anexos">Anexos</a>
+    </nav>
+    <div class="progress" id="progress"></div>
+  </div>
+</div>
+
+<!-- ================= COVER ================= -->
+<header class="cover">
+  <div class="cover-grid-lines"></div>
+  <div class="cover-inner">
+    <div class="doc-kicker">Parecer Técnico de Capacidade de Pagamento</div>
+    <h1>Laudo Técnico de Viabilidade <em>Econômico-Financeira</em></h1>
+    <p class="cover-sub">Análise prospectiva, fundamentada em dados operacionais reais, da capacidade de pagamento e da sustentabilidade operacional da unidade produtiva — instrução de medida judicial de reestruturação de passivos rurais.</p>
+    <div class="meta-grid">
+      <div class="meta-cell"><div class="k">Produtor Rural</div><div class="v">Waldelon Alves Gomes</div></div>
+      <div class="meta-cell"><div class="k">CPF</div><div class="v">269.636.041-34</div></div>
+      <div class="meta-cell"><div class="k">Instituição Financeira</div><div class="v">Banco CNH Industrial Capital S.A.</div></div>
+      <div class="meta-cell"><div class="k">Objeto da Ação</div><div class="v">CCB 2223099 — Colhedeira (13,64% a.a.)</div></div>
+      <div class="meta-cell"><div class="k">Localização</div><div class="v">Indiara — GO · microrregião Rio Verdão</div></div>
+      <div class="meta-cell"><div class="k">Período Analisado</div><div class="v">Safras 2025/26 a 2044/45 · 20 ciclos</div></div>
+      <div class="meta-cell"><div class="k">Emissão</div><div class="v">1 de junho de 2026</div></div>
+      <div class="meta-cell"><div class="k">Coobrigado / Avalista</div><div class="v">Não há</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= KEY METRICS ================= -->
+<section class="metrics" aria-label="Indicadores-chave">
+  <div class="metric bad">
+    <div class="label">EBITDA Soja 2025/26</div>
+    <div class="num">−R$ 106,7 mil</div>
+    <div class="foot">Resultado já materializado — fato consumado</div>
+  </div>
+  <div class="metric bad">
+    <div class="label">ICSD exercício corrente</div>
+    <div class="num">0,02</div>
+    <div class="foot">Insolvência técnica absoluta</div>
+  </div>
+  <div class="metric">
+    <div class="label">Passivo consolidado</div>
+    <div class="num">R$ 8,21 mi</div>
+    <div class="foot">Sistema financeiro + cadeia produtiva</div>
+  </div>
+  <div class="metric good">
+    <div class="label">ICSD pós-reestruturação</div>
+    <div class="num">2,00</div>
+    <div class="foot">A partir da safra 2028/29</div>
+  </div>
+  <div class="metric good">
+    <div class="label">Quitação integral</div>
+    <div class="num">Safra 43/44</div>
+    <div class="foot">Carência de 36 meses + 50% do EBITDA</div>
+  </div>
+</section>
+
+<main>
+
+<!-- ===== 1 / 2 IDENTIFICAÇÃO E METODOLOGIA ===== -->
+<section class="section" id="s1">
+  <div class="sec-head"><div class="sec-num">01</div><div><div class="eyebrow">Objeto e Declaração Preliminar</div><h2>O que este laudo demonstra</h2></div></div>
+  <p class="lead">Apresenta-se ao MM. Juízo análise fundamentada da situação econômico-financeira do produtor rural requerente, com base em dados reais de mercado, custos apurados e projeções de resultado para os 20 ciclos agrícolas seguintes.</p>
+  <ul class="clean">
+    <li><b>(a) Impossibilidade econômica comprovada por fato consumado.</b> A safra de soja 2025/2026, já colhida e comercializada, gerou EBITDA negativo de R$ 106.650,00, insuficiente para honrar qualquer compromisso financeiro do exercício.</li>
+    <li><b>(b) Endividamento incompatível com a geração de caixa.</b> O passivo consolidado de R$ 8.214.067,95, sob as taxas de mercado, resulta em índice de cobertura do serviço da dívida (ICSD) de 0,02 no exercício corrente — insolvência técnica absoluta.</li>
+    <li><b>(c) Viabilidade plena uma vez reorganizada.</b> A unidade produtiva tem capacidade técnica, operacional e ambiental para gerar EBITDA crescente e quitar integralmente a dívida financeira até a safra 2043/44, comprometendo 50% do EBITDA a partir do 4º ciclo e preservando 50% para reinvestimento e recomposição patrimonial.</li>
+    <li><b>(d) Enquadramento no MCR 2-6-4.</b> Alínea “a” (dificuldade de comercialização: CEPEA R$ 110/sc abaixo do custo de R$ 112,08/sc); alínea “b” (frustração econômica por descasamento de 13,3 p.p. entre WACD de 11,4% a.a. e retorno operacional de −1,9%); alínea “d” (impacto acumulado de perdas no SNCR — Resolução CMN 5.229), com passivo financeiro de R$ 5.574.553,60 entre três credores.</li>
+  </ul>
+
+  <h3>Três fatores sistêmicos convergentes</h3>
+  <p>A situação de inadimplemento não decorre de má-fé, desídia ou desvio de finalidade. Trata-se de consequência direta e documentada de fatores reconhecidos pela literatura econômica agrária e por órgãos oficiais:</p>
+  <div class="pillars">
+    <div class="pillar"><div class="pn">FATOR 01</div><h5>Colapso das margens</h5><p>Retorno operacional da soja de −1,9%, reflexo de preços deprimidos pela safra-recorde brasileira de 179,15 milhões de toneladas (CONAB, abr/2026) em ambiente de dólar desvalorizado.</p></div>
+    <div class="pillar"><div class="pn">FATOR 02</div><h5>Juros incompatíveis</h5><p>Selic a 15% a.a. determinou custeio de soja a 11,5% a.a. e financiamento CNH a 13,64% a.a. — ambos superiores à margem operacional positiva do ciclo.</p></div>
+    <div class="pillar"><div class="pn">FATOR 03</div><h5>Custos em dólar</h5><p>Fertilizantes, defensivos e sementes permaneceram em patamar elevado, sem redução proporcional à queda dos preços das commodities.</p></div>
+  </div>
+
+  <blockquote class="quote">
+    Nós tínhamos uma Selic de 10,5% ao ano, hoje ela está em 15%, portanto 4,5 pontos percentuais a mais.
+    <cite>Min. Carlos Fávaro — 01/07/2025</cite>
+  </blockquote>
+
+  <h4>Metodologia e fontes</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Fonte / Método</th><th>Aplicação</th><th>Referência</th></tr></thead>
+      <tbody>
+        <tr><td>CEPEA-ESALQ/USP</td><td>Preços de referência soja e milho</td><td>Séries históricas 2018–2026</td></tr>
+        <tr><td>CONAB</td><td>Produtividade regional e safra nacional</td><td>Boletim abr/2026</td></tr>
+        <tr><td>Plano Safra 2025/26</td><td>Taxas de juros do crédito rural</td><td>MAPA, jul/2025</td></tr>
+        <tr><td>Dados operacionais do produtor</td><td>Custos, receitas e passivo real</td><td>Safra 2025/26</td></tr>
+        <tr><td>ICSD / DSCR</td><td>Índice de cobertura do serviço da dívida</td><td>Wruck (1990); Damodaran (2001)</td></tr>
+        <tr><td>Análise de sensibilidade</td><td>Univariada e multivariada</td><td>Saltelli et al. (2004)</td></tr>
+        <tr><td>Análise de cenários</td><td>Otimista / Base / Pessimista / Estresse</td><td>Damodaran (2001)</td></tr>
+        <tr><td>VaR (Valor em Risco)</td><td>Distribuição do EBITDA esperado</td><td>Jorion (2007)</td></tr>
+        <tr><td>Relação de Troca</td><td>Custo de produção em sacos equivalentes</td><td>Conab / SENAR</td></tr>
+        <tr><td>Alavancagem Operacional</td><td>Sensibilidade EBITDA vs. Receita</td><td>Assaf Neto (2020)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 3 UNIDADE PRODUTIVA ===== -->
+<section class="section" id="s3">
+  <div class="sec-head"><div class="sec-num">02</div><div><div class="eyebrow">Caracterização</div><h2>A unidade produtiva em Indiara/GO</h2></div></div>
+
+  <h4>Estrutura operacional</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Característica</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td>Município / Estado</td><td>Indiara — GO (microrregião Rio Verdão)</td></tr>
+        <tr><td>Área 1ª safra (Soja)</td><td>790 ha · Irrigado: 320 ha · Sequeiro: 470 ha</td></tr>
+        <tr><td>Área 2ª safra (Milho safrinha)</td><td>414 ha (irrigado + 20% do sequeiro)</td></tr>
+        <tr><td>Total anual cultivado</td><td>1.204 ha/ano (soja + milho)</td></tr>
+        <tr><td>Sistema produtivo</td><td>Sucessão soja → milho, plantio direto com irrigação suplementar</td></tr>
+        <tr><td>Produtividade soja 25/26</td><td>65 sc/ha (meta de convergência: 75 sc/ha a partir de 36/37)</td></tr>
+        <tr><td>Produtividade milho 25/26</td><td>110 sc/ha (meta: 120 sc/ha a partir de 26/27)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>Contratos de arrendamento</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Arrendatário</th><th class="r">Área (ha)</th><th>Vigência</th><th class="r">Total (sc)</th><th class="r">Sc/ha</th></tr></thead>
+      <tbody>
+        <tr><td>Luiz Augusto · Sequeiro</td><td class="r">379,97</td><td>25/26–27/28</td><td class="r">7.065,52</td><td class="r">18,60</td></tr>
+        <tr><td>Gustavo Luiz · Irrigado</td><td class="r">229,61</td><td>25/26–29/30</td><td class="r">9.184,40</td><td class="r">40,00</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td>Total / Média ponderada</td><td class="r">609,58</td><td>—</td><td class="r">16.249,92</td><td class="r">26,67</td></tr>
+        <tr><td colspan="4">Média geral soja (790 ha)</td><td class="r">13,50</td></tr>
+      </tfoot>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--ink-soft)">O arrendamento é expresso em sacos de soja, modalidade prevalente no Rio Verdão (GO), com reajuste implícito pela oscilação do preço da commodity. Essa estrutura de custo variável reduz o risco de descasamento em anos de preços deprimidos, mas eleva o custo total em safras de preços elevados.</p>
+
+  <h4>Contexto regional</h4>
+  <ul class="clean">
+    <li>Produtividade média de soja de <b>58–66 sc/ha</b> (CONAB-GO 2020–2025), compatível com as premissas adotadas.</li>
+    <li>Plantio direto consolidado e adoção crescente de irrigação suplementar — fatores que sustentam a trajetória ascendente de produtividade projetada.</li>
+    <li>Infraestrutura logística em expansão (BR-364 e acesso a Santos/Paranaguá), com frete estimado entre R$ 8,00 e R$ 12,00/sc.</li>
+    <li>Alta correlação entre o preço local da soja e o CEPEA-ESALQ (ρ &gt; 0,95), validando o uso das séries CEPEA como referência de precificação.</li>
+  </ul>
+
+  <h3>Contextualização sistêmica do inadimplemento — MCR 2-6-4</h3>
+  <p>O endividamento é resultado de fatores sistêmicos alheios à vontade do produtor, e não de má gestão ou desvio de finalidade. A síntese conecta cada vetor às alíneas do MCR 2-6-4:</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Vetor sistêmico</th><th>Alínea e evidência central</th></tr></thead>
+      <tbody>
+        <tr><td>Queda de preços (safra-recorde + câmbio)</td><td><span class="badge b-warn">Alínea “a”</span> CEPEA R$ 110/sc &lt; custo R$ 112,08/sc → prejuízo R$ 135/ha → EBITDA soja −R$ 106.650</td></tr>
+        <tr><td>Descasamento WACD 11,4% vs. retorno −1,9%</td><td><span class="badge b-warn">Alínea “b”</span> 13,3 p.p. de descasamento → frustração econômica de safra</td></tr>
+        <tr><td>Passivo SNCR R$ 5,57 mi (3 credores)</td><td><span class="badge b-warn">Alínea “d”</span> (CMN 5.229) impacto acumulado de perdas no SNCR → ICSD 0,02</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout crit">
+    <div class="ct">Constatação</div>
+    <p>O produtor não vendeu abaixo do custo por escolha. O mercado formador de preços (CEPEA-ESALQ) situou-se abaixo do custo regional por razões macroeconômicas externas. Esse é o cenário típico e inequívoco da alínea “a” do MCR 2-6-4.</p>
+  </div>
+</section>
+
+<!-- ===== 4 PASSIVO ===== -->
+<section class="section" id="s4">
+  <div class="sec-head"><div class="sec-num">03</div><div><div class="eyebrow">Síntese do passivo</div><h2>Passivo consolidado: R$ 8,21 milhões</h2></div></div>
+  <p class="lead">O passivo divide-se em dois blocos de natureza distinta: o sistema financeiro (objeto da reestruturação, 67,9%) e a cadeia produtiva (quitação prioritária durante a carência, 32,1%).</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>4.1 — Composição detalhada</caption>
+      <thead><tr><th>Contrato / Natureza</th><th class="r">Taxa</th><th class="r">Saldo (R$)</th><th>Vencimento</th><th class="r">% Total</th></tr></thead>
+      <tbody>
+        <tr><td>CRP/BB 364.006.740 — Custeio Sorgo</td><td class="r">8,5% a.a.</td><td class="r">169.410,39</td><td>Set–Dez/26</td><td class="r">2,1%</td></tr>
+        <tr><td>CRP/BB 364.006.742 — Custeio Milho</td><td class="r">8,5% a.a.</td><td class="r">304.520,05</td><td>Set–Dez/26</td><td class="r">3,7%</td></tr>
+        <tr><td>CRP/BB — Custeio Soja</td><td class="r">11,5% a.a.</td><td class="r">1.907.705,50</td><td>Set–Dez/26</td><td class="r">23,2%</td></tr>
+        <tr><td>CNH/CCB 2223099 — Colhedeira (Parc. 3, em aberto)</td><td class="r">13,64% a.a.</td><td class="r">1.309.017,31</td><td>15/Mai/26</td><td class="r">15,9%</td></tr>
+        <tr><td>CNH/CCB 2223099 — Colhedeira (Parc. 4)</td><td class="r">13,64% a.a.</td><td class="r">436.339,10</td><td>15/Mai/27</td><td class="r">5,3%</td></tr>
+        <tr><td>CNH/CCB 2223099 — Colhedeira (Parc. 5)</td><td class="r">13,64% a.a.</td><td class="r">436.339,10</td><td>15/Mai/28</td><td class="r">5,3%</td></tr>
+        <tr><td>Sicoob — Empréstimo Rotativo</td><td class="r">2,5% a.m.</td><td class="r">1.011.222,55</td><td>27/Jul/26</td><td class="r">12,3%</td></tr>
+        <tr style="background:var(--paper-2)"><td><b>Subtotal — Sistema Financeiro</b></td><td class="r">—</td><td class="r"><b>5.574.553,60</b></td><td>—</td><td class="r"><b>67,9%</b></td></tr>
+        <tr><td>Contas a pagar da praça — Jun a Dez/2026</td><td class="r">—</td><td class="r">2.639.514,35</td><td>Jun–Dez/26</td><td class="r">32,1%</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL DO PASSIVO CONSOLIDADO</td><td class="r">—</td><td class="r">8.214.067,95</td><td>—</td><td class="r">100,0%</td></tr></tfoot>
+    </table>
+  </div>
+
+  <h4>4.3 — Painel de diagnóstico do endividamento</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Indicador</th><th class="r">Valor</th><th>Diagnóstico / Benchmark</th></tr></thead>
+      <tbody>
+        <tr><td>Passivo Total / Receita Anual 2026</td><td class="r">1,04 x</td><td><span class="badge b-crit">Crítico</span> acima de 1,0x indica insolvência imediata</td></tr>
+        <tr><td>Passivo Total / Receita Média Projetada</td><td class="r">0,82 x</td><td><span class="badge b-warn">Moderado</span> superior a 0,80x requer reestruturação</td></tr>
+        <tr><td>Passivo Total / EBITDA 26/27 (1º positivo)</td><td class="r">11,45 x</td><td><span class="badge b-crit">Crítico</span> benchmark &lt; 4,0x</td></tr>
+        <tr><td>Concentração no sistema financeiro</td><td class="r">67,9%</td><td><span class="badge b-warn">Alto</span> em crédito bancário</td></tr>
+        <tr><td>Risco da cadeia produtiva</td><td class="r">R$ 2,64 mi</td><td>Risco de corte de insumos — impacto sobre safras futuras</td></tr>
+        <tr><td>Custo médio ponderado da dívida (WACD)</td><td class="r">11,4% a.a.</td><td>Acima do retorno operacional da atividade</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>4.4 — Contas a pagar da praça (2026)</h4>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Mês</th><th class="r">Valor (R$)</th></tr></thead>
+      <tbody>
+        <tr><td>Junho/2026</td><td class="r">414.974,00</td></tr>
+        <tr><td>Julho/2026</td><td class="r">392.165,25</td></tr>
+        <tr><td>Agosto/2026</td><td class="r">593.516,18</td></tr>
+        <tr><td>Setembro/2026</td><td class="r">593.706,18</td></tr>
+        <tr><td>Outubro/2026</td><td class="r">201.263,55</td></tr>
+        <tr><td>Novembro/2026</td><td class="r">202.632,64</td></tr>
+        <tr><td>Dezembro/2026</td><td class="r">241.256,55</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL</td><td class="r">2.639.514,35</td></tr></tfoot>
+    </table>
+  </div>
+
+  <h3>Deterioração histórica das margens (2023–2026)</h3>
+  <p>Dados oficiais do IMEA/MT confirmam que o ciclo 2023–2026 representou compressão severa e sem precedentes recentes das margens operacionais no Centro-Oeste, padrão que dialoga diretamente com a situação do produtor em Indiara/GO.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>4.5.1 — Soja: custo e margem operacional por safra (IMEA/MT)</caption>
+      <thead><tr><th>Safra</th><th class="r">Preço (R$/sc)</th><th class="r">COE/ha</th><th class="r">Prod.</th><th class="r">Custo/sc COE</th><th class="r">Marg./sc</th><th class="r">MR% COE</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>2022/23</td><td class="r">125,37</td><td class="r">6.267</td><td class="r">60,9</td><td class="r">102,87</td><td class="r num-pos">+22,50</td><td class="r">+17,9%</td><td>Margem positiva, sustentável</td></tr>
+        <tr><td>2023/24</td><td class="r">110,29</td><td class="r">5.634</td><td class="r">59,7</td><td class="r">94,30</td><td class="r num-pos">+15,99</td><td class="r">+14,5%</td><td>Margem comprimida</td></tr>
+        <tr><td>2024/25</td><td class="r">117,53</td><td class="r">5.495</td><td class="r">59,7</td><td class="r">91,98</td><td class="r num-pos">+25,55</td><td class="r">+21,7%</td><td>Recuperação parcial; COT consome margem</td></tr>
+        <tr><td>2025/26</td><td class="r">110,43</td><td class="r">5.779</td><td class="r">55,8</td><td class="r">103,63</td><td class="r num-pos">+6,80</td><td class="r">+6,2%</td><td><span class="badge b-crit">COT neg.</span> −R$242/ha</td></tr>
+        <tr><td>2026/27*</td><td class="r">102,00</td><td class="r">5.964</td><td class="r">54,6</td><td class="r">109,30</td><td class="r num-neg">−7,30</td><td class="r">−7,2%</td><td><span class="badge b-crit">Prejuízo COE</span> COT −R$1.068/ha</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout crit">
+    <div class="ct">Destaque crítico — Safra 2025/26</div>
+    <p>O custo de produção por saco (COE/ha R$ 5.779 ÷ 55,8 sc/ha = R$ 103,63/sc) superou o preço médio de comercialização no período de colheita jan–abr/2026 (R$ 102,04/sc). O produtor vendeu a soja abaixo do custo operacional; a margem COT foi negativa em −R$ 242/ha.</p>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>4.5.2 — Milho safrinha: custo e margem operacional por safra (IMEA/MT)</caption>
+      <thead><tr><th>Safra</th><th class="r">Preço (R$/sc)</th><th class="r">COE/ha</th><th class="r">Prod.</th><th class="r">Custo/sc COE</th><th class="r">Marg./sc</th><th class="r">MR% COE</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>2022/23</td><td class="r">50,06</td><td class="r">4.421</td><td class="r">124,3</td><td class="r">35,55</td><td class="r num-pos">+14,51</td><td class="r">+29,0%</td><td>Melhor resultado do período</td></tr>
+        <tr><td>2023/24</td><td class="r">35,74</td><td class="r">4.480</td><td class="r">122,1</td><td class="r">36,69</td><td class="r num-neg">−0,95</td><td class="r">−2,7%</td><td><span class="badge b-crit">Colapso</span> mín. R$31,86/sc</td></tr>
+        <tr><td>2024/25</td><td class="r">52,35</td><td class="r">4.611</td><td class="r">113,1</td><td class="r">40,78</td><td class="r num-pos">+11,57</td><td class="r">+22,1%</td><td>Recuperação</td></tr>
+        <tr><td>2025/26</td><td class="r">44,99</td><td class="r">4.806</td><td class="r">110,9</td><td class="r">43,36</td><td class="r num-pos">+1,63</td><td class="r">+3,6%</td><td><span class="badge b-warn">COT neg.</span> −R$407/ha</td></tr>
+        <tr><td>2026/27*</td><td class="r">44,00</td><td class="r">5.501</td><td class="r">129,8</td><td class="r">42,37</td><td class="r num-pos">+1,63</td><td class="r">+3,7%</td><td><span class="badge b-warn">COT neg.</span> −R$355/ha</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--ink-soft)">Síntese: dos 4 ciclos analisados, o milho teve margem COT positiva em apenas 2 (22/23 e 24/25). Em 2025/26 o produtor vendeu soja abaixo do custo operacional e milho com margem COE de apenas 3,6% — incompatível com o serviço de uma dívida de R$ 5,57 milhões. Deterioração documentada pelo IMEA/MT, enquadrando as alíneas “a” e “b” do MCR 2-6-4.</p>
+</section>
+
+<!-- ===== 5 CAIXA ===== -->
+<section class="section" id="s5">
+  <div class="sec-head"><div class="sec-num">04</div><div><div class="eyebrow">Geração de caixa operacional</div><h2>Resultado materializado e projeção de 20 safras</h2></div></div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>5.1 — Resultado materializado, safra 2025/26 (fato consumado)</caption>
+      <thead><tr><th>Cultura</th><th class="r">Receita (R$)</th><th class="r">Custo (R$)</th><th class="r">EBITDA (R$)</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Soja 2025/26</td><td class="r">5.648.500,00</td><td class="r">5.755.150,00</td><td class="r num-neg">(106.650)</td><td>GAP → passivo</td></tr>
+        <tr><td>Milho safrinha 2026</td><td class="r">2.277.000,00</td><td class="r">2.132.100,00</td><td class="r num-pos">144.900,00</td><td>Caixa pendente</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAL 2026</td><td class="r">7.925.500,00</td><td class="r">7.887.250,00</td><td class="r">38.250,00</td><td>—</td></tr></tfoot>
+    </table>
+  </div>
+
+  <div class="callout">
+    <div class="ct">Nota técnica — EBITDA positivo vs. ICSD 0,02</div>
+    <p>Embora o EBITDA consolidado de 2026 seja levemente positivo (+R$ 38.250,00), o serviço da dívida exigível no exercício, de R$ 7.338.758,00, supera em ~51 vezes o caixa efetivamente disponível (R$ 144.900,00 do milho safrinha — única geração de caixa pendente). O ICSD de 0,02 mede exatamente essa relação. O resultado da soja foi integralmente absorvido pelo custeio da própria safra (GAP incorporado ao passivo).</p>
+  </div>
+
+  <div class="chart-card">
+    <h4>Trajetória do EBITDA agrícola consolidado — 20 safras</h4>
+    <div id="ebitda-chart"></div>
+    <div class="chart-legend">
+      <span><span class="swatch" style="background:#c89b34"></span>EBITDA projetado (R$)</span>
+      <span><span class="swatch" style="background:#b1392c"></span>Safra de insolvência (25/26)</span>
+      <span>Pico em 39/40: R$ 1,43 mi · Total 20 safras: R$ 13,07 mi</span>
+    </div>
+  </div>
+
+  <h4>5.2 — Projeção de EBITDA agrícola consolidado</h4>
+  <p style="font-size:13px;color:var(--ink-soft)">Premissas: produtividade soja de 65 → 75 sc/ha; milho estabilizando em 120 sc/ha desde 26/27; recomposição gradual de preços (CEPEA): soja R$110 → R$145/sc, milho R$50 → R$67/sc; ajuste operacional gradual de custos; áreas soja 790 ha e milho 414 ha.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Safra</th><th class="r">Rec. Soja</th><th class="r">Rec. Milho</th><th class="r">Rec. Total</th><th class="r">Custo Total</th><th class="r">EBITDA</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">5.648.500</td><td class="r">2.277.000</td><td class="r">7.925.500</td><td class="r">7.887.250</td><td class="r">38.250</td></tr>
+        <tr><td>26/27</td><td class="r">6.304.200</td><td class="r">2.484.000</td><td class="r">8.788.200</td><td class="r">8.071.010</td><td class="r">356.950</td></tr>
+        <tr><td>27/28</td><td class="r">6.414.800</td><td class="r">2.583.360</td><td class="r">8.998.160</td><td class="r">8.262.176</td><td class="r">445.064</td></tr>
+        <tr><td>28/29</td><td class="r">6.636.000</td><td class="r">2.633.040</td><td class="r">9.269.040</td><td class="r">8.408.367</td><td class="r">860.673</td></tr>
+        <tr><td>29/30</td><td class="r">6.842.980</td><td class="r">2.682.720</td><td class="r">9.525.700</td><td class="r">8.589.736</td><td class="r">935.964</td></tr>
+        <tr><td>30/31</td><td class="r">6.899.070</td><td class="r">2.732.400</td><td class="r">9.631.470</td><td class="r">8.947.695</td><td class="r">683.775</td></tr>
+        <tr><td>31/32</td><td class="r">7.166.880</td><td class="r">2.732.400</td><td class="r">9.899.280</td><td class="r">9.039.890</td><td class="r">859.390</td></tr>
+        <tr><td>32/33</td><td class="r">7.280.640</td><td class="r">2.782.080</td><td class="r">10.062.720</td><td class="r">9.191.556</td><td class="r">871.164</td></tr>
+        <tr><td>33/34</td><td class="r">7.394.400</td><td class="r">2.782.080</td><td class="r">10.176.480</td><td class="r">9.312.586</td><td class="r">863.894</td></tr>
+        <tr><td>34/35</td><td class="r">7.497.100</td><td class="r">2.831.760</td><td class="r">10.328.860</td><td class="r">9.464.864</td><td class="r">668.924</td></tr>
+        <tr><td>35/36</td><td class="r">7.670.110</td><td class="r">2.831.760</td><td class="r">10.501.870</td><td class="r">9.536.359</td><td class="r">965.511</td></tr>
+        <tr><td>36/37</td><td class="r">7.998.750</td><td class="r">2.980.800</td><td class="r">10.979.550</td><td class="r">9.731.495</td><td class="r">1.248.055</td></tr>
+        <tr><td>37/38</td><td class="r">8.176.500</td><td class="r">2.980.800</td><td class="r">11.157.300</td><td class="r">9.775.910</td><td class="r">1.381.390</td></tr>
+        <tr><td>38/39</td><td class="r">8.295.000</td><td class="r">3.080.160</td><td class="r">11.375.160</td><td class="r">10.032.658</td><td class="r">1.342.502</td></tr>
+        <tr><td>39/40</td><td class="r">8.413.500</td><td class="r">3.080.160</td><td class="r">11.493.660</td><td class="r">10.066.822</td><td class="r">1.426.838</td></tr>
+        <tr><td>40/41</td><td class="r">7.852.600</td><td class="r">2.999.430</td><td class="r">10.852.030</td><td class="r">10.224.238</td><td class="r">627.792</td></tr>
+        <tr><td>41/42</td><td class="r">8.076.960</td><td class="r">3.126.528</td><td class="r">11.203.488</td><td class="r">10.284.484</td><td class="r">919.004</td></tr>
+        <tr><td>42/43</td><td class="r">8.190.720</td><td class="r">3.229.200</td><td class="r">11.419.920</td><td class="r">10.421.200</td><td class="r">998.720</td></tr>
+        <tr><td>43/44</td><td class="r">8.018.500</td><td class="r">3.142.260</td><td class="r">11.160.760</td><td class="r">10.470.781</td><td class="r">689.979</td></tr>
+        <tr><td>44/45</td><td class="r">8.018.500</td><td class="r">3.328.560</td><td class="r">11.347.060</td><td class="r">10.588.697</td><td class="r">758.363</td></tr>
+      </tbody>
+      <tfoot><tr><td>TOTAIS</td><td class="r">144.472.040</td><td class="r">56.907.198</td><td class="r">201.379.238</td><td class="r">188.307.774</td><td class="r">13.071.464</td></tr></tfoot>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 6 INDICADORES ===== -->
+<section class="section" id="s6">
+  <div class="sec-head"><div class="sec-num">05</div><div><div class="eyebrow">Indicadores econômicos</div><h2>Termômetro de saúde financeira</h2></div></div>
+  <p class="lead">Padrão de referência conforme critérios do Banco Central, do Comitê de Basileia III e da literatura de gestão financeira rural (Assaf Neto, 2020; Gitman &amp; Zutter, 2017).</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>6.1 — Painel de indicadores financeiros</caption>
+      <thead><tr><th>Indicador</th><th class="r">Atual</th><th class="r">Benchmark</th><th>Status</th><th>Interpretação</th></tr></thead>
+      <tbody>
+        <tr><td>ICSD 2025/26</td><td class="r">0,02</td><td class="r">≥ 1,30</td><td><span class="badge b-crit">Crítico</span></td><td>Insolvência absoluta</td></tr>
+        <tr><td>D/EBITDA</td><td class="r">11,45x</td><td class="r">&lt; 4,0x</td><td><span class="badge b-crit">Crítico</span></td><td>Dívida 11x o EBITDA anual</td></tr>
+        <tr><td>D/Receita (2026)</td><td class="r">1,04x</td><td class="r">&lt; 0,60x</td><td><span class="badge b-crit">Crítico</span></td><td>Passivo &gt; receita anual</td></tr>
+        <tr><td>Margem EBITDA 25/26</td><td class="r">0,5%</td><td class="r">&gt; 12%</td><td><span class="badge b-crit">Crítico</span></td><td>Praticamente nula</td></tr>
+        <tr><td>Alavancagem operacional</td><td class="r">163x</td><td class="r">&lt; 5x</td><td><span class="badge b-warn">Atenção</span></td><td>Alta sensibilidade ao preço</td></tr>
+        <tr><td>BEP / Receita 25/26</td><td class="r">98,6%</td><td class="r">&lt; 80%</td><td><span class="badge b-crit">Crítico</span></td><td>Próximo ao limite operacional</td></tr>
+        <tr><td>ICSD com reestruturação (28/29+)</td><td class="r">2,00</td><td class="r">≥ 1,30</td><td><span class="badge b-ok">Saudável</span></td><td>Dentro do padrão exigido</td></tr>
+        <tr><td>Coef. de variação do EBITDA</td><td class="r">37,1%</td><td class="r">&lt; 25%</td><td><span class="badge b-warn">Atenção</span></td><td>Volatilidade significativa</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>6.2 — Relação de troca: custo por saco vs. preço de mercado</caption>
+      <thead><tr><th>Safra</th><th class="r">Prod. (sc/ha)</th><th class="r">Preço (R$/sc)</th><th class="r">Custo/sc</th><th class="r">Marg./sc</th><th class="r">MR Soja</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">65</td><td class="r">110,00</td><td class="r">112,08</td><td class="r num-neg">−2,08</td><td class="r">−1,9%</td><td><span class="badge b-crit">Prejuízo</span></td></tr>
+        <tr><td>26/27</td><td class="r">70</td><td class="r">114,00</td><td class="r">106,27</td><td class="r num-pos">+7,73</td><td class="r">6,8%</td><td><span class="badge b-warn">Apertado</span></td></tr>
+        <tr><td>27/28</td><td class="r">70</td><td class="r">116,00</td><td class="r">108,80</td><td class="r num-pos">+7,20</td><td class="r">6,2%</td><td><span class="badge b-warn">Apertado</span></td></tr>
+        <tr><td>28/29</td><td class="r">70</td><td class="r">120,00</td><td class="r">110,57</td><td class="r num-pos">+9,43</td><td class="r">7,9%</td><td><span class="badge b-warn">Apertado</span></td></tr>
+        <tr><td>29/30</td><td class="r">71</td><td class="r">122,00</td><td class="r">111,23</td><td class="r num-pos">+10,77</td><td class="r">8,8%</td><td><span class="badge b-ok">Viável</span></td></tr>
+        <tr><td>30/31</td><td class="r">71</td><td class="r">123,00</td><td class="r">116,35</td><td class="r num-pos">+6,65</td><td class="r">5,4%</td><td><span class="badge b-warn">Apertado</span></td></tr>
+        <tr><td>31/32</td><td class="r">72</td><td class="r">126,00</td><td class="r">115,99</td><td class="r num-pos">+10,01</td><td class="r">7,9%</td><td><span class="badge b-warn">Apertado</span></td></tr>
+        <tr><td>32/33</td><td class="r">72</td><td class="r">128,00</td><td class="r">117,75</td><td class="r num-pos">+10,25</td><td class="r">8,0%</td><td><span class="badge b-ok">Viável</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>6.3 — Custo total por hectare: evolução e decomposição</caption>
+      <thead><tr><th>Safra</th><th class="r">Insumos/ha</th><th class="r">Operac./ha</th><th class="r">Arrend./ha</th><th class="r">Total/ha</th><th class="r">Evolução</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">3.600</td><td class="r">2.200</td><td class="r">1.485</td><td class="r">7.285</td><td class="r">Base</td></tr>
+        <tr><td>26/27</td><td class="r">3.700</td><td class="r">2.200</td><td class="r">1.539</td><td class="r">7.439</td><td class="r">2,1%</td></tr>
+        <tr><td>27/28</td><td class="r">3.800</td><td class="r">2.250</td><td class="r">1.566</td><td class="r">7.616</td><td class="r">4,5%</td></tr>
+        <tr><td>28/29</td><td class="r">3.800</td><td class="r">2.320</td><td class="r">1.620</td><td class="r">7.740</td><td class="r">6,2%</td></tr>
+        <tr><td>29/30</td><td class="r">3.900</td><td class="r">2.350</td><td class="r">1.647</td><td class="r">7.897</td><td class="r">8,4%</td></tr>
+        <tr><td>30/31</td><td class="r">4.000</td><td class="r">2.600</td><td class="r">1.661</td><td class="r">8.261</td><td class="r">13,4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 7 SENSIBILIDADE ===== -->
+<section class="section" id="s7">
+  <div class="sec-head"><div class="sec-num">06</div><div><div class="eyebrow">Sensibilidade e estresse</div><h2>Variáveis críticas e robustez do plano</h2></div></div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>7.2 — Variáveis críticas e faixas testadas</caption>
+      <thead><tr><th>Variável</th><th class="r">Faixa</th><th class="r">Elasticidade</th><th>Justificativa</th></tr></thead>
+      <tbody>
+        <tr><td>Preço da Soja</td><td class="r">±20%</td><td class="r">8,79 / 1%</td><td>Histórico CEPEA 2018–2025; alta variabilidade cambial</td></tr>
+        <tr><td>Produtividade da Soja</td><td class="r">±15%</td><td class="r">8,79 / 1%</td><td>Variabilidade climática regional ±10 sc/ha/safra</td></tr>
+        <tr><td>Preço do Milho Safrinha</td><td class="r">±20%</td><td class="r">3,46 / 1%</td><td>Alta correlação com soja; mercado mais restrito</td></tr>
+        <tr><td>Custo de Insumos</td><td class="r">±15%</td><td class="r">−5,54 / 1%</td><td>Dólar e petróleo: volatilidade &gt;20% a.a.</td></tr>
+        <tr><td>Taxa de Câmbio (R$/USD)</td><td class="r">±15%</td><td class="r">0,72 / 1%</td><td>Efeito líquido: soja exportável vs. insumos importados</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>7.3 — Univariada: preço da soja (ano-base 28/29 · EBITDA base R$ 860.673)</caption>
+      <thead><tr><th>Variação</th><th class="r">Preço (R$/sc)</th><th class="r">Δ EBITDA</th><th class="r">EBITDA Ajust.</th><th class="r">ICSD</th></tr></thead>
+      <tbody>
+        <tr><td>−20%</td><td class="r">96,00</td><td class="r num-neg">(1.327.200)</td><td class="r num-neg">(466.527)</td><td class="r">&lt; 0</td></tr>
+        <tr><td>−10%</td><td class="r">108,00</td><td class="r num-neg">(663.600)</td><td class="r">197.073</td><td class="r">0,23</td></tr>
+        <tr><td>−5%</td><td class="r">114,00</td><td class="r num-neg">(331.800)</td><td class="r">528.873</td><td class="r">0,61</td></tr>
+        <tr><td>Base</td><td class="r">120,00</td><td class="r">—</td><td class="r">860.673</td><td class="r">2,00</td></tr>
+        <tr><td>+10%</td><td class="r">132,00</td><td class="r num-pos">663.600</td><td class="r">1.524.273</td><td class="r">2,00</td></tr>
+        <tr><td>+20%</td><td class="r">144,00</td><td class="r num-pos">1.327.200</td><td class="r">2.187.873</td><td class="r">2,00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>7.4 — Univariada: custos de insumos (maior impacto inverso)</caption>
+      <thead><tr><th>Variação</th><th class="r">Custo Total Soja</th><th class="r">Δ EBITDA</th><th class="r">EBITDA Ajust. 28/29</th><th class="r">ICSD</th></tr></thead>
+      <tbody>
+        <tr><td>−15%</td><td class="r">5.197.410</td><td class="r num-pos">917.190</td><td class="r">1.777.863</td><td class="r">2,00</td></tr>
+        <tr><td>−5%</td><td class="r">5.808.870</td><td class="r num-pos">305.730</td><td class="r">1.166.403</td><td class="r">2,00</td></tr>
+        <tr><td>Base</td><td class="r">6.114.600</td><td class="r">—</td><td class="r">860.673</td><td class="r">2,00</td></tr>
+        <tr><td>+5%</td><td class="r">6.420.330</td><td class="r num-neg">(305.730)</td><td class="r">554.943</td><td class="r">0,87</td></tr>
+        <tr><td>+15%</td><td class="r">7.031.790</td><td class="r num-neg">(917.190)</td><td class="r num-neg">(56.517)</td><td class="r">&lt; 0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>7.5 — Ranking de criticidade e mitigação</caption>
+      <thead><tr><th>#</th><th>Variável</th><th class="r">Elasticidade</th><th>Estratégia de mitigação</th></tr></thead>
+      <tbody>
+        <tr><td>1º</td><td>Custos de Insumos</td><td class="r">5,54</td><td>Compras antecipadas (jul–ago); barter insumos×grãos</td></tr>
+        <tr><td>2º</td><td>Preço da Soja</td><td class="r">8,79</td><td>Hedge B3 (30–50% da produção); contratos a termo</td></tr>
+        <tr><td>3º</td><td>Produtividade da Soja</td><td class="r">8,79</td><td>Seguro Rural PROAGRO/Privado; manejo integrado</td></tr>
+        <tr><td>4º</td><td>Preço do Milho Safrinha</td><td class="r">3,46</td><td>Contratos futuros B3; venda antecipada</td></tr>
+        <tr><td>5º</td><td>Taxa de Câmbio</td><td class="r">0,72</td><td>NDF (Non-Deliverable Forward); hedge parcial</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 8 CENÁRIOS / VaR ===== -->
+<section class="section" id="s8">
+  <div class="sec-head"><div class="sec-num">07</div><div><div class="eyebrow">Cenários e Valor em Risco</div><h2>70% de viabilidade plena; 5% de risco catastrófico</h2></div></div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>8.1/8.2 — Cenários e resultados (horizonte 28/29 a 43/44)</caption>
+      <thead><tr><th>Cenário</th><th class="r">Prob.</th><th class="r">EBITDA 28/29</th><th class="r">ICSD médio</th><th>Quitação</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>Otimista</td><td class="r">15%</td><td class="r">3.171.283</td><td class="r">2,79</td><td>31/32</td><td><span class="badge b-ok">Antecipação 6+ safras</span></td></tr>
+        <tr><td>Base (Referência)</td><td class="r">55%</td><td class="r">860.673</td><td class="r">2,00</td><td>37/38</td><td><span class="badge b-ok">Viabilidade plena</span></td></tr>
+        <tr><td>Pessimista</td><td class="r">25%</td><td class="r num-neg">Negativo</td><td class="r">&lt; 1,00</td><td>Não quitado</td><td><span class="badge b-warn">Requer hedge obrigatório</span></td></tr>
+        <tr><td>Estresse Severo</td><td class="r">5%</td><td class="r num-neg">(2.301.162)</td><td class="r">0,45</td><td>Inviável</td><td><span class="badge b-crit">PROAGRO / venda ativos</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>8.3 — Valor em Risco (VaR) · distribuição do EBITDA projetado</caption>
+      <thead><tr><th>Métrica</th><th class="r">Valor (R$)</th><th>Interpretação</th></tr></thead>
+      <tbody>
+        <tr><td>EBITDA médio esperado (20 safras)</td><td class="r">653.573,20</td><td>Valor central das projeções</td></tr>
+        <tr><td>Desvio-padrão (σ)</td><td class="r">242.630,69</td><td>Volatilidade esperada do EBITDA</td></tr>
+        <tr><td>Coeficiente de variação (CV)</td><td class="r">37,1%</td><td>Risco moderado-alto</td></tr>
+        <tr><td>Mediana (P50)</td><td class="r">863.996,00</td><td>Próxima à média → distribuição simétrica</td></tr>
+        <tr><td>Percentil 5 — VaR 95%</td><td class="r">254.445,72</td><td>Com 95% de confiança, EBITDA &gt; R$ 368.730</td></tr>
+        <tr><td>Percentil 1 — VaR 99%</td><td class="r">89.214,23</td><td>Pior resultado esperado em 99% das safras</td></tr>
+        <tr><td>Probabilidade EBITDA &lt; 0</td><td class="r">5,2%</td><td>~1 em 20 safras</td></tr>
+        <tr><td>Probabilidade ICSD &lt; 1,00 (sem hedge)</td><td class="r">22%</td><td>Risco de inadimplência sem proteção</td></tr>
+        <tr><td>Probabilidade ICSD ≥ 1,30 (com hedge)</td><td class="r">78%</td><td>Alta chance de cumprimento com mitigação</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout ok">
+    <div class="ct">Conclusão da análise de risco</div>
+    <p>O plano apresenta 70% de probabilidade de viabilidade plena (base + otimista), 22% de risco de pressão financeira (pessimista, controlável via hedge) e apenas 5% de cenário catastrófico. A implementação das estratégias de mitigação eleva a probabilidade de cumprimento para acima de 78%.</p>
+  </div>
+</section>
+
+<!-- ===== 9 INSOLVÊNCIA ===== -->
+<section class="section" id="s9">
+  <div class="sec-head"><div class="sec-num">08</div><div><div class="eyebrow">Insolvência técnica</div><h2>Cenário sem reestruturação</h2></div></div>
+  <p class="lead">ICSD = EBITDA ÷ Serviço total da dívida. Instituições financeiras exigem ICSD mínimo de 1,30 para concessão de crédito rural (BCB, 2024); prorrogações (MCR 2-6-4) requerem ICSD projetado ≥ 1,20 — condição plenamente atendida a partir de 2028/29.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>9.1 — Faixas de interpretação do ICSD</caption>
+      <thead><tr><th>Faixa</th><th>Diagnóstico</th><th>Significado operacional</th></tr></thead>
+      <tbody>
+        <tr><td>&lt; 1,00</td><td><span class="badge b-crit">Insolvência</span></td><td>Não gera caixa para cobrir o serviço da dívida. Perda patrimonial em andamento.</td></tr>
+        <tr><td>1,00–1,20</td><td><span class="badge b-crit">Crítico</span></td><td>Cobertura limítrofe; qualquer adversidade gera inadimplência.</td></tr>
+        <tr><td>1,20–1,50</td><td><span class="badge b-warn">Aceitável</span></td><td>Capacidade mínima com pequena margem.</td></tr>
+        <tr><td>1,50–2,00</td><td><span class="badge b-ok">Saudável</span></td><td>Estrutura equilibrada. Padrão exigido por bancos.</td></tr>
+        <tr><td>&gt; 2,00</td><td><span class="badge b-ok">Robusto</span></td><td>Folga para reinvestimento e expansão.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>9.2 — Aplicação ao caso concreto</caption>
+      <thead><tr><th>Safra</th><th class="r">Caixa Disp.</th><th class="r">Serviço Dívida Est.</th><th class="r">ICSD</th><th>Diagnóstico</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">144.900</td><td class="r">7.338.758</td><td class="r">0,02</td><td><span class="badge b-crit">Insolvência absoluta</span></td></tr>
+        <tr><td>26/27</td><td class="r">356.950</td><td class="r">1.500.000</td><td class="r">0,48</td><td><span class="badge b-crit">Insolvente</span></td></tr>
+        <tr><td>27/28</td><td class="r">445.064</td><td class="r">1.200.000</td><td class="r">0,61</td><td><span class="badge b-crit">Insolvente</span></td></tr>
+        <tr><td>28/29</td><td class="r">860.673</td><td class="r">516.404</td><td class="r">2,00</td><td><span class="badge b-ok">Sustentável c/ reestrut.</span></td></tr>
+        <tr><td>29/30</td><td class="r">935.964</td><td class="r">561.578</td><td class="r">2,00</td><td><span class="badge b-ok">Sustentável</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>9.3 — Déficit acumulado sem reestruturação</caption>
+      <thead><tr><th>Safra</th><th class="r">Geração Caixa</th><th class="r">Compromissos Totais</th><th class="r">Déficit</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">144.900</td><td class="r">7.338.758</td><td class="r num-neg">(7.193.858)</td></tr>
+        <tr><td>26/27</td><td class="r">356.950</td><td class="r">1.500.000</td><td class="r num-neg">(1.143.050)</td></tr>
+        <tr><td>27/28</td><td class="r">445.064</td><td class="r">1.200.000</td><td class="r num-neg">(754.936)</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="3">DÉFICIT ACUMULADO</td><td class="r num-neg">(9.091.844)</td></tr></tfoot>
+    </table>
+  </div>
+  <p>Mantida a estrutura atual de vencimentos, o produtor acumulará déficit superior a R$ 9,1 milhões nos primeiros 3 ciclos, inviabilizando irremediavelmente a atividade e eliminando a única fonte real de pagamento dos credores.</p>
+</section>
+
+<!-- ===== 10 REESTRUTURAÇÃO ===== -->
+<section class="section" id="s10">
+  <div class="sec-head"><div class="sec-num">09</div><div><div class="eyebrow">Proposta técnica</div><h2>Reestruturação: carência de 36 meses + 50% do EBITDA</h2></div></div>
+
+  <h4>10.1 — Diretrizes estruturais</h4>
+  <ul class="clean">
+    <li><b>Carência de 36 meses</b> (safras 25/26, 26/27 e 27/28) sobre o passivo financeiro (BB + CNH + Sicoob).</li>
+    <li><b>Quitação prioritária da cadeia produtiva</b> (R$ 2.639.514,35) em 3 parcelas anuais de R$ 879.838,12 durante a carência.</li>
+    <li><b>A partir de 28/29</b> (4º ciclo): destinação de 50% do EBITDA anual à amortização da dívida financeira consolidada.</li>
+    <li><b>50% restantes do EBITDA</b> ao reinvestimento operacional, recomposição do capital de giro e remuneração do produtor.</li>
+    <li><b>Hedge e seguro rural</b> (Seção 6) como condição complementar ao plano.</li>
+  </ul>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>10.2 — Período de carência (25/26–27/28) · saneamento da praça</caption>
+      <thead><tr><th>Safra</th><th class="r">EBITDA</th><th class="r">Pgto Fornecedores</th><th class="r">Saldo Cap. Giro</th><th class="r">ICSD Adj.</th></tr></thead>
+      <tbody>
+        <tr><td>25/26</td><td class="r">38.250</td><td class="r">879.838,12</td><td class="r num-neg">(841.588)</td><td class="r">0,04</td></tr>
+        <tr><td>26/27</td><td class="r">356.950</td><td class="r">879.838,12</td><td class="r num-neg">(522.888)</td><td class="r">0,41</td></tr>
+        <tr><td>27/28</td><td class="r">445.064</td><td class="r">879.838,12</td><td class="r num-neg">(434.774)</td><td class="r">0,51</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total</td><td class="r">840.264</td><td class="r">2.639.514,35</td><td class="r">—</td><td class="r">—</td></tr></tfoot>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--ink-soft)">O EBITDA das safras de carência é, por si só, insuficiente para cobrir as parcelas de fornecedores. A reestruturação, porém, libera as amortizações bancárias (estimadas em R$ 1,0–1,5 mi/ano), criando o caixa necessário para honrar a praça e reconstituir o capital de giro. A lógica é priorizar o saneamento da cadeia produtiva — única garantia de manutenção do <em>going concern</em> e, portanto, da fonte pagadora dos próprios credores.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <caption>10.3 — Período de amortização (28/29–43/44) · 50% do EBITDA · saldo inicial R$ 5.574.553,60</caption>
+      <thead><tr><th>Safra</th><th class="r">EBITDA</th><th class="r">50% → Dívida</th><th class="r">Saldo Devedor</th><th class="r">ICSD</th></tr></thead>
+      <tbody>
+        <tr><td>28/29</td><td class="r">860.673</td><td class="r">386.452,50</td><td class="r">5.188.101,10</td><td class="r">2,00</td></tr>
+        <tr><td>29/30</td><td class="r">935.964</td><td class="r">275.222,00</td><td class="r">4.912.879,10</td><td class="r">2,00</td></tr>
+        <tr><td>30/31</td><td class="r">683.775</td><td class="r">270.532,50</td><td class="r">4.642.346,60</td><td class="r">2,00</td></tr>
+        <tr><td>31/32</td><td class="r">859.390</td><td class="r">280.385,00</td><td class="r">4.361.961,60</td><td class="r">2,00</td></tr>
+        <tr><td>32/33</td><td class="r">871.164</td><td class="r">334.462,00</td><td class="r">4.027.499,60</td><td class="r">2,00</td></tr>
+        <tr><td>33/34</td><td class="r">863.894</td><td class="r">352.431,00</td><td class="r">3.675.068,60</td><td class="r">2,00</td></tr>
+        <tr><td>34/35</td><td class="r">863.996</td><td class="r">175.248,00</td><td class="r">3.499.820,60</td><td class="r">2,00</td></tr>
+        <tr><td>35/36</td><td class="r">965.511</td><td class="r">430.220,50</td><td class="r">3.069.600,10</td><td class="r">2,00</td></tr>
+        <tr><td>36/37</td><td class="r">1.248.055</td><td class="r">258.042,50</td><td class="r">2.811.557,60</td><td class="r">2,00</td></tr>
+        <tr><td>37/38</td><td class="r">1.381.390</td><td class="r">418.145,00</td><td class="r">2.393.412,60</td><td class="r">2,00</td></tr>
+        <tr><td>38/39</td><td class="r">1.121.302</td><td class="r">560.651,00</td><td class="r">1.832.761,60</td><td class="r">2,00</td></tr>
+        <tr><td>39/40</td><td class="r">753.758</td><td class="r">376.879,00</td><td class="r">1.455.882,60</td><td class="r">2,00</td></tr>
+        <tr><td>40/41</td><td class="r">627.792</td><td class="r">313.896,00</td><td class="r">1.141.986,60</td><td class="r">2,00</td></tr>
+        <tr><td>41/42</td><td class="r">919.004</td><td class="r">459.502,00</td><td class="r">682.484,60</td><td class="r">2,00</td></tr>
+        <tr><td>42/43</td><td class="r">998.720</td><td class="r">499.360,00</td><td class="r">183.124,60</td><td class="r">2,00</td></tr>
+        <tr><td>43/44</td><td class="r">689.979</td><td class="r">344.989,50</td><td class="r"><span class="badge b-ok">Quitado</span></td><td class="r">2,00</td></tr>
+        <tr><td>44/45</td><td class="r">758.363</td><td class="r">379.181,50</td><td class="r"><span class="badge b-ok">Quitado</span></td><td class="r">2,00</td></tr>
+      </tbody>
+      <tfoot><tr><td>Total 28/29–44/45</td><td class="r">12.231.200</td><td class="r">6.115.600</td><td class="r">—</td><td class="r">—</td></tr></tfoot>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 11 FUNDAMENTAÇÃO CARÊNCIA ===== -->
+<section class="section" id="s11">
+  <div class="sec-head"><div class="sec-num">10</div><div><div class="eyebrow">Fundamentação técnica</div><h2>Por que 36 meses de carência</h2></div></div>
+  <p class="lead">A concessão da carência de 3 safras não é liberalidade, mas necessidade técnico-financeira matematicamente demonstrada sobre cinco pilares.</p>
+  <div class="pillars">
+    <div class="pillar"><div class="pn">PILAR 01</div><h5>Insuficiência empírica comprovada</h5><p>A safra 25/26 gerou EBITDA negativo (−R$ 106.650), evidenciando que mesmo sem qualquer compromisso financeiro o produtor não sobreviveria ao ciclo. Insolvência econômica (Wruck, 1990), independente da boa-fé.</p></div>
+    <div class="pillar"><div class="pn">PILAR 02</div><h5>Saneamento da cadeia produtiva</h5><p>Sem quitar os R$ 2,64 mi de fornecedores, não há sementes, fertilizantes nem defensivos para os próximos ciclos. Preservar os vínculos é condição <em>sine qua non</em> (Porter, 1985; Hoff &amp; Stiglitz, 1990).</p></div>
+    <div class="pillar"><div class="pn">PILAR 03</div><h5>Recomposição do capital de giro</h5><p>O ciclo financeiro de ~150 dias exige R$ 3,5–4,0 mi de giro. A carência libera o caixa para plantar e colher com recursos próprios, reduzindo a dependência de custeio bancário.</p></div>
+    <div class="pillar"><div class="pn">PILAR 04</div><h5>Maturação da margem operacional</h5><p>A trajetória de preços e o ganho de produtividade (65 → 75 sc/ha) levam a margem a 9,3% em 28/29, quando o ICSD de 2,00 demonstra capacidade real de amortização. A maturação leva exatamente 3 safras.</p></div>
+    <div class="pillar"><div class="pn">PILAR 05</div><h5>Preservação da fonte pagadora</h5><p>O <em>going concern</em> é fundamento contábil (NBC TG 570) e jurídico (art. 47 LREF/2005). A reestruturação é Pareto-superior à liquidação quando o valor em funcionamento supera o de liquidação (Franks &amp; Torous, 1989).</p></div>
+  </div>
+</section>
+
+<!-- ===== 12 QUADRO COMPARATIVO ===== -->
+<section class="section" id="s12">
+  <div class="sec-head"><div class="sec-num">11</div><div><div class="eyebrow">Quadro comparativo</div><h2>Com e sem reestruturação</h2></div></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Aspecto</th><th>Sem reestruturação</th><th>Com reestruturação</th></tr></thead>
+      <tbody>
+        <tr><td>ICSD 2025/26</td><td><span class="badge b-crit">0,02 insolvência absoluta</span></td><td>Carência ativa</td></tr>
+        <tr><td>ICSD 2026/27</td><td><span class="badge b-crit">0,24 insolvente</span></td><td>Carência ativa</td></tr>
+        <tr><td>ICSD 2027/28</td><td><span class="badge b-crit">0,37 insolvente</span></td><td>Carência ativa</td></tr>
+        <tr><td>ICSD médio 28/29–43/44</td><td><span class="badge b-crit">&lt; 1,00</span></td><td><span class="badge b-ok">1,67 sustentável</span></td></tr>
+        <tr><td>Déficit acumulado 25/26–27/28</td><td class="num-neg">(R$ 9.091.844)</td><td><span class="badge b-ok">Saneado · praça quitada</span></td></tr>
+        <tr><td>Fornecedores / praça</td><td>Inadimplidos</td><td>Quitados integralmente em 36 meses</td></tr>
+        <tr><td>Capital de giro</td><td>Consumido, sem reposição</td><td>Recomposto gradualmente</td></tr>
+        <tr><td>Atividade produtiva</td><td>Descontinuada</td><td><span class="badge b-ok">Preservada (going concern)</span></td></tr>
+        <tr><td>Quitação da dívida financeira</td><td>Improvável / parcial em liquidação</td><td>Integral — safra 2043/44</td></tr>
+        <tr><td>Valor recebido pelo credor</td><td>Fração do crédito (venda forçada)</td><td><span class="badge b-ok">100% do crédito no plano</span></td></tr>
+        <tr><td>Risco sistêmico</td><td>Alto — precedente regional</td><td>Baixo — modelo de recuperação</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 13 CONCLUSÃO ===== -->
+<section class="section" id="s13">
+  <div class="sec-head"><div class="sec-num">12</div><div><div class="eyebrow">Conclusão técnica</div><h2>Síntese e parecer</h2></div></div>
+  <ul class="clean">
+    <li><b>A insolvência de 2025/26 é fato consumado:</b> ICSD de 0,02, EBITDA da soja negativo (−R$ 106.650) e custo por saco (R$ 112,08) superior ao preço de mercado (R$ 110,00/sc). Impossibilidade econômica comprovada, não recusa voluntária.</li>
+    <li><b>Sem reestruturação, déficit de R$ 9.091.844</b> nos 3 primeiros ciclos, conduzindo irremediavelmente à descontinuidade da atividade e à impossibilidade de pagamento de qualquer credor.</li>
+    <li><b>A reestruturação proposta é tecnicamente suficiente</b> para quitar integralmente a dívida financeira, com ICSD constante de 2,00 durante todo o período de amortização.</li>
+    <li><b>Robustez em 70% dos cenários</b> (base + otimista), vulnerabilidade controlável em 25% (pessimista, mitigável via hedge) e apenas 5% de colapso (acionamento de PROAGRO e venda de ativos não operacionais).</li>
+    <li><b>A carência protege o próprio credor:</b> a liquidação forçada recupera fração do crédito, enquanto a reestruturação garante recebimento integral. A assimetria torna a reestruturação Pareto-superior sob qualquer critério financeiro racional.</li>
+  </ul>
+  <div class="callout ok">
+    <div class="ct">Parecer</div>
+    <p>Este parecer técnico foi elaborado com base em dados operacionais reais, resultado já materializado, projeções fundamentadas e metodologia de análise financeira amplamente reconhecida pela literatura científica e pelas melhores práticas de perícia judicial agronômica, sendo apto a instruir medida judicial de reestruturação de passivos.</p>
+  </div>
+</section>
+
+<!-- ===== ANEXOS ===== -->
+<section class="section" id="anexos">
+  <div class="sec-head"><div class="sec-num">A</div><div><div class="eyebrow">Anexos</div><h2>Referencial, memória de cálculo e dados oficiais</h2></div></div>
+
+  <details>
+    <summary>Anexo A — Referencial teórico e bibliográfico</summary>
+    <div class="det-body">
+      <h4>A.1 — Análise financeira e indicadores de crédito</h4>
+      <ul class="clean">
+        <li>ASSAF NETO, A.; SILVA, C. A. T. <em>Administração do capital de giro</em>. 4. ed. Atlas, 2012.</li>
+        <li>ASSAF NETO, A. <em>Finanças corporativas e valor</em>. 8. ed. Atlas, 2020.</li>
+        <li>DAMODARAN, A. <em>Corporate Finance: Theory and Practice</em>. 2. ed. Wiley, 2001.</li>
+        <li>GITMAN, L. J.; ZUTTER, C. J. <em>Princípios de administração financeira</em>. 14. ed. Pearson, 2017.</li>
+        <li>JORION, P. <em>Value at Risk</em>. 3. ed. McGraw-Hill, 2007.</li>
+        <li>WRUCK, K. H. Financial distress, reorganization, and organizational efficiency. <em>JFE</em>, v. 27, n. 2, 1990. — Qualis A1.</li>
+      </ul>
+      <h4>A.2 — Insolvência, reestruturação e LREF</h4>
+      <ul class="clean">
+        <li>BRASIL. Lei nº 11.101/2005 (LREF). · BCB. MCR 2-6-4 — Prorrogação de Crédito Rural, 2024. · CMN. Resolução 5.229/2024 (alínea “d”). · STJ. Súmula 298/2004. · BRASIL. Lei nº 4.829/1965 (SNCR).</li>
+        <li>FRANKS, J.; TOROUS, W. An empirical investigation of U.S. firms in reorganization. <em>J. Finance</em>, 1989.</li>
+        <li>WHITE, M. J. The corporate bankruptcy decision. <em>J. Economic Perspectives</em>, 1989.</li>
+        <li>CFC. NBC TG 570 — Continuidade Operacional, 2017.</li>
+      </ul>
+      <h4>A.3 — Economia agrária e custos de produção</h4>
+      <ul class="clean">
+        <li>CONAB. Acompanhamento da Safra Brasileira de Grãos — 10º Levantamento, 2025/26. Abr/2026.</li>
+        <li>CEPEA-ESALQ/USP. Indicadores de preços — Soja e Milho. 2018–2026.</li>
+        <li>TSUNECHIRO, A. et al. Custo de produção de soja em SP. <em>Informações Econômicas</em>, 2019.</li>
+        <li>HOFF, K.; STIGLITZ, J. E. Imperfect information and rural credit markets. <em>World Bank Economic Review</em>, 1990.</li>
+      </ul>
+      <h4>A.4 / A.5 — Risco, gestão e governança</h4>
+      <ul class="clean">
+        <li>SALTELLI, A. et al. <em>Sensitivity Analysis in Practice</em>. Wiley, 2004. · PORTER, M. E. <em>Competitive Advantage</em>. Free Press, 1985. · BCB. MCR, 2024. · MAPA. Plano Safra 2025/26, jul/2025.</li>
+        <li>ZYLBERSZTAJN, D.; NEVES, M. F. <em>Economia e gestão dos negócios agroalimentares</em>. Pioneira, 2000. · BATALHA, M. O. <em>Gestão agroindustrial</em>. 3. ed. Atlas, 2007.</li>
+      </ul>
+    </div>
+  </details>
+
+  <details>
+    <summary>Anexo B — Memória de cálculo e premissas</summary>
+    <div class="det-body">
+      <div class="tbl-wrap">
+        <table>
+          <caption>B.1 — Premissas operacionais</caption>
+          <thead><tr><th>Premissa</th><th>Valor adotado</th><th>Fonte / Justificativa</th></tr></thead>
+          <tbody>
+            <tr><td>Área soja (1ª safra)</td><td>790 ha</td><td>Dado operacional do produtor</td></tr>
+            <tr><td>Área milho safrinha (2ª safra)</td><td>414 ha</td><td>20% do sequeiro (94 ha) + irrigado (320 ha)</td></tr>
+            <tr><td>Produtiv. soja inicial / final</td><td>65 / 75 sc/ha</td><td>CONAB-GO 2020–2025; meta regional irrigado</td></tr>
+            <tr><td>Produtiv. milho inicial / meta</td><td>110 / 120 sc/ha</td><td>CONAB-GO; estabilização com irrigação</td></tr>
+            <tr><td>Preço soja 25/26 → 39/40</td><td>R$110 → R$142/sc</td><td>Curva CEPEA + IPCA projetado 4% a.a.</td></tr>
+            <tr><td>Preço milho 25/26 → 39/40</td><td>R$50 → R$62/sc</td><td>Curva CEPEA + recomposição histórica</td></tr>
+            <tr><td>Correção de custos</td><td>IPCA ~4% a.a.</td><td>Projeção Focus/BCB (mediana)</td></tr>
+            <tr><td>Percentual de amortização</td><td>50% do EBITDA</td><td>Definido em negociação</td></tr>
+            <tr><td>Taxa desconto (comparabilidade)</td><td>SELIC + spread 2% ≈ 17%</td><td>BCB, jun/2026; referência para NPV</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>B.2 — Fórmulas e definições</h4>
+      <ul class="clean">
+        <li><b>ICSD</b> = EBITDA ÷ Serviço Total da Dívida</li>
+        <li><b>EBITDA</b> = Receita Total − Custo Operacional Total (insumos + operacional + arrendamento)</li>
+        <li><b>Margem EBITDA</b> = EBITDA ÷ Receita Total × 100 · <b>D/EBITDA</b> = Passivo Financeiro ÷ EBITDA Anual · <b>D/R</b> = Passivo ÷ Receita Anual</li>
+        <li><b>BEP</b> = Custos Fixos ÷ (1 − Custos Variáveis/Receita) · <b>Alavancagem Operacional</b> = ΔEBITDA% ÷ ΔReceita%</li>
+        <li><b>Relação de Troca</b> = Custo/ha ÷ Preço/sc · <b>WACD</b> = Σ (Taxa<sub>i</sub> × Saldo<sub>i</sub>) ÷ Saldo Total</li>
+        <li><b>VaR</b> = μ − z × σ (z=1,645 p/ 95%; z=2,326 p/ 99%) · <b>CV</b> = Desvio-Padrão ÷ Média × 100</li>
+      </ul>
+      <div class="tbl-wrap">
+        <table>
+          <caption>B.3 — Cálculo do passivo total</caption>
+          <thead><tr><th>Componente</th><th class="r">Valor (R$)</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td>CRP/BB Sorgo + Milho + Soja</td><td class="r">2.381.635,94</td><td>Vencimentos set–dez/2026</td></tr>
+            <tr><td>CNH CCB 2223099 (parc. 3+4+5)</td><td class="r">2.181.695,51</td><td>Parc. 3 em aberto; 4–5 a vencer</td></tr>
+            <tr><td>Sicoob Rotativo</td><td class="r">1.011.222,55</td><td>2,5% a.m. ≈ 34,5% a.a.</td></tr>
+            <tr><td><b>Subtotal Sistema Financeiro</b></td><td class="r"><b>5.574.553,60</b></td><td>Objeto da carência</td></tr>
+            <tr><td>Contas a pagar — praça 2026</td><td class="r">2.639.514,35</td><td>Quitação prioritária</td></tr>
+          </tbody>
+          <tfoot><tr><td>PASSIVO TOTAL CONSOLIDADO</td><td class="r">8.214.067,95</td><td>Base deste laudo</td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Anexo C — Dados oficiais IMEA/MT: custo de produção e preços (2023–2026)</summary>
+    <div class="det-body">
+      <p style="font-size:13px;color:var(--ink-soft)">Fonte primária: IMEA — Instituto Mato-Grossense de Economia Agropecuária. Valores em R$/ha, exceto quando indicado. COE = Custo Operacional Efetivo · COT = COE + Depreciações + Pró-labore · CT = COT + Custo de Oportunidade.</p>
+      <div class="tbl-wrap">
+        <table>
+          <caption>C.1 — Soja GMO: custo ponderado, MT (22/23 a 26/27)</caption>
+          <thead><tr><th>Componente</th><th class="r">22/23</th><th class="r">23/24</th><th class="r">24/25</th><th class="r">25/26</th><th class="r">26/27*</th></tr></thead>
+          <tbody>
+            <tr><td>A. Custeio</td><td class="r">4.910</td><td class="r">4.124</td><td class="r">3.970</td><td class="r">4.181</td><td class="r">4.208</td></tr>
+            <tr><td>1. Sementes</td><td class="r">833</td><td class="r">668</td><td class="r">678</td><td class="r">607</td><td class="r">475</td></tr>
+            <tr><td>2. Fertilizantes e corretivos</td><td class="r">2.417</td><td class="r">1.805</td><td class="r">1.720</td><td class="r">1.881</td><td class="r">1.899</td></tr>
+            <tr><td>3. Defensivos</td><td class="r">1.373</td><td class="r">1.305</td><td class="r">1.163</td><td class="r">1.218</td><td class="r">1.326</td></tr>
+            <tr><td>4. Operações mecanizadas</td><td class="r">180</td><td class="r">180</td><td class="r">183</td><td class="r">176</td><td class="r">216</td></tr>
+            <tr><td>6. Mão de obra</td><td class="r">107</td><td class="r">150</td><td class="r">208</td><td class="r">275</td><td class="r">292</td></tr>
+            <tr><td>B. Manutenção</td><td class="r">115</td><td class="r">197</td><td class="r">263</td><td class="r">263</td><td class="r">310</td></tr>
+            <tr><td>C. Impostos e taxas</td><td class="r">193</td><td class="r">208</td><td class="r">236</td><td class="r">238</td><td class="r">270</td></tr>
+            <tr><td>D. Financeiras</td><td class="r">428</td><td class="r">433</td><td class="r">410</td><td class="r">432</td><td class="r">474</td></tr>
+            <tr><td>E. Pós-produção</td><td class="r">177</td><td class="r">190</td><td class="r">190</td><td class="r">200</td><td class="r">208</td></tr>
+            <tr><td>F. Outros custos</td><td class="r">141</td><td class="r">144</td><td class="r">134</td><td class="r">148</td><td class="r">150</td></tr>
+            <tr><td>G. Arrendamento</td><td class="r">301</td><td class="r">337</td><td class="r">292</td><td class="r">315</td><td class="r">262</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>COE</b></td><td class="r"><b>6.267</b></td><td class="r"><b>5.634</b></td><td class="r"><b>5.495</b></td><td class="r"><b>5.779</b></td><td class="r"><b>5.882</b></td></tr>
+            <tr><td>H. Depreciações</td><td class="r">213</td><td class="r">417</td><td class="r">486</td><td class="r">497</td><td class="r">531</td></tr>
+            <tr><td>I. Mão-de-obra familiar</td><td class="r">77</td><td class="r">88</td><td class="r">118</td><td class="r">125</td><td class="r">139</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>COT</b></td><td class="r"><b>6.557</b></td><td class="r"><b>6.138</b></td><td class="r"><b>6.099</b></td><td class="r"><b>6.400</b></td><td class="r"><b>6.552</b></td></tr>
+            <tr><td>J. Custo de oportunidade</td><td class="r">1.065</td><td class="r">1.138</td><td class="r">1.012</td><td class="r">1.276</td><td class="r">1.485</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>CT</b></td><td class="r"><b>7.622</b></td><td class="r"><b>7.276</b></td><td class="r"><b>7.111</b></td><td class="r"><b>7.676</b></td><td class="r"><b>8.037</b></td></tr>
+            <tr><td>Produtividade modal (sc/ha)</td><td class="r">60,92</td><td class="r">59,74</td><td class="r">59,74</td><td class="r">55,76</td><td class="r">54,57</td></tr>
+            <tr><td>Dólar compra (R$/US$)</td><td class="r">5,23</td><td class="r">5,07</td><td class="r">5,07</td><td class="r">5,69</td><td class="r">5,29</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <caption>C.2 — Milho Alta Tecnologia: custo ponderado, MT (22/23 a 26/27)</caption>
+          <thead><tr><th>Componente</th><th class="r">22/23</th><th class="r">23/24</th><th class="r">24/25</th><th class="r">25/26</th><th class="r">26/27*</th></tr></thead>
+          <tbody>
+            <tr><td>A. Custeio</td><td class="r">3.321</td><td class="r">3.284</td><td class="r">3.237</td><td class="r">3.320</td><td class="r">3.687</td></tr>
+            <tr><td>1. Sementes</td><td class="r">671</td><td class="r">751</td><td class="r">763</td><td class="r">777</td><td class="r">840</td></tr>
+            <tr><td>2. Fertilizantes e corretivos</td><td class="r">1.817</td><td class="r">1.519</td><td class="r">1.342</td><td class="r">1.422</td><td class="r">1.475</td></tr>
+            <tr><td>3. Defensivos</td><td class="r">586</td><td class="r">733</td><td class="r">736</td><td class="r">738</td><td class="r">896</td></tr>
+            <tr><td>4. Operações mecanizadas</td><td class="r">162</td><td class="r">150</td><td class="r">170</td><td class="r">170</td><td class="r">194</td></tr>
+            <tr><td>6. Mão de obra</td><td class="r">83</td><td class="r">129</td><td class="r">203</td><td class="r">195</td><td class="r">236</td></tr>
+            <tr><td>B. Manutenção</td><td class="r">110</td><td class="r">167</td><td class="r">235</td><td class="r">240</td><td class="r">261</td></tr>
+            <tr><td>C. Impostos e taxas</td><td class="r">118</td><td class="r">121</td><td class="r">143</td><td class="r">151</td><td class="r">174</td></tr>
+            <tr><td>D. Financeiras</td><td class="r">277</td><td class="r">292</td><td class="r">293</td><td class="r">292</td><td class="r">420</td></tr>
+            <tr><td>E. Pós-produção</td><td class="r">289</td><td class="r">285</td><td class="r">382</td><td class="r">445</td><td class="r">525</td></tr>
+            <tr><td>F. Outros custos</td><td class="r">97</td><td class="r">113</td><td class="r">111</td><td class="r">126</td><td class="r">137</td></tr>
+            <tr><td>G. Arrendamento</td><td class="r">209</td><td class="r">216</td><td class="r">211</td><td class="r">234</td><td class="r">205</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>COE</b></td><td class="r"><b>4.421</b></td><td class="r"><b>4.480</b></td><td class="r"><b>4.611</b></td><td class="r"><b>4.806</b></td><td class="r"><b>5.408</b></td></tr>
+            <tr><td>H. Depreciações</td><td class="r">203</td><td class="r">324</td><td class="r">425</td><td class="r">456</td><td class="r">450</td></tr>
+            <tr><td>I. Mão-de-obra familiar</td><td class="r">62</td><td class="r">70</td><td class="r">111</td><td class="r">132</td><td class="r">117</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>COT</b></td><td class="r"><b>4.685</b></td><td class="r"><b>4.874</b></td><td class="r"><b>5.147</b></td><td class="r"><b>5.394</b></td><td class="r"><b>5.975</b></td></tr>
+            <tr><td>J. Custo de oportunidade</td><td class="r">926</td><td class="r">995</td><td class="r">947</td><td class="r">1.332</td><td class="r">1.329</td></tr>
+            <tr style="background:var(--paper-2)"><td><b>CT</b></td><td class="r"><b>5.611</b></td><td class="r"><b>5.869</b></td><td class="r"><b>6.094</b></td><td class="r"><b>6.726</b></td><td class="r"><b>7.304</b></td></tr>
+            <tr><td>Produtividade modal (sc/ha)</td><td class="r">124,34</td><td class="r">122,10</td><td class="r">113,09</td><td class="r">110,85</td><td class="r">129,84</td></tr>
+            <tr><td>Dólar compra (R$/US$)</td><td class="r">5,46</td><td class="r">5,23</td><td class="r">5,03</td><td class="r">5,58</td><td class="r">5,29</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <caption>C.5 — Preços médios mensais: Soja disponível, MT (R$/sc · 60 kg)</caption>
+          <thead><tr><th>Ano</th><th class="r">Jan</th><th class="r">Fev</th><th class="r">Mar</th><th class="r">Abr</th><th class="r">Mai</th><th class="r">Jun</th><th class="r">Jul</th><th class="r">Ago</th><th class="r">Set</th><th class="r">Out</th><th class="r">Nov</th><th class="r">Dez</th></tr></thead>
+          <tbody>
+            <tr><td>2023</td><td class="r">—</td><td class="r">146,10</td><td class="r">138,00</td><td class="r">122,35</td><td class="r">110,28</td><td class="r">106,50</td><td class="r">110,24</td><td class="r">117,49</td><td class="r">118,26</td><td class="r">118,87</td><td class="r">120,28</td><td class="r">122,27</td></tr>
+            <tr><td>2024</td><td class="r">101,45</td><td class="r">96,65</td><td class="r">102,83</td><td class="r">107,60</td><td class="r">114,23</td><td class="r">118,42</td><td class="r">118,92</td><td class="r">116,60</td><td class="r">122,98</td><td class="r">131,40</td><td class="r">138,50</td><td class="r">134,34</td></tr>
+            <tr><td>2025</td><td class="r">112,58</td><td class="r">105,93</td><td class="r">107,69</td><td class="r">109,09</td><td class="r">108,03</td><td class="r">109,11</td><td class="r">112,68</td><td class="r">118,89</td><td class="r">119,13</td><td class="r">117,84</td><td class="r">118,92</td><td class="r">117,04</td></tr>
+            <tr><td>2026</td><td class="r">102,48</td><td class="r">100,96</td><td class="r">102,03</td><td class="r">102,67</td><td class="r">104,01</td><td class="r">105,17</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="13">Custo/sc COE de referência: 2023/24 R$94,30 · 2024/25 R$91,98 · 2025/26 R$103,63 · 2026/27 R$109,30 (IMEA/MT)</td></tr></tfoot>
+        </table>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <caption>C.6 — Preços médios mensais: Milho disponível, MT (R$/sc · 60 kg)</caption>
+          <thead><tr><th>Ano</th><th class="r">Jan</th><th class="r">Fev</th><th class="r">Mar</th><th class="r">Abr</th><th class="r">Mai</th><th class="r">Jun</th><th class="r">Jul</th><th class="r">Ago</th><th class="r">Set</th><th class="r">Out</th><th class="r">Nov</th><th class="r">Dez</th></tr></thead>
+          <tbody>
+            <tr><td>2023</td><td class="r">—</td><td class="r">60,08</td><td class="r">58,03</td><td class="r">52,56</td><td class="r">44,39</td><td class="r">35,30</td><td class="r">32,97</td><td class="r">33,56</td><td class="r">35,50</td><td class="r">35,18</td><td class="r">34,98</td><td class="r">37,98</td></tr>
+            <tr><td>2024</td><td class="r">40,70</td><td class="r">37,61</td><td class="r">34,18</td><td class="r">34,77</td><td class="r">36,16</td><td class="r">37,06</td><td class="r">37,59</td><td class="r">39,07</td><td class="r">42,25</td><td class="r">49,67</td><td class="r">56,30</td><td class="r">57,64</td></tr>
+            <tr><td>2025</td><td class="r">54,02</td><td class="r">60,71</td><td class="r">70,31</td><td class="r">71,66</td><td class="r">56,55</td><td class="r">41,09</td><td class="r">40,90</td><td class="r">42,95</td><td class="r">44,22</td><td class="r">45,82</td><td class="r">46,88</td><td class="r">47,80</td></tr>
+            <tr><td>2026</td><td class="r">47,33</td><td class="r">45,95</td><td class="r">46,34</td><td class="r">45,72</td><td class="r">43,12</td><td class="r">42,09</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td><td class="r">—</td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="13">Custo/sc COE de referência: 2023/24 R$36,69 · 2024/25 R$40,78 · 2025/26 R$43,36 · 2026/27 R$42,37 (IMEA/MT)</td></tr></tfoot>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--ink-soft)">* Estimativas IMEA/MT (Abril/2026). Disponível em www.imea.com.br. Acesso: junho de 2026.</p>
+    </div>
+  </details>
+</section>
+
+</main>
+
+<!-- ================= CREDENTIALS ================= -->
+<footer class="credentials">
+  <div class="cred-inner">
+    <div class="eyebrow">Análise e Construção</div>
+    <div class="sig-line"></div>
+    <p class="cred-name">Dr. Sidney Souza</p>
+    <p class="cred-role">Economista e Adm. Agrícola — Estrategista Econômico do Produtor</p>
+    <p class="cred-blurb">Especialista em economia da fazenda e gestão de risco no agro.</p>
+    <p class="cred-blurb lead-it">Transformamos dados da fazenda em decisões econômicas.</p>
+    <p class="cred-blurb">Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+    <div class="cred-contact">
+      <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralinai-commits.github.io/ruralin-site</a>
+      <span class="ci">@ruralin.ai</span>
+      <a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a>
+      <span class="ci">(64) 9 9226-6886</span>
+    </div>
+  </div>
+</footer>
+<div class="doc-foot">
+  <span>Rural in — Gestão Inteligente com Tecnologia no Agro</span>
+  <span>Indiara — GO · 1 de junho de 2026</span>
+</div>
+
+<script>
+  // progress bar
+  const prog = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    prog.style.width = pct + '%';
+  }, {passive:true});
+
+  // EBITDA bar chart (server-free, drawn from data)
+  (function(){
+    const data = [
+      ['25/26',38250,true],['26/27',356950],['27/28',445064],['28/29',860673],['29/30',935964],
+      ['30/31',683775],['31/32',859390],['32/33',871164],['33/34',863894],['34/35',668924],
+      ['35/36',965511],['36/37',1248055],['37/38',1381390],['38/39',1342502],['39/40',1426838],
+      ['40/41',627792],['41/42',919004],['42/43',998720],['43/44',689979],['44/45',758363]
+    ];
+    const W=1000,H=320,mL=8,mR=8,mT=20,mB=42;
+    const max=1426838;
+    const plotW=W-mL-mR, plotH=H-mT-mB, base=mT+plotH;
+    const slot=plotW/data.length, bw=Math.min(34, slot*0.66);
+    let bars='', labels='';
+    data.forEach((d,i)=>{
+      const h=d[1]/max*plotH;
+      const x=mL+i*slot+(slot-bw)/2;
+      const y=base-h;
+      const fill=d[2]?'#b1392c':'#c89b34';
+      bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${fill}"><title>${d[0]} — R$ ${d[1].toLocaleString('pt-BR')}</title></rect>`;
+      labels+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-14}" text-anchor="middle" font-size="11" fill="#9fb0a4" font-family="IBM Plex Mono, monospace">${d[0]}</text>`;
+    });
+    // baseline
+    const baseline=`<line x1="${mL}" y1="${base}" x2="${W-mR}" y2="${base}" stroke="#3e6b4f" stroke-width="1"/>`;
+    const svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Gráfico de EBITDA projetado por safra">${baseline}${bars}${labels}</svg>`;
+    document.getElementById('ebitda-chart').innerHTML=svg;
+  })();
+</script>
+</body>
+</html>
