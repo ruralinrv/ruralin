@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estratégia de Caixa · Análise 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1712; --ink2:#13201A; --panel:#17271E; --panel2:#1C3025;
+    --line:rgba(236,229,212,.13); --line-strong:rgba(236,229,212,.22);
+    --cream:#ECE5D4; --muted:#9CA89A; --muted-2:#76836F;
+    --gold:#E9B84B; --gold-deep:#C9923A;
+    --sage:#86BA6C; --sage-deep:#5C8A54;
+    --clay:#E2683F; --clay-deep:#C24F2C;
+    --amber:#D99A3C;
+    --disp:'Space Grotesk',system-ui,sans-serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink); color:var(--cream); font-family:var(--body);
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+  .panel{padding:96px 0;border-top:1px solid var(--line);position:relative}
+  .panel:first-of-type{border-top:none}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:18px;display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);display:inline-block}
+  h1{font-family:var(--disp);font-weight:700;line-height:1.02;letter-spacing:-.02em;
+    font-size:clamp(38px,7.2vw,76px)}
+  h2{font-family:var(--disp);font-weight:600;line-height:1.06;letter-spacing:-.015em;
+    font-size:clamp(28px,4.4vw,46px);margin-bottom:14px}
+  .lead{font-size:clamp(16px,2vw,20px);color:var(--cream);max-width:62ch;margin-top:18px}
+  .sub{color:var(--muted);max-width:60ch;font-size:16px;margin-top:10px}
+  .mono{font-family:var(--mono)}
+  .num{font-family:var(--disp);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+  /* HERO */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:120px 0 80px;position:relative;overflow:hidden}
+  .pivot{position:absolute;right:-220px;top:50%;transform:translateY(-50%);
+    width:760px;height:760px;opacity:.5;pointer-events:none}
+  .pivot circle,.pivot path{fill:none;stroke:var(--sage-deep);stroke-width:1}
+  .topbar{position:absolute;top:32px;left:0;right:0}
+  .topbar .wrap{display:flex;justify-content:space-between;align-items:center;
+    font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+  .brand{color:var(--cream);font-weight:600}
+  .hero h1 span{color:var(--gold)}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+    margin-top:54px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .hstat{background:var(--ink2);padding:26px 24px}
+  .hstat .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .hstat .v{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.6vw,38px);margin-top:8px;letter-spacing:-.02em}
+  .hstat .d{font-size:13px;color:var(--muted-2);margin-top:6px}
+  .hstat.cash .v{color:var(--gold)}
+  .hstat.debt .v{color:var(--cream)}
+  .hstat.bleed .v{color:var(--clay)}
+  .thesis{margin-top:42px;font-family:var(--disp);font-size:clamp(18px,2.4vw,24px);
+    font-weight:500;max-width:30ch;line-height:1.2;border-left:3px solid var(--gold);padding-left:20px}
+
+  /* generic chart bits */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .note{font-size:13px;color:var(--muted);margin-top:18px;line-height:1.5}
+  .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;padding:4px 10px;border-radius:99px;border:1px solid var(--line-strong)}
+  .tag.bad{color:var(--clay);border-color:rgba(226,104,63,.5)}
+  .tag.good{color:var(--sage);border-color:rgba(134,186,108,.5)}
+  .tag.mid{color:var(--amber);border-color:rgba(217,154,60,.5)}
+
+  /* COLUMN chart (rates) */
+  .colchart{display:flex;align-items:flex-end;gap:14px;height:300px;position:relative;
+    padding-top:10px;border-bottom:1px solid var(--line-strong)}
+  .cashline{position:absolute;left:0;right:0;border-top:2px dashed var(--gold);opacity:.85}
+  .cashline span{position:absolute;right:0;top:-22px;font-family:var(--mono);font-size:11px;color:var(--gold);background:var(--ink);padding:0 6px}
+  .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;text-align:center}
+  .col .bar{width:100%;border-radius:7px 7px 0 0;height:0;transition:height 1.1s cubic-bezier(.2,.8,.2,1);position:relative}
+  .reveal.in .col .bar{height:var(--h)}
+  .col .pct{font-family:var(--disp);font-weight:600;font-size:15px;margin-bottom:8px;opacity:0;transition:opacity .6s ease .5s}
+  .reveal.in .col .pct{opacity:1}
+  .col .lbl{font-size:11.5px;color:var(--muted);margin-top:12px;line-height:1.25;min-height:32px}
+  .bar.clay{background:linear-gradient(180deg,var(--clay),var(--clay-deep))}
+  .bar.amber{background:linear-gradient(180deg,var(--amber),#B97E2C)}
+  .bar.sage{background:linear-gradient(180deg,var(--sage),var(--sage-deep))}
+
+  /* horizontal cost bars */
+  .hbars{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+  .hrow{display:grid;grid-template-columns:140px 1fr;align-items:center;gap:16px}
+  .hrow .name{font-size:13.5px;color:var(--cream);text-align:right}
+  .hrow .name small{display:block;color:var(--muted-2);font-size:11px;font-family:var(--mono)}
+  .track{background:var(--ink2);border-radius:7px;height:34px;position:relative;overflow:hidden}
+  .fill{height:100%;width:0;border-radius:7px;transition:width 1.1s cubic-bezier(.2,.8,.2,1);
+    display:flex;align-items:center;justify-content:flex-end;padding-right:12px}
+  .reveal.in .fill{width:var(--w)}
+  .fill .val{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--ink);white-space:nowrap}
+  .fill.clay{background:linear-gradient(90deg,var(--clay-deep),var(--clay))}
+  .fill.sage{background:linear-gradient(90deg,var(--sage-deep),var(--sage))}
+  .fill.amber{background:linear-gradient(90deg,#B97E2C,var(--amber))}
+  .fill.gold{background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
+
+  /* versus block */
+  .versus{display:grid;grid-template-columns:1fr auto 1fr;gap:30px;align-items:center;margin-top:14px}
+  .vcard{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:30px 28px}
+  .vcard .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .vcard .big{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.6vw,46px);margin:10px 0 4px;letter-spacing:-.02em}
+  .vcard.win .big{color:var(--gold)} .vcard.lose .big{color:var(--clay)}
+  .vcard .d{font-size:13px;color:var(--muted)}
+  .vsign{font-family:var(--disp);font-weight:600;font-size:40px;color:var(--muted-2)}
+  .netbar{margin-top:34px;background:var(--ink2);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+  .netbar .lab{color:var(--muted);font-size:14px;max-width:46ch}
+  .netbar .res{font-family:var(--disp);font-weight:700;font-size:clamp(24px,3.4vw,34px);color:var(--clay)}
+
+  /* stacked passivo */
+  .stack{display:flex;height:62px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  .seg{height:100%;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1);display:flex;align-items:center;justify-content:center}
+  .reveal.in .seg{width:var(--w)}
+  .seg .p{font-family:var(--disp);font-weight:600;font-size:14px;color:var(--ink)}
+  .legend{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px;margin-top:26px}
+  .lg{display:flex;gap:12px;align-items:flex-start}
+  .dot{width:13px;height:13px;border-radius:4px;margin-top:5px;flex:none}
+  .lg .t{font-size:14px;color:var(--cream)} .lg .s{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
+
+  /* strategy cards */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:14px}
+  .card{background:var(--ink2);border:1px solid var(--line);border-radius:18px;padding:30px 26px;
+    display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden}
+  .card.rec{border-color:rgba(233,184,75,.45);background:linear-gradient(180deg,rgba(233,184,75,.07),var(--ink2))}
+  .card .verdict{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .card h3{font-family:var(--disp);font-weight:600;font-size:20px;line-height:1.15}
+  .card p{font-size:14px;color:var(--muted);line-height:1.55}
+  .card .mark{font-size:26px;line-height:1}
+  .card ul{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .card li{font-size:13.5px;color:var(--cream);padding-left:20px;position:relative;line-height:1.45}
+  .card li::before{position:absolute;left:0;top:0}
+  .card li.pro::before{content:"+";color:var(--sage);font-weight:700}
+  .card li.con::before{content:"−";color:var(--clay);font-weight:700}
+
+  /* matrix */
+  .matrix{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+  .mrow{display:grid;grid-template-columns:1.1fr 90px 1.6fr;gap:20px;align-items:center;
+    background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+  .mrow .deb{font-size:15px;font-weight:500}
+  .mrow .deb small{display:block;color:var(--muted-2);font-family:var(--mono);font-size:11px;margin-top:3px}
+  .mrow .rate{font-family:var(--disp);font-weight:600;font-size:17px;text-align:center}
+  .mrow .act{font-size:13.5px;color:var(--muted);line-height:1.45}
+  .mrow .act b{color:var(--cream);font-weight:600}
+  .r-clay{color:var(--clay)} .r-amber{color:var(--amber)} .r-sage{color:var(--sage)} .r-gold{color:var(--gold)}
+
+  /* allocation scenarios */
+  .scen{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:14px}
+  .scol{background:var(--ink2);border:1px solid var(--line);border-radius:18px;padding:28px 26px}
+  .scol h3{font-family:var(--disp);font-weight:600;font-size:18px;margin-bottom:4px}
+  .scol .cap{font-size:13px;color:var(--muted);margin-bottom:20px}
+  .allocbar{display:flex;height:42px;border-radius:10px;overflow:hidden;border:1px solid var(--line);margin-bottom:18px}
+  .allocbar .s{height:100%;width:0;transition:width 1s ease}
+  .reveal.in .allocbar .s{width:var(--w)}
+  .aleg{display:flex;flex-direction:column;gap:9px}
+  .aleg .row{display:flex;justify-content:space-between;font-size:13.5px;gap:10px}
+  .aleg .row .nm{color:var(--cream);display:flex;align-items:center;gap:9px}
+  .aleg .row .vv{font-family:var(--mono);color:var(--muted)}
+
+  /* feijão */
+  .feij{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .frow{display:grid;grid-template-columns:120px 1fr 90px;gap:12px;align-items:center;margin-bottom:11px}
+  .frow .fn{font-size:13px;color:var(--muted)}
+  .ftrack{background:var(--ink2);height:22px;border-radius:6px;overflow:hidden}
+  .ffill{height:100%;width:0;background:linear-gradient(90deg,var(--sage-deep),var(--sage));transition:width .9s ease;border-radius:6px}
+  .reveal.in .ffill{width:var(--w)}
+  .frow .fv{font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--cream)}
+  .fresult{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:30px;text-align:center}
+  .fresult .rv{font-family:var(--disp);font-weight:700;font-size:clamp(40px,6vw,60px);color:var(--gold);letter-spacing:-.02em}
+  .fresult .rl{color:var(--muted);font-size:14px;margin-top:6px}
+  .fchips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+  .chip{font-family:var(--mono);font-size:12px;border:1px solid var(--line-strong);border-radius:99px;padding:6px 13px;color:var(--cream)}
+
+  /* timeline */
+  .tl{position:relative;margin-top:26px;padding-left:30px}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line-strong)}
+  .tnode{position:relative;padding:0 0 30px 26px}
+  .tnode::before{content:"";position:absolute;left:-30px;top:4px;width:16px;height:16px;border-radius:50%;
+    background:var(--ink);border:3px solid var(--gold)}
+  .tnode.clay::before{border-color:var(--clay)}
+  .tnode.sage::before{border-color:var(--sage)}
+  .tdate{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--gold)}
+  .tnode.clay .tdate{color:var(--clay)} .tnode.sage .tdate{color:var(--sage)}
+  .ttitle{font-size:16px;font-weight:600;margin:4px 0 4px}
+  .tamt{font-family:var(--disp);font-weight:600;font-size:15px;color:var(--cream)}
+  .tdesc{font-size:13px;color:var(--muted);margin-top:3px}
+
+  /* closing */
+  .close{text-align:center}
+  .creds{margin-top:56px;border-top:1px solid var(--line-strong);padding-top:48px;
+    display:flex;flex-direction:column;align-items:center;gap:5px}
+  .creds-mark{font-family:var(--disp);font-weight:700;font-size:15px;text-transform:uppercase;
+    letter-spacing:.2em;color:var(--gold);display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .creds-mark svg{width:20px;height:20px}
+  .creds-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .creds-name{font-family:var(--disp);font-weight:700;font-size:clamp(26px,3.6vw,34px);color:var(--cream);letter-spacing:-.01em;margin-top:6px}
+  .creds-role{font-size:14.5px;color:var(--gold);font-weight:500;margin-top:4px}
+  .creds-spec{font-size:13.5px;color:var(--muted)}
+  .creds-tag{font-size:14px;color:var(--cream);max-width:56ch;margin:16px auto 0;line-height:1.6;font-style:italic;opacity:.9}
+  .creds-contacts{margin-top:22px;font-family:var(--mono);font-size:13px;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:7px 14px;justify-content:center;align-items:center}
+  .creds-contacts a{color:var(--gold);text-decoration:none}
+  .creds-contacts a:hover{text-decoration:underline}
+  .creds-sep{color:var(--muted-2)}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin:40px 0 10px;text-align:left}
+  .step{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:20px 18px}
+  .step .n{font-family:var(--disp);font-weight:700;color:var(--gold);font-size:22px}
+  .step .tt{font-size:13.5px;color:var(--cream);margin-top:8px;line-height:1.4;font-weight:500}
+  .disclaimer{margin-top:60px;border-top:1px solid var(--line);padding-top:26px;
+    font-size:12.5px;color:var(--muted-2);max-width:80ch;margin-left:auto;margin-right:auto;line-height:1.6}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:860px){
+    .grid2,.feij{grid-template-columns:1fr;gap:34px}
+    .hero-stats{grid-template-columns:1fr}
+    .cards3{grid-template-columns:1fr}
+    .scen{grid-template-columns:1fr}
+    .versus{grid-template-columns:1fr;gap:16px}.vsign{transform:rotate(90deg)}
+    .steps{grid-template-columns:1fr 1fr}
+    .mrow{grid-template-columns:1fr;gap:8px}.mrow .rate{text-align:left}
+    .pivot{opacity:.18}
+    .panel{padding:70px 0}
+    .colchart{height:230px;gap:7px}.col .lbl{font-size:10px}
+    .hrow{grid-template-columns:96px 1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+    .reveal{opacity:1;transform:none}
+    .col .bar{height:var(--h)}.fill{width:var(--w)}.seg{width:var(--w)}.ffill{width:var(--w)}.allocbar .s{width:var(--w)}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span class="brand">Análise de Caixa &amp; Endividamento</span>
+  <span>Safra 2026 · Rio Verde — GO</span>
+</div></div>
+
+<!-- HERO -->
+<header class="hero">
+  <svg class="pivot" viewBox="0 0 760 760" aria-hidden="true">
+    <circle cx="380" cy="380" r="370"/><circle cx="380" cy="380" r="300"/>
+    <circle cx="380" cy="380" r="230"/><circle cx="380" cy="380" r="160"/><circle cx="380" cy="380" r="90"/>
+    <path d="M380 10 L380 750 M10 380 L750 380 M120 120 L640 640 M640 120 L120 640"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow">Produtor Waldelon Alves Gomes</div>
+    <h1>Para onde<br>vai o <span>caixa?</span></h1>
+    <p class="lead">Com R$ 3,85 milhões em caixa e um passivo de quase R$ 8,7 milhões, a decisão não é “pagar ou guardar” — é <strong>em qual dívida cada real rende mais</strong>. Os números apontam uma direção só.</p>
+
+    <div class="hero-stats">
+      <div class="hstat cash"><div class="k">Caixa disponível</div><div class="v">R$ 3,85 mi</div><div class="d">Rende ~12% líq. ao ano (Selic 14,50%)</div></div>
+      <div class="hstat debt"><div class="k">Passivo total</div><div class="v">R$ 8,7 mi</div><div class="d">BB · Colhedeira · Sicoob · Praça</div></div>
+      <div class="hstat bleed"><div class="k">Juros Sicoob / ano</div><div class="v">R$ 1,04 mi</div><div class="d">Dois rotativos a 34–36% a.a.</div></div>
+    </div>
+
+    <div class="thesis">Cada real que mata dívida Sicoob equivale a um retorno certo de 34–36%.</div>
+  </div>
+</header>
+
+<!-- PASSIVO COMPOSITION -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">1 · Panorama do passivo</div>
+  <h2>De que é feita a dívida</h2>
+  <p class="sub">Quatro blocos com naturezas e custos muito diferentes. Tratar todos do mesmo jeito é o erro que custa caro.</p>
+
+  <div style="margin-top:40px">
+    <div class="stack">
+      <div class="seg" style="--w:34.6%;background:linear-gradient(90deg,var(--clay-deep),var(--clay))"><span class="p">35%</span></div>
+      <div class="seg" style="--w:27.4%;background:linear-gradient(90deg,var(--sage-deep),var(--sage))"><span class="p">27%</span></div>
+      <div class="seg" style="--w:22.9%;background:linear-gradient(90deg,#7a6a52,#9a886a)"><span class="p">23%</span></div>
+      <div class="seg" style="--w:15.1%;background:linear-gradient(90deg,#B97E2C,var(--amber))"><span class="p">15%</span></div>
+    </div>
+    <div class="legend">
+      <div class="lg"><span class="dot" style="background:var(--clay)"></span><div><div class="t">Sicoob — rotativos (2 CCBs)</div><div class="s">R$ 3,01 mi · 34–36% a.a. · venc. 27/07/2026</div></div></div>
+      <div class="lg"><span class="dot" style="background:var(--sage)"></span><div><div class="t">BB — custeio (soja, milho, sorgo)</div><div class="s">R$ 2,38 mi · 8,5–11,5% a.a. · autoliquida na safra</div></div></div>
+      <div class="lg"><span class="dot" style="background:#9a886a"></span><div><div class="t">Dívida na praça (insumos / revendas)</div><div class="s">R$ 1,99 mi · custo embutido a apurar</div></div></div>
+      <div class="lg"><span class="dot" style="background:var(--amber)"></span><div><div class="t">CNH — colhedeira (financiamento)</div><div class="s">R$ 1,31 mi · 13,64% a.a. · parcela anual</div></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- HIERARQUIA DE JUROS (SIGNATURE) -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">2 · A hierarquia de juros</div>
+  <h2>O gráfico que decide tudo</h2>
+  <p class="sub">Ordenando as dívidas pelo custo, os dois Sicoob disparam. A linha tracejada é o que o caixa rende parado (~12% líq.): tudo acima dela é dívida que vale a pena matar; tudo abaixo é dinheiro barato que vale a pena manter.</p>
+
+  <div class="colchart" style="margin-top:48px">
+    <div class="cashline" style="bottom:90px"><span>Caixa rende ~12%</span></div>
+    <div class="col"><div class="pct" style="color:var(--clay)">36,25%</div><div class="bar clay" style="--h:90.6%"></div><div class="lbl">Sicoob<br>1561230</div></div>
+    <div class="col"><div class="pct" style="color:var(--clay)">33,70%</div><div class="bar clay" style="--h:84.3%"></div><div class="lbl">Sicoob<br>1300057</div></div>
+    <div class="col"><div class="pct" style="color:var(--amber)">13,64%</div><div class="bar amber" style="--h:34.1%"></div><div class="lbl">Colhedeira<br>CNH</div></div>
+    <div class="col"><div class="pct" style="color:var(--sage)">11,50%</div><div class="bar sage" style="--h:28.8%"></div><div class="lbl">BB<br>Soja</div></div>
+    <div class="col"><div class="pct" style="color:var(--sage)">8,50%</div><div class="bar sage" style="--h:21.3%"></div><div class="lbl">BB<br>Milho</div></div>
+    <div class="col"><div class="pct" style="color:var(--sage)">8,50%</div><div class="bar sage" style="--h:21.3%"></div><div class="lbl">BB<br>Sorgo</div></div>
+  </div>
+  <p class="note">Escala: % ao ano. Sicoob em vermelho (alto custo) · Colhedeira em âmbar (custo médio) · Custeio BB em verde (crédito subsidiado, o mais barato).</p>
+</div></section>
+
+<!-- CUSTO ANUAL -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">3 · Quanto cada dívida sangra por ano</div>
+  <h2>R$ 1,0 milhão escorrendo</h2>
+  <p class="sub">Em reais de juros por ano sobre o saldo atual, fica claro onde está a hemorragia: os dois Sicoob, sozinhos, custam mais do que todo o resto somado.</p>
+
+  <div class="hbars" style="margin-top:34px">
+    <div class="hrow"><div class="name">Sicoob 1300057<small>33,70% a.a.</small></div>
+      <div class="track"><div class="fill clay" style="--w:96%"><span class="val">R$ 674 mil</span></div></div></div>
+    <div class="hrow"><div class="name">Sicoob 1561230<small>36,25% a.a.</small></div>
+      <div class="track"><div class="fill clay" style="--w:52%"><span class="val">R$ 365 mil</span></div></div></div>
+    <div class="hrow"><div class="name">BB Soja<small>11,50% a.a.</small></div>
+      <div class="track"><div class="fill sage" style="--w:31%"><span class="val">R$ 219 mil</span></div></div></div>
+    <div class="hrow"><div class="name">Colhedeira<small>13,64% a.a.</small></div>
+      <div class="track"><div class="fill amber" style="--w:26%"><span class="val">R$ 179 mil</span></div></div></div>
+    <div class="hrow"><div class="name">BB Milho<small>8,50% a.a.</small></div>
+      <div class="track"><div class="fill sage" style="--w:5%"><span class="val">R$ 26 mil</span></div></div></div>
+    <div class="hrow"><div class="name">BB Sorgo<small>8,50% a.a.</small></div>
+      <div class="track"><div class="fill sage" style="--w:3.5%"><span class="val">R$ 14 mil</span></div></div></div>
+  </div>
+  <p class="note">Estimativa de juros anuais sobre o saldo devedor atual de cada operação.</p>
+</div></section>
+
+<!-- O CUSTO DE FICAR PARADO -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">4 · O custo de não fazer nada</div>
+  <h2>Caixa parado × Sicoob correndo</h2>
+  <p class="sub">Enquanto o caixa rende, o Sicoob cobra quase o triplo. Manter as duas pontas é destruir valor todo mês.</p>
+
+  <div class="versus" style="margin-top:36px">
+    <div class="vcard win"><div class="k">O que o caixa rende</div><div class="big">R$ 462 mil</div><div class="d">/ ano · R$ 3,85 mi a ~12% líquido</div></div>
+    <div class="vsign">vs</div>
+    <div class="vcard lose"><div class="k">O que o Sicoob cobra</div><div class="big">R$ 1,04 mi</div><div class="d">/ ano · juros dos dois rotativos</div></div>
+  </div>
+
+  <div class="netbar">
+    <div class="lab">Diferença entre deixar o dinheiro aplicado e usá-lo para abater o Sicoob — valor perdido a cada ano em que tudo fica como está:</div>
+    <div class="res">− R$ 577 mil / ano</div>
+  </div>
+</div></section>
+
+<!-- TRÊS ESTRATÉGIAS -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">5 · As três estratégias na mesa</div>
+  <h2>Comparando os caminhos</h2>
+  <p class="sub">As duas hipóteses levantadas e a combinação que melhor protege caixa, custo e relacionamento.</p>
+
+  <div class="cards3" style="margin-top:30px">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="tag bad">Hipótese A</span><span class="mark">✕</span></div>
+      <h3>Segurar o caixa e levar tudo à Justiça, incluindo o Sicoob</h3>
+      <ul>
+        <li class="con">Os 34–36% seguem correndo enquanto a ação tramita</li>
+        <li class="con">Provimento 216/2026 endureceu a RJ e protege as garantias do credor</li>
+        <li class="con">R$ 3,85 mi em caixa enfraquece a tese de “não consigo pagar”</li>
+        <li class="con">Risco de fechar a porteira do crédito novo (Plano Safra)</li>
+      </ul>
+      <p class="verdict" style="color:var(--clay)">Pior dos mundos financeiramente</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="tag mid">Hipótese B</span><span class="mark">≈</span></div>
+      <h3>Pagar o Sicoob e prorrogar em juízo o BB e a colhedeira</h3>
+      <ul>
+        <li class="pro">Acerta ao matar primeiro o custo mais alto</li>
+        <li class="con">Brigar com o BB arrisca o crédito mais barato que você tem</li>
+        <li class="con">Colhedeira tende a ser alienação fiduciária — difícil prorrogar</li>
+        <li class="con">Judicializar o que dá para resolver no balcão gera desgaste</li>
+      </ul>
+      <p class="verdict" style="color:var(--amber)">Meia certa, meia arriscada</p>
+    </div>
+
+    <div class="card rec">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <span class="tag good">Recomendada</span><span class="mark">✓</span></div>
+      <h3>A ferramenta certa para cada dívida</h3>
+      <ul>
+        <li class="pro">Caixa mata o Sicoob: retorno certo de 34–36%</li>
+        <li class="pro">BB prorrogado no balcão (MCR / Súmula 298), sem briga</li>
+        <li class="pro">Preserva o acesso ao Plano Safra do próximo ano</li>
+        <li class="pro">Colhedeira segue paga; praça avaliada pelo custo real</li>
+      </ul>
+      <p class="verdict" style="color:var(--gold)">Maior retorno, menor risco</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- MATRIZ -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">6 · O plano, dívida por dívida</div>
+  <h2>Cada uma com seu instrumento</h2>
+  <p class="sub">Não é uma estratégia só — são cinco decisões coordenadas.</p>
+
+  <div class="matrix" style="margin-top:30px">
+    <div class="mrow"><div class="deb">Sicoob (2 rotativos)<small>CCB 1561230 · 1300057</small></div>
+      <div class="rate r-clay">~35%</div>
+      <div class="act"><b>Quitar com o caixa, começando pelo de 36,25%.</b> É o uso de capital de maior retorno e risco zero.</div></div>
+    <div class="mrow"><div class="deb">BB — custeio<small>soja · milho · sorgo</small></div>
+      <div class="rate r-sage">8,5–11,5%</div>
+      <div class="act"><b>Prorrogação administrativa</b> (MCR / Súmula 298 STJ), com laudo agronômico, mantendo os encargos originais. Judicial só se negarem.</div></div>
+    <div class="mrow"><div class="deb">CNH — colhedeira<small>CCB 2223099</small></div>
+      <div class="rate r-amber">13,64%</div>
+      <div class="act"><b>Seguir pagando.</b> Custo médio, garantia que dificulta qualquer renegociação forçada, parcela anual gerenciável.</div></div>
+    <div class="mrow"><div class="deb">Dívida na praça<small>insumos / revendas</small></div>
+      <div class="rate" style="color:var(--muted)">a apurar</div>
+      <div class="act"><b>Checar o custo embutido.</b> Se for barter caro, entra na fila atrás do Sicoob; se for barato, rolar.</div></div>
+    <div class="mrow"><div class="deb">Feijão irrigado<small>oportunidade · 100 ha</small></div>
+      <div class="rate r-gold">+25%</div>
+      <div class="act"><b>Só com o caixa que sobrar</b> acima da reserva. Retorno esperado bom, mas com risco — não compete com a certeza de abater 35%.</div></div>
+  </div>
+</div></section>
+
+<!-- ALOCAÇÃO -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">7 · Como dividir os R$ 3,85 milhões</div>
+  <h2>Dois cenários de alocação</h2>
+  <p class="sub">A única tensão real é a liquidez: quitar os dois Sicoob (R$ 3,08 mi) consome quase todo o caixa. Daí dois ritmos possíveis, conforme o apetite a risco.</p>
+
+  <div class="scen" style="margin-top:30px">
+    <div class="scol">
+      <h3>Conservador</h3>
+      <p class="cap">Mantém reserva maior; ataca o Sicoob por etapas.</p>
+      <div class="allocbar">
+        <div class="s" style="--w:28%;background:var(--clay)"></div>
+        <div class="s" style="--w:33%;background:var(--clay-deep)"></div>
+        <div class="s" style="--w:39%;background:var(--gold-deep)"></div>
+      </div>
+      <div class="aleg">
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--clay);margin:0"></span>Quita Sicoob 1561230</span><span class="vv">R$ 1,08 mi</span></div>
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--clay-deep);margin:0"></span>Abate Sicoob 1300057</span><span class="vv">R$ 1,27 mi</span></div>
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--gold-deep);margin:0"></span>Reserva operacional</span><span class="vv">R$ 1,50 mi</span></div>
+      </div>
+    </div>
+
+    <div class="scol" style="border-color:rgba(233,184,75,.4)">
+      <h3 style="color:var(--gold)">Coerente com o custo de capital</h3>
+      <p class="cap">Quita os dois Sicoob; safra e feijão recompõem a reserva.</p>
+      <div class="allocbar">
+        <div class="s" style="--w:28%;background:var(--clay)"></div>
+        <div class="s" style="--w:52%;background:var(--clay-deep)"></div>
+        <div class="s" style="--w:20%;background:var(--gold-deep)"></div>
+      </div>
+      <div class="aleg">
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--clay);margin:0"></span>Quita Sicoob 1561230</span><span class="vv">R$ 1,08 mi</span></div>
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--clay-deep);margin:0"></span>Quita Sicoob 1300057</span><span class="vv">R$ 2,00 mi</span></div>
+        <div class="row"><span class="nm"><span class="dot" style="background:var(--gold-deep);margin:0"></span>Reserva inicial</span><span class="vv">R$ 0,77 mi</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Lembrete: o custeio BB se paga com a venda da safra que ele financiou (set–dez/2026), então a reserva pode ser menor no curtíssimo prazo sem comprometer a operação.</p>
+</div></section>
+
+<!-- FEIJÃO -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">8 · A oportunidade do feijão</div>
+  <h2>100 ha que rendem 25%</h2>
+  <div class="feij" style="margin-top:30px">
+    <div>
+      <div class="frow"><div class="fn">Insumos</div><div class="ftrack"><div class="ffill" style="--w:65%"></div></div><div class="fv">R$ 650 mil</div></div>
+      <div class="frow"><div class="fn">Arrendamento</div><div class="ftrack"><div class="ffill" style="--w:16.5%"></div></div><div class="fv">R$ 165 mil</div></div>
+      <div class="frow"><div class="fn">Operacional</div><div class="ftrack"><div class="ffill" style="--w:12%"></div></div><div class="fv">R$ 120 mil</div></div>
+      <div class="frow"><div class="fn">Irrigação/Energia</div><div class="ftrack"><div class="ffill" style="--w:6.5%"></div></div><div class="fv">R$ 65 mil</div></div>
+      <div class="frow" style="margin-top:6px;border-top:1px solid var(--line);padding-top:12px">
+        <div class="fn" style="color:var(--cream);font-weight:600">Receita total</div>
+        <div class="ftrack"><div class="ffill" style="--w:100%;background:linear-gradient(90deg,var(--gold-deep),var(--gold))"></div></div>
+        <div class="fv" style="color:var(--gold)">R$ 1,25 mi</div></div>
+    </div>
+    <div class="fresult">
+      <div class="rv">R$ 250 mil</div>
+      <div class="rl">Resultado financeiro esperado<br>sobre R$ 1,0 mi investido</div>
+      <div class="fchips">
+        <span class="chip">50 sc/ha</span><span class="chip">R$ 250/sc</span><span class="chip">R$ 12,5 mil/ha</span>
+      </div>
+      <p class="note" style="margin-top:18px">Retorno <strong>esperado</strong>, sujeito a produtividade e preço — diferente da certeza de abater o Sicoob.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- CRONOGRAMA -->
+<section class="panel"><div class="wrap reveal">
+  <div class="eyebrow">9 · Calendário de vencimentos 2026</div>
+  <h2>O que vence, e quando</h2>
+  <div class="tl">
+    <div class="tnode clay"><div class="tdate">27 JUL 2026</div><div class="ttitle">Sicoob — os dois rotativos</div><div class="tamt">R$ 3,08 mi</div><div class="tdesc">Alvo prioritário do caixa. Este é o vencimento que define a estratégia.</div></div>
+    <div class="tnode sage"><div class="tdate">25 SET 2026</div><div class="ttitle">BB custeio — 1ª parcela</div><div class="tamt">R$ 855 mil</div><div class="tdesc">Início da quitação do custeio com a receita da safra.</div></div>
+    <div class="tnode sage"><div class="tdate">OUT–DEZ 2026</div><div class="ttitle">BB custeio — parcelas 2 a 4</div><div class="tamt">R$ 2,18 mi</div><div class="tdesc">Autoliquidável com soja e milho. Prorrogável no balcão se a comercialização apertar.</div></div>
+    <div class="tnode"><div class="tdate">AO LONGO DE 2026</div><div class="ttitle">Dívida na praça</div><div class="tamt">R$ 1,99 mi</div><div class="tdesc">Avaliar custo embutido antes de definir prioridade.</div></div>
+    <div class="tnode"><div class="tdate">15 MAI 2027</div><div class="ttitle">Colhedeira — parcela anual</div><div class="tamt">R$ 657 mil</div><div class="tdesc">Mantida no fluxo normal.</div></div>
+  </div>
+</div></section>
+
+<!-- CLOSING -->
+<section class="panel"><div class="wrap reveal close">
+  <div class="eyebrow" style="justify-content:center">Síntese</div>
+  <h2>Cinco movimentos, uma direção</h2>
+  <p class="sub" style="margin-left:auto;margin-right:auto">Proteger o relacionamento com o crédito barato, eliminar o caro e manter a operação girando.</p>
+
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div class="tt">Caixa quita o Sicoob (36% primeiro)</div></div>
+    <div class="step"><div class="n">2</div><div class="tt">BB prorrogado no balcão, sem briga</div></div>
+    <div class="step"><div class="n">3</div><div class="tt">Colhedeira segue paga normalmente</div></div>
+    <div class="step"><div class="n">4</div><div class="tt">Praça avaliada pelo custo real</div></div>
+    <div class="step"><div class="n">5</div><div class="tt">Feijão só com o que sobrar da reserva</div></div>
+  </div>
+
+  <div class="creds">
+    <div class="creds-mark">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 22V8" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M12 8c0-2.5 1.8-4.5 4-5-.2 2.5-1.8 4.5-4 5Z" fill="var(--gold)"/>
+        <path d="M12 12c0-2.2-1.6-4-3.6-4.5.2 2.2 1.6 4 3.6 4.5Z" fill="var(--sage)"/>
+        <path d="M12 15c0-2.2 1.6-4 3.6-4.5-.2 2.2-1.6 4-3.6 4.5Z" fill="var(--sage)"/>
+      </svg>
+      Rural in
+    </div>
+    <div class="creds-eyebrow">Análise e Construção</div>
+    <div class="creds-name">Dr. Sidney Souza</div>
+    <div class="creds-role">Economista e Adm. Agrícola — Estrategista Econômico do Produtor</div>
+    <div class="creds-spec">Especialista em economia da fazenda e gestão de risco no agro</div>
+    <p class="creds-tag">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+    <div class="creds-contacts">
+      <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a>
+      <span class="creds-sep">·</span><span>@ruralin.ai</span>
+      <span class="creds-sep">·</span><a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a>
+      <span class="creds-sep">·</span><span>(64) 9 9226-6886</span>
+    </div>
+  </div>
+
+  <p class="disclaimer">Material de apoio à decisão, elaborado a partir dos dados fornecidos pelo cliente. Não constitui aconselhamento financeiro, contábil ou jurídico. Taxas efetivas, saldos e cenários devem ser validados com o contador e com advogado especializado em crédito rural antes de qualquer execução. Referências de mercado: Selic 14,50% a.a. e CDI ~14,40% a.a. (junho/2026). A prorrogação administrativa de crédito rural apoia-se no MCR, na Súmula 298 do STJ e na Resolução CMN 5.220/2025; a recuperação judicial do produtor rural (Lei 14.112/2020) passou a observar o Provimento CNJ 216/2026.</p>
+</div></section>
+
+<script>
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+  },{threshold:.18});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
