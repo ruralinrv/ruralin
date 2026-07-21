@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Comercial — RuralIn | Progresso Armazenamento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --accent: #FF8F00;
+            --accent-light: #FFA726;
+            --dark: #1a1a2e;
+            --gray-900: #212121;
+            --gray-700: #616161;
+            --gray-500: #9E9E9E;
+            --gray-300: #E0E0E0;
+            --gray-100: #F5F5F5;
+            --white: #FFFFFF;
+            --success: #43A047;
+            --warning: #FB8C00;
+            --danger: #E53935;
+            --gradient-primary: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
+            --gradient-accent: linear-gradient(135deg, #E65100 0%, #FF8F00 50%, #FFA726 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.2);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.25);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ========== HERO / CAPA ========== */
+        .hero {
+            background: var(--gradient-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(46, 125, 50, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, rgba(255, 143, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.2);
+            border: 1px solid rgba(46, 125, 50, 0.4);
+            color: var(--primary-light);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+        .hero-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+        .hero-logo span { color: var(--primary-light); }
+        .hero-tagline {
+            color: var(--gray-500);
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--white);
+            margin-bottom: 10px;
+        }
+        .hero-title strong { font-weight: 700; color: var(--accent-light); }
+        .hero-subtitle { font-size: 1.1rem; color: var(--gray-500); margin-bottom: 40px; }
+        .hero-client {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 30px 40px;
+            display: inline-block;
+        }
+        .hero-client-label {
+            color: var(--gray-500);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .hero-client-name { color: var(--white); font-size: 1.5rem; font-weight: 700; }
+        .hero-client-farm { color: var(--primary-light); font-size: 1rem; font-weight: 500; }
+        .hero-date { color: var(--gray-500); font-size: 0.9rem; margin-top: 40px; }
+        .hero-validity { color: var(--accent); font-size: 0.85rem; font-weight: 600; margin-top: 8px; }
+
+        /* ========== CONTAINER ========== */
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        /* ========== SECTION ========== */
+        .section { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .section-title { font-size: 2rem; font-weight: 800; color: var(--gray-900); margin-bottom: 12px; }
+        .section-subtitle { font-size: 1.05rem; color: var(--gray-700); max-width: 600px; margin: 0 auto; }
+
+        /* ========== APRESENTAÇÃO ========== */
+        .intro-section { background: var(--white); }
+        .intro-letter { max-width: 750px; margin: 0 auto; font-size: 1.05rem; color: var(--gray-700); line-height: 1.9; }
+        .intro-letter p { margin-bottom: 20px; }
+        .intro-letter .greeting { font-size: 1.2rem; font-weight: 600; color: var(--gray-900); }
+        .intro-letter .highlight { color: var(--primary-dark); font-weight: 600; }
+        .intro-letter .signature { margin-top: 40px; padding-top: 20px; border-top: 2px solid var(--gray-300); }
+        .intro-letter .signature-name { font-weight: 700; color: var(--gray-900); font-size: 1.1rem; }
+        .intro-letter .signature-role { color: var(--primary); font-weight: 500; }
+        .intro-letter .signature-motto { color: var(--gray-500); font-size: 0.9rem; font-style: italic; margin-top: 6px; }
+
+        /* ========== SOBRE A EMPRESA ========== */
+        .about-section { background: var(--gray-100); }
+        .about-text { max-width: 780px; margin: 0 auto 40px; font-size: 1.05rem; color: var(--gray-700); line-height: 1.9; text-align: center; }
+        .about-text .highlight { color: var(--primary-dark); font-weight: 600; }
+        .mvv-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .mvv-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-sm);
+            border-top: 4px solid var(--primary);
+            text-align: center;
+        }
+        .mvv-card.vision { border-top-color: var(--accent); }
+        .mvv-card.values { border-top-color: var(--success); }
+        .mvv-icon { font-size: 2rem; margin-bottom: 12px; }
+        .mvv-card-title { font-size: 0.85rem; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .mvv-card-desc { font-size: 0.98rem; color: var(--gray-900); line-height: 1.7; }
+
+        /* ========== TEMAS / SERVIÇOS ========== */
+        .services-section { background: var(--white); }
+        .service-item { display: flex; gap: 24px; padding: 26px 0; border-bottom: 1px solid var(--gray-300); }
+        .service-item:last-child { border-bottom: none; }
+        .service-icon {
+            flex-shrink: 0;
+            width: 60px; height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+        .service-content { flex: 1; }
+        .service-name { font-size: 1.15rem; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+        .service-desc { font-size: 0.95rem; color: var(--gray-700); line-height: 1.7; }
+        .service-tag {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+        }
+        .service-tag.optional { background: rgba(255, 143, 0, 0.1); color: var(--accent); }
+
+        /* ========== INVESTIMENTO / PRICING ========== */
+        .pricing-section { background: var(--gray-100); padding: 80px 0; }
+        .pricing-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--gradient-dark);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            color: var(--white);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient-accent); }
+        .pricing-badge {
+            display: inline-block;
+            background: var(--gradient-accent);
+            color: var(--white);
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .pricing-plan-name { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+        .pricing-plan-desc { font-size: 0.95rem; color: var(--gray-500); margin-bottom: 30px; }
+        .pricing-value { margin-bottom: 20px; }
+        .pricing-currency { font-size: 1.2rem; font-weight: 600; vertical-align: super; color: var(--gray-500); }
+        .pricing-amount { font-size: 4rem; font-weight: 900; color: var(--accent-light); }
+        .pricing-period { font-size: 1rem; color: var(--gray-500); }
+        .pricing-per-liter {
+            display: inline-block;
+            background: rgba(255, 143, 0, 0.15);
+            border: 1px solid rgba(255, 143, 0, 0.3);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent-light);
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        .pricing-features { list-style: none; text-align: left; margin-bottom: 30px; }
+        .pricing-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            color: var(--gray-300);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pricing-features li .check { color: var(--primary-light); font-weight: 700; font-size: 1.1rem; }
+        .pricing-contract { font-size: 0.85rem; color: var(--gray-500); margin-top: 20px; }
+
+        /* ========== QUEM É SIDNEY ========== */
+        .speaker-section { background: var(--gradient-dark); color: var(--white); padding: 80px 0; }
+        .speaker-section .section-title { color: var(--white); }
+        .speaker-section .section-subtitle { color: var(--gray-500); }
+        .speaker-intro { max-width: 720px; margin: 0 auto 40px; text-align: center; color: var(--gray-300); font-size: 1.05rem; line-height: 1.8; }
+        .speaker-intro strong { color: var(--accent-light); }
+        .creds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .cred-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            font-size: 0.92rem;
+            color: var(--gray-300);
+            line-height: 1.6;
+        }
+        .cred-item .cred-mark { color: var(--primary-light); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+        .cred-item strong { color: var(--white); }
+        .speaker-socials { text-align: center; margin-top: 36px; font-size: 0.95rem; color: var(--gray-500); }
+        .speaker-socials a { color: var(--primary-light); text-decoration: none; font-weight: 500; }
+
+        /* ========== REFERÊNCIAS ========== */
+        .references-section { background: var(--gray-100); }
+        .refs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px; }
+        .ref-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        .ref-avatar {
+            flex-shrink: 0;
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .ref-info { flex: 1; }
+        .ref-name { font-size: 1.05rem; font-weight: 700; color: var(--gray-900); }
+        .ref-role { font-size: 0.9rem; color: var(--gray-700); margin-top: 2px; line-height: 1.5; }
+        .ref-uf {
+            display: inline-block;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary);
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+        }
+        .ref-phone {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .ref-phone:hover { text-decoration: underline; }
+        .refs-note { text-align: center; margin-top: 30px; font-size: 0.9rem; color: var(--gray-500); }
+
+        /* ========== DISPOSIÇÕES GERAIS ========== */
+        .terms-section { background: var(--white); }
+        .terms-list { max-width: 780px; margin: 0 auto; }
+        .term-item { display: flex; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--gray-300); }
+        .term-item:last-child { border-bottom: none; }
+        .term-letter {
+            flex-shrink: 0;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(46, 125, 50, 0.1);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .term-text { font-size: 0.98rem; color: var(--gray-700); line-height: 1.8; padding-top: 6px; }
+        .term-text .highlight { color: var(--primary-dark); font-weight: 600; }
+
+        /* ========== ACEITE ========== */
+        .accept-section { background: var(--gray-100); padding: 80px 0; }
+        .accept-card { max-width: 700px; margin: 0 auto; background: var(--white); border-radius: 24px; padding: 50px 40px; box-shadow: var(--shadow-md); }
+        .accept-card h3 { text-align: center; font-size: 1.5rem; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+        .accept-card .accept-desc { text-align: center; color: var(--gray-700); font-size: 0.95rem; margin-bottom: 36px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .form-row.full { grid-template-columns: 1fr; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--gray-700); margin-bottom: 6px; }
+        .form-group label .required { color: var(--danger); }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid var(--gray-300);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.15); }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-divider { border: none; border-top: 2px dashed var(--gray-300); margin: 30px 0; }
+        .form-divider-label { text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin-top: 20px; padding: 16px; background: #E8F5E9; border-radius: 10px; }
+        .checkbox-group input[type="checkbox"] { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--primary); }
+        .checkbox-group label { font-size: 0.9rem; color: var(--gray-900); font-weight: 500; cursor: pointer; }
+        .btn-accept {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .btn-accept:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+        /* ========== MODAL SUCESSO ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--white); border-radius: 24px; padding: 50px 40px; max-width: 500px; width: 100%; text-align: center; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-icon { font-size: 4rem; margin-bottom: 20px; }
+        .modal-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); margin-bottom: 12px; }
+        .modal-desc { font-size: 1rem; color: var(--gray-700); line-height: 1.7; }
+        .modal-close { margin-top: 30px; padding: 14px 40px; background: var(--gradient-primary); color: var(--white); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .modal-close:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+        /* ========== FOOTER ========== */
+        .footer { background: var(--gradient-dark); color: var(--gray-500); text-align: center; padding: 40px 20px; font-size: 0.85rem; }
+        .footer a { color: var(--primary-light); text-decoration: none; }
+        .footer-brand { font-size: 1.4rem; font-weight: 800; color: var(--white); margin-bottom: 8px; }
+        .footer-brand span { color: var(--primary-light); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero-logo { font-size: 2.8rem; }
+            .hero-title { font-size: 1.5rem; }
+            .mvv-grid { grid-template-columns: 1fr; }
+            .creds-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .pricing-amount { font-size: 3rem; }
+            .hero-client { padding: 20px; }
+            .accept-card { padding: 30px 20px; }
+            .pricing-card { padding: 40px 24px; }
+            .service-item { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HERO / CAPA ========== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">Proposta Comercial</div>
+            <div class="hero-logo">Rural<span>In</span></div>
+            <div class="hero-tagline">Gestão Inteligente com Tecnologia</div>
+
+            <h1 class="hero-title">Palestras Técnicas em <strong>Gestão, Mercado</strong><br>e Estratégia para o Agronegócio</h1>
+            <p class="hero-subtitle">Proposta de palestra técnica para eventos públicos ou privados</p>
+
+            <div class="hero-client">
+                <div class="hero-client-label">Proposta destinada a</div>
+                <div class="hero-client-name">Progresso Armazenamento e Comércio de Cereais</div>
+                <div class="hero-client-farm">A/C.: Rafael</div>
+            </div>
+
+            <div class="hero-date">Rio Verde — GO, 21 de julho de 2026</div>
+            <div class="hero-validity">⏳ Validade: 15 dias úteis</div>
+        </div>
+    </section>
+
+    <!-- ========== APRESENTAÇÃO ========== -->
+    <section class="section intro-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Apresentação</h2>
+                <p class="section-subtitle">Uma proposta feita sob medida para a Progresso Armazenamento</p>
+            </div>
+
+            <div class="intro-letter">
+                <p class="greeting">Prezado Rafael,</p>
+
+                <p>Conforme solicitado, estamos enviando esta <span class="highlight">proposta comercial</span> compreendendo os temas abordados em nossas palestras técnicas, aplicáveis a eventos públicos ou privados.</p>
+
+                <p>Solicitamos a observação dos componentes de nossa <span class="highlight">metodologia</span>, desenvolvida para maior eficácia na implantação dos procedimentos e processos envolvidos.</p>
+
+                <p>Esperamos concretizar esta parceria de trabalho e, desde já, colocamo-nos à disposição para os esclarecimentos que se façam necessários.</p>
+
+                <p>Atenciosamente,</p>
+
+                <div class="signature">
+                    <div class="signature-name">Dr. Sidney Souza</div>
+                    <div class="signature-role">Estrategista Econômico do Produtor — RuralIn</div>
+                    <div class="signature-motto">"Transformamos dados da fazenda em decisões econômicas. Dado gera informação. Gestão gera decisão."</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SOBRE A EMPRESA ========== -->
+    <section class="section about-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Sobre a RuralIn</h2>
+                <p class="section-subtitle">Gestão e inteligência aplicadas ao agronegócio</p>
+            </div>
+
+            <p class="about-text">
+                A RuralIn é uma empresa de <span class="highlight">gestão e inteligência para o agronegócio</span>, que conecta informação, tecnologia e estratégia à tomada de decisão do produtor rural. Atuamos na organização financeira, econômica e gerencial das propriedades, transformando dados em indicadores práticos e na elaboração de estratégias comerciais envolvendo <span class="highlight">Gestão de Risco e uso de Derivativos</span> para proteção de margens. Na prática, auxiliamos o produtor a conhecer custos, margens, riscos e resultados, apoiando decisões comerciais, financeiras e operacionais, além de reestruturação quando necessário.
+            </p>
+
+            <div class="mvv-grid">
+                <div class="mvv-card">
+                    <div class="mvv-icon">🎯</div>
+                    <div class="mvv-card-title">Missão</div>
+                    <div class="mvv-card-desc">Profissionalizar a gestão no agro.</div>
+                </div>
+                <div class="mvv-card vision">
+                    <div class="mvv-icon">🔭</div>
+                    <div class="mvv-card-title">Visão</div>
+                    <div class="mvv-card-desc">Ser referência em inteligência aplicada ao campo.</div>
+                </div>
+                <div class="mvv-card values">
+                    <div class="mvv-icon">🤝</div>
+                    <div class="mvv-card-title">Valores</div>
+                    <div class="mvv-card-desc">Transparência, responsabilidade, eficiência e foco em resultado.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TEMAS DE PALESTRAS ========== -->
+    <section class="section services-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Temas de Palestras</h2>
+                <p class="section-subtitle">Temas que abordamos em palestras ao longo dos últimos 20 anos</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🚜</div>
+                <div class="service-content">
+                    <div class="service-name">Desafios da Gestão Profissional no Campo</div>
+                    <div class="service-desc">Os principais obstáculos e caminhos para levar uma gestão verdadeiramente profissional para dentro da porteira.</div>
+                    <span class="service-tag">Gestão</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">📉</div>
+                <div class="service-content">
+                    <div class="service-name">Desafios da Gestão Profissional e do Mercado de Commodities</div>
+                    <div class="service-desc">Como conciliar gestão profissional com a volatilidade e as oportunidades do mercado de commodities.</div>
+                    <span class="service-tag">Gestão &amp; Mercado</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🧭</div>
+                <div class="service-content">
+                    <div class="service-name">Inteligência de Mercado para Produtores Rurais</div>
+                    <div class="service-desc">Leitura de cenários, indicadores e sinais de mercado para decisões comerciais mais assertivas.</div>
+                    <span class="service-tag">Mercado</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">💰</div>
+                <div class="service-content">
+                    <div class="service-name">Custos de Produção: Um Vilão dos Últimos Anos</div>
+                    <div class="service-desc">Entendendo, controlando e reduzindo custos para preservar a rentabilidade da atividade.</div>
+                    <span class="service-tag">Finanças</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">⚖️</div>
+                <div class="service-content">
+                    <div class="service-name">Duas Teses e uma Teoria: Produtividade ou Rentabilidade?</div>
+                    <div class="service-desc">O debate central da gestão rural moderna e o que realmente sustenta o resultado no longo prazo.</div>
+                    <span class="service-tag">Estratégia</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">👥</div>
+                <div class="service-content">
+                    <div class="service-name">Pessoas, Processos e Tecnologia no Campo</div>
+                    <div class="service-desc">O tripé que sustenta uma operação eficiente e como equilibrá-lo na prática.</div>
+                    <span class="service-tag">Gestão &amp; Tecnologia</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🔗</div>
+                <div class="service-content">
+                    <div class="service-name">Conectar para Vender: Estratégias Inteligentes de Relacionamento e Venda no Agro</div>
+                    <div class="service-desc">Voltada para equipes de consultores comerciais: relacionamento, conexão e venda no agronegócio.</div>
+                    <span class="service-tag optional">Foco: Equipe Comercial</span>
+                </div>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">🔮</div>
+                <div class="service-content">
+                    <div class="service-name">O Futuro do Agro: O Que Vem Por Aí? E Não é Sobre IA</div>
+                    <div class="service-desc">Uma provocação sobre as tendências que realmente moldarão o agronegócio nos próximos anos.</div>
+                    <span class="service-tag">Tendências</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== INVESTIMENTO ========== -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Investimento</h2>
+                <p class="section-subtitle">Valor por palestra técnica</p>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-badge">⭐ Palestra Técnica</div>
+                <div class="pricing-plan-name">Palestra RuralIn com Dr. Sidney Souza</div>
+                <div class="pricing-plan-desc">Conteúdo técnico e estratégico sob medida para o seu evento</div>
+
+                <div class="pricing-value">
+                    <span class="pricing-currency">R$</span>
+                    <span class="pricing-amount">5.000</span>
+                    <span class="pricing-period">/palestra</span>
+                </div>
+
+                <div class="pricing-per-liter">🎤 Valor por evento — tema à escolha da contratante</div>
+
+                <ul class="pricing-features">
+                    <li><span class="check">✓</span> 1 (uma) palestra técnica com o Dr. Sidney Souza</li>
+                    <li><span class="check">✓</span> Tema selecionado entre os disponíveis nesta proposta</li>
+                    <li><span class="check">✓</span> Conteúdo adaptado ao perfil do público do evento</li>
+                    <li><span class="check">✓</span> Formato presencial ou transmissão on-line</li>
+                    <li><span class="check">✓</span> Metodologia RuralIn aplicada à realidade do agro</li>
+                </ul>
+
+                <div class="pricing-contract">
+                    💰 <strong style="color:var(--accent-light);">TOTAL: R$ 5.000,00</strong> por palestra
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== QUEM É SIDNEY SOUZA ========== -->
+    <section class="speaker-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Quem é Sidney Souza?</h2>
+                <p class="section-subtitle">Mais de 25 anos dedicados ao produtor rural e ao agronegócio</p>
+            </div>
+
+            <p class="speaker-intro">
+                Pai, filho, esposo, voluntário, empresário, consultor, professor de pós-graduações, mentor, palestrante e <strong>apaixonado pelo agronegócio</strong>. Uma trajetória que une academia, mercado e vivência real dentro da porteira.
+            </p>
+
+            <div class="creds-grid">
+                <div class="cred-item"><span class="cred-mark">🎓</span><span><strong>Doutor em Agronomia</strong> (foco em economia rural), Mestre em Administração (gestão da informação de empresas rurais), MBAs em Marketing e Planejamento Estratégico, Biodiesel e Logística.</span></div>
+                <div class="cred-item"><span class="cred-mark">📚</span><span><strong>Bacharel em Economia</strong> e Bacharel em Administração com ênfase no agronegócio. Técnico agrícola com demais formações técnicas voltadas ao agronegócio.</span></div>
+                <div class="cred-item"><span class="cred-mark">🏢</span><span><strong>Fundador da RuralIn</strong>, empresa de gestão, risco e ciência de dados com tecnologia própria.</span></div>
+                <div class="cred-item"><span class="cred-mark">⏳</span><span><strong>+25 anos</strong> dedicados a produtores rurais e empresas de cadeias produtivas do agronegócio, e <strong>+20 anos</strong> como consultor de empresas rurais.</span></div>
+                <div class="cred-item"><span class="cred-mark">🌱</span><span><strong>Mentor/Consultor</strong> do projeto LabCerrado da Embrapa Cerrados — DF.</span></div>
+                <div class="cred-item"><span class="cred-mark">🤝</span><span>Foi <strong>Diretor Executivo</strong> em uma das maiores cooperativas do agro mineiro.</span></div>
+                <div class="cred-item"><span class="cred-mark">💻</span><span>Sócio fundador e <strong>Diretor de Negócios da MaxxSoft Tecnologia</strong>, em soluções de software para o produtor rural e revendas de insumos.</span></div>
+                <div class="cred-item"><span class="cred-mark">📊</span><span>Atuou como <strong>Gerente Adm/Financeiro</strong> de empresas rurais e como consultor de implantação de ERP na Siagri (hoje grupo Aliare).</span></div>
+                <div class="cred-item"><span class="cred-mark">👨‍🏫</span><span><strong>Professor universitário por 20 anos</strong> nas áreas de agronegócio, gestão, empreendedorismo, finanças e economia. Atualmente leciona em cursos de pós-graduação.</span></div>
+                <div class="cred-item"><span class="cred-mark">🌾</span><span>Amante da vida, da simplicidade e da sabedoria da natureza. Curioso, aprecia esportes, viagens, leitura, uma boa prosa, churrasco e um bom queijo. Não fuma nem consome álcool.</span></div>
+            </div>
+
+            <div class="speaker-socials">
+                📷 Instagram: <a href="https://instagram.com/ruralin.ai" target="_blank">@ruralin.ai</a> &nbsp; | &nbsp;
+                💼 LinkedIn: <a href="https://www.linkedin.com/in/sidneyagro/" target="_blank">/in/sidneyagro</a> &nbsp; | &nbsp;
+                🌐 Site: <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralin.ai</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== REFERÊNCIAS ========== -->
+    <section class="section references-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Referências</h2>
+                <p class="section-subtitle">Lideranças do agro que já receberam nossas palestras e estão à disposição para referências</p>
+            </div>
+
+            <div class="refs-grid">
+                <div class="ref-card">
+                    <div class="ref-avatar">RL</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Rogério Lage</div>
+                        <div class="ref-role">Presidente da CooperAbaeté</div>
+                        <span class="ref-uf">MG</span><br>
+                        <a class="ref-phone" href="https://wa.me/5537999564654" target="_blank">📱 (37) 9 9956-4654</a>
+                    </div>
+                </div>
+
+                <div class="ref-card">
+                    <div class="ref-avatar">DN</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Darcy Neiva</div>
+                        <div class="ref-role">Diretor Sicoob CrediCopa</div>
+                        <span class="ref-uf">MG</span><br>
+                        <a class="ref-phone" href="https://wa.me/5538991964882" target="_blank">📱 (38) 9 9196-4882</a>
+                    </div>
+                </div>
+
+                <div class="ref-card">
+                    <div class="ref-avatar">EF</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Enio Fernandes</div>
+                        <div class="ref-role">Diretor na ZAFER</div>
+                        <span class="ref-uf">GO</span><br>
+                        <a class="ref-phone" href="https://wa.me/5564996413852" target="_blank">📱 (64) 9 9641-3852</a>
+                    </div>
+                </div>
+
+                <div class="ref-card">
+                    <div class="ref-avatar">FS</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Felipe Schwening</div>
+                        <div class="ref-role">Diretor na Agropecuária Schening</div>
+                        <span class="ref-uf">GO</span><br>
+                        <a class="ref-phone" href="https://wa.me/5564999563069" target="_blank">📱 (64) 9 9956-3069</a>
+                    </div>
+                </div>
+
+                <div class="ref-card">
+                    <div class="ref-avatar">PK</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Patrícia Kompier</div>
+                        <div class="ref-role">Diretora do Grupo Kompier</div>
+                        <span class="ref-uf">GO</span><br>
+                        <a class="ref-phone" href="https://wa.me/5564999327695" target="_blank">📱 (64) 9 9932-7695</a>
+                    </div>
+                </div>
+
+                <div class="ref-card">
+                    <div class="ref-avatar">R</div>
+                    <div class="ref-info">
+                        <div class="ref-name">Ricardo</div>
+                        <div class="ref-role">Gestor Financeiro na Fazenda Planalto</div>
+                        <span class="ref-uf">MT</span><br>
+                        <a class="ref-phone" href="https://wa.me/5566999869056" target="_blank">📱 (66) 9 9986-9056</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="refs-note">Sinta-se à vontade para entrar em contato com nossas referências.</p>
+        </div>
+    </section>
+
+    <!-- ========== DISPOSIÇÕES GERAIS ========== -->
+    <section class="section terms-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Disposições Gerais</h2>
+                <p class="section-subtitle">Condições aplicáveis à prestação do serviço</p>
+            </div>
+
+            <div class="terms-list">
+                <div class="term-item">
+                    <div class="term-letter">a</div>
+                    <div class="term-text">A assinatura desta proposta dá direito à RuralIn de emitir a <span class="highlight">nota fiscal</span> dos serviços a serem prestados, conforme descrito acima, com <span class="highlight">dez dias de antecedência</span> para a devida programação financeira.</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-letter">b</div>
+                    <div class="term-text">É de responsabilidade do cliente assegurar que as condições de <span class="highlight">hardware e software</span> tenham as configurações mínimas e necessárias para o acompanhamento e a prestação do serviço, em caso de transmissão <em>on-line</em>.</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-letter">c</div>
+                    <div class="term-text">Caso o serviço seja realizado <span class="highlight">fora da sede do contratado</span>, os custos de alimentação, hospedagem e deslocamento do(s) colaborador(es) serão de inteira responsabilidade do contratante.</div>
+                </div>
+                <div class="term-item">
+                    <div class="term-letter">d</div>
+                    <div class="term-text">É de responsabilidade do cliente a instalação de sistemas operacionais e gerenciadores de rede necessários, quando aplicável à transmissão do evento.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ACEITE ========== -->
+    <section class="accept-section" id="aceite">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">8</div>
+                <h2 class="section-title">Aceite da Proposta</h2>
+                <p class="section-subtitle">Preencha os dados abaixo para formalizar o aceite e agendarmos a palestra</p>
+            </div>
+
+            <div class="accept-card">
+                <h3>📋 Dados para Contratação</h3>
+                <p class="accept-desc">As informações abaixo são necessárias para a emissão da nota fiscal e o agendamento do evento.</p>
+
+                <form id="acceptForm" onsubmit="submitForm(event)">
+
+                    <div class="form-divider-label">🏢 Dados da Contratante</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Razão Social <span class="required">*</span></label>
+                            <input type="text" id="razaoSocial" value="Progresso Armazenamento e Comércio de Cereais" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CNPJ <span class="required">*</span></label>
+                            <input type="text" id="cnpj" placeholder="00.000.000/0000-00" required maxlength="18" oninput="maskCNPJ(this)">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Responsável <span class="required">*</span></label>
+                            <input type="text" id="responsavel" value="Rafael" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone / WhatsApp <span class="required">*</span></label>
+                            <input type="text" id="telefone" placeholder="(64) 99999-9999" required maxlength="15" oninput="maskPhone(this)">
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>E-mail <span class="required">*</span></label>
+                            <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Endereço de Cobrança <span class="required">*</span></label>
+                            <input type="text" id="enderecoCobranca" placeholder="Rua, nº, Bairro, Cidade - UF, CEP" required>
+                        </div>
+                    </div>
+
+                    <hr class="form-divider">
+                    <div class="form-divider-label">🎤 Dados do Evento</div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tema Escolhido <span class="required">*</span></label>
+                            <select id="tema" required>
+                                <option value="">Selecione um tema...</option>
+                                <option>Desafios da Gestão Profissional no Campo</option>
+                                <option>Desafios da Gestão Profissional e do Mercado de Commodities</option>
+                                <option>Inteligência de Mercado para Produtores Rurais</option>
+                                <option>Custos de Produção: Um Vilão dos Últimos Anos</option>
+                                <option>Duas Teses e uma Teoria: Produtividade ou Rentabilidade?</option>
+                                <option>Pessoas, Processos e Tecnologia no Campo</option>
+                                <option>Conectar para Vender: Relacionamento e Venda no Agro</option>
+                                <option>O Futuro do Agro: O Que Vem Por Aí? E Não é Sobre IA</option>
+                                <option>A definir com a RuralIn</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Data Prevista do Evento</label>
+                            <input type="date" id="dataEvento">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Formato <span class="required">*</span></label>
+                            <select id="formato" required>
+                                <option value="">Selecione...</option>
+                                <option>Presencial</option>
+                                <option>On-line (transmissão)</option>
+                                <option>Híbrido</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade / Local do Evento</label>
+                            <input type="text" id="localEvento" placeholder="Ex: Rio Verde - GO">
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="termsCheck" required>
+                        <label for="termsCheck">
+                            Declaro, em nome da <strong>Progresso Armazenamento e Comércio de Cereais</strong>, que li e concordo com os termos desta proposta comercial. Desejo contratar a <strong>Palestra RuralIn</strong> no valor de <strong>R$ 5.000,00</strong> e autorizo o uso dos dados acima para emissão da nota fiscal e agendamento.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-accept" id="btnAccept">
+                        ✅ Aceitar Proposta e Enviar Dados
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODAL SUCESSO ========== -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <div class="modal-title">Proposta Aceita com Sucesso!</div>
+            <div class="modal-desc">
+                Obrigado, <strong>Rafael</strong>!<br><br>
+                Seus dados foram registrados. A equipe da <strong>RuralIn</strong> entrará em contato em até <strong>24 horas</strong> para confirmar o agendamento da palestra e os detalhes do evento.<br><br>
+                <strong>Vamos juntos! 🌿🎤</strong>
+            </div>
+            <button class="modal-close" onclick="closeModal()">Enviar dados via WhatsApp →</button>
+        </div>
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-brand">Rural<span>In</span></div>
+        <p>Gestão Inteligente com Tecnologia</p>
+        <br>
+        <p>📧 sidneyagro@gmail.com &nbsp; | &nbsp; 📱 WhatsApp: (64) 9 9226-6886</p>
+        <p style="margin-top: 8px;">🌐 <a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank">ruralinai-commits.github.io/ruralin-site</a></p>
+        <br>
+        <p>© 2026 RuralIn — Todos os direitos reservados</p>
+        <p style="margin-top: 8px;">Proposta confidencial destinada exclusivamente à Progresso Armazenamento e Comércio de Cereais</p>
+    </footer>
+
+    <script>
+        function maskCNPJ(input) {
+            let v = input.value.replace(/\D/g, '');
+            v = v.replace(/^(\d{2})(\d)/, '$1.$2');
+            v = v.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            v = v.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            v = v.replace(/(\d{4})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        function maskPhone(input) {
+            let v = input.value.replace(/\D/g, '');
+            v = v.replace(/^(\d{2})(\d)/, '($1) $2');
+            v = v.replace(/(\d{5})(\d)/, '$1-$2');
+            input.value = v;
+        }
+
+        const WHATSAPP_RURALIN = '5564992266886';
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            const formData = {
+                razaoSocial: document.getElementById('razaoSocial').value,
+                cnpj: document.getElementById('cnpj').value,
+                responsavel: document.getElementById('responsavel').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                enderecoCobranca: document.getElementById('enderecoCobranca').value,
+                tema: document.getElementById('tema').value,
+                dataEvento: document.getElementById('dataEvento').value,
+                formato: document.getElementById('formato').value,
+                localEvento: document.getElementById('localEvento').value,
+                dataAceite: new Date().toLocaleString('pt-BR'),
+                valor: 'R$ 5.000,00 (uma palestra)'
+            };
+
+            const msg = `🌿 *ACEITE DE PROPOSTA — PALESTRA RURALIN*%0A%0A` +
+                `🏢 *Dados da Contratante:*%0A` +
+                `🏷️ Razão Social: ${formData.razaoSocial}%0A` +
+                `🧾 CNPJ: ${formData.cnpj}%0A` +
+                `👤 Responsável: ${formData.responsavel}%0A` +
+                `📱 Telefone: ${formData.telefone}%0A` +
+                `📧 E-mail: ${formData.email}%0A` +
+                `🏠 End. Cobrança: ${formData.enderecoCobranca}%0A%0A` +
+                `🎤 *Dados do Evento:*%0A` +
+                `📌 Tema: ${formData.tema}%0A` +
+                `📅 Data: ${formData.dataEvento || 'a definir'}%0A` +
+                `🖥️ Formato: ${formData.formato}%0A` +
+                `📍 Local: ${formData.localEvento || 'a definir'}%0A%0A` +
+                `💎 *Valor:* ${formData.valor}%0A` +
+                `📅 *Data do Aceite:* ${formData.dataAceite}%0A%0A` +
+                `✅ Proposta aceita digitalmente via portal RuralIn.`;
+
+            window._ruralinMsg = msg;
+            document.getElementById('successModal').classList.add('active');
+
+            console.log('=== ACEITE DA PROPOSTA ===');
+            console.log(JSON.stringify(formData, null, 2));
+            console.log('========================');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('active');
+            const msg = window._ruralinMsg;
+            if (msg) {
+                const whatsappURL = `https://wa.me/${WHATSAPP_RURALIN}?text=${msg}`;
+                window.open(whatsappURL, '_blank');
+            }
+        }
+
+        document.querySelectorAll('a[href="#aceite"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('#aceite').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+
+</body>
+</html>
