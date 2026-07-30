@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informativo · Meio de Semana 27–29/07 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a; --card:#131a2e; --card2:#1a2236; --bdr:#2a3654;
+    --t1:#f1f5f9; --t2:#94a3b8; --t3:#64748b;
+    --bl:#3b82f6; --cy:#06b6d4; --gn:#10b981; --em:#34d399; --yl:#f59e0b; --or:#f97316; --rd:#ef4444; --pr:#8b5cf6; --pk:#ec4899;
+    /* mapa commodity -> cor do modelo */
+    --soja:#10b981; --milho:#f59e0b; --boi:#ef4444; --cafe:#8b5cf6; --feijao:#06b6d4; --azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);
+    --gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);
+    --gCafe:linear-gradient(135deg,#8b5cf6,#a78bfa);
+    --gFeijao:linear-gradient(135deg,#06b6d4,#22d3ee);
+    --gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399; --baixa:#f87171; --neutro:#22d3ee;
+    /* aliases legados usados em estilos inline do corpo */
+    --verde-claro:#34d399; --petroleo:#60a5fa; --barro:#f87171; --ocre:#34d399;
+    --sh:0 8px 28px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 85% -20%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:38px 0 30px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--t2);margin:0 0 16px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:5px 13px;border-radius:50px;font-weight:700;color:var(--bl);letter-spacing:.14em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,48px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#34d399,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:66ch;color:var(--t2);margin:0}
+  .periodo{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:16px}
+  .periodo b{color:var(--t1);font-weight:600}
+
+  section{padding:44px 0}
+  section + section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--bl);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,31px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:70ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:19px 17px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.4)}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;align-items:center;gap:6px}
+  .card .lbl .tag{font-size:9.5px;padding:2px 7px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3);letter-spacing:.03em;white-space:nowrap}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;letter-spacing:-.01em;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;width:100%;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm{margin-top:2px}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444 0%,#f59e0b 50%,#10b981 100%)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card),0 0 6px rgba(255,255,255,.4)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.04em;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700;margin-top:1px}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);color:var(--t1);border-radius:16px;padding:24px clamp(18px,4vw,30px);box-shadow:var(--sh);border:1px solid var(--bdr);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(26px,5vw,38px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:var(--em);letter-spacing:.06em;text-transform:uppercase;margin-top:8px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:30px;align-items:start}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px 16px 10px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px}
+  .chart-box{position:relative;height:200px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .chart-foot{font-size:11px;color:var(--t3);margin:8px 2px 2px;font-family:'JetBrains Mono',monospace}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}
+  .analise p strong{color:#fff}
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bl);font-weight:700;margin:0 0 7px}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-top:6px}
+  .cen{border-radius:11px;padding:12px 13px;font-size:13px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:11.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.32)}.cen.bull h4{color:var(--em)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.32)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.32)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .ind-badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:50px;background:rgba(148,163,184,.16);color:var(--t2);margin-left:6px}
+
+  .agenda{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:start}
+  .macro-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:17px 19px;box-shadow:var(--sh);margin-bottom:12px;transition:border-color .3s}
+  .macro-card:hover{border-color:rgba(59,130,246,.4)}
+  .macro-card h4{margin:0 0 6px;font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#fff}
+  .macro-card p{margin:0;font-size:13.5px;color:var(--t2)}
+  .macro-card .stat{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--em)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);color:var(--t1);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);border:1px solid var(--bdr);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#8b5cf6)}
+  .sintese h2{color:#fff}.sintese .sec-sub{color:var(--t2)}
+  .sintese .sec-num{color:var(--em)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:var(--em)}
+  .matriz{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vies-b{font-weight:800;font-size:13px;margin-bottom:3px}
+  .mtile .acao{font-size:11px;color:var(--t2)}
+  .acao-produtor{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao-produtor .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bl);margin-bottom:10px}
+  .acao-produtor ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}
+  .acao-produtor li{margin-bottom:7px}
+
+  .nota{font-size:12px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-top:28px;line-height:1.5}
+  .nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:38px 0 30px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:28px;flex-wrap:wrap;align-items:flex-start}
+  .cred .name{font-family:'Fraunces',serif;font-size:24px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--bl);font-weight:600;font-size:14px;margin:0}
+  .cred .desc{font-size:13.5px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:15px;color:var(--em);margin:14px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;text-align:right;color:var(--t2)}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bl);margin-bottom:18px}
+
+  @media (max-width:880px){
+    .grid-cards{grid-template-columns:repeat(2,1fr)}
+    .driver{grid-template-columns:1fr;text-align:center}
+    .asset{grid-template-columns:1fr;gap:20px}
+    .agenda{grid-template-columns:1fr;gap:20px}
+    .matriz{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (max-width:560px){
+    section{padding:34px 0}
+    .grid-cards{grid-template-columns:1fr}
+    .cenarios{grid-template-columns:1fr}
+    .matriz{grid-template-columns:repeat(2,1fr)}
+    .cred-grid{flex-direction:column}.cred .contatos{text-align:left}
+    .periodo{font-size:12px;gap:8px 18px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">
+      <span class="pill">Informativo · Meio de Semana</span>
+      <span>27 a 29/07</span>
+      <span>Ruralin.AI</span>
+    </p>
+    <h1 class="title">O clima vira nos EUA e esfria os grãos; boi e café sobem <em>na contramão</em></h1>
+    <p class="thesis">Previsões de chuva e temperaturas amenas no Corn Belt retiraram o prêmio de risco e derrubaram a soja; o milho oscilou, amparado por lavouras piores. Enquanto isso, o mercado interno foi por outro caminho: o boi bateu R$ 350 com oferta curta, o café disparou com o clima na safra brasileira, e o feijão carioca caiu com a colheita do cerrado.</p>
+    <div class="periodo">
+      <span>Parcial de <b>27 a 29/07 de 2026</b> (seg–qua)</span>
+      <span>Grãos: clima virou · Interno: divergência</span>
+      <span>Cerrado · Goiás</span>
+    </div>
+  </div>
+</header>
+
+<!-- 01 TERMÔMETRO -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Termômetro do meio de semana</h2></div>
+    <p class="sec-sub">Onde cada mercado está. A barra vai de pressão <b>vendedora</b> (baixa) a <b>compradora</b> (alta). Grãos em Chicago; boi, café e feijão nos indicadores Cepea.</p>
+    <div class="grid-cards">
+      <div class="card" style="--ac:var(--soja);--acg:var(--gSoja)">
+        <div class="lbl">Soja · CBOT nov/26 <span class="tag">US$/bu</span></div>
+        <div class="val">11,93<span class="unit"> US$</span></div>
+        <div class="delta baixa">▼ −2,23% qua · clima melhorou</div>
+        <div class="spark-wrap"><canvas id="spkSoja"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:40%"></span></div><div class="ends"><span>Clima bom</span><span>Clima ruim</span></div></div>
+        <div class="vies baixa">Viés: perdeu prêmio de risco</div>
+      </div>
+      <div class="card" style="--ac:var(--milho);--acg:var(--gMilho)">
+        <div class="lbl">Milho · CBOT set/26 <span class="tag">US$/bu</span></div>
+        <div class="val">4,49<span class="unit"> US$</span></div>
+        <div class="delta neutro">↔ oscilou · lavouras piores dão piso</div>
+        <div class="spark-wrap"><canvas id="spkMilho"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:50%"></span></div><div class="ends"><span>Oferta</span><span>Clima EUA</span></div></div>
+        <div class="vies neutro">Viés: neutro, volátil</div>
+      </div>
+      <div class="card" style="--ac:var(--boi);--acg:var(--gBoi)">
+        <div class="lbl">Boi gordo · Cepea SP <span class="tag">R$/@</span></div>
+        <div class="val">~350<span class="unit"> R$</span></div>
+        <div class="delta alta">▲ bateu R$ 350 · oferta curta</div>
+        <div class="spark-wrap"><canvas id="spkBoi"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:72%"></span></div><div class="ends"><span>Oferta</span><span>Exportação</span></div></div>
+        <div class="vies alta">Viés: firme, altista</div>
+      </div>
+      <div class="card" style="--ac:var(--cafe);--acg:var(--gCafe)">
+        <div class="lbl">Café arábica · Cepea <span class="tag">R$/sc ②</span></div>
+        <div class="val">~1.780<span class="unit"> R$</span></div>
+        <div class="delta alta">▲ NY +6% seg · chuvas na safra</div>
+        <div class="spark-wrap"><canvas id="spkCafe"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:68%"></span></div><div class="ends"><span>Colheita</span><span>Clima/qualid.</span></div></div>
+        <div class="vies alta">Viés: altista, volátil</div>
+      </div>
+      <div class="card" style="--ac:var(--feijao);--acg:var(--gFeijao)">
+        <div class="lbl">Feijão carioca · Cepea <span class="tag">R$/sc ②</span></div>
+        <div class="val">~238<span class="unit"> R$</span></div>
+        <div class="delta baixa">▼ colheita do cerrado pressiona</div>
+        <div class="spark-wrap"><canvas id="spkFeijao"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:30%"></span></div><div class="ends"><span>Colheita</span><span>Demanda</span></div></div>
+        <div class="vies baixa">Viés: baixista</div>
+      </div>
+      <div class="card" style="--ac:var(--azul);--acg:var(--gAzul)">
+        <div class="lbl">Dólar · USD/BRL <span class="tag">spot</span></div>
+        <div class="val">5,11<span class="unit"> R$</span></div>
+        <div class="delta neutro">≈ estável · leve recuo qua (−0,15%)</div>
+        <div class="spark-wrap"><canvas id="spkCambio"></canvas></div>
+        <div class="therm"><div class="scale"><span class="mark" style="left:44%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+        <div class="vies neutro">Viés: lateral</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 DRIVER -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>O que virou a semana</h2></div>
+    <p class="sec-sub">Duas histórias correndo em paralelo: lá fora, o clima deixou de assustar; aqui dentro, cada mercado seguiu a sua própria oferta e demanda.</p>
+    <div class="driver">
+      <div class="big">A chuva chegou<small>Corn Belt · prêmio de risco esvaziou</small></div>
+      <p>As previsões passaram a indicar <b>chuvas mais abrangentes e temperaturas amenas</b> nas lavouras dos EUA, reduzindo o medo de quebra e <b>retirando o prêmio de risco</b> que sustentava os grãos. Somam-se a <b>queda do petróleo</b> (negociações de cessar-fogo EUA–Irã) e a <b>realização de fundos</b>. O milho resistiu melhor, amparado pela piora nas condições das lavouras (<b>67%→63%</b> boa/excelente). No Brasil, os mercados internos correram por conta própria: <b>boi</b> e <b>café</b> em alta, <b>feijão</b> em queda.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SOJA -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Soja — perdeu o prêmio do clima</h2></div>
+    <p class="sec-sub">A melhora nas previsões dos EUA anulou o efeito altista e derrubou a soja: forte baixa na quarta (−2,23% no novembro). No Brasil, prêmios e dólar ainda seguram o físico acima de R$ 150/sc.</p>
+    <div class="asset">
+      <div class="chart-card">
+        <div class="chead"><span class="t">CBOT soja nov/26 · US$/bu</span><span class="now mono baixa">US$ 11,93</span></div>
+        <div class="chart-box"><canvas id="chSoja"></canvas></div>
+        <div class="chart-foot">Tombo seg (27), reação ter (28), forte baixa qua (29).</div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Leitura fundamentalista</p>
+        <p>A soja <strong>despencou</strong> na segunda e, após uma reação na terça, voltou a cair forte na quarta (agosto −2,80% a US$ 11,78; novembro US$ 11,92¾). O gatilho foi a <strong>previsão de chuvas e clima ameno</strong> nos EUA, que reduziu as preocupações com a produtividade e <strong>retirou o prêmio de risco</strong>. O <strong>recuo do petróleo</strong> (cessar-fogo EUA–Irã) e a fraqueza dos óleos vegetais pesaram no complexo.</p>
+        <p>No Brasil, o quadro é mais firme: a <strong>demanda pela soja brasileira</strong> eleva o prêmio de exportação e sustenta o interno; os portos seguem entre <strong>R$ 150 e R$ 158/sc</strong>. A Abiove ainda elevou a projeção de processamento a um recorde de 63,3 Mt.</p>
+        <p class="tagline">Leitura gráfica</p>
+        <p>Testa o suporte psicológico de <strong>US$ 12,00</strong>; perdendo-o, abre para US$ 11,60. Retomada exige voltar acima de US$ 12,20.</p>
+        <div class="niveis"><span class="n"><b>Suporte</b>11,80 / 11,60</span><span class="n"><b>Resistência</b>12,20 / 12,50</span><span class="n"><b>Físico RG</b>R$ 150–158</span></div>
+        <div class="cenarios">
+          <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>“Chuvas furarem” de novo nos EUA → volta a US$ 12,00+.</p></div>
+          <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>US$ 11,80–12,20, com o físico BR sustentado por prêmios.</p></div>
+          <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>Pessimista</h4><p>Clima bom confirmado + petróleo fraco → busca US$ 11,60.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MILHO -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Milho — segurou melhor, com lavouras piores</h2></div>
+    <p class="sec-sub">O milho oscilou: caiu na segunda, subiu na terça (lavouras dos EUA pioraram para 63%) e recuou na quarta. No Brasil, com vendedores retraídos, o físico até subiu.</p>
+    <div class="asset">
+      <div class="chart-card">
+        <div class="chead"><span class="t">CBOT milho set/26 · US$/bu</span><span class="now mono neutro">US$ 4,49</span></div>
+        <div class="chart-box"><canvas id="chMilho"></canvas></div>
+        <div class="chart-foot">Ter (28): Dez +1,37% a US$ 4,80½. Qua: Set a 4,49.</div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Leitura fundamentalista</p>
+        <p>O milho mostrou mais resiliência que a soja. Na terça, subiu com a <strong>piora das condições das lavouras</strong> dos EUA (de 67% para <strong>63%</strong> boa/excelente) e a fraqueza do dólar — o dezembro fechou a US$ 4,80½ (+1,37%). Na quarta, acompanhou a realização geral e o setembro recuou a <strong>US$ 4,49</strong>.</p>
+        <p>No Brasil, o movimento é próprio: com <strong>vendedores retraídos</strong>, os preços internos subiram, mesmo com a colheita da safrinha avançando (44,1% da área). O indicador Cepea acumula alta no mês.</p>
+        <p class="tagline">Leitura gráfica</p>
+        <p>Range de <strong>US$ 4,45–4,60</strong>. O rumo depende do clima; abaixo de 4,45 alivia, acima de 4,60 retoma força.</p>
+        <div class="niveis"><span class="n"><b>Suporte</b>4,45 / 4,35</span><span class="n"><b>Resistência</b>4,60 / 4,70</span><span class="n"><b>Dez/26</b>US$ 4,80</span></div>
+        <div class="cenarios">
+          <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>Lavouras seguem piorando → volta a US$ 4,60+.</p></div>
+          <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>US$ 4,45–4,60; físico BR firme por retração de venda.</p></div>
+          <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>Atenção</h4><p>Clima bom + safrinha avançando pressionam.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 BOI -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Boi gordo — bateu R$ 350 com oferta curta</h2></div>
+    <p class="sec-sub">O boi seguiu na contramão dos grãos: ganhou força e a arroba alcançou R$ 350 em SP, sustentada pela oferta restrita e pelas escalas de abate apertadas dos frigoríficos.</p>
+    <div class="asset">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Indicador Cepea/B3 (SP) · R$/@</span><span class="now mono alta">~R$ 350</span></div>
+        <div class="chart-box"><canvas id="chBoi"></canvas></div>
+        <div class="chart-foot">Continuidade da recuperação: ~R$ 350 em SP.</div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Leitura fundamentalista</p>
+        <p>A arroba <strong>voltou a ganhar força</strong> e alcançou <strong>R$ 350</strong> em São Paulo, mantendo a trajetória de recuperação iniciada na semana anterior. O motor é a <strong>oferta restrita</strong> de animais: os frigoríficos seguem com <strong>escalas de abate curtas</strong>, o que aumenta o poder de negociação do pecuarista. O bezerro firme reforça o ciclo de retenção.</p>
+        <p>O ponto de atenção é o comércio externo: as <strong>exportações perderam ritmo</strong> em julho, e a tarifa dos EUA segue no radar. Mas, no curto prazo, a oferta curta é soberana.</p>
+        <p class="tagline">Leitura gráfica</p>
+        <p>Rompeu R$ 344 e testa <strong>R$ 350–352</strong>. Acima, mira R$ 360; suporte em R$ 344; recorde em R$ 367.</p>
+        <div class="niveis"><span class="n"><b>Suporte</b>344 / 340</span><span class="n"><b>Resistência</b>352 / 360</span><span class="n"><b>Recorde</b>R$ 367</span></div>
+        <div class="cenarios">
+          <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>Oferta segue curta + escalas apertadas → R$ 360.</p></div>
+          <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>Consolida R$ 346–352 em patamar alto.</p></div>
+          <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>Atenção</h4><p>Exportação fraca + real firme limitam a alta.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CAFÉ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Café — dispara com o clima na safra brasileira</h2></div>
+    <p class="sec-sub">O arábica voltou a subir com força: Nova York disparou 6% na segunda, com correção técnica e novas preocupações climáticas — chuvas durante a colheita estão prejudicando a qualidade dos grãos.</p>
+    <div class="asset">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Café arábica · Cepea <span class="ind-badge">② aprox.</span></span><span class="now mono alta">~R$ 1.780</span></div>
+        <div class="chart-box"><canvas id="chCafe"></canvas></div>
+        <div class="chart-foot">NY +6% na 2ª (27/07). Valores Cepea aproximados.</div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Leitura fundamentalista</p>
+        <p>O café <strong>disparou</strong> no início da semana — a bolsa de Nova York subiu <strong>6% na segunda</strong> —, impulsionado por correção técnica e por novas preocupações com a <strong>safra brasileira</strong>: as <strong>chuvas durante a colheita</strong> estão comprometendo a qualidade dos grãos, e a colheita segue atrasada. O arábica ainda acumula forte alta no mês.</p>
+        <p>O contrapeso vem do avanço da colheita, que amplia a oferta física, e do <strong>real firme</strong>, que limita os preços em reais. A volatilidade é a marca do momento.</p>
+        <p class="tagline">Leitura gráfica</p>
+        <p>Tendência de alta com fortes oscilações; a região de <strong>R$ 1.800</strong> é a resistência a vencer.</p>
+        <div class="niveis"><span class="n"><b>Suporte</b>~1.700</span><span class="n"><b>Resistência</b>~1.800 / 1.860</span><span class="n"><b>Driver</b>Clima/qualidade</span></div>
+        <div class="cenarios">
+          <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>Chuva segue afetando qualidade → rompe R$ 1.800.</p></div>
+          <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>Volátil ~R$ 1.700–1.800 ao sabor do clima.</p></div>
+          <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>Atenção</h4><p>Colheita deslancha + real firme → realização.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 FEIJÃO -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Feijão — colheita do cerrado derruba o carioca</h2></div>
+    <p class="sec-sub">Na contramão do café, o feijão carioca aprofundou a queda: o avanço da colheita no cerrado ampliou a oferta e intensificou a desvalorização dos preços.</p>
+    <div class="asset">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Feijão carioca · Cepea <span class="ind-badge">② aprox.</span></span><span class="now mono baixa">~R$ 238</span></div>
+        <div class="chart-box"><canvas id="chFeijao"></canvas></div>
+        <div class="chart-foot">Tendência de queda. Valores Cepea aproximados.</div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Leitura fundamentalista</p>
+        <p>O feijão carioca segue em <strong>queda</strong>, e o movimento se <strong>intensificou</strong> com o avanço da colheita no <strong>cerrado</strong>. A maior oferta de lotes pressiona as cotações, num momento de demanda comum para a época. A qualidade dos grãos — afetada em parte pelas chuvas — é o fator que ainda diferencia preços entre lotes.</p>
+        <p>Para o produtor de feijão, é um cenário de <strong>atenção</strong>: a janela de melhores preços tende a ficar para lotes de qualidade superior e para o período pós-pico de colheita.</p>
+        <p class="tagline">Leitura gráfica</p>
+        <p>Tendência de baixa enquanto durar o pico da colheita; recuperação depende do fim da pressão de oferta.</p>
+        <div class="niveis"><span class="n"><b>Vetor</b>Colheita cerrado</span><span class="n"><b>Diferencial</b>Qualidade do lote</span><span class="n"><b>Viés</b>Baixista</span></div>
+        <div class="cenarios">
+          <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>Chuva reduz qualidade e oferta boa fica escassa → sustenta lotes premium.</p></div>
+          <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>Queda enquanto a colheita do cerrado avança.</p></div>
+          <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>Pessimista</h4><p>Pico de oferta + demanda fraca aprofundam a baixa.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 DÓLAR & MACRO -->
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Dólar &amp; macro</h2></div>
+    <p class="sec-sub">O dólar trabalhou lateral perto de R$ 5,11, com leve recuo na quarta. O petróleo em queda (cessar-fogo EUA–Irã) foi o fio que ligou o macro aos grãos nesta semana.</p>
+    <div class="agenda">
+      <div class="chart-card">
+        <div class="chead"><span class="t">USD/BRL · fechamento diário</span><span class="now mono neutro">R$ 5,11</span></div>
+        <div class="chart-box"><canvas id="chCambio"></canvas></div>
+        <div class="chart-foot">Qua (29): dólar comercial −0,15%, a R$ 5,114.</div>
+      </div>
+      <div>
+        <div class="macro-card"><h4>Câmbio</h4><p>Lateral em <span class="stat">~R$ 5,11</span>, ainda em patamar de real firme. Segue limitando o repasse da alta externa — quando ela existe.</p></div>
+        <div class="macro-card"><h4>Petróleo &amp; geopolítica</h4><p>Negociações de <span class="stat">cessar-fogo EUA–Irã</span> derrubaram o petróleo, tirando suporte do óleo de soja e do etanol e ajudando a pressionar os grãos.</p></div>
+        <div class="macro-card"><h4>Comércio</h4><p>A <span class="stat">tarifa dos EUA</span> sobre o Brasil e o ritmo das exportações de carne seguem no radar da pecuária.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 SÍNTESE -->
+<section>
+  <div class="wrap">
+    <div class="sintese">
+      <div class="sec-head"><span class="sec-num" style="color:var(--ocre)">09</span><h2>Leitura do estrategista</h2></div>
+      <p class="sec-sub">O fio do meio de semana e o que observar até sexta.</p>
+      <p class="read">A semana escancarou uma <strong>divergência</strong>. Lá fora, bastou o mapa do tempo melhorar para o <strong>prêmio de risco evaporar</strong> — a soja devolveu boa parte do rali e só o milho resistiu, amparado por lavouras piores. Aqui dentro, cada mercado seguiu a própria lógica: o <strong>boi</strong> bateu R$ 350 porque falta gado na esteira dos frigoríficos; o <strong>café</strong> disparou porque a chuva atrapalha a colheita e ameaça a qualidade; e o <strong>feijão</strong> caiu justamente porque a colheita do cerrado deslanchou. É um bom lembrete de que o produtor brasileiro vive <strong>dois mercados ao mesmo tempo</strong> — o global, movido a clima e câmbio, e o doméstico, movido a oferta local. O recado: nos grãos, respeitar que a alta era climática (e, portanto, reversível); no boi e no café, aproveitar a força atual com <strong>vendas escalonadas</strong>; e, no feijão, priorizar qualidade e paciência com o preço.</p>
+      <div class="matriz">
+        <div class="mtile"><div class="h">Soja</div><div class="vies-b" style="color:#e6a6a6">Baixista</div><div class="acao">Perdeu prêmio; físico firme.</div></div>
+        <div class="mtile"><div class="h">Milho</div><div class="vies-b" style="color:#cfe3b0">Neutro</div><div class="acao">Lavouras piores dão piso.</div></div>
+        <div class="mtile"><div class="h">Boi</div><div class="vies-b" style="color:#8fd6a6">Altista</div><div class="acao">Bateu R$ 350; oferta curta.</div></div>
+        <div class="mtile"><div class="h">Café</div><div class="vies-b" style="color:#e0c08a">Altista</div><div class="acao">Clima na safra; volátil.</div></div>
+        <div class="mtile"><div class="h">Feijão</div><div class="vies-b" style="color:#e6a6a6">Baixista</div><div class="acao">Colheita do cerrado pesa.</div></div>
+        <div class="mtile"><div class="h">Dólar</div><div class="vies-b" style="color:#9fd3c4">Lateral</div><div class="acao">~R$ 5,11; real firme.</div></div>
+      </div>
+      <div class="acao-produtor">
+        <div class="t">O que observar até o fim da semana</div>
+        <ul>
+          <li><b>Soja e milho:</b> o clima do Corn Belt volta a ser tudo — se as chuvas “furarem” de novo, há espaço para reação; caso contrário, a pressão continua. Fazer a conta em reais.</li>
+          <li><b>Boi:</b> oferta curta favorece o vendedor; quem tem escala pronta encontra frigorífico comprando a R$ 350. Aproveitar sem apostar em topo.</li>
+          <li><b>Café:</b> volatilidade alta — vendas escalonadas nas altas, priorizando lotes de melhor qualidade.</li>
+          <li><b>Feijão:</b> mercado pressionado pela colheita; segurar qualidade e evitar vender no pico da oferta, se houver estrutura.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nota">
+      <b>Notas metodológicas e fontes.</b> Atualização parcial de 27 a 29/07 (seg–qua); a semana segue até sexta (31/07). Sem feriado no período. Cotações internacionais nos contratos de referência (soja nov/26 e ago/26; milho set/26 e dez/26). Dados verificados: soja ago US$ 11,78 (−2,80%) e nov US$ 11,92¾ (29/07); milho set US$ 4,49 e dez US$ 4,80½ (+1,37% em 28/07); dólar comercial R$ 5,114 (−0,15%, 29/07); condições das lavouras de milho nos EUA 63% boa/excelente (USDA, 26/07); boi alcançando R$ 350/@ em SP (Agrifatto/Portal DBO). <b>Café e feijão</b>: a direção e os fatos são confirmados (café — NY +6% em 27/07 e chuvas comprometendo a qualidade; feijão carioca — queda intensificada com a colheita do cerrado, ambos Cepea), mas os <b>valores em R$ exibidos são aproximados/indicativos (②)</b>, pois o fechamento diário exato do indicador não foi coletado para todos os dias. Conteúdo informativo e educacional — não constitui recomendação de compra ou venda. Fontes: CME/CBOT, ICE, CEPEA/ESALQ, B3, Banco Central, USDA, Safras & Mercado, Notícias Agrícolas, CNN Brasil, Canal Rural, Portal DBO, Abiove. Elaborado em 29/07/2026.
+    </div>
+  </div>
+</section>
+
+<footer class="cred">
+  <div class="wrap">
+    <div class="assin">Análise e Construção</div>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola</p>
+        <p class="role">Estrategista Econômico do Produtor</p>
+        <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+        <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+        <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+      </div>
+      <div class="contatos">
+        <div><a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a></div>
+        <div>@ruralin.ai</div>
+        <div><a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a></div>
+        <div>(64) 9 9223-3264</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const sub='#94a3b8', grid='rgba(148,163,184,.15)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',CAFE='#8b5cf6',FEIJAO='#06b6d4',AZUL='#3b82f6';
+  const dias=['27/07','28/07','29/07'];
+
+  Chart.defaults.font.family="'JetBrains Mono', monospace";
+  Chart.defaults.font.size=11; Chart.defaults.color=sub;
+
+  function sparkline(id,data,color){
+    new Chart(document.getElementById(id),{type:'line',
+      data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,
+        backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,36);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},
+        scales:{x:{display:false},y:{display:false}},animation:{duration:600}}});
+  }
+  sparkline('spkSoja',[12.12,12.20,11.93],SOJA);
+  sparkline('spkMilho',[4.52,4.58,4.49],MILHO);
+  sparkline('spkBoi',[346.00,348.50,350.00],BOI);
+  sparkline('spkCafe',[1760,1790,1780],CAFE);
+  sparkline('spkFeijao',[250,244,238],FEIJAO);
+  sparkline('spkCambio',[5.09,5.12,5.11],AZUL);
+
+  function lineChart(id,data,color,fmt,suggested){
+    new Chart(document.getElementById(id),{type:'line',
+      data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.25,fill:true,
+        backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,200);g.addColorStop(0,color+'40');g.addColorStop(1,color+'00');return g;}}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:10,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:grid},ticks:{color:sub}},
+          y:{grid:{color:grid},border:{display:false},suggestedMin:suggested[0],suggestedMax:suggested[1],ticks:{color:sub,callback:(v)=>fmt(v)}}},
+        animation:{duration:800}}});
+  }
+  lineChart('chSoja',[12.12,12.20,11.93],SOJA,v=>'US$ '+v.toFixed(2),[11.80,12.30]);
+  lineChart('chMilho',[4.52,4.58,4.49],MILHO,v=>'US$ '+v.toFixed(2),[4.40,4.65]);
+  lineChart('chBoi',[346.00,348.50,350.00],BOI,v=>'R$ '+v.toFixed(0),[342,354]);
+  lineChart('chCafe',[1760,1790,1780],CAFE,v=>'R$ '+v.toLocaleString('pt-BR'),[1700,1840]);
+  lineChart('chFeijao',[250,244,238],FEIJAO,v=>'R$ '+v.toFixed(0),[225,262]);
+  lineChart('chCambio',[5.09,5.12,5.11],AZUL,v=>'R$ '+v.toFixed(3),[5.04,5.16]);
+</script>
+</body>
+</html>
