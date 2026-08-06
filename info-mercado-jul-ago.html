@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal do Produtor · Julho + 03–05/08 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --papel:#F4F0E6;--papel-2:#ECE6D7;--tinta:#18231C;--tinta-suave:#415045;
+    --verde:#1E5638;--verde-claro:#2C7A4B;--ocre:#C28A2C;--ocre-escuro:#9A6A1C;
+    --barro:#B8462E;--petroleo:#15585E;--linha:#D8D0BD;--linha-forte:#C3B89E;
+    --sup:#B8462E;--res:#2C7A4B;
+    --sombra:0 1px 2px rgba(24,35,28,.06),0 8px 26px rgba(24,35,28,.08);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--papel);color:var(--tinta);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--verde-claro)}.baixa{color:var(--barro)}.neutro{color:var(--petroleo)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(194,138,44,.18), transparent 55%),linear-gradient(165deg,#16271D 0%,#1E5638 130%);color:#F4F0E6;padding:26px 0 22px;border-bottom:3px solid var(--ocre)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ocre);margin:0 0 10px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+  .eyebrow .pill{border:1px solid rgba(194,138,44,.5);border-radius:999px;padding:3px 11px;color:#EBDcc0}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(24px,4vw,38px);line-height:1.05;margin:0 0 8px;letter-spacing:-.01em}
+  h1.title em{font-style:italic;color:var(--ocre)}
+  .sub{font-size:14.5px;color:#DCD6C5;margin:0;max-width:76ch}
+
+  .portal{max-width:1180px;margin:0 auto;padding:22px 20px 0;display:grid;grid-template-columns:236px 1fr;gap:26px;align-items:start}
+  nav.side{position:sticky;top:14px;display:flex;flex-direction:column;gap:5px;background:#FBF8F0;border:1px solid var(--linha);border-radius:16px;padding:12px;box-shadow:var(--sombra)}
+  nav.side .side-h{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave);padding:6px 10px 8px;border-bottom:1px solid var(--linha);margin-bottom:4px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:background .15s,border-color .15s;user-select:none}
+  .nav-item:hover{background:var(--papel-2)}
+  .nav-item.active{background:var(--papel-2);border-color:var(--linha-forte);box-shadow:inset 3px 0 0 var(--ac,var(--verde))}
+  .nav-item .emo{font-size:17px;width:22px;text-align:center;flex:none}
+  .nav-item .nm{font-size:14px;font-weight:600;flex:1}
+  .nav-item .dot{width:9px;height:9px;border-radius:50%;flex:none}
+
+  main.content{min-width:0;padding-bottom:20px}
+  .panel{display:none;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .a-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-bottom:2px solid var(--ac,var(--linha));padding-bottom:14px;margin-bottom:18px}
+  .a-head .emo{font-size:24px}
+  .a-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.2vw,30px);margin:0;letter-spacing:-.01em}
+  .a-head .val{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;margin-left:auto}
+  .a-head .val small{font-size:12px;color:var(--tinta-suave);font-weight:400;font-family:'Inter',sans-serif}
+  .a-head .delta{font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:500;width:100%}
+  .vbadge{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:7px}
+  .vbadge.alta{background:rgba(44,122,75,.14);color:var(--verde-claro)}
+  .vbadge.baixa{background:rgba(184,70,46,.13);color:var(--barro)}
+  .vbadge.neutro{background:rgba(21,88,94,.12);color:var(--petroleo)}
+
+  .block-t{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ocre-escuro);font-weight:600;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  .block-t::before{content:"";width:16px;height:2px;background:var(--ac,var(--ocre));border-radius:2px}
+  .block-t:first-child{margin-top:0}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin:2px 0 6px}
+  .tile{background:#FBF8F0;border:1px solid var(--linha);border-radius:11px;padding:11px 13px;border-left:3px solid var(--ac,var(--verde))}
+  .tile .tl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta-suave);margin-bottom:4px;line-height:1.3}
+  .tile .tv{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;line-height:1.15}
+
+  .a-body p{margin:0 0 11px;font-size:14.5px}
+  .a-body p strong{color:var(--verde)}
+
+  .charts2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:2px 0 4px}
+  .chart-card{background:#FBF8F0;border:1px solid var(--linha);border-radius:14px;padding:16px 16px 12px;box-shadow:var(--sombra)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
+  .chart-card .chead .t{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta-suave)}
+  .chart-box{position:relative;height:218px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:16px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tinta-suave);margin-top:9px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:6px}
+  .leg-sr .ln{width:18px;height:0;display:inline-block}
+  .leg-sr .lr{border-top:2px dashed var(--res)}
+  .leg-sr .ls{border-top:2px dashed var(--sup)}
+
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px}
+  .niveis .n{font-family:'IBM Plex Mono',monospace;font-size:12px;border:1px solid var(--linha-forte);border-radius:8px;padding:5px 9px;background:#FBF8F0}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-suave);font-weight:600;margin-bottom:2px}
+
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:8px 0 2px}
+  .cen{border-radius:11px;padding:12px 13px;font-size:13px;border:1px solid var(--linha)}
+  .cen h4{margin:0 0 5px;font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--tinta-suave)}
+  .cen.bull{background:rgba(44,122,75,.08);border-color:rgba(44,122,75,.28)}.cen.bull h4{color:var(--verde-claro)}
+  .cen.base{background:rgba(21,88,94,.07);border-color:rgba(21,88,94,.26)}.cen.base h4{color:var(--petroleo)}
+  .cen.bear{background:rgba(184,70,46,.08);border-color:rgba(184,70,46,.26)}.cen.bear h4{color:var(--barro)}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  .esperar{margin-top:16px;background:linear-gradient(160deg,#1b3324,#24623f);color:#EAF1E6;border-radius:12px;padding:15px 17px}
+  .esperar .h{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ocre);margin-bottom:6px}
+  .esperar p{margin:0;font-size:13.5px;color:#DCE7D3}
+  .proc{margin-top:12px;background:var(--papel-2);border:1px solid var(--linha);border-radius:9px;padding:10px 12px;font-size:10.5px;color:var(--tinta-suave);line-height:1.5}
+  .proc b{color:var(--tinta)}
+
+  .ov-intro{font-size:15px;color:var(--tinta-suave);max-width:82ch;margin:0 0 22px}
+  .ov-intro strong{color:var(--verde)}
+  .ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .ov-card{background:#FBF8F0;border:1px solid var(--linha);border-radius:13px;padding:15px;box-shadow:var(--sombra);cursor:pointer;border-top:3px solid var(--ac,var(--verde));transition:transform .15s}
+  .ov-card:hover{transform:translateY(-2px)}
+  .ov-card .top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .ov-card .emo{font-size:17px}.ov-card .nm{font-family:'Fraunces',serif;font-size:16px;font-weight:600}
+  .ov-card .val{font-family:'IBM Plex Mono',monospace;font-size:19px;font-weight:600}
+  .ov-card .val small{font-size:11px;color:var(--tinta-suave);font-weight:400;font-family:'Inter',sans-serif}
+  .ov-card .dl{font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:2px}
+  .scale{position:relative;height:7px;border-radius:5px;background:linear-gradient(90deg,var(--barro) 0%,#D9B36A 50%,var(--verde-claro) 100%);opacity:.85;margin-top:10px}
+  .scale .mark{position:absolute;top:-3px;width:3px;height:13px;border-radius:2px;background:var(--tinta);box-shadow:0 0 0 2px #FBF8F0}
+  .nota{font-size:11.5px;color:var(--tinta-suave);background:var(--papel-2);border:1px solid var(--linha);border-radius:10px;padding:13px 15px;margin-top:22px;line-height:1.5}
+
+  footer.cred{background:#16271D;color:#E6E0D0;padding:34px 0 28px;border-top:3px solid var(--ocre);margin-top:26px}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--ocre);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:#CFC7B2;max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:#E6E0D0;margin:12px 0 0}
+  .cred .contatos{font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:#E6E0D0;text-decoration:none;border-bottom:1px solid rgba(194,138,44,.45)}
+  .cred .assin{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ocre);margin-bottom:16px}
+
+  @media (max-width:820px){
+    .portal{grid-template-columns:1fr;gap:16px}
+    nav.side{position:static;flex-direction:row;overflow-x:auto;gap:8px;padding:10px;-webkit-overflow-scrolling:touch}
+    nav.side .side-h{display:none}
+    .nav-item{flex:none;flex-direction:column;gap:5px;min-width:74px;text-align:center;padding:8px 6px}
+    .nav-item .nm{font-size:11.5px}
+    .nav-item.active{box-shadow:inset 0 -3px 0 var(--ac,var(--verde))}
+    .charts2{grid-template-columns:1fr}
+    .cenarios{grid-template-columns:1fr}
+    .ov-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:520px){
+    .ov-grid{grid-template-columns:1fr}
+    .a-head .val{margin-left:0;width:100%}
+    .cred-grid{flex-direction:column}.cred .contatos{text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">
+      <span class="pill">Portal do Produtor</span>
+      <span>Panorama técnico &amp; fundamentalista</span>
+      <span>Ruralin.AI</span>
+    </p>
+    <h1 class="title">Um agro de <em>duas velocidades</em> — fecha julho, começa agosto</h1>
+    <p class="sub">Nove culturas + câmbio. Escolha um item na barra lateral: cada painel traz indicadores-chave, fundamentos aprofundados, dois gráficos (trajetória e zonas técnicas), cenários e o que esperar. Período: fechamento de julho/2026 + 03 a 05/08.</p>
+  </div>
+</header>
+
+<div class="portal">
+  <nav class="side" id="side"><div class="side-h">Culturas &amp; câmbio</div></nav>
+  <main class="content" id="content"></main>
+</div>
+
+<footer class="cred">
+  <div class="wrap">
+    <div class="assin">Análise e Construção</div>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola</p>
+        <p class="role">Estrategista Econômico do Produtor</p>
+        <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+        <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+        <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+      </div>
+      <div class="contatos">
+        <div><a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a></div>
+        <div>@ruralin.ai</div>
+        <div><a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a></div>
+        <div>(64) 9 9223-3264</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const L = ['1º jul','15 jul','31 jul','03/08','04/08','05/08'];
+  const ASSETS = [
+    { id:'soja', nome:'Soja', emo:'🌱', cor:'#A17C46', unid:'CBOT ref. · US$/bu',
+      val:'11,60', un:'US$', delta:'▼ recuou no fim de jul/início de ago · médias de julho foram as maiores de 2026', vies:'Baixista/volátil', vcls:'baixa', mark:42,
+      labels:L, data:[11.45,12.00,11.80,11.78,11.55,11.60], fmt:v=>'US$ '+v.toFixed(2), ymin:11.2, ymax:12.3,
+      sup:[11.55,11.30], res:[11.90,12.20],
+      tiles:[['Estoque final EUA 26/27','8,44 Mt'],['Import. China','115 Mt'],['Esmag. jun (EUA)','+15,4%'],['Físico Paranaguá','~R$ 140/sc'],['Médias de julho','maiores de 2026']],
+      fund:[
+        'O balanço global segue amplo, mas a demanda impede o mercado de desabar. No WASDE de julho, o USDA manteve os estoques finais dos EUA apertados em <strong>8,44 Mt</strong> e elevou as importações da China para <strong>115 Mt</strong> — a China voltou a comprar soja brasileira e antecipa negócios da safra nova.',
+        'O <strong>esmagamento de junho</strong> nos EUA surpreendeu (+15,4% na comparação anual), reforçando a demanda por farelo e óleo. No Brasil, a Abiove projeta processamento recorde de 63,3 Mt e os prêmios de porto seguem firmes (Paranaguá ~R$ 140/sc, RS até R$ 158).',
+        'O contrapeso é estrutural: a área dos EUA cresceu (85,4 mi acres) e a safra 26/27 se forma grande. Por isso julho foi de <strong>rali climático seguido de realização</strong> — e, ainda assim, as médias do mês foram as maiores de 2026.'],
+      tec:'Tecnicamente, a soja perdeu o suporte psicológico dos <strong>US$ 12,00</strong> e trabalha o piso de US$ 11,55. A tendência de curtíssimo prazo virou de baixa após o topo de 20/07 (~US$ 12,26), com o rompimento da linha de alta. Enquanto ficar abaixo de US$ 11,90, o viés é vendedor; recuperar os US$ 12,00 reabre o teste de US$ 12,20. Volatilidade alta, típica de mercado climático.',
+      niveis:[['Suporte','11,55 / 11,30'],['Resistência','11,90 / 12,20'],['Físico','~R$ 140/sc']],
+      cen:['Calor/seca no enchimento (agosto) → rompe US$ 12,00 rumo a 12,20.','US$ 11,55–12,00 seguindo o clima e a China.','Chuvas confirmadas + real forte → busca US$ 11,30.'], proc:null },
+
+    { id:'milho', nome:'Milho', emo:'🌽', cor:'#D99A16', unid:'CBOT set/26 · US$/bu',
+      val:'4,49', un:'US$', delta:'▲ +3% no mês (Cepea) · realização no início de agosto', vies:'Neutro-altista', vcls:'neutro', mark:56,
+      labels:L, data:[4.15,4.47,4.52,4.56,4.45,4.49], fmt:v=>'US$ '+v.toFixed(2), ymin:4.05, ymax:4.80,
+      sup:[4.40,4.30], res:[4.60,4.75],
+      tiles:[['Estoque final EUA','45,46 Mt'],['Yield EUA','183 bu/ac'],['Físico BR','~R$ 64/sc (+3%)'],['Exportação EUA','ritmo recorde'],['Etanol','proposta E30→E32']],
+      fund:[
+        'O WASDE de julho cortou os estoques finais dos EUA de 49,78 para <strong>45,46 Mt</strong>, um aperto relevante, mesmo com o yield mantido em 183 bu/acre. O <strong>calor de julho na polinização</strong> provavelmente reduziu o teto de produtividade — algo que o mercado ainda vai medir nos próximos relatórios.',
+        'A demanda ajuda: as exportações americanas correm em <strong>ritmo recorde</strong> e a proposta de elevar a mistura de etanol para 32% (E32) reforça o consumo interno. No Brasil, o indicador Cepea subiu <strong>3% em julho</strong> (~R$ 64/sc).',
+        'O freio doméstico é a <strong>safrinha</strong>: a colheita avança e despeja volume, pressionando o físico regional e mantendo a B3 mais lenta que Chicago. O tamanho da quebra no Centro-Oeste (GO, MG, MS) segue como a principal incógnita.'],
+      tec:'O milho recuperou-se das mínimas e testou <strong>US$ 4,60</strong> (máxima desde maio) antes de realizar no início de agosto. A tendência de fundo é de recuperação: suporte em US$ 4,40, resistência em US$ 4,60. Enquanto sustentar os US$ 4,45, o viés é neutro-altista; abaixo disso, alivia rumo a US$ 4,30. O físico interno anda descolado (mais fraco) por conta da colheita.',
+      niveis:[['Suporte','4,40 / 4,30'],['Resistência','4,60 / 4,75'],['Físico BR','~R$ 64/sc']],
+      cen:['Dano de polinização confirmado + clima seco → US$ 4,75.','US$ 4,40–4,60; físico BR travado pela safrinha.','Clima bom + pico da colheita BR → US$ 4,30.'], proc:null },
+
+    { id:'cafe', nome:'Café', emo:'☕', cor:'#7A4B2B', unid:'Arábica Cepea · R$/sc 60kg',
+      val:'1.730', un:'R$', delta:'▲ +10,48% em julho · leve queda em agosto (−0,82%)', vies:'Altista, volátil', vcls:'alta', mark:68,
+      labels:L, data:[1575,1680,1742,1712,1730,1725], fmt:v=>'R$ '+v.toLocaleString('pt-BR'), ymin:1550, ymax:1830,
+      sup:[1680], res:[1800],
+      tiles:[['Arábica (04/08)','R$ 1.729,84'],['Variação julho','+10,48%'],['Robusta','R$ 1.095'],['Safra 26/27 (Conab)','66,2 mi sc'],['Colheita arábica','~80% feita']],
+      fund:[
+        'O arábica foi o destaque do agro em julho: <strong>+10,48%</strong> no Cepea, a maior alta mensal do levantamento. O motor foi o <strong>clima</strong> — chuvas em regiões produtoras atrasaram a colheita e acenderam o alerta sobre a qualidade dos grãos, mesmo com a safra avançando.',
+        'Em Nova York, a <strong>volatilidade</strong> é a marca: o arábica caiu forte na 2ª (03/08) com o avanço da colheita e o dólar forte, e reagiu na 3ª (04/08) por recuperação técnica, fechando a R$ 1.729,84. O robusta também subiu, sustentado pela menor produção da variedade.',
+        'O fator de fundo é <strong>baixista de médio prazo</strong>: a Conab projeta safra recorde de 66,2 mi sacas em 26/27, com expectativa de produção elevada também em 27/28 (salvo geada/seca). A alta atual é mais de clima/qualidade do que de escassez estrutural.'],
+      tec:'Tendência de alta de curto prazo, mas com oscilações bruscas (amplitude diária frequentemente acima de 2%). A <strong>resistência psicológica</strong> está em R$ 1.800; o suporte, em R$ 1.680. Topos e fundos ascendentes enquanto o clima preocupar; perder R$ 1.680 sinaliza que a oferta nova assumiu o controle.',
+      niveis:[['Suporte','~1.680'],['Resistência','~1.800'],['Robusta','~R$ 1.095']],
+      cen:['Chuva/geada afeta a qualidade → rompe R$ 1.800.','Volátil R$ 1.680–1.800 ao sabor do clima.','Colheita deslancha + real forte → abaixo de R$ 1.680.'],
+      proc:'<b>Procedência:</b> variação mensal (+10,48%) e o dia 04/08 (R$ 1.729,84) verificados; pontos intradiários da trajetória são aproximados (②).' },
+
+    { id:'algodao', nome:'Algodão', emo:'🧵', cor:'#6E8CA0', unid:'Pluma Cepea · índice (base 100 = 1º jul)',
+      val:'reagindo', un:'', delta:'▼ −5,5% em julho · recuperação na 2ª quinzena e em agosto', vies:'Recuperação', vcls:'neutro', mark:52,
+      labels:L, data:[100,96.0,95.5,97.0,98.5,99.5], fmt:v=>v.toFixed(1), ymin:93, ymax:103,
+      sup:[96], res:[100],
+      tiles:[['Variação julho','−5,5%'],['Tendência agosto','recuperação'],['Referência','ICE + câmbio'],['Oferta','restrita (qualidade)']],
+      fund:[
+        'Depois de recuar <strong>5,5% em julho</strong> — queda concentrada na 1ª quinzena —, a pluma voltou a subir na 2ª metade do mês e no início de agosto. A virada tem causa clara: a <strong>postura firme dos vendedores</strong> diante da oferta restrita de lotes de qualidade superior.',
+        'A colheita e o beneficiamento avançam em ritmo lento no Brasil, e o saldo remanescente da safra 24/25 de melhor qualidade é limitado. Isso, somado a valores mais altos na <strong>ICE</strong> e à necessidade imediata de parte dos compradores, sustenta a recuperação.',
+        'O algodão é fortemente atrelado ao <strong>mercado externo e ao câmbio</strong>: como a maior parte é exportada, a paridade em dólar dita o piso. O real firme limita os ganhos em reais, mas a demanda global e a oferta curta de qualidade favorecem o vendedor.'],
+      tec:'Padrão de <strong>recuperação após correção</strong>: o índice retomou parte da queda de julho e busca reencontrar o patamar anterior (base 100). Enquanto os vendedores seguirem retraídos e a ICE firme, o viés é de continuidade. Suporte no índice 96; superar 100 confirma a retomada plena.',
+      niveis:[['Suporte (índice)','96'],['Resistência (índice)','100'],['Referência','ICE + câmbio']],
+      cen:['ICE firme + oferta curta de qualidade → supera o patamar pré-queda.','Recuperação gradual com liquidez seletiva.','Avanço do beneficiamento + real forte → nova pressão.'],
+      proc:'<b>Procedência:</b> variação de julho (−5,5%) e a direção de recuperação verificadas; nível exibido como <b>índice base 100</b> (②), não em R$.' },
+
+    { id:'sorgo', nome:'Sorgo', emo:'🌾', cor:'#B08D57', unid:'Físico BR · R$/sc (aproximado ②)',
+      val:'~49', un:'R$', delta:'↔ acompanha o milho · pressão da safrinha', vies:'Neutro', vcls:'neutro', mark:50,
+      labels:L, data:[48,47,49,49,48,49], fmt:v=>'R$ '+v.toFixed(0), ymin:44, ymax:53,
+      sup:[46], res:[51],
+      tiles:[['Relação c/ milho','~80%'],['Físico (②)','~R$ 49/sc'],['Vetor','safrinha'],['Demanda','ração/confinamento']],
+      fund:[
+        'O sorgo é, na prática, um <strong>satélite do milho</strong>: o preço costuma girar em torno de <strong>75–85% do valor do cereal</strong>, já que compete diretamente na formulação de ração animal. Quando o milho sobe, o sorgo tende a acompanhar com defasagem.',
+        'A colheita da <strong>safrinha</strong> amplia a oferta e limita altas no curto prazo. Em contrapartida, a firmeza do milho e a demanda de confinamentos e da avicultura sustentam o piso — o sorgo ganha atratividade justamente quando o milho fica caro.',
+        'No plano externo, a <strong>trégua comercial EUA–China</strong>, que inclui o sorgo entre os produtos com tarifas suspensas, aquece a demanda pelo grão americano e serve de referência de fundo para os preços globais do cereal forrageiro.'],
+      tec:'Sem mercado futuro líquido próprio no Brasil, a leitura técnica do sorgo <strong>espelha o milho</strong>: enquanto o cereal sustentar o patamar (suporte ~R$ 46, resistência ~R$ 51 na praça), o sorgo acompanha. Os valores são aproximados (②) e devem ser calibrados pela cotação real da praça.',
+      niveis:[['Suporte','~R$ 46'],['Resistência','~R$ 51'],['Referência','~80% do milho']],
+      cen:['Milho firme + demanda de confinamento → busca R$ 51.','Acompanha o milho, com a safrinha limitando.','Pico da colheita + milho fraco → recuo.'],
+      proc:'<b>Procedência:</b> direção verificada (vínculo ao milho + safrinha); valores em R$/sc <b>aproximados (②)</b>.' },
+
+    { id:'feijao', nome:'Feijão', emo:'🫘', cor:'#7D7A45', unid:'Carioca Cepea · R$/sc (aproximado ②)',
+      val:'~230', un:'R$', delta:'▼ maior oferta pressiona o carioca (preto mais estável)', vies:'Baixista', vcls:'baixa', mark:28,
+      labels:L, data:[265,250,240,236,233,230], fmt:v=>'R$ '+v.toFixed(0), ymin:220, ymax:272,
+      sup:[228], res:[250],
+      tiles:[['Carioca (②)','~R$ 230/sc'],['Preto','mais estável'],['Vetor','3ª safra + cerrado'],['Diferencial','qualidade do lote']],
+      fund:[
+        'O feijão <strong>carioca</strong> está sob forte pressão de oferta: a entrada da <strong>3ª safra</strong> e o avanço da colheita no <strong>cerrado</strong> ampliaram a disponibilidade de lotes num momento de demanda comum para a época, intensificando a desvalorização no campo.',
+        'O feijão <strong>preto</strong> mostra maior estabilidade, com dinâmica de oferta menos pressionada. A <strong>qualidade dos grãos</strong> — afetada em parte pelas chuvas durante a colheita — virou o principal fator de diferenciação de preços entre lotes.',
+        'É um mercado tipicamente <strong>doméstico e sazonal</strong>: sem exportação relevante e com estoques que giram rápido, os preços reagem com força ao ritmo da colheita. A recuperação costuma vir quando o pico de oferta passa e a qualidade se torna escassa.'],
+      tec:'Tendência de <strong>baixa definida</strong> enquanto durar o pico de colheita, com sucessivos fundos mais baixos. O suporte de referência está em ~R$ 228; a resistência, em ~R$ 250. A reversão depende de dois gatilhos: o fim da pressão de oferta e a valorização de lotes de qualidade superior. Valores aproximados (②).',
+      niveis:[['Suporte','~R$ 228'],['Resistência','~R$ 250'],['Diferencial','Qualidade']],
+      cen:['Chuva reduz qualidade e oferta boa fica escassa → sustenta lotes premium.','Queda enquanto a colheita do cerrado avança.','Pico de oferta + demanda fraca aprofundam a baixa.'],
+      proc:'<b>Procedência:</b> direção verificada (carioca pressionado; preto estável); valores em R$/sc <b>aproximados (②)</b>.' },
+
+    { id:'trigo', nome:'Trigo', emo:'🌾', cor:'#C6972E', unid:'CBOT set/26 · US$/bu',
+      val:'6,40', un:'US$', delta:'▲ maior patamar no PR desde ago/25 · prêmio geopolítico', vies:'Altista', vcls:'alta', mark:64,
+      labels:L, data:[5.95,6.20,6.45,6.51,6.39,6.42], fmt:v=>'US$ '+v.toFixed(2), ymin:5.85, ymax:6.72,
+      sup:[6.10,5.90], res:[6.60],
+      tiles:[['CBOT set/26','US$ 6,40'],['PR (Cepea)','maior desde ago/25'],['Export. RUS+UCR','21,1 Mt'],['vs projeção USDA','32,9 Mt'],['Driver','Mar Negro']],
+      fund:[
+        'O trigo é o grão mais sensível à <strong>geopolítica</strong>. Os conflitos no <strong>Mar Negro</strong> — bloqueios e ataques a navios — restringem as exportações de Rússia e Ucrânia, estimadas em apenas <strong>21,1 mi t</strong> entre julho e novembro, contra 32,9 mi projetadas pelo USDA. Esse gap sustenta o prêmio de risco.',
+        'Outros exportadores (UE, EUA) podem acrescentar de 4 a 6 mi t até novembro, mas a maior parte da oferta de Argentina e Austrália só chega em dezembro. Leilões de referência, como o da <strong>Argélia</strong>, são acompanhados como termômetro de competitividade.',
+        'No Brasil, o cereal tem peso menor no Cerrado, mas o preço médio no <strong>Paraná atingiu o maior patamar desde agosto de 2025</strong>. O trigo funciona como termômetro de risco global e referência para a paridade de importação.'],
+      tec:'Após recuperar-se de uma mínima de três semanas (03/08, +1,8%), o trigo <strong>corrigiu na 3ª feira</strong> com tomada de lucro dos fundos. Opera num canal de US$ 6,10–6,55, com o prêmio geopolítico no comando. Romper US$ 6,60 abre espaço para US$ 6,85; perder US$ 6,10 indica distensão.',
+      niveis:[['Suporte','6,10 / 5,90'],['Resistência','6,60 / 6,85'],['Driver','Mar Negro']],
+      cen:['Escalada no Mar Negro trava embarques → US$ 6,60+.','Prêmio de risco em US$ 6,10–6,55.','Distensão/cessar-fogo → devolve o prêmio a US$ 6,10.'], proc:null },
+
+    { id:'boi', nome:'Boi gordo', emo:'🐂', cor:'#B5533C', unid:'Cepea (SP) · R$/@',
+      val:'~352', un:'R$', delta:'▲ +3,9% em julho · oferta curta, firme em agosto', vies:'Altista', vcls:'alta', mark:70,
+      labels:L, data:[333,325,350,350,351,352], fmt:v=>'R$ '+v.toFixed(0), ymin:320, ymax:364,
+      sup:[344,340], res:[355,360],
+      tiles:[['Arroba SP','~R$ 352'],['Variação julho','+3,9%'],['Bezerro MS','R$ 3.379 (+10,2%)'],['Escala de abate','~5 dias (curta)'],['Recorde','R$ 367']],
+      fund:[
+        'A arroba fechou julho com alta de <strong>3,9%</strong>, desenhando um “V” que reverteu a correção do início do mês. O motor é a <strong>oferta restrita</strong> de animais prontos: com escalas de abate curtas (~5 dias úteis), os frigoríficos têm dificuldade de completar a linha, o que transfere poder de barganha ao pecuarista.',
+        'O ciclo é estrutural: o <strong>bezerro</strong> segue firme (R$ 3.379/cabeça em MS, +10,2% no ano), sinal de retenção de matrizes e reposição aquecida — o que restringe a oferta futura de boi terminado e sustenta a arroba no 2º semestre.',
+        'O ponto de atenção é o comércio externo: as <strong>exportações perderam ritmo</strong> em julho e a tarifa dos EUA está no radar (embora acordos preservem parte das exportações do agro). A China segue como principal destino, e a nova <strong>cota chinesa</strong>, a partir de outubro, é um evento a monitorar.'],
+      tec:'Tendência de alta retomada: a arroba rompeu R$ 344 e trabalha acima de R$ 350, com suporte em <strong>R$ 344</strong> e resistência em <strong>R$ 355–360</strong>. Estrutura de topos e fundos ascendentes; o recorde histórico (R$ 367) é o alvo maior. Só perde força abaixo de R$ 340.',
+      niveis:[['Suporte','344 / 340'],['Resistência','355 / 360'],['Recorde','R$ 367']],
+      cen:['Oferta curta + China firme → busca R$ 360 e o recorde.','Consolida R$ 346–355 em patamar alto.','Exportação fraca + real forte → correção a R$ 344.'], proc:null },
+
+    { id:'leite', nome:'Leite', emo:'🥛', cor:'#4E8C8C', unid:'Ao produtor · R$/litro (mensal ②)',
+      val:'~2,83', un:'R$', delta:'▲ +33% no 1º semestre · custos +14%', vies:'Altista (margem apertada)', vcls:'alta', mark:60,
+      labels:['Mar','Abr','Mai','Jun','Jul','Ago'], data:[2.55,2.62,2.64,2.78,2.83,2.85], fmt:v=>'R$ '+v.toFixed(2), ymin:2.45, ymax:2.98,
+      sup:[2.70], res:[2.90],
+      tiles:[['Preço (②)','~R$ 2,83/l'],['1º semestre','+33%'],['Custo produção','+14%'],['Captação jul→ago','+0,89%']],
+      fund:[
+        'O leite ao produtor viveu um 1º semestre excepcional: alta de <strong>33%</strong>, puxada pela menor oferta de matéria-prima (entressafra e descapitalização de parte dos produtores em ciclos anteriores) e pela demanda firme das indústrias por leite spot.',
+        'A captação segue aquecida: o índice <strong>ICAP-L</strong> do Cepea avançou 0,89% de julho para agosto, com destaque para RS (+4,2%) e PR (+1,6%) — sinal de que a indústria ainda busca volume e o mercado permanece comprador no curto prazo.',
+        'O contraponto é a <strong>margem</strong>: os custos de produção subiram ~14% no período (a alimentação, com o milho firme, é o maior peso). O produtor recebe mais, mas gasta mais — a rentabilidade líquida depende da eficiência do rebanho e do controle de custos.'],
+      tec:'Indicador <strong>mensal</strong>, sem leitura intradiária. A trajetória é de alta consistente desde o início do ano, com o preço em patamar historicamente elevado. A faixa de referência recente vai de ~R$ 2,70 (piso) a ~R$ 2,90 (teto). O sinal de alerta seria uma reversão da captação, que hoje ainda sobe.',
+      niveis:[['Piso','~R$ 2,70'],['Teto','~R$ 2,90'],['Custo','+14%']],
+      cen:['Oferta segue curta + captação firme → novos patamares.','Preço alto e estável; foco na margem.','Custo (milho) sobe mais rápido que o preço → aperto de margem.'],
+      proc:'<b>Procedência:</b> indicador <b>mensal</b> (não diário); trajetória e variações verificadas, níveis em R$/litro aproximados (②).' },
+
+    { id:'cambio', nome:'Dólar', emo:'💵', cor:'#2A4E63', unid:'USD/BRL · spot',
+      val:'5,12', un:'R$', delta:'≈ real firme · mínima recente em julho (~R$ 5,07)', vies:'Lateral / real forte', vcls:'neutro', mark:42,
+      labels:L, data:[5.18,5.09,5.11,5.12,5.13,5.12], fmt:v=>'R$ '+v.toFixed(2), ymin:5.00, ymax:5.28,
+      sup:[5.05,5.00], res:[5.18,5.25],
+      tiles:[['USD/BRL','R$ 5,12'],['Mínima de julho','~R$ 5,07'],['Selic','viés de corte'],['Driver','IPCA + tarifas EUA']],
+      fund:[
+        'O real firmou-se em julho: o dólar recuou à <strong>mínima desde junho</strong> (~R$ 5,05–5,07), com o IPCA abaixo do esperado reforçando as apostas de <strong>corte da Selic</strong> e atraindo fluxo para ativos brasileiros — o Ibovespa acompanhou, renovando máximas no período.',
+        'Para o agro exportador, o real forte é uma faca de dois gumes: bom para a inflação e para o custo de <strong>insumos importados</strong> (fertilizantes, defensivos), mas ruim para a receita — cada centavo de real mais forte reduz o valor em reais das altas de soja, milho, café e boi.',
+        'No radar, dois fatores puxam para lados opostos: a agenda de <strong>corte de juros</strong> (real mais forte) e a <strong>tensão comercial com os EUA</strong>, incluindo a tarifa de 25%, que pode gerar volatilidade e episódios de aversão a risco (dólar mais forte).'],
+      tec:'O dólar rompeu o suporte de R$ 5,15 em julho e testou a região de <strong>R$ 5,05–5,07</strong>, seu piso recente. Opera lateral-baixista, com pivô em R$ 5,15: enquanto ficar abaixo, o viés é de real forte; recuperar R$ 5,18 sinalizaria alívio para o exportador.',
+      niveis:[['Suporte','5,05 / 5,00'],['Pivô','5,15'],['Resistência','5,18 / 5,25']],
+      cen:['Aversão a risco/tarifas → dólar volta a R$ 5,18+ (bom p/ exportador).','Lateral R$ 5,05–5,15, real firme.','Corte de Selic confirmado → dólar ≤ R$ 5,05.'], proc:null },
+  ];
+
+  const vcolor = {alta:'#2C7A4B', baixa:'#B8462E', neutro:'#15585E'};
+  const side = document.getElementById('side');
+  const content = document.getElementById('content');
+  const rendered = {};
+
+  // Visão Geral
+  const navOv = document.createElement('div');
+  navOv.className='nav-item active'; navOv.dataset.id='visao'; navOv.style.setProperty('--ac','#1E5638');
+  navOv.innerHTML = '<span class="emo">📊</span><span class="nm">Visão Geral</span><span class="dot" style="background:#1E5638"></span>';
+  side.appendChild(navOv);
+
+  const ovPanel = document.createElement('section');
+  ovPanel.className='panel active'; ovPanel.id='panel-visao';
+  const ovCards = ASSETS.map(a=>`
+    <div class="ov-card" data-go="${a.id}" style="--ac:${a.cor}">
+      <div class="top"><span class="emo">${a.emo}</span><span class="nm">${a.nome}</span></div>
+      <div class="val">${a.val}${a.un?' <small>'+a.un+'</small>':''}</div>
+      <div class="dl ${a.vcls}">${a.delta}</div>
+      <div class="scale"><span class="mark" style="left:${a.mark}%"></span></div>
+    </div>`).join('');
+  ovPanel.innerHTML = `
+    <div class="a-head"><span class="emo">📊</span><h2>Visão geral do mês</h2></div>
+    <p class="ov-intro">Julho fechou um agro de <strong>duas velocidades</strong>. No mercado externo, <strong>soja, milho e trigo</strong> foram movidos a clima e geopolítica — a soja teve rali climático e realizou no fim do mês; o trigo carrega o prêmio do Mar Negro. No mercado interno, cada frente seguiu a própria oferta: <strong>boi (+3,9%), café (+10,48%) e leite (+33% no semestre)</strong> firmes; <strong>algodão</strong> reagindo após queda; <strong>feijão</strong> em baixa com a colheita. Agosto começa <strong>decisivo para o enchimento da soja</strong> nos EUA, com o <strong>real firme</strong> segurando o repasse. Toque em um card para abrir a análise completa.</p>
+    <div class="ov-grid">${ovCards}</div>
+    <div class="nota"><b>Como ler.</b> Cada painel traz indicadores-chave, fundamentos, dois gráficos (trajetória + zonas técnicas com suporte em <span style="color:var(--sup)">vermelho</span> e resistência em <span style="color:var(--res)">verde</span>), cenários e o que esperar. Itens com marcação <b>②</b> (café intradiário, algodão, sorgo, feijão, leite) têm direção e fatos verificados, mas alguns valores são aproximados ou mensais. Período: fechamento de <b>julho/2026</b> + <b>03 a 05/08</b>.</div>`;
+  content.appendChild(ovPanel);
+
+  ASSETS.forEach(a=>{
+    const it = document.createElement('div');
+    it.className='nav-item'; it.dataset.id=a.id; it.style.setProperty('--ac',a.cor);
+    it.innerHTML = `<span class="emo">${a.emo}</span><span class="nm">${a.nome}</span><span class="dot" style="background:${vcolor[a.vcls]}"></span>`;
+    side.appendChild(it);
+
+    const p = document.createElement('section');
+    p.className='panel'; p.id='panel-'+a.id; p.style.setProperty('--ac',a.cor);
+    p.innerHTML = `
+      <div class="a-head">
+        <span class="emo">${a.emo}</span><h2>${a.nome}</h2>
+        <span class="vbadge ${a.vcls}">${a.vies}</span>
+        <span class="val mono">${a.val}${a.un?' <small>'+a.un+'</small>':''}</span>
+        <span class="delta ${a.vcls}">${a.delta}</span>
+      </div>
+
+      <div class="block-t">Indicadores-chave</div>
+      <div class="tiles">${a.tiles.map(t=>`<div class="tile"><div class="tl">${t[0]}</div><div class="tv">${t[1]}</div></div>`).join('')}</div>
+
+      <div class="block-t">Fundamentos</div>
+      <div class="a-body">${a.fund.map(x=>`<p>${x}</p>`).join('')}</div>
+
+      <div class="block-t">Gráficos</div>
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Trajetória · ${a.unid}</span></div>
+          <div class="chart-box"><canvas id="cv-${a.id}"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div>
+          <div class="chart-box"><canvas id="cv2-${a.id}"></canvas></div>
+          <div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div>
+        </div>
+      </div>
+
+      <div class="block-t">Leitura técnica (grafista)</div>
+      <div class="a-body"><p>${a.tec}</p></div>
+      <div class="niveis">${a.niveis.map(n=>`<span class="n"><b>${n[0]}</b>${n[1]}</span>`).join('')}</div>
+
+      <div class="block-t">Cenários</div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--verde-claro)"></span>Otimista</h4><p>${a.cen[0]}</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:var(--petroleo)"></span>Base</h4><p>${a.cen[1]}</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:var(--barro)"></span>${a.id==='cambio'?'Real forte':'Pessimista'}</h4><p>${a.cen[2]}</p></div>
+      </div>
+
+      <div class="esperar"><div class="h">O que esperar até o fim da semana</div><p>${esperarPad(a)}</p></div>
+      ${a.proc?`<div class="proc">${a.proc}</div>`:''}`;
+    content.appendChild(p);
+  });
+
+  function esperarPad(a){
+    const map = {
+      soja:'Olhos no mapa do tempo do Meio-Oeste: chuvas confirmadas mantêm a pressão; qualquer sinal de calor/seca reacende o prêmio. Aproveitar repiques para escalonar vendas, fazendo a conta em reais, já que o câmbio não ajuda.',
+      milho:'Consolidação no range externo; no Brasil, a colheita da safrinha segue como referência do físico. Usar a paridade de exportação e evitar vender no pico da colheita.',
+      cafe:'Volatilidade alta ao sabor do clima e da colheita; vendas escalonadas nas altas, priorizando lotes de melhor qualidade e definindo preço-alvo em vez de tentar acertar o topo.',
+      algodao:'Oferta curta de qualidade sustenta a recuperação; acompanhar a ICE e o câmbio. Vendedor segue firme — janela para negociar lotes premium.',
+      sorgo:'Deve espelhar o milho; enquanto o cereal sustentar patamar, o sorgo acompanha, com a safrinha limitando as altas. Calibrar pela cotação real da praça.',
+      feijao:'Pressão de oferta continua no pico da colheita do cerrado; segurar qualidade e evitar vender no fundo, se houver estrutura de armazenagem.',
+      trigo:'Prêmio geopolítico no comando: acompanhar o Mar Negro e o leilão da Argélia. Escaladas sustentam; distensões devolvem o prêmio.',
+      boi:'Oferta curta favorece o vendedor; quem tem escala pronta encontra frigorífico comprando. Monitorar exportação, cota da China e câmbio.',
+      leite:'Preço firme, mas de olho na margem (custo +14%). A captação em alta sinaliza mercado aquecido no curto prazo — bom momento para renegociar contratos.',
+      cambio:'Real firme deve seguir enquanto pesar a aposta de corte da Selic; a agenda de tarifas dos EUA é o curinga que pode trazer volatilidade. Pivô em R$ 5,15.'
+    };
+    return map[a.id]||'';
+  }
+
+  const SUB='#415045', GRID='rgba(195,184,158,.35)';
+  function mkChart(a){
+    const el=document.getElementById('cv-'+a.id); if(!el) return;
+    const color=a.cor;
+    new Chart(el,{type:'line',
+      data:{labels:a.labels,datasets:[{data:a.data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#FBF8F0',pointBorderColor:color,pointBorderWidth:2,pointRadius:4,pointHoverRadius:6,tension:.25,fill:true,
+        backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,218);g.addColorStop(0,color+'2b');g.addColorStop(1,color+'00');return g;}}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#18231C',padding:10,displayColors:false,callbacks:{label:(c)=>a.fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB,font:{family:"'IBM Plex Mono',monospace",size:10}}},
+          y:{grid:{color:GRID},border:{display:false},suggestedMin:a.ymin,suggestedMax:a.ymax,ticks:{color:SUB,font:{family:"'IBM Plex Mono',monospace",size:10},callback:(v)=>a.fmt(v)}}},
+        animation:{duration:700}}});
+  }
+  function mkTech(a){
+    const el=document.getElementById('cv2-'+a.id); if(!el) return;
+    const color=a.cor, n=a.labels.length, flat=v=>Array(n).fill(v);
+    const ds=[{label:'preço',data:a.data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#FBF8F0',pointBorderColor:color,pointBorderWidth:2,pointRadius:4,pointHoverRadius:6,tension:.25,fill:true,order:1,
+      backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,218);g.addColorStop(0,color+'22');g.addColorStop(1,color+'00');return g;}}];
+    a.res.forEach(r=>ds.push({label:'res',data:flat(r),borderColor:'#2C7A4B',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0,order:2}));
+    a.sup.forEach(s=>ds.push({label:'sup',data:flat(s),borderColor:'#B8462E',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0,order:2}));
+    new Chart(el,{type:'line',data:{labels:a.labels,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{filter:(i)=>i.datasetIndex===0,backgroundColor:'#18231C',padding:10,displayColors:false,callbacks:{label:(c)=>a.fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB,font:{family:"'IBM Plex Mono',monospace",size:10}}},
+          y:{grid:{color:GRID},border:{display:false},suggestedMin:a.ymin,suggestedMax:a.ymax,ticks:{color:SUB,font:{family:"'IBM Plex Mono',monospace",size:10},callback:(v)=>a.fmt(v)}}},
+        animation:{duration:700}}});
+  }
+
+  function activate(id){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.id===id));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+    const a = ASSETS.find(x=>x.id===id);
+    if(a && !rendered[id]){ mkChart(a); mkTech(a); rendered[id]=true; }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  side.addEventListener('click',e=>{const it=e.target.closest('.nav-item'); if(it) activate(it.dataset.id);});
+  content.addEventListener('click',e=>{const c=e.target.closest('[data-go]'); if(c) activate(c.dataset.go);});
+</script>
+</body>
+</html>
