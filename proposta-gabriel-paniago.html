@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposta Comercial — Rural In | Gabriel Paniago</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Spectral:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0F1512;
+  --ink-2:#18201C;
+  --ink-3:#232D27;
+  --gold:#C8A24A;
+  --gold-soft:#E3C782;
+  --sage:#7E9A82;
+  --paper:#F7F5F0;
+  --paper-2:#EFECE4;
+  --rule:#DCD7CA;
+  --text:#262B27;
+  --muted:#6C7369;
+  --rust:#A45A2A;
+  --display:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+  --body:"Spectral",Georgia,"Times New Roman",serif;
+  --mono:"JetBrains Mono",ui-monospace,"Courier New",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--text);
+  font-family:var(--body);font-weight:400;font-size:16.5px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 26px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;letter-spacing:.01em;margin:0}
+p{margin:0 0 1.05em}
+a{color:inherit}
+strong{font-weight:600}
+
+/* ── eyebrow / rótulos ── */
+.eyebrow{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;
+}
+
+/* ══ HERO ══ */
+.hero{background:var(--ink);color:#EDEBE4;position:relative;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.045) 0 1px,transparent 1px 46px),
+                   repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 46px);
+  pointer-events:none;
+}
+.hero-inner{position:relative;padding:44px 0 52px}
+.brandbar{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.13)}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-size:27px;letter-spacing:.02em;color:#fff}
+.brand svg{width:26px;height:26px;flex:none}
+.brand span{color:var(--gold)}
+.doctype{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#8E9990;text-align:right}
+.doctype b{display:block;color:var(--gold-soft);font-weight:700;margin-top:3px}
+
+.hero-title{font-size:clamp(40px,7.6vw,74px);line-height:.94;text-transform:uppercase;color:#fff;margin:38px 0 0}
+.hero-title em{font-style:normal;color:var(--gold);display:block}
+.hero-sub{font-size:17px;color:#B4BCB2;max-width:52ch;margin-top:18px;font-weight:300}
+
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:38px}
+.hero-card{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-left:3px solid var(--gold);padding:16px 18px}
+.hero-card .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:#8E9990;margin-bottom:6px}
+.hero-card .v{font-family:var(--display);font-size:25px;line-height:1.1;color:#fff}
+.hero-card .v small{display:block;font-family:var(--body);font-size:14.5px;color:var(--sage);font-weight:400;margin-top:4px;letter-spacing:0}
+
+.hero-meta{display:flex;gap:26px;flex-wrap:wrap;margin-top:26px;font-family:var(--mono);font-size:11.5px;color:#8E9990;letter-spacing:.05em}
+.hero-meta b{color:#D8D4C8;font-weight:400}
+
+/* ══ SEÇÕES ══ */
+section{padding:62px 0}
+section+section{border-top:1px solid var(--rule)}
+.sec-head{margin-bottom:30px}
+.sec-head h2{font-size:clamp(28px,4.4vw,42px);line-height:1.02;text-transform:uppercase;margin-top:8px}
+.sec-head .lead{font-size:17.5px;color:var(--muted);max-width:60ch;margin-top:12px;font-weight:300}
+
+/* carta */
+.letter{background:#fff;border:1px solid var(--rule);padding:34px 36px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.letter .greet{font-family:var(--display);font-size:26px;margin-bottom:14px}
+.letter p:last-child{margin-bottom:0}
+.hl{background:linear-gradient(transparent 62%,rgba(200,162,74,.35) 62%);padding:0 1px}
+
+/* ══ SIGNATURE: horímetro ══ */
+.meter{background:var(--ink);color:#EDEBE4;border-radius:2px;padding:30px 28px 26px;margin-top:6px}
+.meter-top{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.meter-label{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#8E9990}
+.readout{
+  font-family:var(--mono);font-weight:700;font-size:clamp(30px,6.6vw,54px);color:var(--gold);
+  letter-spacing:.02em;line-height:1;display:flex;align-items:baseline;gap:8px;
+}
+.readout .cur{font-size:.42em;color:var(--sage);letter-spacing:.1em}
+.readout .un{font-size:.26em;color:#8E9990;letter-spacing:.14em;text-transform:uppercase}
+.formula{font-family:var(--mono);font-size:12px;color:#9AA69C;line-height:1.9;text-align:right}
+.formula b{color:var(--gold-soft);font-weight:400}
+
+.stack{display:flex;height:30px;border:1px solid rgba(255,255,255,.14);overflow:hidden}
+.stack div{position:relative;cursor:default;transition:filter .18s}
+.stack div:hover{filter:brightness(1.28)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px 18px;margin-top:18px}
+.leg{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#B4BCB2;line-height:1.4}
+.leg i{width:11px;height:11px;flex:none;margin-top:5px;border-radius:1px}
+.leg b{display:block;color:#EDEBE4;font-weight:400;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em}
+.meter-note{margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:14px;color:#9AA69C;font-weight:300;line-height:1.65}
+
+/* ══ FRENTES (objeto) ══ */
+.fronts{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.front{background:#fff;padding:26px 24px 28px;display:flex;flex-direction:column}
+.front .tag{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--rust);text-transform:uppercase;margin-bottom:12px}
+.front h3{font-size:23px;line-height:1.1;text-transform:uppercase;margin-bottom:10px}
+.front p{font-size:15.5px;color:var(--muted);margin-bottom:0;font-weight:300;line-height:1.6}
+.front ul{margin:auto 0 0;padding-left:0;list-style:none}
+.front li{font-size:14px;padding:6px 0 6px 17px;position:relative;border-top:1px dotted var(--rule);line-height:1.5}
+.front li::before{content:"";position:absolute;left:0;top:14px;width:7px;height:1.5px;background:var(--gold)}
+
+/* ══ TABELA KPI ══ */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);background:#fff}
+table{border-collapse:collapse;width:100%;min-width:600px}
+th{background:var(--ink);color:#EDEBE4;font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:700;padding:13px 16px;text-align:left}
+td{padding:13px 16px;border-top:1px solid var(--rule);font-size:14.8px;vertical-align:top;line-height:1.5}
+td:first-child{font-family:var(--display);font-size:18px;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+tbody tr:nth-child(even) td{background:var(--paper-2)}
+.freq{font-family:var(--mono);font-size:11.5px;color:var(--rust);letter-spacing:.05em;white-space:nowrap}
+
+/* ══ TRILHA DE ETAPAS ══ */
+.rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:2px;background:var(--rule);border:1px solid var(--rule)}
+.rail .st{background:#fff;padding:20px 20px 22px}
+.rail .st .n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--sage);margin-bottom:8px}
+.rail .st h4{font-size:19px;text-transform:uppercase;line-height:1.15;margin-bottom:6px}
+.rail .st p{font-size:14px;color:var(--muted);margin:0;font-weight:300;line-height:1.55}
+
+.gate{display:flex;align-items:center;gap:18px;background:var(--ink);color:#EDEBE4;padding:22px 26px;margin:2px 0}
+.gate .q{font-family:var(--display);font-size:44px;line-height:1;color:var(--gold);flex:none}
+.gate .t{font-size:15.5px;font-weight:300;line-height:1.6;color:#B4BCB2}
+.gate .t b{color:#fff;font-weight:400;font-family:var(--display);font-size:21px;
+  text-transform:uppercase;letter-spacing:.02em;display:block;margin-bottom:3px}
+
+/* ══ DOSSIÊ (legenda escura) ══ */
+.dossie{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 22px;margin-top:22px}
+.doc{border-top:2px solid var(--gold);padding-top:12px}
+.doc b{display:block;font-family:var(--display);font-size:19px;text-transform:uppercase;color:#fff;line-height:1.15;margin-bottom:5px}
+.doc span{font-size:13.8px;color:#9AA69C;font-weight:300;line-height:1.55;display:block}
+.doc .req{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  background:rgba(164,90,42,.28);border:1px solid var(--rust);color:#E0A87F;padding:2px 7px;margin-bottom:7px}
+
+/* ══ CONTRATOS EM QUESTÃO ══ */
+.ctr{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--rule);border:1px solid var(--rule);margin-top:26px}
+.ct{background:#fff;padding:22px 24px}
+.ct .n{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:8px}
+.ct h4{font-size:20px;text-transform:uppercase;line-height:1.15;margin-bottom:6px}
+.ct p{font-size:14.5px;color:var(--muted);font-weight:300;line-height:1.55;margin:0}
+
+/* ══ PREÇO ÚNICO ══ */
+.single{background:var(--ink);color:#EDEBE4;padding:40px 34px;text-align:center}
+.single .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--sage)}
+.single .big{font-family:var(--display);font-size:clamp(52px,11vw,92px);line-height:1;color:#fff;margin:14px 0 8px}
+.single .big i{font-style:normal;font-size:.36em;color:var(--gold);vertical-align:super;margin-right:6px}
+.single .per{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft)}
+.single .scope-line{margin-top:22px;font-size:16px;color:#B4BCB2;font-weight:300;line-height:1.7;max-width:60ch;margin-left:auto;margin-right:auto}
+.single .scope-line b{color:#fff;font-weight:400}
+.single .terms{margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.14);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px;text-align:left}
+.single .terms div{font-size:14px;color:#B4BCB2;font-weight:300;line-height:1.5}
+.single .terms b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:700}
+
+/* ══ AVISO IMPORTANTE ══ */
+.note{display:flex;gap:20px;align-items:flex-start;background:#fff;border:1px solid var(--rule);
+  border-left:5px solid var(--rust);padding:24px 26px;margin-top:2px}
+.note .ico{flex:none;width:38px;height:38px;border-radius:50%;background:var(--rust);color:#fff;
+  display:grid;place-items:center;font-family:var(--display);font-size:22px;line-height:1}
+.note .bd{flex:1}
+.note .bd b{display:block;font-family:var(--display);font-size:21px;text-transform:uppercase;
+  color:var(--ink);letter-spacing:.02em;margin-bottom:7px}
+.note .bd p{font-size:15.5px;color:var(--text);font-weight:300;line-height:1.7;margin:0}
+.note .bd p+p{margin-top:9px;color:var(--muted);font-size:14.5px}
+
+/* ══ SOBRE A EMPRESA ══ */
+.about{display:grid;grid-template-columns:1.45fr 1fr;gap:34px;align-items:start}
+.about-text p{font-size:16.5px;color:var(--text);font-weight:300;line-height:1.75}
+.about-text p:last-child{margin-bottom:0}
+.mvv{border-left:3px solid var(--gold);padding-left:22px}
+.mv{margin-bottom:20px;font-size:15.5px;color:var(--muted);font-weight:300;line-height:1.55}
+.mv:last-child{margin-bottom:0}
+.mv b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rust);margin-bottom:5px;font-weight:700}
+
+/* ══ QUEM É ══ */
+.bio{display:grid;grid-template-columns:1fr 1fr;gap:2px 32px}
+.bio li{list-style:none;font-size:15px;color:var(--muted);font-weight:300;line-height:1.55;
+  padding:11px 0 11px 20px;border-top:1px solid var(--rule);position:relative;break-inside:avoid}
+.bio li::before{content:"";position:absolute;left:0;top:19px;width:8px;height:1.5px;background:var(--gold)}
+.bio li strong{color:var(--text)}
+.bio-lead{background:var(--ink);color:#EDEBE4;padding:24px 26px;margin-bottom:26px;
+  font-size:16.5px;font-weight:300;line-height:1.7}
+.bio-lead b{color:var(--gold-soft);font-weight:400}
+
+/* ══ ENTREGÁVEIS ══ */
+.deliv{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.deliv .d{background:#fff;border:1px solid var(--rule);border-top:3px solid var(--ink);padding:20px 20px 22px}
+.deliv .d .n{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--sage);margin-bottom:9px}
+.deliv .d h4{font-size:19px;text-transform:uppercase;line-height:1.15;margin-bottom:7px}
+.deliv .d p{font-size:14px;color:var(--muted);margin:0;font-weight:300;line-height:1.55}
+
+/* ══ INVESTIMENTO ══ */
+.price{background:var(--ink);color:#EDEBE4;padding:38px 34px;text-align:center}
+.price .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--sage)}
+.price .big{font-family:var(--display);font-size:clamp(46px,10vw,84px);line-height:1;color:#fff;margin:14px 0 6px}
+.price .big i{font-style:normal;font-size:.38em;color:var(--gold);vertical-align:super;margin-right:6px}
+.price .per{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#8E9990}
+.price .terms{margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.14);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;text-align:left}
+.price .terms div{font-size:14px;color:#B4BCB2;font-weight:300;line-height:1.5}
+.price .terms b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-weight:700}
+.fill{background:rgba(200,162,74,.16);outline:1px dashed var(--gold);padding:0 8px;border-radius:2px}
+
+/* ══ CONDIÇÕES ══ */
+.terms-list{columns:2;column-gap:38px}
+.terms-list li{break-inside:avoid;margin-bottom:13px;font-size:14.8px;color:var(--muted);line-height:1.6;font-weight:300}
+.terms-list li strong{color:var(--text)}
+
+/* ══ REFERÊNCIAS ══ */
+.refs{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:14px}
+.ref{display:flex;gap:14px;background:#fff;border:1px solid var(--rule);padding:16px 18px;align-items:center}
+.ref .av{width:44px;height:44px;flex:none;border-radius:50%;background:var(--ink);color:var(--gold);
+  display:grid;place-items:center;font-family:var(--display);font-size:18px;letter-spacing:.02em}
+.ref .nm{font-family:var(--display);font-size:19px;text-transform:uppercase;line-height:1.1}
+.ref .rl{font-size:13.5px;color:var(--muted);font-weight:300;line-height:1.4;margin:2px 0 4px}
+.ref .uf{font-family:var(--mono);font-size:9.5px;background:var(--paper-2);border:1px solid var(--rule);
+  padding:1px 6px;letter-spacing:.1em;color:var(--sage)}
+.ref a{font-family:var(--mono);font-size:12px;color:var(--rust);text-decoration:none}
+.ref a:hover{text-decoration:underline}
+
+/* ══ ACEITE ══ */
+.accept{background:#fff;border:2px solid var(--ink);padding:32px 30px}
+.accept h3{font-size:26px;text-transform:uppercase;margin-bottom:6px}
+.accept .sub{font-size:15px;color:var(--muted);font-weight:300;margin-bottom:24px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--sage);margin-bottom:6px;font-weight:700}
+input,textarea{width:100%;font-family:var(--body);font-size:15.5px;color:var(--text);
+  background:var(--paper);border:1px solid var(--rule);padding:11px 13px;border-radius:2px}
+input:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:1px;background:#fff}
+textarea{min-height:78px;resize:vertical}
+.check{display:flex;gap:11px;align-items:flex-start;margin:22px 0 20px;font-size:14.5px;color:var(--muted);font-weight:300;line-height:1.55}
+.check input{width:18px;height:18px;flex:none;margin-top:3px;accent-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border:none;
+  font-family:var(--display);font-size:19px;letter-spacing:.06em;text-transform:uppercase;
+  padding:15px 34px;cursor:pointer;border-radius:2px;transition:background .18s,transform .18s;text-decoration:none}
+.btn:hover{background:var(--rust);transform:translateY(-1px)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.msg{margin-top:14px;font-family:var(--mono);font-size:12.5px;color:var(--rust)}
+
+/* ══ CREDENCIAIS ══ */
+.creds{background:var(--ink);color:#EDEBE4;padding:52px 0 46px;text-align:center}
+.creds-mark{display:inline-flex;align-items:center;gap:9px;font-family:var(--display);font-size:25px;color:#fff;letter-spacing:.02em}
+.creds-mark svg{width:24px;height:24px}
+.creds-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--sage);margin:22px 0 8px}
+.creds-name{font-family:var(--display);font-size:34px;text-transform:uppercase;color:#fff;line-height:1.05}
+.creds-role{font-size:16px;color:var(--gold-soft);margin-top:6px;font-weight:300}
+.creds-spec{font-size:14.5px;color:#9AA69C;margin-top:3px;font-weight:300}
+.creds-tag{max-width:52ch;margin:20px auto 0;font-size:15px;color:#B4BCB2;font-weight:300;line-height:1.65}
+.creds-motto{max-width:52ch;margin:14px auto 0;font-family:var(--display);font-size:23px;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--gold);line-height:1.2}
+.creds-contacts{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.13);
+  font-family:var(--mono);font-size:12.5px;color:#9AA69C;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;letter-spacing:.03em}
+.creds-contacts a{color:var(--gold);text-decoration:none}
+.creds-contacts a:hover{text-decoration:underline}
+.creds-sep{color:#3A453D}
+.cnpj{margin-top:18px;font-family:var(--mono);font-size:10.5px;color:#5D6860;letter-spacing:.12em}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .hero-grid{grid-template-columns:1fr}
+  .formula{text-align:left}
+  .terms-list{columns:1}
+  .about{grid-template-columns:1fr;gap:26px}
+  .ctr{grid-template-columns:1fr}
+  .bio{grid-template-columns:1fr;gap:0}
+  .letter{padding:26px 22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+@media print{
+  .hero,.meter,.price,.creds{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .accept{display:none}
+  section{padding:30px 0;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div class="brandbar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 22V8" stroke="#C8A24A" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M12 8c0-2.5 1.8-4.5 4-5-.2 2.5-1.8 4.5-4 5Z" fill="#C8A24A"/>
+          <path d="M12 12c0-2.2-1.6-4-3.6-4.5.2 2.2 1.6 4 3.6 4.5Z" fill="#7E9A82"/>
+          <path d="M12 15c0-2.2 1.6-4 3.6-4.5-.2 2.2-1.6 4-3.6 4.5Z" fill="#7E9A82"/>
+        </svg>
+        Rural<span>In</span>
+      </div>
+      <div class="doctype">Documento<b>Proposta Comercial nº 2026-08-04</b></div>
+    </div>
+
+    <h1 class="hero-title">Renegociação e<em>alongamento de dívida</em></h1>
+    <p class="hero-sub">Assessoria administrativa e jurídica nas tratativas junto ao Sicoob Credirural, referentes a dois contratos de custeio agrícola — dos laudos técnicos à judicialização, se necessária.</p>
+
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="k">Destinatário</div>
+        <div class="v">Gabriel Paniago<small>Produtor rural</small></div>
+      </div>
+      <div class="hero-card">
+        <div class="k">Contratada</div>
+        <div class="v">Rural In<small>Gestão inteligente com tecnologia no agro</small></div>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span>Emissão: <b>11 de agosto de 2026</b></span>
+      <span>Validade: <b>15 dias úteis</b></span>
+      <span>Instituição: <b>Sicoob Credirural</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════ CARTA ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="letter">
+      <div class="greet">Prezado Gabriel,</div>
+      <p>Conforme tratado, encaminhamos a presente <span class="hl">proposta de assessoria administrativa e jurídica</span> para as tratativas de renegociação e alongamento junto ao Sicoob Credirural, referentes a dois contratos de custeio agrícola.</p>
+      <p>Renegociação bancária não se ganha no argumento, se ganha no documento. O produtor que chega à agência pedindo prazo entra na conversa como devedor; o produtor que chega com laudo de frustração de safra, demonstração técnica da capacidade de pagamento e proposta estruturada entra como contraparte técnica. A mesma dívida, a mesma cooperativa e o mesmo gerente produzem respostas diferentes conforme o que está sobre a mesa.</p>
+      <p>Os dois laudos previstos nesta proposta não são acessórios. Tanto na via administrativa quanto na judicial, são eles que sustentam o pedido: o econômico-financeiro demonstra quanto a atividade consegue pagar e em que prazo; o agronômico comprova tecnicamente a frustração que originou o desequilíbrio. Sem essas peças, o pedido vira alegação.</p>
+      <p>O enquadramento entre renegociação e alongamento é definido após a análise dos contratos e do resultado da safra — escolhe-se o instrumento que oferecer melhor condição ao produtor dentro dos normativos aplicáveis e do Manual de Crédito Rural. A assessoria acompanha o caso do início ao final, incluindo a judicialização se as tratativas administrativas não prosperarem.</p>
+      <p>Colocamo-nos à disposição para os esclarecimentos que se façam necessários.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SOBRE A EMPRESA ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Sobre a empresa</div>
+      <h2>Rural In</h2>
+      <p class="lead">Gestão inteligente com tecnologia no agro.</p>
+    </div>
+
+    <div class="about">
+      <div class="about-text">
+        <p>A Rural In é uma empresa de gestão e inteligência para o agronegócio, que conecta informação, tecnologia e estratégia à tomada de decisão do produtor rural. Atuamos na organização financeira, econômica e gerencial das propriedades, transformando dados em indicadores práticos e na elaboração de estratégias comerciais envolvendo gestão de risco, uso racional de recursos e uso de derivativos para proteção de margens.</p>
+        <p>Na prática, auxiliamos o produtor a conhecer custos, margens, riscos e resultados, apoiando decisões comerciais, financeiras e operacionais, além de reestruturação quando necessário.</p>
+      </div>
+      <div class="mvv">
+        <div class="mv"><b>Missão</b>Profissionalizar a gestão no agro.</div>
+        <div class="mv"><b>Visão</b>Ser referência em inteligência aplicada ao campo.</div>
+        <div class="mv"><b>Valores</b>Transparência, responsabilidade, eficiência e foco em resultado.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SIGNATURE: CAPACIDADE DE PAGAMENTO ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">O número que sustenta a negociação</div>
+      <h2>Capacidade de pagamento</h2>
+      <p class="lead">Toda renegociação gira em torno de uma pergunta: quanto esta atividade consegue pagar por ano sem inviabilizar a safra seguinte. Os laudos existem para responder isso com número auditável.</p>
+    </div>
+
+    <div class="meter">
+      <div class="meter-top">
+        <div>
+          <div class="meter-label">Disponível anual para amortização</div>
+          <div class="readout"><span class="cur">R$</span>000,00<span class="un">/ ano</span></div>
+        </div>
+        <div class="formula">
+          CP = <b>RB − (CT + AR + CV + SD)</b><br>
+          RB = receita bruta projetada da atividade<br>
+          CT = custeio · AR = arrendamento<br>
+          CV = custo de vida · SD = serviço das demais dívidas
+        </div>
+      </div>
+
+      <div class="dossie">
+        <div class="doc">
+          <span class="req">Obrigatório</span>
+          <b>Laudo econômico-financeiro</b>
+          <span>Capacidade de pagamento apurada a partir do resultado real da atividade, com fluxo de caixa projetado e cenários de preço e produtividade. Peça obrigatória tanto na via administrativa quanto na judicial.</span>
+        </div>
+        <div class="doc">
+          <span class="req">Obrigatório</span>
+          <b>Laudo agronômico</b>
+          <span>Comprovação técnica da frustração de safra: dados climáticos, produtividade esperada versus realizada e nexo causal documentado. Igualmente obrigatório nas duas vias.</span>
+        </div>
+        <div class="doc">
+          <b>Análise de viabilidade</b>
+          <span>Estudo técnico-econômico que define o enquadramento mais favorável ao produtor — renegociação ou alongamento — antes de qualquer protocolo.</span>
+        </div>
+        <div class="doc">
+          <b>Atas das reuniões</b>
+          <span>Registro formal de cada encontro, das propostas apresentadas e das respostas da cooperativa — a memória que instrui eventual etapa judicial.</span>
+        </div>
+      </div>
+
+      <p class="meter-note">Os valores só são preenchidos após o levantamento dos dados da propriedade. Nenhum número é apresentado ao banco sem validação prévia com o produtor.</p>
+    </div>
+
+    <div class="ctr">
+      <div class="ct">
+        <div class="n">Objeto · contrato 1</div>
+        <h4>Custeio agrícola</h4>
+        <p>Contrato a ser identificado no levantamento inicial, com apuração do saldo devedor, encargos incidentes e condições originalmente pactuadas.</p>
+      </div>
+      <div class="ct">
+        <div class="n">Objeto · contrato 2</div>
+        <h4>Custeio agrícola</h4>
+        <p>Segundo contrato de custeio, tratado de forma integrada ao primeiro, com proposta única de reescalonamento do endividamento consolidado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ OBJETO ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Objeto da proposta</div>
+      <h2>Frentes de trabalho</h2>
+      <p class="lead">Todas as frentes abaixo estão contempladas no valor único da proposta, incluindo a etapa judicial caso as tratativas administrativas não prosperem.</p>
+    </div>
+
+    <div class="fronts">
+      <article class="front">
+        <div class="tag">Frente A</div>
+        <h3>Análise técnico-econômica</h3>
+        <p>Estudo de viabilidade e capacidade de pagamento a partir do resultado real da atividade, com diagnóstico do endividamento consolidado dos dois contratos e definição do enquadramento mais favorável — renegociação ou alongamento.</p>
+      </article>
+
+      <article class="front">
+        <div class="tag">Frente B</div>
+        <h3>Laudo econômico-financeiro</h3>
+        <p>Peça técnica obrigatória nas vias administrativa e judicial. Demonstra a capacidade de pagamento apurada, o fluxo de caixa projetado, os cenários de preço e produtividade e a memória de cálculo que sustenta a proposta.</p>
+      </article>
+
+      <article class="front">
+        <div class="tag">Frente C</div>
+        <h3>Laudo agronômico</h3>
+        <p>Peça técnica igualmente obrigatória nas duas vias. Comprova a quebra de safra com dados climáticos, histórico de produtividade da área, produtividade esperada versus realizada e o nexo entre o evento e a perda de receita.</p>
+      </article>
+
+      <article class="front">
+        <div class="tag">Frente D</div>
+        <h3>Condução administrativa</h3>
+        <p>Formulação da proposta de reescalonamento, protocolo formal, agendamento e participação nas reuniões com a agência e as instâncias superiores do Sicoob Credirural, redação das atas e acompanhamento até a resposta final.</p>
+      </article>
+
+      <article class="front">
+        <div class="tag">Frente E</div>
+        <h3>Assessoria jurídica</h3>
+        <p>Acompanhamento jurídico durante toda a fase administrativa e, em caso de negativa, propositura da ação de alongamento de dívida fundamentada no Manual de Crédito Rural, instruída pelos laudos e pelas atas já produzidos.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TRILHA ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Como o caminho se desenha</div>
+      <h2>Da agência ao juízo</h2>
+      <p class="lead">A via administrativa é sempre tentada primeiro. A judicial existe como consequência dela, não como alternativa paralela — e se alimenta exatamente do mesmo material.</p>
+    </div>
+
+    <div class="rail">
+      <div class="st"><div class="n">Passo 1</div><h4>Levantamento</h4><p>Coleta dos dois contratos de custeio, extratos, notas de produção, matrícula e histórico da área. Apuração do saldo devedor e dos encargos.</p></div>
+      <div class="st"><div class="n">Passo 2</div><h4>Análise e enquadramento</h4><p>Estudo de viabilidade e capacidade de pagamento, com definição do instrumento mais favorável: renegociação ou alongamento.</p></div>
+      <div class="st"><div class="n">Passo 3</div><h4>Construção dos laudos</h4><p>Elaboração do laudo econômico-financeiro e do laudo agronômico, ambos validados com o produtor antes de qualquer apresentação.</p></div>
+      <div class="st"><div class="n">Passo 4</div><h4>Reuniões e atas</h4><p>Protocolo da proposta, participação nas reuniões com o Sicoob Credirural e registro de cada tratativa em ata até a decisão final.</p></div>
+    </div>
+
+    <div class="gate">
+      <div class="q">?</div>
+      <div class="t"><b>Ponto de decisão</b>Havendo acordo, o trabalho se encerra com o instrumento de repactuação assinado. Havendo negativa formal, o dossiê já está pronto e a etapa judicial é acionada de imediato — sem custo adicional de honorários da assessoria.</div>
+    </div>
+
+    <div class="rail">
+      <div class="st"><div class="n">Passo 5</div><h4>Ação judicial</h4><p>Propositura da ação de alongamento de dívida com fundamento no Manual de Crédito Rural, instruída pelos laudos e pelas atas da fase administrativa.</p></div>
+      <div class="st"><div class="n">Passo 6</div><h4>Acompanhamento até o final</h4><p>Condução do feito do ajuizamento ao desfecho, com suporte técnico às manifestações e a eventuais perícias.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ENTREGÁVEIS ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">O que fica com você</div>
+      <h2>Entregáveis</h2>
+      <p class="lead">Todo o material produzido é entregue ao produtor, independentemente do desfecho da negociação.</p>
+    </div>
+
+    <div class="deliv">
+      <div class="d"><div class="n">E1</div><h4>Análise de viabilidade</h4><p>Estudo técnico-econômico com o diagnóstico do endividamento e o enquadramento recomendado.</p></div>
+      <div class="d"><div class="n">E2</div><h4>Laudo econômico-financeiro</h4><p>Documento técnico com a capacidade de pagamento apurada, fluxo de caixa projetado e memória de cálculo.</p></div>
+      <div class="d"><div class="n">E3</div><h4>Laudo agronômico</h4><p>Comprovação técnica da frustração de safra, com dados climáticos e produtividade documentada.</p></div>
+      <div class="d"><div class="n">E4</div><h4>Proposta de reescalonamento</h4><p>Desenho formal de prazo, carência e parcelamento, no formato exigido para protocolo bancário.</p></div>
+      <div class="d"><div class="n">E5</div><h4>Atas das reuniões</h4><p>Registro de cada encontro com a cooperativa, das propostas apresentadas e das respostas recebidas.</p></div>
+      <div class="d"><div class="n">E6</div><h4>Relatório de encerramento</h4><p>Consolidação do desfecho, com o instrumento de repactuação ou o acompanhamento processual documentado.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ INVESTIMENTO ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Investimento</div>
+      <h2>Condições comerciais</h2>
+    </div>
+
+    <div class="single">
+      <div class="k">Assessoria completa — administrativa e jurídica</div>
+      <div class="big"><i>R$</i>30.000,00</div>
+      <div class="per">Pagamento à vista</div>
+      <p class="scope-line">Valor único, referente ao acompanhamento <b>do início ao final do processo de renegociação</b> junto ao Sicoob Credirural, contemplando os dois contratos de custeio agrícola, a confecção dos laudos, a condução das tratativas e a assessoria jurídica <b>até a judicialização</b>.</p>
+
+      <div class="terms">
+        <div><b>Forma de pagamento</b>À vista, na assinatura do contrato de prestação de serviços.</div>
+        <div><b>Nota fiscal</b>Emitida por Fernanda Maria Jacinto — Raízes Psicologia, CNPJ 46.747.391/0001-03, com dez dias de antecedência para programação financeira.</div>
+        <div><b>Não incluso</b>Custas processuais, taxas judiciais, honorários periciais e eventuais honorários de sucumbência.</div>
+        <div><b>Deslocamento</b>Atendimento em Rio Verde já incluso. Viagens fora do município acordadas à parte.</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <div class="ico">!</div>
+      <div class="bd">
+        <b>Observação importante</b>
+        <p>Além do valor de honorários acima, o processo possui <strong>custas judiciais</strong>, recolhidas diretamente ao Poder Judiciário e não compreendidas nesta proposta. Elas variam conforme o valor atribuído à causa e a natureza dos atos praticados.</p>
+        <p>Uma prévia estimada dessas custas será encaminhada em momento oportuno, após a apuração do saldo devedor consolidado dos dois contratos e a definição do valor da causa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DISPOSIÇÕES ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Disposições gerais</div>
+      <h2>Regras do contrato</h2>
+    </div>
+    <ul class="terms-list">
+      <li><strong>a. Emissão de nota fiscal.</strong> A assinatura desta proposta dá à Rural in o direito de emitir nota fiscal dos serviços descritos acima em nome de <strong>Fernanda Maria Jacinto (Raízes Psicologia), CNPJ 46.747.391/0001-03</strong>, com dez dias de antecedência para programação financeira.</li>
+      <li><strong>b. Escopo dos contratos.</strong> A assessoria abrange exclusivamente os dois contratos de custeio agrícola firmados com o Sicoob Credirural, identificados no levantamento inicial. Operações adicionais podem ser incorporadas mediante termo aditivo.</li>
+      <li><strong>c. Enquadramento.</strong> A definição entre renegociação e alongamento é técnica e será feita após a análise de viabilidade, adotando-se o instrumento mais favorável ao contratante dentro dos normativos aplicáveis e do Manual de Crédito Rural.</li>
+      <li><strong>d. Obrigação de meio.</strong> O trabalho é de natureza técnica, consultiva e jurídica. A Rural in se compromete com a qualidade dos laudos, da proposta e da condução, não sendo possível garantir o deferimento pela instituição financeira nem o resultado da ação judicial.</li>
+      <li><strong>e. Documentação.</strong> A execução depende do fornecimento tempestivo dos contratos, extratos, notas fiscais de produção, comprovantes de produtividade, matrícula e demais documentos solicitados. Atrasos na entrega afetam os prazos.</li>
+      <li><strong>f. Custas e despesas processuais.</strong> Custas processuais, taxas judiciais, honorários periciais e eventuais honorários de sucumbência não estão inclusos no valor da proposta e correm por conta do contratante. Uma <strong>prévia estimada das custas</strong> será encaminhada em momento oportuno, após a definição do valor da causa.</li>
+      <li><strong>g. Representação jurídica.</strong> A atuação judicial é conduzida por advogado devidamente constituído mediante procuração outorgada pelo contratante, em parceria com a Rural in, que presta o suporte técnico ao caso.</li>
+      <li><strong>h. Infraestrutura.</strong> É de responsabilidade do cliente assegurar que as condições de hardware e software tenham as configurações mínimas e necessárias para o acompanhamento e a prestação dos serviços, seja em transmissão on-line ou presencial.</li>
+      <li><strong>i. Serviços fora da sede.</strong> Caso o serviço seja realizado fora da sede do contratado, os custos de alimentação, hospedagem e deslocamento do(s) colaborador(es) são de inteira responsabilidade do contratante.</li>
+      <li><strong>j. Validade da proposta.</strong> 15 dias úteis a contar da data de emissão.</li>
+      <li><strong>k. Confidencialidade.</strong> Todos os dados patrimoniais, financeiros e operacionais acessados são tratados como sigilosos, durante e após a vigência do contrato.</li>
+      <li><strong>l. Propriedade dos entregáveis.</strong> Laudos, planilhas e atas produzidos são de propriedade do contratante, entregues em formato aberto e editável.</li>
+      <li><strong>m. Foro.</strong> Comarca de Rio Verde — Goiás.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ QUEM É ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Quem assina o trabalho</div>
+      <h2>Quem é Sidney Souza</h2>
+    </div>
+
+    <p class="bio-lead">Pai, filho, esposo, voluntário, empresário, consultor, professor de pós-graduações, mentor, palestrante e <b>apaixonado pelo agronegócio</b>.</p>
+
+    <ul class="bio">
+      <li><strong>Formação.</strong> Doutor em Agronomia (foco em economia rural), Mestre em Administração (foco em gestão da informação de empresas rurais), MBAs em Marketing e Planejamento Estratégico, Biodiesel e Logística, Bacharel em Administração com ênfase no agronegócio e Bacharel em Economia. Técnico agrícola, com demais formações técnicas voltadas às áreas do agronegócio.</li>
+      <li><strong>Fundador da Rural in</strong>, empresa de gestão, risco e ciência de dados com uso de tecnologia própria.</li>
+      <li><strong>Mais de 25 anos</strong> dedicados a produtores rurais e a empresas participantes de cadeias produtivas do agronegócio.</li>
+      <li><strong>Consultor de empresas rurais há mais de 20 anos</strong>, sempre acompanhando as volatilidades e crises do setor.</li>
+      <li><strong>Mentor e consultor</strong> do projeto LabCerrado, da Embrapa Cerrados — DF.</li>
+      <li><strong>Foi Diretor Executivo</strong> de uma das maiores cooperativas do agro mineiro.</li>
+      <li><strong>Sócio fundador e Diretor de Negócios</strong> da MaxxSoft Tecnologia, empresa de soluções de software para o produtor rural e revendas de insumos agrícolas.</li>
+      <li><strong>Gerente Adm/Fin de empresas rurais</strong>, onde vivenciou na prática as dificuldades de implantar modelos de gestão eficientes e lucrativos dentro da porteira.</li>
+      <li><strong>Iniciou como consultor de implantação de ERP</strong> na Siagri, hoje grupo Aliare, voltada ao produtor rural e a revendas de insumos.</li>
+      <li><strong>Professor universitário por 20 anos</strong> em diversas instituições, nas áreas de agronegócio, gestão, empreendedorismo, finanças e economia. Atualmente leciona apenas em cursos de pós-graduação.</li>
+      <li>Amante da vida, da simplicidade e da sabedoria da natureza. Gosta de esportes, viagens, leitura, estudar e estar em família.</li>
+      <li>Curioso, gosta de um bom aprendizado, boa prosa, churrasco e um bom queijo. Não fuma nem consome qualquer tipo de álcool.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════════ ACEITE ══════════════ -->
+<section>
+  <div class="wrap">
+    <div class="accept">
+      <h3>Termo de aceite</h3>
+      <p class="sub">Preencha os campos abaixo e envie. O aceite chega direto no nosso WhatsApp e damos início ao levantamento da documentação.</p>
+
+      <div class="fields">
+        <div>
+          <label for="razao">Nome ou razão social</label>
+          <input type="text" id="razao" value="Gabriel Paniago">
+        </div>
+        <div>
+          <label for="resp">Responsável pelo aceite</label>
+          <input type="text" id="resp" placeholder="Nome de quem assina">
+        </div>
+        <div>
+          <label for="cnpj">CPF / CNPJ</label>
+          <input type="text" id="cnpj" placeholder="000.000.000-00">
+        </div>
+        <div>
+          <label for="fone">Telefone de contato</label>
+          <input type="text" id="fone" placeholder="(64) 9 0000-0000">
+        </div>
+        <div>
+          <label for="inicio">Data desejada de início</label>
+          <input type="date" id="inicio">
+        </div>
+        <div>
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seuemail@exemplo.com.br">
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <label for="obs">Observações</label>
+        <textarea id="obs" placeholder="Opcional — números dos contratos, agência, valor aproximado do saldo devedor ou qualquer detalhe que ajude no início."></textarea>
+      </div>
+
+      <label class="check" for="ok">
+        <input type="checkbox" id="ok">
+        <span>Declaro que li e concordo com os termos desta proposta comercial, no valor de <strong>R$ 30.000,00 à vista</strong>, referente à assessoria administrativa e jurídica junto ao Sicoob Credirural.</span>
+      </label>
+
+      <button class="btn" id="send" type="button">Enviar aceite</button>
+      <div class="msg" id="msg" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CREDENCIAIS ══════════════ -->
+<footer class="creds">
+  <div class="wrap">
+    <div class="creds-mark">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 22V8" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M12 8c0-2.5 1.8-4.5 4-5-.2 2.5-1.8 4.5-4 5Z" fill="var(--gold)"/>
+        <path d="M12 12c0-2.2-1.6-4-3.6-4.5.2 2.2 1.6 4 3.6 4.5Z" fill="var(--sage)"/>
+        <path d="M12 15c0-2.2 1.6-4 3.6-4.5-.2 2.2-1.6 4-3.6 4.5Z" fill="var(--sage)"/>
+      </svg>
+      Rural in
+    </div>
+    <div class="creds-eyebrow">Análise e Construção</div>
+    <div class="creds-name">Dr. Sidney Souza</div>
+    <div class="creds-role">Estrategista Econômico do Produtor</div>
+    <div class="creds-spec">Rural in — Gestão Inteligente com Tecnologia no Agro</div>
+    <p class="creds-tag">Transformamos dados da fazenda em decisões econômicas. Ajudamos produtores a entender se o mercado sustenta seu negócio.</p>
+    <p class="creds-motto">Dado gera informação, gestão gera decisão.</p>
+    <div class="creds-contacts">
+      <a href="https://ruralinrv.github.io/ruralin/" target="_blank" rel="noopener">ruralin-site</a>
+      <span class="creds-sep">·</span><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a>
+      <span class="creds-sep">·</span><a href="mailto:sidneyagro@gmail.com">sidneyagro@gmail.com</a>
+      <span class="creds-sep">·</span><a href="https://wa.me/5564992266886" target="_blank" rel="noopener">(64) 9 9226-6886</a>
+      <span class="creds-sep">·</span><a href="https://www.linkedin.com/in/sidneyagro/" target="_blank" rel="noopener">linkedin/sidneyagro</a>
+    </div>
+    <div class="cnpj">Rurales Consultoria e Soluções para Agronegócios LTDA · CNPJ 25.255.499/0001-09</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btn = document.getElementById('send');
+  var msg = document.getElementById('msg');
+  var WA  = '5564992266886';
+
+  btn.addEventListener('click', function(){
+    var razao = document.getElementById('razao').value.trim();
+    var resp  = document.getElementById('resp').value.trim();
+    var cnpj  = document.getElementById('cnpj').value.trim();
+    var fone  = document.getElementById('fone').value.trim();
+    var mail  = document.getElementById('email').value.trim();
+    var ini   = document.getElementById('inicio').value;
+    var obs   = document.getElementById('obs').value.trim();
+    var ok    = document.getElementById('ok').checked;
+
+    if(!resp){ msg.textContent = 'Informe o nome do responsável pelo aceite.'; document.getElementById('resp').focus(); return; }
+    if(!fone){ msg.textContent = 'Informe um telefone de contato.'; document.getElementById('fone').focus(); return; }
+    if(!ok){ msg.textContent = 'Marque a concordância com os termos para enviar.'; return; }
+
+    var linhas = [
+      'ACEITE DE PROPOSTA COMERCIAL - Rural In',
+      'Objeto: assessoria administrativa e juridica - renegociacao/alongamento Sicoob Credirural',
+      'Valor: R$ 30.000,00 a vista',
+      '',
+      'Nome/Razao social: ' + (razao || '-'),
+      'Responsavel: ' + resp,
+      'CPF/CNPJ: ' + (cnpj || '-'),
+      'Telefone: ' + fone,
+      'E-mail: ' + (mail || '-'),
+      'Inicio desejado: ' + (ini || 'a combinar')
+    ];
+    if(obs){ linhas.push('', 'Observacoes: ' + obs); }
+    linhas.push('', 'Declaro que li e concordo com os termos da proposta.');
+
+    msg.textContent = 'Abrindo o WhatsApp com o aceite preenchido…';
+    window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(linhas.join('\n')), '_blank', 'noopener');
+  });
+})();
+</script>
+
+</body>
+</html>
