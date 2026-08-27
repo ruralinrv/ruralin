@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Semanal · 03–07/08 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --bl:#3b82f6;--cy:#06b6d4;--gn:#10b981;--em:#34d399;--yl:#f59e0b;--or:#f97316;--rd:#ef4444;--pr:#8b5cf6;--pk:#ec4899;
+    --sup:#f87171;--res:#34d399;
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:26px 0 22px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#8b5cf6)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 12px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{display:inline-flex;gap:6px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--bl);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(24px,4vw,38px);line-height:1.05;margin:0 0 8px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#34d399,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{font-size:14.5px;color:var(--t2);margin:0;max-width:78ch}
+
+  .portal{max-width:1180px;margin:0 auto;padding:22px 20px 0;display:grid;grid-template-columns:238px 1fr;gap:26px;align-items:start}
+  nav.side{position:sticky;top:14px;display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--bdr);border-radius:16px;padding:12px;box-shadow:var(--sh)}
+  nav.side .side-h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);padding:6px 10px 8px;border-bottom:1px solid var(--bdr);margin-bottom:4px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:background .15s,border-color .15s;user-select:none}
+  .nav-item:hover{background:var(--card2)}
+  .nav-item.active{background:var(--card2);border-color:var(--bdr);box-shadow:inset 3px 0 0 var(--ac,var(--bl))}
+  .nav-item .emo{font-size:17px;width:22px;text-align:center;flex:none}
+  .nav-item .nm{font-size:14px;font-weight:600;flex:1}
+  .nav-item .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .nav-sep{height:1px;background:var(--bdr);margin:6px 4px}
+
+  main.content{min-width:0;padding-bottom:20px}
+  .panel{display:none;animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .a-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 16px;border-bottom:2px solid var(--ac,var(--bdr));padding-bottom:14px;margin-bottom:18px}
+  .a-head .emo{font-size:24px}
+  .a-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.2vw,30px);margin:0;letter-spacing:-.01em;color:#fff}
+  .a-head .val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-left:auto;color:#fff}
+  .a-head .val small{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .a-head .delta{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;width:100%}
+  .vbadge{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:7px}
+  .vbadge.alta{background:rgba(52,211,153,.15);color:var(--alta)}
+  .vbadge.baixa{background:rgba(248,113,113,.14);color:var(--baixa)}
+  .vbadge.neutro{background:rgba(34,211,238,.13);color:var(--neutro)}
+
+  .block-t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bl);font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+  .block-t::before{content:"";width:16px;height:2px;background:var(--ac,var(--bl));border-radius:2px}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:2px 0 6px}
+  .tile{background:var(--card);border:1px solid var(--bdr);border-radius:11px;padding:11px 13px;border-left:3px solid var(--ac,var(--bl))}
+  .tile .tl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--t3);margin-bottom:4px;line-height:1.3}
+  .tile .tv{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;line-height:1.15;color:var(--t1)}
+
+  .a-body p{margin:0 0 11px;font-size:14.5px;color:#cdd6e4}
+  .a-body p strong{color:#fff}
+
+  .charts2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:2px 0 4px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:16px 16px 12px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-box{position:relative;height:216px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:16px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);margin-top:9px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:6px}
+  .leg-sr .ln{width:18px;height:0;display:inline-block}
+  .leg-sr .lr{border-top:2px dashed var(--res)}
+  .leg-sr .ls{border-top:2px dashed var(--sup)}
+
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin:8px 0 2px}
+  .cen{border-radius:11px;padding:12px 13px;font-size:13px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--em)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+  .esperar{margin-top:16px;background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:12px;padding:15px 17px;position:relative;overflow:hidden}
+  .esperar::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#10b981,#3b82f6)}
+  .esperar .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--em);margin-bottom:6px}
+  .esperar p{margin:0;font-size:13.5px;color:#cdd6e4}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:10px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}
+  .proc b{color:var(--t2)}
+
+  .ov-intro{font-size:15px;color:var(--t2);max-width:84ch;margin:0 0 22px}
+  .ov-intro strong{color:var(--em)}
+  .ov-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .ov-card{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:15px;box-shadow:var(--sh);cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,border-color .15s}
+  .ov-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--ac,var(--bl))}
+  .ov-card:hover{transform:translateY(-2px);border-color:var(--ac)}
+  .ov-card .top{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .ov-card .emo{font-size:17px}.ov-card .nm{font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#fff}
+  .ov-card .val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#fff}
+  .ov-card .val small{font-size:10.5px;color:var(--t3);font-weight:400;font-family:'Inter',sans-serif}
+  .ov-card .dl{font-family:'JetBrains Mono',monospace;font-size:10.5px;margin-top:2px}
+  .scale{position:relative;height:7px;border-radius:5px;background:linear-gradient(90deg,#ef4444 0%,#f59e0b 50%,#10b981 100%);margin-top:10px}
+  .scale .mark{position:absolute;top:-3px;width:3px;height:13px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:22px;line-height:1.5}
+  .nota b{color:var(--t2)}
+
+  /* macro & agenda */
+  .macro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .mcard{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:16px 18px;position:relative;overflow:hidden}
+  .mcard::before{content:"";position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--mc,var(--bl))}
+  .mcard h4{margin:0 0 6px;font-family:'Fraunces',serif;font-size:17px;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px}
+  .mcard p{margin:0;font-size:13.5px;color:var(--t2)}
+  .mcard .stat{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--em)}
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--bl)}
+  .timeline li.star::before{background:var(--yl);border-color:var(--yl);box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bl);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0 2px;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);margin-top:26px;position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--bl);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--em);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right;color:var(--t2)}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bl);margin-bottom:16px}
+
+  @media (max-width:820px){
+    .portal{grid-template-columns:1fr;gap:16px}
+    nav.side{position:static;flex-direction:row;overflow-x:auto;gap:8px;padding:10px}
+    nav.side .side-h,.nav-sep{display:none}
+    .nav-item{flex:none;flex-direction:column;gap:5px;min-width:72px;text-align:center;padding:8px 6px}
+    .nav-item .nm{font-size:11px}
+    .nav-item.active{box-shadow:inset 0 -3px 0 var(--ac,var(--bl))}
+    .charts2{grid-template-columns:1fr}.cenarios{grid-template-columns:1fr}
+    .ov-grid{grid-template-columns:repeat(2,1fr)}.macro-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:520px){
+    .ov-grid{grid-template-columns:1fr}
+    .a-head .val{margin-left:0;width:100%}
+    .cred-grid{flex-direction:column}.cred .contatos{text-align:left}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Balanço Mensal</span><span>01 a 26 / 08 / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">Agosto até aqui: grãos <em>reagem forte</em>, proteína animal se divide</h1>
+    <p class="sub">Dezessete frentes do agro em um só lugar. Escolha um item na barra lateral: cada painel traz indicadores-chave, fundamentos do mês, gráfico de trajetória e zonas técnicas, cenários e o que esperar. Os pontos marcados com <b>②</b> têm direção e fatos verificados, com valores aproximados ou de referência mensal.</p>
+  </div>
+</header>
+
+<div class="portal">
+  <nav class="side" id="side"><div class="side-h">17 frentes do agro</div></nav>
+  <main class="content" id="content"></main>
+</div>
+
+<footer class="cred">
+  <div class="wrap">
+    <div class="assin">Análise e Construção</div>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola</p>
+        <p class="role">Estrategista Econômico do Produtor</p>
+        <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+        <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+        <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+      </div>
+      <div class="contatos">
+        <div><a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a></div>
+        <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+        <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+        <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const L = ['1ª sem','2ª sem','3ª sem','4ª sem'];
+  const ASSETS = [
+    { id:'soja', nome:'Soja', emo:'🌱', cor:'#10b981', unid:'CBOT nov/26 · US$/bu',
+      val:'12,20', un:'US$/bu', delta:'▲ mês forte · Indicadores no maior nível desde abr/23', vies:'Altista', vcls:'alta', mark:70,
+      labels:L, data:[11.62,11.95,12.31,12.20], fmt:v=>'US$ '+v.toFixed(2), ymin:11.40, ymax:12.55, sup:[12.00,11.80], res:[12.40,12.60],
+      tiles:[['WASDE ago · yield EUA','52,7 bpa'],['Pro Farmer','53,3 bpa'],['Lavouras EUA','60% bom/excel.'],['Físico PR','~R$ 143/sc'],['Cepea','maior desde abr/23']],
+      fund:[
+        'Agosto foi o <strong>melhor mês da soja no ano</strong>. O WASDE de 12/08 cortou a produtividade dos EUA para <strong>52,7 bpa</strong> (de 53,0), abaixo do esperado, e acendeu o rali. Na semana do <strong>Pro Farmer Crop Tour</strong> (17–21/08), a oleaginosa emplacou quatro altas seguidas e acumulou <strong>quase 4%</strong>, tocando US$ 12,41 na quinta.',
+        'O tour encontrou campos inundados no Nebraska, lavouras decepcionantes em Illinois e <strong>avanço de doenças</strong>. Mas a estimativa final ficou em <strong>53,3 bpa — acima</strong> dos 52,7 do USDA, o que tirou força da alta e disparou a realização de lucros na última semana. As lavouras seguem em <strong>60% de bom a excelente</strong>, 2 p.p. abaixo da média.',
+        'No Brasil, a combinação de <strong>demanda firme, prêmios fortes e menor relação estoque/consumo</strong> levou os Indicadores Cepea aos <strong>maiores patamares desde abril de 2023</strong>. O físico chegou a ~R$ 143/sc no Norte Central do Paraná. A China aumentou compras diante do temor de safra menor.'],
+      tec:'A soja rompeu os <strong>US$ 12,00</strong> no meio do mês e transformou a marca em suporte. Testou US$ 12,41 e corrigiu para a faixa de US$ 12,20 — <strong>correção saudável dentro de tendência de alta</strong>. Enquanto segurar os US$ 12, a estrutura altista permanece intacta.',
+      niveis:[['Suporte','12,00 / 11,80'],['Resistência','12,40 / 12,60'],['Físico BR','melhor desde 2023']],
+      cen:['Clima ruim no enchimento + China → US$ 12,60.','US$ 12,00–12,40, digerindo o rali.','Fundos ampliam venda + perde 12,00 → US$ 11,85.'], proc:null },
+
+    { id:'milho', nome:'Milho', emo:'🌽', cor:'#f59e0b', unid:'CBOT dez/26 · US$/bu',
+      val:'5,03', un:'US$/bu', delta:'▲ cruzou US$ 5,00 · Pro Farmer bem abaixo do USDA', vies:'Altista', vcls:'alta', mark:72,
+      labels:L, data:[4.56,4.72,5.00,5.03], fmt:v=>'US$ '+v.toFixed(2), ymin:4.45, ymax:5.20, sup:[5.00,4.90], res:[5.10,5.15],
+      tiles:[['WASDE · yield','180,7 bpa'],['Pro Farmer','173,2 bpa'],['B3 mar/27','R$ 82,00'],['Físico BR','~R$ 67,74/sc'],['Export. BR','3,4 Mt']],
+      fund:[
+        'O milho teve o <strong>mês mais surpreendente</strong>. O WASDE de agosto foi baixista — cortou o yield para 180,7 bpa, mas elevou a área colhida a 88,6 mi de acres, resultando em <strong>produção maior</strong>. O cereal caiu. Depois veio a virada: o <strong>Pro Farmer</strong> estimou a produtividade em apenas <strong>173,2 bpa</strong> (safra de 15,344 bi bu), <strong>muito abaixo</strong> dos 180,7 bpa e 16,013 bi do USDA.',
+        'A divergência sugere um <strong>balanço americano bem mais apertado</strong> que o oficial — e foi o que levou os contratos a <strong>cruzarem os US$ 5,00</strong>. Na correção da última semana, o milho foi o <strong>mais resiliente</strong>, mantendo cerca de US$ 11/t de ganho ante a terça anterior.',
+        'No Brasil, mesmo com <strong>produção recorde</strong>, as cotações internas seguiram em alta: retração vendedora e cenário externo sustentaram os preços. A saca fechou a <strong>R$ 67,74</strong> e o vencimento março/27 na B3 bateu <strong>R$ 82,00</strong>. As exportações somam <strong>3,4 milhões de toneladas</strong>.'],
+      tec:'Rompeu e consolidou acima dos <strong>US$ 5,00</strong>, que viram suporte psicológico. A resistência à correção geral é <strong>sinal de força relativa</strong> — o milho carrega o melhor fundamento de curto prazo entre os grãos, com o lastro do Pro Farmer.',
+      niveis:[['Suporte','5,00 / 4,90'],['Resistência','5,10 / 5,15'],['B3 mar/27','R$ 82,00']],
+      cen:['Mercado precifica os 173,2 bpa → US$ 5,15.','US$ 5,00–5,10, firme.','USDA confirma safra cheia → US$ 4,90.'], proc:null },
+
+    { id:'farelo', nome:'Farelo de soja', emo:'🧱', cor:'#a3e635', unid:'referência · tendência',
+      val:'Misto', un:'ext. fraco / BR firme', delta:'◆ pressionado lá fora, valorizado no Brasil', vies:'Neutro', vcls:'neutro', mark:48,
+      labels:L, data:[100,99,98.5,99], fmt:v=>'índice '+v.toFixed(0), ymin:95, ymax:104, sup:[97,95], res:[101,103],
+      tiles:[['Mercado externo','oferta confortável'],['Mercado BR','demanda externa firme'],['Esmagamento EUA','recorde (NOPA)'],['Margem crush','normalizou'],['Direção','divergente']],
+      fund:[
+        'O farelo viveu um mês de <strong>trajetórias divergentes</strong>. No mercado internacional, permaneceu <strong>pressionado pela oferta confortável</strong>: compradores abastecidos e excedente de oferta levaram à queda de preços. O esmagamento americano recorde (NOPA, +11% a/a em julho) ampliou a disponibilidade.',
+        'No Brasil, o quadro é o oposto: a <strong>demanda externa mantém o farelo valorizado</strong>. O país tem sido destino preferencial de compradores em busca de proteína, o que sustenta os prêmios internos mesmo com a fraqueza em Chicago.',
+        'A <strong>rentabilidade do esmagamento</strong> em Chicago recuou na última semana para níveis mais normais frente a outros anos — sinal de que a margem excepcional da indústria está se ajustando. Para o pecuarista e o avicultor, é o principal insumo proteico da ração: farelo mais barato lá fora tende a aliviar custo de produção adiante.'],
+      tec:'Sem tendência definida: <strong>lateral com viés de baixa no exterior</strong> e firmeza no mercado interno. O descolamento entre Chicago e Brasil é a característica do momento — quem compra insumo deve olhar o prêmio local, não só a bolsa.',
+      niveis:[['Externo','oferta confortável'],['Interno','demanda sustenta'],['Driver','margem de crush']],
+      cen:['Demanda externa aquece e puxa o BR.','Divergência continua: fraco fora, firme aqui.','Excedente global derruba também o prêmio BR.'],
+      proc:'<b>Procedência ②:</b> painel construído sobre a <b>direção e os fundamentos verificados</b> do mês (oferta confortável no exterior, demanda externa sustentando o Brasil, esmagamento recorde). O gráfico é <b>indicativo de tendência em base 100</b>, não uma série de cotações.' },
+
+    { id:'oleo', nome:'Óleo vegetal', emo:'🛢️', cor:'#fbbf24', unid:'óleo de soja · tendência',
+      val:'Limitado', un:'suporte no petróleo', delta:'◆ petróleo dá suporte, mas biodiesel não ajuda', vies:'Neutro', vcls:'neutro', mark:47,
+      labels:L, data:[100,102,103,99], fmt:v=>'índice '+v.toFixed(0), ymin:95, ymax:107, sup:[98,96], res:[103,105],
+      tiles:[['Suporte','petróleo/geopolítica'],['Limitador','óleos substitutos'],['Biodiesel 2026','sem aumento de mistura'],['FAO óleos','índice elevado'],['Última semana','forte queda']],
+      fund:[
+        'O óleo de soja encontrou <strong>suporte no petróleo e no ambiente geopolítico</strong> ao longo do mês — as tensões no Oriente Médio e o Estreito de Ormuz mantiveram o barril elevado, o que puxa a demanda por biocombustíveis e sustenta os óleos vegetais.',
+        'Mas o espaço para altas é <strong>limitado por dois fatores</strong>: a expectativa de <strong>maior disponibilidade de óleos vegetais substitutos</strong> (palma, girassol, canola) e, no Brasil, a <strong>ausência de aumento adicional na mistura obrigatória de biodiesel</strong> em 2026 — o gatilho de demanda que o setor esperava e não veio.',
+        'Na última semana, o óleo teve <strong>forte queda</strong> acompanhando o recuo do petróleo (WTI na casa dos US$ 82, com a expectativa de retomada dos fluxos por Ormuz), retirando o suporte que vinha dando à soja em Chicago.'],
+      tec:'Movimento de <strong>sobe e desce ancorado no petróleo</strong>. Sem o gatilho do biodiesel, o óleo perde o driver estrutural de demanda doméstica e fica refém do barril e da oferta global de substitutos.',
+      niveis:[['Driver','petróleo'],['Freio','óleos substitutos'],['Política','mistura estável']],
+      cen:['Escalada geopolítica + petróleo → óleo sobe.','Lateral, seguindo o barril.','Ormuz normaliza + oferta de substitutos → queda.'],
+      proc:'<b>Procedência ②:</b> fundamentos e direção verificados; o gráfico é <b>indicativo de tendência em base 100</b>, não uma série de cotações fechadas.' },
+
+    { id:'ddg', nome:'DDG / DDGS', emo:'♻️', cor:'#c084fc', unid:'coproduto do etanol de milho',
+      val:'Estável', un:'estab. a queda', delta:'◆ segue o milho, mas com dinâmica própria', vies:'Neutro', vcls:'neutro', mark:45,
+      labels:L, data:[100,100,99,99], fmt:v=>'índice '+v.toFixed(0), ymin:95, ymax:105, sup:[98,96], res:[102,104],
+      tiles:[['Origem','etanol de milho'],['Referência','preço do milho'],['Tendência recente','estab. a queda'],['Uso','recria e terminação'],['Oferta','expansão do etanol-milho']],
+      fund:[
+        'O <strong>DDG é o principal coproduto do etanol de milho</strong> e, embora seu preço seja influenciado pela cotação do grão, <strong>outros fatores também determinam suas variações</strong> — disponibilidade regional, logística e a própria expansão das plantas de etanol de milho no Centro-Oeste.',
+        'Os preços médios do DDG/DDGS e do WDG/WDGS vinham entre <strong>estabilidade e queda</strong> nas leituras mais recentes. Isso é relevante em agosto porque o <strong>milho subiu</strong>: quando o grão sobe e o coproduto não acompanha, a <strong>relação de troca melhora</strong> para quem usa DDG na dieta.',
+        'Estudos da Esalq/USP mostram <strong>ganhos consistentes em desempenho e eficiência alimentar</strong> com a inclusão de DDG/DDGS e WDG/WDGS, reforçando o papel estratégico desses coprodutos na terminação e na recria no Brasil. Para o confinador do Cerrado, é uma alternativa de custo frente ao milho valorizado.'],
+      tec:'Sem mercado futuro líquido: a leitura é de <strong>relação de troca</strong>, não de gráfico. Com o milho em alta e o DDG estável, o <strong>coproduto ganha atratividade relativa</strong> na formulação — a decisão é de nutrição e custo, não de especulação.',
+      niveis:[['Referência','preço do milho'],['Tendência','estável/queda'],['Oportunidade','troca favorável']],
+      cen:['Milho sobe mais e DDG segue → troca ainda melhor.','Estabilidade com leve acompanhamento do milho.','Oferta menor de etanol-milho aperta o DDG.'],
+      proc:'<b>Procedência ②:</b> não há indicador diário público consolidado; o painel usa <b>fundamentos e tendência verificados</b>. Gráfico indicativo em base 100. Consulte cotação regional para decisão de compra.' },
+
+    { id:'sorgo', nome:'Sorgo', emo:'🌾', cor:'#f97316', unid:'substituto do milho · tendência',
+      val:'Acompanha', un:'segue o milho', delta:'▲ puxado pela alta do milho', vies:'Neutro-altista', vcls:'neutro', mark:60,
+      labels:L, data:[100,102,105,105], fmt:v=>'índice '+v.toFixed(0), ymin:96, ymax:110, sup:[101,98], res:[107,109],
+      tiles:[['Referência','~80% do milho'],['Driver','alta do milho'],['Uso','ração e etanol'],['Área BR','em expansão'],['Janela','safrinha tardia']],
+      fund:[
+        'O sorgo é o <strong>substituto direto do milho</strong> na ração e sua cotação costuma orbitar entre <strong>75% e 85% do preço do milho</strong>, conforme a região e a disponibilidade. Com o cereal em forte alta no mês — cruzando os US$ 5,00 em Chicago e sustentado no físico brasileiro —, o sorgo <strong>foi puxado junto</strong>.',
+        'A cultura vem <strong>ganhando área no Cerrado</strong> como alternativa de safrinha tardia, por tolerar melhor o déficit hídrico do fim do ciclo — exatamente o perfil de risco de Goiás e da região de Rio Verde. Isso amplia a oferta e, ao mesmo tempo, dá ao produtor uma segunda opção de janela.',
+        'A demanda vem da <strong>avicultura, suinocultura e confinamento</strong>, além do etanol. Como o milho subiu com produção recorde no Brasil (fenômeno de retração vendedora), o sorgo se torna <strong>alternativa de custo</strong> para o comprador de ração — o que sustenta seu prêmio relativo.'],
+      tec:'Mercado de <strong>menor liquidez</strong>, sem futuro próprio relevante: opera por <strong>paridade com o milho</strong>. A leitura correta é acompanhar o cereal e negociar o desconto percentual, que é onde está a margem.',
+      niveis:[['Paridade','75–85% do milho'],['Driver','milho em alta'],['Demanda','ração e etanol']],
+      cen:['Milho segue subindo → sorgo acompanha com desconto.','Paridade estável perto de 80% do milho.','Milho corrige → sorgo devolve o ganho.'],
+      proc:'<b>Procedência ②:</b> não há indicador diário consolidado; painel baseado na <b>relação de paridade com o milho</b> e nos fundamentos do mês. Gráfico indicativo em base 100.' },
+
+    { id:'aveia', nome:'Aveia', emo:'🥣', cor:'#94a3b8', unid:'cultura de inverno · tendência',
+      val:'Lateral', un:'mercado de nicho', delta:'◆ mercado restrito, ligado ao Sul', vies:'Neutro', vcls:'neutro', mark:48,
+      labels:L, data:[100,100,101,100], fmt:v=>'índice '+v.toFixed(0), ymin:95, ymax:106, sup:[98,96], res:[103,105],
+      tiles:[['Região','Sul do Brasil'],['Ciclo','cultura de inverno'],['Usos','alimentação e cobertura'],['Risco atual','geada no Sul'],['Liquidez','baixa']],
+      fund:[
+        'A aveia é uma <strong>cultura de inverno concentrada no Sul</strong> do Brasil, com peso pequeno no Cerrado. Seu mercado é de <strong>baixa liquidez</strong> e movido mais por contratos com a indústria de alimentação humana do que por bolsa.',
+        'O ponto de atenção de agosto foi <strong>climático</strong>: o Inmet previu declínio das temperaturas e <strong>possibilidade de geada no Sul</strong> no fim da terceira semana do mês — risco relevante para as lavouras de inverno na fase final de ciclo.',
+        'Para o produtor do Centro-Oeste, o interesse é <strong>indireto</strong>: a aveia é uma das principais opções de <strong>planta de cobertura e palhada</strong> em sistemas de plantio direto e integração lavoura-pecuária, competindo com braquiária e milheto na formação de palha.'],
+      tec:'Sem referência de futuro relevante: o preço se forma em <strong>negociação direta com a indústria</strong>. A leitura é de <strong>disponibilidade regional</strong> e clima do Sul, não de análise gráfica.',
+      niveis:[['Formação','contratos diretos'],['Risco','geada no Sul'],['Uso CO','cobertura/palhada']],
+      cen:['Geada reduz oferta do Sul → preços sobem.','Lateral, mercado restrito e pouco líquido.','Safra de inverno cheia pressiona os preços.'],
+      proc:'<b>Procedência ②:</b> mercado de nicho sem indicador diário público consolidado; painel baseado em <b>fundamentos estruturais e no alerta climático verificado</b> (previsão de geada no Sul). Gráfico indicativo em base 100.' },
+
+    { id:'protbov', nome:'Proteína bovina', emo:'🥩', cor:'#fb7185', unid:'carne · atacado e exportação',
+      val:'24,07', un:'R$/kg carcaça', delta:'▼ atacado cede na 2ª quinzena · exportação desacelera', vies:'Baixista', vcls:'baixa', mark:35,
+      labels:L, data:[24.5,24.3,24.17,24.07], fmt:v=>'R$ '+v.toFixed(2), ymin:23.5, ymax:25.2, sup:[24.00,23.60], res:[24.60,25.00],
+      tiles:[['Carcaça casada','R$ 24,07/kg'],['Variação semanal','−0,4%'],['Exportação ago','desacelerou'],['Cota China','esgotada'],['No ano','+5,29%']],
+      fund:[
+        'A carne teve um mês de <strong>duas metades</strong>. Até meados de agosto, o Cepea registrava firmeza, com <strong>exportações aquecidas</strong> sustentando os preços. Na segunda quinzena, o quadro virou: os preços no atacado <strong>enfraqueceram com a desaceleração sazonal do consumo</strong> — com menos renda disponível nas famílias no fim do mês, as vendas de carne perdem força.',
+        'A <strong>carcaça casada de boi</strong> fechou a semana em média de <strong>R$ 24,07 por quilo à vista</strong>, recuo de 0,4% na comparação semanal. No ano, até 19/08, a carcaça acumula <strong>+5,29%</strong> — bem abaixo do bezerro (+9,60%) e do boi gordo (+8,26%), o que mostra que <strong>o repasse ao longo da cadeia está travado</strong>.',
+        'No comércio exterior, as <strong>exportações desaceleraram em agosto</strong> e o <strong>preenchimento da cota chinesa</strong> sem tarifa adicional aumentou as incertezas para os embarques ao principal mercado da carne brasileira. Ainda assim, o preço elevado limitou a queda na receita total.'],
+      tec:'A carne é o <strong>elo mais fraco da cadeia neste momento</strong>: a arroba subiu mais que a carcaça, comprimindo a margem do frigorífico — que por sua vez pressiona o pecuarista. Esse descompasso é o que trava o mercado.',
+      niveis:[['Suporte','24,00 / 23,60'],['Resistência','24,60 / 25,00'],['No ano','+5,29%']],
+      cen:['Virada do mês reativa consumo → atacado reage.','R$ 24,00–24,50, acomodado.','Cota esgotada + consumo fraco → R$ 23,60.'],
+      proc:'<b>Procedência ②:</b> carcaça casada verificada (R$ 24,07/kg, −0,4% na semana); a série semanal do gráfico é aproximada.' },
+
+    { id:'gadovivo', nome:'Gado vivo', emo:'🐂', cor:'#ef4444', unid:'boi gordo · Cepea SP · R$/@',
+      val:'345,70', un:'R$/@', delta:'▲ subiu em 26 das 28 praças na 1ª quinzena · lateralizou depois', vies:'Neutro', vcls:'neutro', mark:55,
+      labels:L, data:[338,344,345.7,345.7], fmt:v=>'R$ '+v.toFixed(0), ymin:332, ymax:356, sup:[342,338], res:[350,356],
+      tiles:[['Indicador SP','R$ 345,70'],['Scot · comum SP','R$ 347/@'],['Boi China','R$ 350/@'],['B3 out/26','~R$ 358'],['No ano','+8,26%']],
+      fund:[
+        'Agosto começou <strong>muito bem para o pecuarista</strong>: nos primeiros 15 dias, <strong>26 das 28 praças</strong> monitoradas pelo Cepea registraram valorização da arroba. As maiores altas vieram do <strong>Tocantins (+4,2%)</strong>, oeste da Bahia (+3,4%) e noroeste do Paraná (+3,3%).',
+        'A partir da segunda quinzena o mercado <strong>perdeu ritmo</strong>. Os frigoríficos formaram escalas confortáveis — <strong>São Paulo com ~10 dias úteis</strong>, Mato Grosso 9, e MS, MG e Goiás perto de 8 — o que reduz a urgência de compra e preserva o poder de barganha da indústria. Houve queda em 9 estados no dia 19/08.',
+        'O que impede quedas maiores é a <strong>menor disponibilidade de gado pronto</strong>: com menos oferta, o pecuarista segura lotes e recusa propostas abaixo da referência. O resultado é um <strong>empate de forças</strong>. A Scot apurava boi comum a <strong>R$ 347/@</strong> e boi-China a R$ 350/@ no interior de SP. No ano, a arroba acumula <strong>+8,26%</strong>.'],
+      tec:'Lateral firme na faixa de <strong>R$ 344–350</strong>, com o suporte de R$ 342 defendido e o recorde de R$ 367 ainda distante. A leitura de mercado é que <strong>setembro ganha força</strong> para novas altas, com a retomada do consumo interno após a virada do mês.',
+      niveis:[['Suporte','342 / 338'],['Resistência','350 / 356'],['Recorde','R$ 367']],
+      cen:['Virada do mês reativa consumo → R$ 350+.','R$ 344–348, empate de forças.','Escalas cheias + cota esgotada → R$ 340.'],
+      proc:'<b>Procedência ②:</b> o Cepea informa que em <b>14/08 e 24/08/2026</b> o Indicador foi <b>arbitrado por excepcionalidade</b> (manutenção do valor do dia útil anterior). A série semanal do gráfico é aproximada.' },
+
+    { id:'frango', nome:'Proteína de frango', emo:'🐔', cor:'#38bdf8', unid:'carne de frango · Cepea',
+      val:'Recordes', un:'peito e filé', delta:'▲ exportação recorde impulsiona · risco na UE', vies:'Altista', vcls:'alta', mark:68,
+      labels:L, data:[97,99,102,103], fmt:v=>'índice '+v.toFixed(0), ymin:94, ymax:107, sup:[99,96], res:[104,106],
+      tiles:[['Peito e filé','renovam recordes'],['Export. julho','+28% a/a'],['vs junho','+6,6%'],['Ritmo embarques','recorde'],['Risco','UE descredencia ~20 plantas']],
+      fund:[
+        'O frango teve <strong>a melhor virada do mês</strong>. Os preços <strong>iniciaram agosto em queda</strong>, pressionados pela baixa demanda entre o fim de julho e o começo do mês. Mas os agentes apostavam em reação com o <strong>recebimento dos salários</strong> — e foi o que aconteceu.',
+        'A partir da segunda semana os preços reagiram e depois seguiram firmes, com o Cepea registrando <strong>peito e filé renovando recordes</strong>. O motor é a <strong>exportação elevada</strong>: os embarques atingiram <strong>ritmo recorde</strong>, e o total de julho subiu <strong>6,6% frente a junho e 28% em relação a julho de 2025</strong>.',
+        'O <strong>risco a monitorar</strong> é regulatório: a União Europeia anunciou o <strong>descredenciamento de cerca de 20 frigoríficos brasileiros</strong> autorizados a enviar carne de frango ao bloco. O efeito já apareceu na cadeia — o setor passou a descartar ovos férteis para equilibrar a sobreoferta de aves para abate.'],
+      tec:'Tendência de <strong>alta sustentada pela demanda externa</strong>, com o mercado interno reagindo após o pagamento de salários. O descredenciamento europeu é o <strong>fator de risco</strong> que pode redirecionar volume ao mercado doméstico e pressionar preços adiante.',
+      niveis:[['Motor','exportação recorde'],['Recorde','peito e filé'],['Risco','restrição da UE']],
+      cen:['Embarques seguem recordes → preços firmes.','Firmeza com acomodação após os recordes.','Restrição da UE joga volume no interno → queda.'],
+      proc:'<b>Procedência ②:</b> fatos e direção verificados (recordes de peito e filé, exportação +28% a/a, descredenciamento da UE); gráfico indicativo em base 100.' },
+
+    { id:'ovo', nome:'Ovo', emo:'🥚', cor:'#fde047', unid:'extra branco · Grande SP · R$/cx 30dz',
+      val:'85,96', un:'R$/caixa', delta:'▼ −15% no mês · sobreoferta de galados', vies:'Baixista', vcls:'baixa', mark:22,
+      labels:L, data:[97,92,88,85.96], fmt:v=>'R$ '+v.toFixed(0), ymin:82, ymax:102, sup:[84,80], res:[92,98],
+      tiles:[['Média do mês','R$ 85,96/cx'],['Variação','−15% vs jul'],['Causa','ovos galados no mercado'],['Gatilho','UE e frigoríficos'],['Export. processados','recorde em julho']],
+      fund:[
+        'O ovo foi <strong>o pior desempenho do mês</strong> entre as proteínas. O preço do <strong>tipo extra branco na Grande São Paulo</strong> teve média de <strong>R$ 85,96 por caixa de 30 dúzias</strong> (até o dia 26) — desvalorização <strong>expressiva de 15%</strong> frente à média do mesmo período de julho.',
+        'A causa é uma <strong>reação em cadeia</strong>: com o anúncio da União Europeia descredenciando cerca de 20 frigoríficos brasileiros de frango, os agentes da avicultura de corte passaram a <strong>descartar os ovos férteis (galados)</strong> que iriam para a produção de aves, buscando equilibrar a sobreoferta de proteína e de animais para abate.',
+        'Como os <strong>ovos galados têm menor vida útil</strong> que os comerciais, são ofertados a <strong>preços inferiores</strong> — aumentando a concorrência e dificultando as negociações dos ovos usualmente comercializados. Some a isso a demanda enfraquecida da segunda quinzena. No lado positivo, as <strong>exportações de processados atingiram recorde para um mês de julho</strong>.'],
+      tec:'Tendência <strong>claramente baixista</strong>, com o preço rompendo suportes ao longo do mês. A recuperação depende de <strong>cessar o fluxo de galados</strong> ao mercado — ou seja, do desfecho da questão com a União Europeia. É um choque de oferta, não de demanda.',
+      niveis:[['Suporte','84 / 80'],['Resistência','92 / 98'],['Queda no mês','−15%']],
+      cen:['Questão da UE se resolve → galados somem, preço reage.','Pressão continua enquanto durar a sobreoferta.','Mais descarte de galados → novas mínimas.'],
+      proc:null },
+
+    { id:'peixe', nome:'Peixe / Pescado', emo:'🐟', cor:'#22d3ee', unid:'tilápia · Cepea',
+      val:'Em queda', un:'demanda fraca', delta:'▼ demanda enfraquecida pressiona', vies:'Baixista', vcls:'baixa', mark:32,
+      labels:L, data:[100,99,97,96], fmt:v=>'índice '+v.toFixed(0), ymin:93, ymax:104, sup:[96,94], res:[100,102],
+      tiles:[['Espécie ref.','tilápia'],['Demanda','enfraquecida'],['Direção','recuo'],['Concorrência','frango e ovo baratos'],['Sazonal','fora da Quaresma']],
+      fund:[
+        'A <strong>tilápia</strong> — principal referência do pescado de cultivo no Brasil — teve mês de <strong>preços em recuo</strong>, com a <strong>demanda enfraquecida</strong> segundo o Cepea. O momento sazonal não ajuda: agosto está longe da Quaresma, período de pico do consumo de pescado.',
+        'O quadro se agrava pela <strong>concorrência das proteínas substitutas</strong>. Com o ovo caindo 15% no mês e a sobreoferta de aves para abate no mercado interno, o consumidor tem <strong>alternativas mais baratas</strong> de proteína — o que reduz a disposição a pagar pelo pescado.',
+        'Para o piscicultor, a pressão é dupla: <strong>preço de venda em queda</strong> enquanto o custo de ração acompanha o farelo de soja e o milho, que <strong>subiram no mês</strong>. É a pior combinação de margem entre as proteínas em agosto.'],
+      tec:'Viés <strong>baixista com pouca liquidez</strong>, típico do período. A recuperação depende de sazonalidade (fim de ano) e do ajuste da oferta das proteínas concorrentes.',
+      niveis:[['Suporte','demanda fraca'],['Custo','ração em alta'],['Sazonal','pico só na Quaresma']],
+      cen:['Ajuste de oferta das aves libera espaço → reação.','Preços fracos até virada sazonal.','Concorrência de proteína barata aprofunda a queda.'],
+      proc:'<b>Procedência ②:</b> direção verificada (Cepea: demanda enfraquecida, preços recuam); gráfico indicativo em base 100.' },
+
+    { id:'cafe', nome:'Café', emo:'☕', cor:'#8b5cf6', unid:'arábica ICE · US$/lb',
+      val:'~2,95', un:'US$/lb', delta:'▼ safra recorde no BR pressiona · fim da colheita', vies:'Baixista', vcls:'baixa', mark:30,
+      labels:L, data:[3.05,3.00,2.96,2.95], fmt:v=>'US$ '+v.toFixed(2), ymin:2.80, ymax:3.20, sup:[2.90,2.80], res:[3.05,3.20],
+      tiles:[['Safra BR 26/27','recorde'],['Marex','75,9 mi sacas'],['Variação a/a','+15,5%'],['Colheita','encerrada'],['Foco','safra 2027/28']],
+      fund:[
+        'O café seguiu em <strong>tendência de baixa estrutural</strong> ao longo de agosto, pressionado pelas <strong>perspectivas de oferta ampliada</strong> — especialmente do Brasil, principal produtor. As projeções para a safra 2026/27 são de <strong>recorde</strong>: a Marex projetou <strong>75,9 milhões de sacas</strong>, superando a Sucafina (75,4 milhões), o que representa alta de <strong>15,5% sobre o ano anterior</strong>.',
+        'Com o <strong>fim da colheita</strong> no Brasil (marco de meados do mês, conforme o Cepea), a atenção do mercado <strong>já se volta para a safra 2027/28</strong> — ou seja, para a floração e o clima do segundo semestre, que definem o próximo ciclo.',
+        'Um ponto de atenção logístico: a alta dos preços do petróleo por conta do conflito no Oriente Médio <strong>eleva os custos logísticos globais</strong> e pressiona o frete marítimo para as exportações brasileiras — um custo adicional que corrói a margem do exportador.'],
+      tec:'Tendência de <strong>baixa com repiques</strong>. A safra recorde funciona como <strong>teto de médio prazo</strong>; o gatilho de alta seria um problema climático na floração da 27/28. Zona de US$ 2,90 é o suporte imediato.',
+      niveis:[['Suporte','2,90 / 2,80'],['Resistência','3,05 / 3,20'],['Safra BR','recorde']],
+      cen:['Problema na floração 27/28 → repique acima de 3,05.','US$ 2,85–3,05, pressionado pela safra.','Confirmação do recorde → abaixo de US$ 2,80.'],
+      proc:'<b>Procedência ②:</b> patamar aproximado de referência intradiária; safra recorde, projeções e fim da colheita verificados.' },
+
+    { id:'cana', nome:'Cana / Açúcar', emo:'🎋', cor:'#4ade80', unid:'cristal SP · R$/sc 50kg',
+      val:'96,00', un:'R$/saca', delta:'▲ maior desde meados de maio · menor produção', vies:'Altista', vcls:'alta', mark:66,
+      labels:L, data:[93,96,96,96], fmt:v=>'R$ '+v.toFixed(0), ymin:90, ymax:100, sup:[94,92],res:[97,99],
+      tiles:[['Cristal SP','R$ 96,00/sc'],['Marca','maior desde mai'],['Causa','menor produção'],['Etanol','preços estáveis'],['Mix','decisão usina']],
+      fund:[
+        'O açúcar foi <strong>destaque positivo</strong> do mês. As cotações do <strong>cristal branco no mercado paulista</strong> seguiram em alta no início de agosto, alcançando o patamar de <strong>R$ 96,00 por saca de 50 kg</strong> — nível que <strong>não era registrado desde meados de maio</strong>.',
+        'O motor é a <strong>menor produção</strong>, que aperta a oferta doméstica e sustenta o cristal. É um movimento contrário ao cenário internacional, onde as expectativas de <strong>oferta global ampliada</strong> — com recuperação significativa da produção na Índia e perspectivas favoráveis na Tailândia — vinham pressionando os preços mundiais.',
+        'Do lado do <strong>etanol</strong>, o quadro é de <strong>equilíbrio entre oferta e demanda estabilizando os preços</strong>. Para a usina, isso torna a decisão de <strong>mix</strong> mais favorável ao açúcar: com o cristal em alta e o etanol de lado, a rentabilidade relativa pende para o adoçante.'],
+      tec:'Movimento de <strong>alta sustentado pela oferta doméstica curta</strong>, descolado da pressão internacional. O nível de R$ 96 é resistência histórica recente — romper com firmeza abre espaço para novas máximas do semestre.',
+      niveis:[['Suporte','94 / 92'],['Resistência','97 / 99'],['Etanol','estável']],
+      cen:['Produção segue baixa → cristal acima de R$ 97.','R$ 94–96, firme.','Oferta global (Índia/Tailândia) contamina o BR.'], proc:null },
+
+    { id:'citros', nome:'Citros', emo:'🍊', cor:'#fb923c', unid:'laranja e lima ácida · Cepea',
+      val:'Misto', un:'tahiti firme', delta:'▲ embarques recordes · lima ácida em alta', vies:'Neutro-altista', vcls:'neutro', mark:58,
+      labels:L, data:[100,102,104,104], fmt:v=>'índice '+v.toFixed(0), ymin:96, ymax:110, sup:[101,98], res:[106,108],
+      tiles:[['Embarques julho','maiores em 3 anos'],['Lima ácida tahiti','oferta restrita, em alta'],['Driver','oferta curta'],['Estrutural','greening (HLB)'],['Suco','mercado externo']],
+      fund:[
+        'O citros teve <strong>um mês melhor do que o cenário estrutural sugeria</strong>. Os <strong>embarques de julho foram os maiores para o mês em três anos</strong>, segundo o Cepea — um sinal relevante de demanda externa depois de um período difícil para o setor.',
+        'A <strong>lima ácida tahiti</strong> foi o destaque: a <strong>oferta restrita manteve os preços em alta</strong> ao longo do mês. Para o produtor de cítricos, é a fruta que está entregando melhor rentabilidade no período.',
+        'No pano de fundo, o setor segue convivendo com o <strong>desafio estrutural do greening (HLB)</strong>, que reduz a produtividade dos pomares e encarece o manejo. O preço do suco no mercado externo (FCOJ) passou por uma <strong>correção forte</strong> desde o recorde de meados de 2025, o que limita o otimismo de médio prazo.'],
+      tec:'Quadro <strong>misto com viés positivo no curto prazo</strong>: oferta restrita sustenta a lima ácida e os embarques surpreendem, mas o fundamento estrutural (greening + correção do suco) impõe cautela para o médio prazo.',
+      niveis:[['Driver','oferta restrita'],['Destaque','lima ácida tahiti'],['Estrutural','greening']],
+      cen:['Embarques seguem fortes + oferta curta → alta.','Firmeza na lima ácida, laranja acomodada.','Oferta normaliza e o suco pressiona → recuo.'],
+      proc:'<b>Procedência ②:</b> fatos verificados (embarques de julho, lima ácida em alta com oferta restrita); gráfico indicativo em base 100.' },
+
+    { id:'cacau', nome:'Cacau', emo:'🍫', cor:'#f472b6', unid:'ICE · US$/t',
+      val:'Baixo', un:'vs recorde 2024', delta:'◆ oferta abundante e demanda fraca · longe do topo', vies:'Neutro', vcls:'neutro', mark:40,
+      labels:L, data:[100,101,99,99], fmt:v=>'índice '+v.toFixed(0), ymin:94, ymax:108, sup:[97,94], res:[103,106],
+      tiles:[['Recorde histórico','dez/2024'],['Situação','muito abaixo do topo'],['Oferta','abundante'],['Demanda','fraca (moagem)'],['Estoques ICE','em alta']],
+      fund:[
+        'O cacau vive um <strong>momento estrutural completamente diferente</strong> do frenesi de 2024. Depois de atingir o recorde histórico em <strong>dezembro de 2024</strong>, os preços recuaram de forma dramática e passaram boa parte de 2026 <strong>próximos das mínimas de agosto de 2023</strong>.',
+        'Os fundamentos explicam: <strong>oferta abundante e demanda fraca</strong>. O clima favorável na Costa do Marfim, principal produtor, melhorou as perspectivas de colheita, e os <strong>estoques certificados monitorados pela ICE</strong> vinham em trajetória ascendente, atingindo níveis recordes de cobertura.',
+        'Do lado da demanda, os dados de <strong>moagem</strong> refletem o impacto prolongado dos preços altos de 2024 e o <strong>consequente ajuste de consumo pela indústria</strong> — os fabricantes reformularam produtos e reduziram volumes. É o efeito clássico de destruição de demanda por preço.'],
+      tec:'Mercado em <strong>consolidação em patamar deprimido</strong>, com alta volatilidade ao sabor das notícias da África Ocidental. A gestão de risco precisa ser <strong>rígida</strong>: é uma commodity de amplitude extrema, capaz de movimentos de dois dígitos.',
+      niveis:[['Referência','muito abaixo do topo'],['Oferta','abundante'],['Freio','demanda ajustada']],
+      cen:['Problema climático na África Ocidental → repique forte.','Consolidação com oferta confortável.','Estoques seguem subindo → novas mínimas.'],
+      proc:'<b>Procedência ②:</b> painel construído sobre <b>fundamentos estruturais verificados</b> (oferta abundante, demanda fraca, estoques ICE em alta, distância do recorde de dez/2024). Não há valor de fechamento de agosto confirmado; gráfico indicativo em base 100.' },
+
+    { id:'frutas', nome:'Frutas', emo:'🍇', cor:'#e879f9', unid:'hortifrúti · Cepea',
+      val:'Misto', un:'por produto', delta:'◆ oferta define cada fruta · sem tendência única', vies:'Neutro', vcls:'neutro', mark:50,
+      labels:L, data:[100,101,102,101], fmt:v=>'índice '+v.toFixed(0), ymin:95, ymax:108, sup:[99,96], res:[104,106],
+      tiles:[['Destaque alta','lima ácida tahiti'],['Pressão','maior oferta (folhosas)'],['Driver','oferta regional'],['Sazonal','entressafra varia'],['Fonte','Hortifrúti Cepea']],
+      fund:[
+        'O segmento de frutas <strong>não tem uma direção única</strong>: cada produto responde à sua própria janela de safra e oferta regional. Em agosto, o padrão foi de <strong>mercado dividido</strong> — quem estava com oferta restrita ganhou preço, quem entrou em pico de colheita perdeu.',
+        'O <strong>destaque de alta</strong> foi a <strong>lima ácida tahiti</strong>, com oferta restrita sustentando os preços em elevação ao longo do mês. Do lado oposto, produtos em maior disponibilidade sofreram pressão — o Cepea registrou, por exemplo, <strong>maior oferta pressionando cotações</strong> nas áreas do cinturão verde paulista.',
+        'Para o produtor, a leitura prática é que <strong>frutas e hortaliças são o oposto de commodity</strong>: não há bolsa, não há hedge padronizado, e o preço se forma na relação local entre oferta e demanda. A gestão de risco aqui passa por <strong>escalonamento de plantio</strong> e diversificação, não por instrumentos financeiros.'],
+      tec:'Sem análise gráfica aplicável a um conjunto tão heterogêneo. A leitura correta é <strong>produto a produto e região a região</strong>, acompanhando as janelas de safra — o Hortifrúti Cepea mantém séries por produto e região.',
+      niveis:[['Alta','lima ácida tahiti'],['Baixa','itens em pico de oferta'],['Gestão','escalonar plantio']],
+      cen:['Entressafras concentradas → preços firmes.','Mercado dividido por produto.','Safras coincidentes derrubam vários itens.'],
+      proc:'<b>Procedência ②:</b> painel qualitativo. O segmento reúne dezenas de produtos com dinâmicas próprias; usamos <b>casos verificados</b> (lima ácida em alta, maior oferta pressionando folhosas). Gráfico indicativo em base 100.' }
+  ];
+
+  const vcolor = {alta:'#34d399', baixa:'#f87171', neutro:'#22d3ee'};
+  const side = document.getElementById('side');
+  const content = document.getElementById('content');
+  const rendered = {};
+
+  const navOv=document.createElement('div');
+  navOv.className='nav-item active'; navOv.dataset.id='visao'; navOv.style.setProperty('--ac','#34d399');
+  navOv.innerHTML='<span class="emo">📊</span><span class="nm">Visão Geral</span><span class="dot" style="background:#34d399"></span>';
+  side.appendChild(navOv);
+
+  const ovPanel=document.createElement('section');
+  ovPanel.className='panel active'; ovPanel.id='panel-visao';
+  const ovCards=ASSETS.map(a=>`
+    <div class="ov-card" data-go="${a.id}" style="--ac:${a.cor}">
+      <div class="top"><span class="emo">${a.emo}</span><span class="nm">${a.nome}</span></div>
+      <div class="val">${a.val}${a.un?' <small>'+a.un+'</small>':''}</div>
+      <div class="dl ${a.vcls}">${a.delta}</div>
+      <div class="scale"><span class="mark" style="left:${a.mark}%"></span></div>
+    </div>`).join('');
+  ovPanel.innerHTML=`
+    <div class="a-head" style="--ac:#34d399"><span class="emo">📊</span><h2>Agosto de 2026 — visão geral</h2></div>
+    <p class="ov-intro">Um mês de <strong>grãos fortes e proteína animal dividida</strong>. Nos grãos, o WASDE cortou a produtividade da soja nos EUA e o <strong>Pro Farmer Crop Tour</strong> confirmou lavouras problemáticas — a soja subiu quase 4% na semana do tour e os Indicadores brasileiros chegaram ao <strong>maior nível desde abril de 2023</strong>; o milho <strong>cruzou os US$ 5,00</strong> com a estimativa do tour muito abaixo do USDA. Na proteína animal, o quadro se partiu: <strong>frango em recordes</strong> com exportação recorde, <strong>gado vivo lateral</strong> em patamar alto, mas <strong>ovo desabou 15%</strong> e <strong>pescado recuou</strong>. Entre os perenes, <strong>açúcar no maior nível desde maio</strong>, <strong>café pressionado</strong> pela safra recorde e <strong>citros surpreendendo</strong> nos embarques. Toque num card para abrir a análise completa.</p>
+    <div class="ov-grid">${ovCards}</div>
+    <div class="nota"><b>Como ler.</b> Cada painel traz indicadores-chave, fundamentos do mês, dois gráficos (trajetória + zonas técnicas, com suporte em <span style="color:var(--sup)">vermelho</span> e resistência em <span style="color:var(--res)">verde</span>), leitura técnica, níveis, cenários e o que esperar. <b>Importante:</b> mercados com cotação diária pública (soja, milho, gado vivo, ovo, açúcar, café) trazem valores; os demais — farelo, óleo, DDG/DDGS, sorgo, aveia, frango, pescado, cacau e frutas — <b>não têm indicador diário consolidado</b> e aparecem com <b>②</b>: fundamentos e direção verificados, com gráfico <b>indicativo em base 100</b>, que mostra tendência e não cotação. Período: <b>01 a 26/08/2026</b>.</div>`;
+  content.appendChild(ovPanel);
+
+  ASSETS.forEach(a=>{
+    const it=document.createElement('div');
+    it.className='nav-item'; it.dataset.id=a.id; it.style.setProperty('--ac',a.cor);
+    it.innerHTML=`<span class="emo">${a.emo}</span><span class="nm">${a.nome}</span><span class="dot" style="background:${vcolor[a.vcls]}"></span>`;
+    side.appendChild(it);
+
+    const p=document.createElement('section');
+    p.className='panel'; p.id='panel-'+a.id; p.style.setProperty('--ac',a.cor);
+    p.innerHTML=`
+      <div class="a-head">
+        <span class="emo">${a.emo}</span><h2>${a.nome}</h2>
+        <span class="vbadge ${a.vcls}">${a.vies}</span>
+        <span class="val mono">${a.val}${a.un?' <small>'+a.un+'</small>':''}</span>
+        <span class="delta ${a.vcls}">${a.delta}</span>
+      </div>
+      <div class="block-t">Indicadores-chave</div>
+      <div class="tiles">${a.tiles.map(t=>`<div class="tile"><div class="tl">${t[0]}</div><div class="tv">${t[1]}</div></div>`).join('')}</div>
+      <div class="block-t">Fundamentos do mês</div>
+      <div class="a-body">${a.fund.map(x=>`<p>${x}</p>`).join('')}</div>
+      <div class="block-t">Gráficos</div>
+      <div class="charts2">
+        <div class="chart-card"><div class="chead"><span class="t">Trajetória · ${a.unid}</span></div><div class="chart-box"><canvas id="cv-${a.id}"></canvas></div></div>
+        <div class="chart-card"><div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div><div class="chart-box"><canvas id="cv2-${a.id}"></canvas></div>
+          <div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div></div>
+      </div>
+      <div class="block-t">Leitura técnica</div>
+      <div class="a-body"><p>${a.tec}</p></div>
+      <div class="niveis">${a.niveis.map(n=>`<span class="n"><b>${n[0]}</b>${n[1]}</span>`).join('')}</div>
+      <div class="block-t">Cenários</div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--em)"></span>Otimista</h4><p>${a.cen[0]}</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base</h4><p>${a.cen[1]}</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista</h4><p>${a.cen[2]}</p></div>
+      </div>
+      <div class="esperar"><div class="h">O que esperar</div><p>${esperarPad(a)}</p></div>
+      ${a.proc?`<div class="proc">${a.proc}</div>`:''}`;
+    content.appendChild(p);
+  });
+
+  function esperarPad(a){
+    const m={
+      soja:'Com o crop tour encerrado, o clima do enchimento assume. Preços em reais nos melhores níveis desde 2023 — janela aberta para escalonar fixações, sem esperar o topo voltar.',
+      milho:'O melhor fundamento de curto prazo entre os grãos. Março/27 a R$ 82 na B3 é patamar de negociação; acompanhar se o USDA converge para o Pro Farmer.',
+      farelo:'Para quem compra insumo: acompanhar o prêmio local, não só Chicago. A oferta confortável lá fora tende a aliviar o custo de ração adiante.',
+      oleo:'Refém do petróleo enquanto não houver aumento na mistura de biodiesel. Acompanhar Ormuz e a oferta global de óleos substitutos.',
+      ddg:'Com o milho em alta e o DDG estável, a relação de troca ficou favorável. Vale reavaliar a formulação da dieta e cotar disponibilidade regional.',
+      sorgo:'Negociar pelo desconto percentual frente ao milho — é onde está a margem. Boa opção de janela tardia para a safrinha no Cerrado.',
+      aveia:'Interesse indireto para o Centro-Oeste: opção de cobertura e palhada no plantio direto. Acompanhar o efeito das geadas no Sul.',
+      protbov:'O elo mais fraco da cadeia: a arroba subiu mais que a carcaça e comprimiu a margem do frigorífico. A virada do mês é o gatilho de reação.',
+      gadovivo:'Empate de forças com piso firme. Sem pressa de caixa, esperar a virada do mês; quem precisa vender, negociar sabendo que a indústria tem escala.',
+      frango:'Demanda externa recorde sustenta, mas o descredenciamento de plantas pela UE é o risco a monitorar — pode redirecionar volume ao mercado interno.',
+      ovo:'Choque de oferta, não de demanda. A recuperação depende do fim do fluxo de ovos galados ao mercado — acompanhar o desfecho com a UE.',
+      peixe:'A pior combinação de margem do mês: preço em queda e ração em alta. Avaliar escalonamento de despesca até a virada sazonal.',
+      cafe:'A safra recorde é o teto de médio prazo. Vendas escalonadas nos repiques, priorizando qualidade; o gatilho de alta seria problema na floração 27/28.',
+      cana:'Cristal em alta com produção menor favorece o mix açucareiro. Momento de avaliar contratos, de olho na oferta global de Índia e Tailândia.',
+      citros:'Curto prazo positivo com oferta restrita e embarques fortes; médio prazo exige cautela pelo greening. Foco em produtividade e manejo do pomar.',
+      cacau:'Volatilidade extrema exige gestão de risco rígida. O mercado está estruturalmente diferente de 2024 — não projetar aqueles preços.',
+      frutas:'Leitura produto a produto e região a região. A gestão de risco aqui é agronômica — escalonar plantio e diversificar, já que não há hedge padronizado.'
+    };
+    return m[a.id]||'';
+  }
+
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  function mkChart(a){
+    const el=document.getElementById('cv-'+a.id); if(!el) return;
+    const color=a.cor;
+    new Chart(el,{type:'line',
+      data:{labels:a.labels,datasets:[{data:a.data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:4,pointHoverRadius:6,tension:.25,fill:true,
+        backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,216);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:10,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>a.fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB,font:{family:"'JetBrains Mono',monospace",size:10}}},
+          y:{grid:{color:GRID},border:{display:false},suggestedMin:a.ymin,suggestedMax:a.ymax,ticks:{color:SUB,font:{family:"'JetBrains Mono',monospace",size:10},callback:(v)=>a.fmt(v)}}},
+        animation:{duration:700}}});
+  }
+  function mkTech(a){
+    const el=document.getElementById('cv2-'+a.id); if(!el) return;
+    const color=a.cor, n=a.labels.length, flat=v=>Array(n).fill(v);
+    const ds=[{label:'preço',data:a.data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:4,pointHoverRadius:6,tension:.25,fill:true,order:1,
+      backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,216);g.addColorStop(0,color+'33');g.addColorStop(1,color+'00');return g;}}];
+    a.res.forEach(r=>ds.push({label:'res',data:flat(r),borderColor:'#34d399',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0,order:2}));
+    a.sup.forEach(s=>ds.push({label:'sup',data:flat(s),borderColor:'#f87171',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0,order:2}));
+    new Chart(el,{type:'line',data:{labels:a.labels,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{filter:(i)=>i.datasetIndex===0,backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:10,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>a.fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB,font:{family:"'JetBrains Mono',monospace",size:10}}},
+          y:{grid:{color:GRID},border:{display:false},suggestedMin:a.ymin,suggestedMax:a.ymax,ticks:{color:SUB,font:{family:"'JetBrains Mono',monospace",size:10},callback:(v)=>a.fmt(v)}}},
+        animation:{duration:700}}});
+  }
+
+  function activate(id){
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.id===id));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+    const a=ASSETS.find(x=>x.id===id);
+    if(a && !rendered[id]){ mkChart(a); mkTech(a); rendered[id]=true; }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  side.addEventListener('click',e=>{const it=e.target.closest('.nav-item'); if(it) activate(it.dataset.id);});
+  content.addEventListener('click',e=>{const c=e.target.closest('[data-go]'); if(c) activate(c.dataset.go);});
+</script>
+</body>
+</html>
