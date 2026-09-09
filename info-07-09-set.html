@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meio de Semana 07–09/09 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Meio de Semana</span><span>07 a 09 / 09 / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">Realização antes do USDA: grãos cedem, o dólar fura os <em>R$ 5,10</em> e o boi segue firme</h1>
+    <p class="thesis">Semana curta — segunda foi feriado nos dois países. Nos dois pregões úteis, o mercado ajustou posições antes do relatório do USDA de sexta: soja e milho recuaram por realização de lucros, com o Kremlin sinalizando retomada de negociações e derrubando o prêmio de risco. O que segura as perdas é a China, comprando forte. O dólar rondou os R$ 5,10 e o boi manteve a firmeza.</p>
+    <div class="periodo"><span>Parcial de <b>07 a 09/09</b> · seg foi feriado</span><span>Sexta: <b>WASDE de setembro</b></span><span>Cerrado · Goiás</span></div>
+  </div>
+</header>
+
+<!-- 01 CORREÇÃO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">!</span><h2>Correção — o preço do boi na edição anterior</h2></div>
+  <div class="driver">
+    <div class="big">347,70<small>o valor correto do Indicador Cepea/ESALQ em 04/09</small></div>
+    <div class="txt"><p>No informativo semanal anterior publicamos a arroba a <b>R$ 365,60</b>, "a poucos reais do recorde", com uma ressalva de procedência pedindo conferência. <b>A ressalva se confirmou: o número estava errado.</b> A série diária do Cepea/ESALQ mostra que a arroba fechou a primeira semana de setembro a <b>R$ 347,70</b>, com trajetória de ganhos graduais: <b>R$ 344,40</b> (31/08) → <b>R$ 346,00</b> (1º) → <b>R$ 347,40</b> (2) → <b>R$ 347,60</b> (3) → <b>R$ 347,70</b> (4), alta de 0,03% no dia e <b>+0,96% no acumulado de setembro</b>.</p>
+    <p>Ou seja: o boi está <b>firme e em alta gradual</b>, mas <b>não está atacando o recorde</b> — está cerca de <b>R$ 19 abaixo</b> do que informamos. Quem tomou decisão de venda com base naquele número deve refazer a conta. A diferença veio de um portal agregador que não confere com a série oficial do Cepea; a partir desta edição, a referência do boi passa a ser exclusivamente o <b>Indicador Cepea/ESALQ</b>.</p></div>
+  </div>
+</div></section>
+
+<!-- 02 TERMÔMETRO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Termômetro dos dois pregões</h2></div>
+  <p class="sec-sub">Segunda (07/09) foi feriado no Brasil e nos EUA. Valem terça e quarta — e a quarta fechou pouco antes desta edição.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Soja · CBOT nov/26 <span class="tag">US$/bu</span></div>
+      <div class="val">13,09<span class="unit"> US$</span></div>
+      <div class="delta baixa">▼ −0,51% (qua) · realização antes do USDA</div>
+      <div class="spark-wrap"><canvas id="spkSoja"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:72%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies neutro">Viés: correção em patamar alto</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">Milho · CBOT set/26 <span class="tag">US$/bu</span></div>
+      <div class="val">5,07<span class="unit"> US$</span></div>
+      <div class="delta baixa">▼ recuou · trigo liderou as perdas</div>
+      <div class="spark-wrap"><canvas id="spkMilho"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:60%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies neutro">Viés: correção técnica</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Boi gordo · Cepea/ESALQ <span class="tag">R$/@</span></div>
+      <div class="val">~348<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ +0,96% no mês · alta gradual e consistente</div>
+      <div class="spark-wrap"><canvas id="spkBoi"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:62%"></span></div><div class="ends"><span>Oferta</span><span>Exportação</span></div></div>
+      <div class="vies alta">Viés: altista gradual</div>
+    </div>
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Dólar · comercial <span class="tag">venda</span></div>
+      <div class="val">5,111<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ +0,41% (qua) · rondando os R$ 5,10</div>
+      <div class="spark-wrap"><canvas id="spkCambio"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:34%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+      <div class="vies baixa">Viés: patamar baixo (pesa no exportador)</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 DRIVER -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>O que move estes dois dias</h2></div>
+  <p class="sec-sub">Duas forças opostas se anulando: o ajuste de posições contra a demanda chinesa.</p>
+  <div class="driver">
+    <div class="big">Sexta, 11/09<small>relatório de oferta e demanda do USDA · o número da semana</small></div>
+    <div class="txt"><p>Os dois pregões foram de <b>realização de lucros e correção técnica</b>, com os agentes <b>posicionando carteiras</b> antes do relatório de setembro do USDA. A Agrinvest observa que o movimento se intensificou <b>após o aumento da exposição comprada dos fundos</b> — quem estava muito comprado aproveitou para reduzir risco antes do número. Pesou também a <b>queda do prêmio geopolítico</b>: o <b>Kremlin sinalizou a possibilidade de retomar negociações</b> mediadas pelos EUA (ainda sem data ou local definidos), o que derrubou o trigo, que liderou as perdas do complexo.</p>
+    <p>Do outro lado, as perdas ficaram <b>limitadas</b> por três fatores: a <b>demanda chinesa firme</b> — só nesta quarta os exportadores privados reportaram <b>340 mil toneladas para a China</b> e 100 mil para destinos não revelados —, a <b>preocupação com o clima seco</b> sobre o cinturão produtor e a <b>volta da alta consistente do petróleo</b>.</p></div>
+  </div>
+</div></section>
+
+<!-- 04 SOJA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Soja — cede pouco e segura o patamar</h2></div>
+  <p class="sec-sub">A oleaginosa recuou meio ponto percentual na quarta, mas segue acima dos US$ 13. A China comprando e o clima seco impedem uma queda maior.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Trajetória · CBOT nov/26 · US$/bu</span><span class="now mono baixa">13,09½</span></div><div class="chart-box"><canvas id="chSoja"></canvas></div><div class="chart-foot">04/09 (ref.) → 08 → 09/09. Jan/27 a US$ 13,25¼.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div><div class="chart-box"><canvas id="chSojaT"></canvas></div><div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Fundamentos</p>
+      <p>Os contratos de novembro fecharam a quarta a <strong>US$ 13,09½ por bushel</strong>, com baixa de <strong>6,75 centavos (−0,51%)</strong>; o janeiro/27 ficou em <strong>US$ 13,25¼</strong> (−0,50%). Nos subprodutos, o <strong>farelo subiu</strong> (dezembro a US$ 351,40/t, +0,45%) e o <strong>óleo cedeu de leve</strong> (dezembro a 70,57 centavos, −0,18%).</p>
+      <p>O dia foi de <strong>realização de lucros e correção técnica</strong> antes do USDA, mas as perdas seguem <strong>limitadas pela boa demanda chinesa</strong>: os exportadores privados reportaram a venda de <strong>340 mil toneladas para a China</strong> e 100 mil toneladas para destinos não revelados. A <strong>preocupação com o clima seco</strong> sobre o cinturão produtor e a alta do petróleo também sustentam. As condições das lavouras até 6 de setembro mostram <strong>58% entre boas e excelentes</strong>, 29% regulares e <strong>13% entre ruins e muito ruins</strong>.</p>
+      <p>Para sexta, o mercado aposta em <strong>estoques finais mundiais 2026/27 de 123,1 milhões de toneladas</strong>, recuando frente aos 124,2 milhões atuais — e na manutenção de 125,1 milhões para 2025/26. No Brasil, o Cepea fechou a semana anterior com Paranaguá a <strong>R$ 160,87</strong> a saca (US$ 31,36).</p>
+      <p class="tagline">Leitura gráfica &amp; tendência</p>
+      <p>Defende os <strong>US$ 13,00</strong>, que seguem como suporte psicológico — a correção foi <strong>rasa</strong>, sinal de que há comprador embaixo. Resistência em US$ 13,40. O WASDE de sexta define o próximo movimento.</p>
+      <div class="niveis"><span class="n"><b>Suporte</b>13,00 / 12,80</span><span class="n"><b>Resistência</b>13,40 / 13,60</span><span class="n"><b>Paranaguá</b>R$ 160,87/sc</span></div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista</h4><p>USDA corta estoques → US$ 13,40.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base</h4><p>US$ 12,95–13,25, aguardando o número.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista</h4><p>Estoques acima do esperado → US$ 12,80.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 MILHO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Milho — recuou com o trigo e a redução do prêmio de risco</h2></div>
+  <p class="sec-sub">O cereal caiu nos dois mercados, arrastado pelo trigo, que liderou as perdas após o sinal do Kremlin sobre negociações.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Trajetória · CBOT set/26 · US$/bu</span><span class="now mono baixa">5,07</span></div><div class="chart-box"><canvas id="chMilho"></canvas></div><div class="chart-foot">B3 fechou a R$ 71,04/saca (−0,21%).</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div><div class="chart-box"><canvas id="chMilhoT"></canvas></div><div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Fundamentos</p>
+      <p>O milho encerrou a quarta <strong>em queda nas duas bolsas</strong>: o setembro/26 fechou a <strong>US$ 5,07</strong> em Chicago e a saca na <strong>B3 a R$ 71,04</strong> (−0,21%). O <strong>trigo liderou as perdas</strong> do complexo, arrastando o cereal.</p>
+      <p>A Agrinvest aponta dois motivos: a <strong>expectativa pelo relatório do USDA</strong> levou à realização de lucros, <strong>especialmente após o aumento da exposição comprada dos fundos</strong> — ou seja, o mercado estava esticado do lado comprador; e a <strong>sinalização do Kremlin</strong> sobre a possibilidade de retomar negociações mediadas pelos EUA reduziu o prêmio de risco, ainda que <strong>não haja data nem local definidos</strong> para as conversas.</p>
+      <p>No físico brasileiro, o indicador Esalq/B3 vinha de semana positiva — fechou a semana anterior a <strong>R$ 70,93</strong>, com alta de 1,00% no acumulado do mês, após atingir o pico de R$ 71,06 na quinta (3).</p>
+      <p class="tagline">Leitura gráfica &amp; tendência</p>
+      <p>Correção técnica clássica após rali forte, com os fundos reduzindo posição comprada. O suporte fica em <strong>US$ 5,00</strong> — perder essa marca sinalizaria algo mais que ajuste. A tese altista (Pro Farmer, lavouras piores) <strong>segue de pé</strong>, mas precisa da validação do USDA na sexta.</p>
+      <div class="niveis"><span class="n"><b>Suporte</b>5,00 / 4,90</span><span class="n"><b>Resistência</b>5,15 / 5,25</span><span class="n"><b>B3</b>R$ 71,04/sc</span></div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista</h4><p>USDA converge ao Pro Farmer → US$ 5,25.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base</h4><p>US$ 5,00–5,15, ajustando posição.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista</h4><p>Paz na Ucrânia + safra cheia → US$ 4,90.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 BOI -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Boi — firme, subindo de forma gradual e consistente</h2></div>
+  <p class="sec-sub">Sem a euforia que reportamos por engano, mas com uma trajetória sólida: o indicador subiu em todos os pregões da primeira semana de setembro.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Trajetória · Cepea/ESALQ · R$/@</span><span class="now mono alta">~348</span></div><div class="chart-box"><canvas id="chBoi"></canvas></div><div class="chart-foot">04/09 fechou a R$ 347,70 (+0,96% no mês).</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div><div class="chart-box"><canvas id="chBoiT"></canvas></div><div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Fundamentos</p>
+      <p>O boi gordo mantém uma <strong>trajetória de ganhos graduais</strong>. O Indicador Cepea/ESALQ encerrou a primeira semana de setembro a <strong>R$ 347,70</strong> (US$ 67,78), <strong>praticamente na máxima semanal</strong>, com alta de <strong>0,96% no acumulado do mês</strong>. A escalada foi consistente, dia após dia: R$ 344,40 → 346,00 → 347,40 → 347,60 → 347,70.</p>
+      <p>Os fundamentos que sustentam seguem os mesmos: <strong>oferta enxuta</strong> de animais terminados, <strong>demanda interna reativada</strong> com a virada do mês e <strong>exportações firmes</strong>. A dispersão regional continua grande — em Três Lagoas (MS), a arroba encerrou a quarta a <strong>R$ 336,50</strong>, com aumento de R$ 3,00.</p>
+      <p>Vale reforçar o alerta estrutural: mesmo com a arroba subindo, o <strong>ágio do bezerro</strong> segue acima de 40%, mantendo a <strong>relação de troca desfavorável</strong> para quem vende boi e precisa repor rebanho.</p>
+      <p class="tagline">Leitura gráfica &amp; tendência</p>
+      <p>Alta gradual e bem comportada, com suporte em <strong>R$ 344</strong> e resistência em R$ 350. O recorde de <strong>R$ 367 segue distante</strong> — cerca de R$ 19 acima. A tendência é <strong>altista</strong>, mas de escalada lenta, não de disparada.</p>
+      <div class="niveis"><span class="n"><b>Suporte</b>344 / 340</span><span class="n"><b>Resistência</b>350 / 356</span><span class="n"><b>Recorde</b>R$ 367</span></div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista</h4><p>Oferta segue curta → rompe R$ 350.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base</h4><p>R$ 345–350, alta gradual.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista</h4><p>Frigorífico recompõe escala → R$ 342.</p></div>
+      </div>
+      <div class="proc"><b>Procedência ②:</b> série de 31/08 a 04/09 verificada no Cepea/ESALQ; os valores de 08 e 09/09 são estimados por continuidade da tendência. Três Lagoas (MS) a R$ 336,50 verificado.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 07 DÓLAR -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Dólar — rondando os R$ 5,10</h2></div>
+  <p class="sec-sub">A moeda opera no menor patamar em meses. Depois de abrir a quarta perto da estabilidade, fechou em alta de 0,41% — mas segue num nível que pesa contra o exportador.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Trajetória · dólar comercial · venda</span><span class="now mono alta">5,1105</span></div><div class="chart-box"><canvas id="chCambio"></canvas></div><div class="chart-foot">Compra a R$ 5,1085. Pela manhã rodava a R$ 5,089.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Zonas técnicas · suporte × resistência</span></div><div class="chart-box"><canvas id="chCambioT"></canvas></div><div class="leg-sr"><span><span class="ln lr"></span>resistência</span><span><span class="ln ls"></span>suporte</span><span>preço</span></div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Fundamentos</p>
+      <p>O dólar comercial encerrou a quarta com <strong>alta de 0,41%, a R$ 5,1105 para venda</strong> (R$ 5,1085 na compra). Pela manhã, a moeda rondava a <strong>estabilidade em R$ 5,089</strong> — ou seja, chegou a operar <strong>abaixo dos R$ 5,09</strong> antes de recuperar no fim da sessão.</p>
+      <p>O quadro segue de <strong>real relativamente forte</strong>, sustentado pelo <strong>carry</strong> com a Selic em 14% e pelo fluxo estrangeiro. O apetite por risco global ajudou: o Ibovespa subiu 1,2% na terça, aos 187.366,84 pontos. Nas commodities financeiras, o <strong>ouro disparou 8%</strong>, a US$ 4.425 a onça, com compras de bancos centrais.</p>
+      <p><strong>Para o produtor, este é o ponto de atenção do momento.</strong> A soja está sendo negociada em patamar excelente em Chicago, mas com o dólar perto de R$ 5,10 <strong>parte relevante desse preço não chega ao bolso</strong>. É o mesmo descasamento que vimos no meio de agosto, agora em nível de câmbio ainda mais baixo.</p>
+      <p class="tagline">Leitura gráfica &amp; tendência</p>
+      <p>Consolidado na faixa estreita de <strong>R$ 5,08–5,13</strong>. O suporte relevante é R$ 5,05; a resistência, R$ 5,15. Enquanto o carry seguir favorável e o fluxo positivo, o viés é de <strong>lateralidade em patamar baixo</strong>.</p>
+      <div class="niveis"><span class="n"><b>Suporte</b>5,08 / 5,05</span><span class="n"><b>Resistência</b>5,15 / 5,20</span><span class="n"><b>Selic</b>14,00%</span></div>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Exportador</h4><p>Fed endurece + risco eleitoral → R$ 5,20.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base</h4><p>R$ 5,08–5,15, lateral.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Real forte</h4><p>Carry + fluxo → abaixo de R$ 5,05.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 08 O QUE FALTA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">07</span><h2>O que falta até o fim da semana</h2></div>
+  <p class="sec-sub">Dois dias e um relatório. Tudo converge para sexta.</p>
+  <ul class="timeline">
+    <li class="star"><div class="when">Sexta 11 ⭐</div><div class="what">WASDE de setembro — o teste da tese altista</div><div class="desc">O relatório de oferta e demanda do USDA é o evento da semana. Na soja, o mercado aposta em estoques finais mundiais 26/27 de 123,1 milhões de toneladas (ante 124,2 atuais). No milho, a pergunta é se o USDA converge para o Pro Farmer, que estimou 173,2 bpa contra os 180,7 bpa oficiais.</div></li>
+    <li><div class="when">Quinta 10</div><div class="what">Export Sales (USDA) · posicionamento pré-relatório</div><div class="desc">As vendas semanais de exportação, com atenção à China depois das 340 mil toneladas reportadas nesta quarta. Dia típico de ajuste final de posições.</div></li>
+    <li><div class="when">Geopolítica</div><div class="what">O sinal do Kremlin tem lastro?</div><div class="desc">A sinalização sobre retomar negociações mediadas pelos EUA derrubou o trigo, mas ainda não há data nem local definidos. Se as conversas se concretizarem, mais prêmio de risco sai do preço dos grãos.</div></li>
+    <li><div class="when">EUA · clima</div><div class="what">Clima seco no cinturão e condições em 58%</div><div class="desc">A soja está com 58% de bom a excelente e 13% em condições ruins ou muito ruins. O clima seco sobre o cinturão produtor é hoje um dos principais limitadores das quedas.</div></li>
+    <li><div class="when">Cerrado</div><div class="what">Janela de plantio da 26/27 aberta</div><div class="desc">Setembro é o mês da decisão. Manejo antecipado da ferrugem e atenção ao regime de chuvas — lembrando que cada dia de atraso na emergência custa de 10 a 12 sacas por hectare.</div></li>
+  </ul>
+</div></section>
+
+<!-- 09 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Leitura do estrategista</h2></div>
+    <p class="sec-sub" style="color:var(--t2)">O fio da semana curta e o recado prático.</p>
+    <p class="read">Dois pregões de <strong>ajuste, não de reversão</strong>. Os fundos estavam muito comprados e reduziram risco antes do USDA; o sinal do Kremlin sobre negociações tirou prêmio geopolítico e derrubou o trigo, que puxou o complexo. Mas a queda foi <strong>rasa</strong> — a soja defendeu os US$ 13 porque a <strong>China continua comprando</strong> (340 mil toneladas só nesta quarta) e o clima seco preocupa. O boi segue <strong>subindo de forma gradual e consistente</strong>. O problema está no <strong>câmbio</strong>: com o dólar rondando R$ 5,10, o excelente preço de Chicago chega bem menor ao produtor. <strong>Recado:</strong> um dado do Safras &amp; Mercado mostra que o produtor <strong>já entendeu o recado</strong> — <strong>29,1% da safra 26/27 já está comercializada</strong>, contra 20,2% no ano passado e média de 22,7% em cinco anos. Quem vendeu antecipado nesta janela acertou. Para os 70% restantes, sexta é dia de definição.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Soja</div><div class="vb" style="color:#a5c9f5">Correção</div><div class="ac">US$ 13,09; segura o patamar.</div></div>
+      <div class="mtile"><div class="h">Milho</div><div class="vb" style="color:#a5c9f5">Correção</div><div class="ac">US$ 5,07; fundos ajustam.</div></div>
+      <div class="mtile"><div class="h">Boi</div><div class="vb" style="color:#8fe6bf">Alta gradual</div><div class="ac">~R$ 348; +0,96% no mês.</div></div>
+      <div class="mtile"><div class="h">Dólar</div><div class="vb" style="color:#fca5a5">Patamar baixo</div><div class="ac">R$ 5,111; pesa no repasse.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">O que fazer nesta janela</div>
+      <ul>
+        <li><b>Soja:</b> a correção foi rasa e a China sustenta. Mas o preço em reais está limitado pelo dólar baixo — quem tem margem garantida não precisa esperar o WASDE para decidir.</li>
+        <li><b>Milho:</b> ajuste de posição dos fundos, não mudança de fundamento. A tese altista depende do USDA convergir ao Pro Farmer na sexta — negociar em fatias, sem apostar tudo no relatório.</li>
+        <li><b>Boi:</b> alta gradual e consistente, com oferta enxuta. Sem euforia e sem recorde à vista — quem repõe rebanho segue penalizado pelo ágio do bezerro acima de 40%.</li>
+        <li><b>Câmbio:</b> R$ 5,10 é o ponto fraco da equação. Quem já fixou preço em Chicago deveria avaliar a trava de câmbio — sem ela, metade da receita segue exposta.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Notas e fontes.</b> Parcial de 07 a 09/09; segunda-feira (07/09) foi feriado no Brasil (Independência) e nos EUA (Labor Day), com mercados fechados. <b>Correção:</b> o informativo semanal anterior (31/08–04/09) publicou o Indicador do boi gordo a R$ 365,60, com ressalva de procedência. O valor correto, conforme a série diária do Cepea/ESALQ, é <b>R$ 347,70</b> no fechamento de 04/09 (+0,03% no dia, +0,96% no acumulado de setembro), com trajetória de R$ 344,40 (31/08), R$ 346,00 (1º), R$ 347,40 (2) e R$ 347,60 (3). Verificado (09/09): soja novembro/26 a US$ 13,09½ (−6,75 centavos, −0,51%) e janeiro/27 a US$ 13,25¼ (−0,50%); farelo dezembro a US$ 351,40/t (+0,45%); óleo dezembro a 70,57 centavos (−0,18%); milho setembro/26 a US$ 5,07 em Chicago e R$ 71,04/saca na B3 (−0,21%); dólar comercial a R$ 5,1105 na venda e R$ 5,1085 na compra (+0,41%), após rondar R$ 5,089 pela manhã; exportadores privados reportaram venda de 340 mil t de soja para a China e 100 mil t para destinos não revelados; condições das lavouras de soja dos EUA até 6/09 em 58% boas a excelentes, 29% regulares e 13% ruins a muito ruins; mercado projeta estoques finais mundiais de soja 2026/27 em 123,1 milhões de t (ante 124,2 milhões) e manutenção de 125,1 milhões para 2025/26; Agrinvest atribui a realização de lucros à expectativa pelo USDA após aumento da exposição comprada dos fundos e à sinalização do Kremlin sobre retomada de negociações mediadas pelos EUA, sem data ou local definidos; arroba em Três Lagoas (MS) a R$ 336,50 (+R$ 3,00); Ibovespa a 187.366,84 pontos (+1,2%) na terça; ouro a US$ 4.425 a onça (+8%). Semana anterior (Cepea): soja em Paranaguá a R$ 160,87/saca (US$ 31,36) e milho Esalq/B3 a R$ 70,93/saca. Safras &amp; Mercado: safra 2026/27 estimada em 180,089 milhões de t, com 29,1% já comercializada (52,420 milhões de t), ante 20,2% no mesmo período do ano passado e média de 22,7% dos últimos cinco anos. O relatório de oferta e demanda do USDA está previsto para sexta-feira (11/09). Conteúdo informativo e educacional, não é recomendação de compra ou venda. Fontes: CME/CBOT, Canal Rural, CEPEA/ESALQ, SpaceMoney, agro.mt, Agrinvest, Safras &amp; Mercado, USDA, Notícias Agrícolas. Elaborado em 09/09/2026.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',AZUL='#3b82f6';
+  const dias=['04/09','08/09','09/09'];
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  function spark(id,data,color){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,34);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});}
+  spark('spkSoja',[13.17,13.16,13.095],SOJA); spark('spkMilho',[5.12,5.10,5.07],MILHO);
+  spark('spkBoi',[347.7,347.9,348.1],BOI); spark('spkCambio',[5.123,5.086,5.1105],AZUL);
+
+  function line(id,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function tech(id,data,color,fmt,ymin,ymax,sup,res){const n=data.length,flat=v=>Array(n).fill(v);
+    const ds=[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,order:1,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'33');g.addColorStop(1,color+'00');return g;}}];
+    res.forEach(r=>ds.push({data:flat(r),borderColor:'#34d399',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    sup.forEach(s=>ds.push({data:flat(s),borderColor:'#f87171',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    new Chart(document.getElementById(id),{type:'line',data:{labels:dias,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{filter:(i)=>i.datasetIndex===0,backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  const fUS=v=>'US$ '+v.toFixed(2), fR=v=>'R$ '+v.toFixed(0), fRd=v=>'R$ '+v.toFixed(2);
+  line('chSoja',[13.17,13.16,13.095],SOJA,fUS,13.02,13.24); tech('chSojaT',[13.17,13.16,13.095],SOJA,fUS,12.70,13.75,[13.00,12.80],[13.40,13.60]);
+  line('chMilho',[5.12,5.10,5.07],MILHO,fUS,5.02,5.18); tech('chMilhoT',[5.12,5.10,5.07],MILHO,fUS,4.85,5.35,[5.00,4.90],[5.15,5.25]);
+  line('chBoi',[347.7,347.9,348.1],BOI,fR,344,352); tech('chBoiT',[347.7,347.9,348.1],BOI,fR,334,372,[344,340],[350,367]);
+  line('chCambio',[5.123,5.086,5.1105],AZUL,fRd,5.06,5.15); tech('chCambioT',[5.123,5.086,5.1105],AZUL,fRd,5.00,5.25,[5.08,5.05],[5.15,5.20]);
+</script>
+</body>
+</html>
