@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Especial Leite 2026 · MG e GO · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Especial · Leite</span><span>Balanço 2026 e perspectivas</span><span>Minas Gerais e Goiás</span></p>
+    <h1 class="title">O ano em que a margem do leite <em>voltou</em> — e a janela que começa a se fechar</h1>
+    <p class="thesis">Depois de um 2025 que derrubou o preço por nove meses seguidos, 2026 trouxe a virada: o leite subiu mais de 40% no Brasil e mais de 50% em Goiás. Mas atenção ao motivo — a alta veio da <b>oferta que encolheu</b>, não da demanda que cresceu. É uma recuperação construída sobre a saída de produtores da atividade. Agora, com o milho e o farelo voltando a pressionar e o Super El Niño no horizonte, a margem de segurança que sustentou o primeiro semestre está encolhendo.</p>
+    <div class="periodo"><span>Análise de <b>jan a set/2026</b></span><span>Perspectivas: <b>4º tri/26 e início de 2027</b></span><span>MG · GO · Cooperativas</span></div>
+  </div>
+</header>
+
+<!-- 01 PAINEL -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>O ano em seis números</h2></div>
+  <p class="sec-sub">Preços líquidos ao produtor (Cepea/ESALQ), captação e custos. Os percentuais referem-se ao acumulado de 2026.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Preço · Média Brasil <span class="tag">R$/litro</span></div>
+      <div class="val">2,876<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ +42,6% de jan a jul · +33,1% no 1º sem</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:82%"></span></div><div class="ends"><span>Oferta</span><span>Preço ↑</span></div></div>
+      <div class="vies alta">Recuperação forte</div>
+    </div>
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Preço · Goiás <span class="tag">R$/litro</span></div>
+      <div class="val">2,94<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ +53,1% de jan a jul · acima da média BR</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:88%"></span></div><div class="ends"><span>Oferta</span><span>Preço ↑</span></div></div>
+      <div class="vies alta">Maior valorização do país</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Captação nacional <span class="tag">ICAP-L</span></div>
+      <div class="val">−11,4<span class="unit">%</span></div>
+      <div class="delta baixa">▼ no ano · IBGE: −6,2% no 2º tri</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:18%"></span></div><div class="ends"><span>Menos leite</span><span>Mais leite</span></div></div>
+      <div class="vies baixa">Oferta encolhendo</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">Custo · ICPLeite/Embrapa <span class="tag">índice</span></div>
+      <div class="val">+2,61<span class="unit">%</span></div>
+      <div class="delta neutro">◆ no ano até julho · COE +3,24% até abril</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:44%"></span></div><div class="ends"><span>Custo ↓</span><span>Custo ↑</span></div></div>
+      <div class="vies neutro">Pressão voltando</div>
+    </div>
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Minas Gerais <span class="tag">1º tri/26</span></div>
+      <div class="val">24,7<span class="unit">%</span></div>
+      <div class="delta neutro">◆ do leite captado no país · 1,67 bi de litros</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:75%"></span></div><div class="ends"><span>Menor</span><span>Liderança</span></div></div>
+      <div class="vies neutro">Líder nacional</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Importações · Mercosul <span class="tag">2026</span></div>
+      <div class="val">+35<span class="unit">%</span></div>
+      <div class="delta baixa">▼ ameaça à cadeia · 2,1 bi de litros em 2025</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:20%"></span></div><div class="ends"><span>Risco</span><span>Proteção</span></div></div>
+      <div class="vies baixa">Pressão estrutural</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 02 A VIRADA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>A virada de 2026 — e por que ela é ambígua</h2></div>
+  <p class="sec-sub">Entender a origem da alta é o que separa uma decisão de investimento acertada de uma armadilha.</p>
+  <div class="driver">
+    <div class="big">−11,4%<small>a captação nacional caiu · foi ela que levantou o preço</small></div>
+    <div class="txt">
+      <p><b>O ponto de partida foi ruim.</b> Em 2025, o preço do leite ao produtor caiu por <b>nove meses seguidos</b>. A captação nacional cresceu <b>7,9%</b> naquele ano enquanto as importações seguiam elevadas — o resultado foi excesso de oferta e preços em queda. Em fevereiro de 2026, mesmo já subindo, o preço real ainda estava <b>25,45% abaixo</b> do de fevereiro de 2025.</p>
+      <p><b>A recuperação veio pelo lado errado.</b> O preço subiu porque <b>faltou leite</b>, não porque sobrou demanda. A captação acumula <b>queda de 11,4% no ano</b>, e a Pesquisa Trimestral do IBGE mostrou recuo de <b>6,2% no segundo trimestre</b> ante o primeiro. Com menos matéria-prima, laticínios e cooperativas passaram a <b>disputar fornecedores</b>, e foi essa disputa que elevou as cotações no campo.</p>
+      <p><b>E por que faltou leite?</b> Porque produtores saíram da atividade. O Cepea aponta <b>mudanças estruturais no campo</b>, desencadeadas pelo aumento de custos dos anos anteriores e pelos <b>menores níveis de investimento</b>. Somou-se a seca. Ou seja: o preço bom de hoje é, em parte, <b>o preço da capacidade que o Brasil perdeu</b>. Quem ficou está ganhando mais — mas a base produtiva está menor.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 TRAJETÓRIA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>A trajetória do preço em 2026</h2></div>
+  <p class="sec-sub">Goiás começou o ano abaixo da média nacional e terminou o semestre acima dela — a maior valorização entre os estados acompanhados.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Preço ao produtor · R$/litro · 2026</span><span class="now mono alta">2,94 GO</span></div><div class="chart-box"><canvas id="chPreco"></canvas></div>
+        <div class="leg-sr"><span><span class="ln" style="background:#3b82f6"></span>Média Brasil</span><span><span class="ln" style="background:#10b981"></span>Goiás</span></div>
+        <div class="chart-foot">Jan e jul verificados; meses intermediários estimados ②.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Preço × custo · índice base 100 (jan/26)</span></div><div class="chart-box"><canvas id="chTesoura"></canvas></div>
+        <div class="leg-sr"><span><span class="ln" style="background:#10b981"></span>Preço</span><span><span class="ln" style="background:#f59e0b"></span>Custo</span></div>
+        <div class="chart-foot">A tesoura abriu a favor do produtor — e começa a fechar.</div></div>
+    </div>
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Minas Gerais · R$/litro · 2026</span><span class="now mono alta">2,75 mai</span></div><div class="chart-box"><canvas id="chMGserie"></canvas></div>
+        <div class="chart-foot">Fev e mai verificados; jan, mar e abr derivados das variações oficiais ②.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Comparativo · Goiás × Minas × Média Brasil</span></div><div class="chart-box"><canvas id="chComp"></canvas></div>
+        <div class="leg-sr"><span><span class="ln" style="background:#10b981"></span>Goiás</span><span><span class="ln" style="background:#f59e0b"></span>Minas</span><span><span class="ln" style="background:#3b82f6"></span>Brasil</span></div>
+        <div class="chart-foot">Minas liderou até maio; Goiás assumiu a ponta a partir de junho.</div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que os gráficos mostram</p>
+      <p>O primeiro gráfico registra a escalada: a <strong>Média Brasil</strong> saiu de <strong>R$ 2,02</strong> em janeiro para <strong>R$ 2,88</strong> em julho (<strong>+42,6%</strong>), enquanto <strong>Goiás</strong> partiu de um patamar mais baixo, <strong>R$ 1,92</strong>, e chegou a <strong>R$ 2,94</strong> (<strong>+53,1%</strong>). Desde <strong>junho</strong> o estado passou a pagar <strong>acima da média nacional</strong> — em julho, 2,1% a mais. Em 1º de setembro, a Média Brasil estava em <strong>R$ 2,8761</strong>, sinal de <strong>acomodação no topo</strong>.</p>
+      <p>O segundo gráfico é o que realmente importa para a gestão. Ele mostra a <strong>tesoura da margem</strong>: em 2026, o preço subiu muito mais rápido que o custo. Enquanto o leite avançava mais de 40%, o <strong>Custo Operacional Efetivo (COE)</strong> acumulava <strong>3,24%</strong> até abril e o <strong>ICPLeite/Embrapa</strong> subia <strong>2,61%</strong> no ano até julho. <strong>Essa diferença é a margem recuperada</strong> — e é ela que está encolhendo agora, com o milho e o farelo de soja voltando a pressionar.</p>
+      <p class="tagline">Minas: a recuperação mais precoce</p>
+      <p>O terceiro gráfico traz a série mineira. Minas <strong>começou a recuperação antes</strong> dos demais: já em <strong>fevereiro</strong> registrava o <strong>maior preço líquido do país</strong>, R$ 2,2030/litro, à frente de São Paulo (R$ 2,1963) e Paraná (R$ 2,1600). O salto veio em <strong>abril</strong>, com alta de <strong>11,58%</strong> no leite entregue em março, seguida de <strong>+12,02% em maio</strong>, quando o litro chegou a <strong>R$ 2,75</strong> — a <strong>quarta alta consecutiva</strong> no estado. Nas palavras da gerente de Agronegócio do Sistema Faemg Senar, Mariana Simões, o setor acumulou <strong>quase 36% de valorização</strong> no período, e ela faz questão da precisão: <strong>"a gente foca em recuperação e não em alta dos valores"</strong>, porque 2025 trouxe nove quedas consecutivas.</p>
+      <p>O quarto gráfico é o <strong>comparativo</strong>, e revela a troca de liderança do ano. Até <strong>maio</strong>, Minas pagava acima da média nacional e acima de Goiás — em maio, R$ 2,75 contra R$ 2,65 da Média Brasil. A partir de <strong>junho</strong>, <strong>Goiás assume a ponta</strong>. A explicação está na virada de tendência mineira: o Conseleite MG já projetava <strong>recuo de 2,8%</strong> para o pagamento de junho, sinalizando <strong>oferta mais equilibrada</strong> em relação à demanda no estado, enquanto Goiás ainda estava no meio da sua escalada.</p>
+      <p>É uma diferença que importa para a leitura estratégica: <strong>Minas normalizou antes</strong> porque sua cadeia é mais estruturada e reagiu mais rápido; <strong>Goiás subiu mais e por mais tempo</strong> porque partiu de um patamar deprimido e com oferta mais apertada. Quem produz em Goiás precisa lembrar que está no <strong>estágio mais tardio</strong> do mesmo ciclo que Minas já começou a deixar para trás.</p>
+      <div class="niveis"><span class="n"><b>Brasil jan→jul</b>+42,6%</span><span class="n"><b>Goiás jan→jul</b>+53,1%</span><span class="n"><b>Minas jan→mai</b>~+36%</span><span class="n"><b>1º semestre</b>+33,1%</span></div>
+      <div class="proc"><b>Procedência ② — o que é verificado e o que é derivado.</b><br>
+      <b>Média Brasil (verificado):</b> jan R$ 2,02 · fev R$ 2,1464 · mar R$ 2,3924 · mai R$ 2,65 · jun R$ 2,7464 · jul R$ 2,8761. Abril (R$ 2,40) é <b>derivado</b> da alta verificada de 10,4% de abril para maio. Agosto e setembro são <b>estimados</b>, com base no sinal de acomodação apontado pelo Cepea.<br>
+      <b>Minas Gerais (verificado):</b> fev R$ 2,2030 · mai R$ 2,75. <b>Derivados</b> das variações oficiais: abr R$ 2,45 (de −12,02% sobre maio), mar R$ 2,20 (de −11,58% sobre abril) e jan R$ 2,02 (dos ~36% acumulados até maio). Junho reflete o recuo de 2,8% projetado pelo Conseleite MG. Julho a setembro são <b>estimados</b>.<br>
+      <b>Goiás (verificado):</b> jan R$ 1,92 · jul R$ 2,94, com superação da média nacional a partir de junho. Meses intermediários <b>interpolados</b>.<br>
+      O gráfico de índice preço × custo é <b>ilustrativo</b> da relação entre as duas curvas, não uma série oficial.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 MINAS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Minas Gerais — a liderança que exige atenção</h2></div>
+  <p class="sec-sub">O estado responde por quase um quarto do leite do país e tem a cadeia mais estruturada. Mas a base produtiva vem encolhendo há uma década.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Minas em números · 1º tri/2026</span></div><div class="chart-box"><canvas id="chMG"></canvas></div>
+        <div class="chart-foot">Participação na captação nacional (%).</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Onde está a pressão em MG</span></div><div class="chart-box"><canvas id="chMG2"></canvas></div>
+        <div class="chart-foot">Variações registradas no 1º trimestre de 2026.</div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O retrato</p>
+      <p>Minas manteve a <strong>liderança nacional</strong> no primeiro trimestre de 2026, respondendo por <strong>24,7% de todo o leite cru captado e industrializado no Brasil</strong> — mais de <strong>1,67 bilhão de litros</strong> entre janeiro e março, de um total nacional de 6,78 bilhões (boletim da FIEMG). O estado reúne <strong>216 mil propriedades</strong> dedicadas à atividade e concentra <strong>24,4% da força de trabalho formal</strong> da indústria nacional de laticínios, com mais de <strong>35 mil empregos diretos</strong>.</p>
+      <p><strong>Mas os sinais de acomodação existem.</strong> A captação mineira <strong>caiu 3,4%</strong> em relação ao quarto trimestre de 2025, e o <strong>preço médio real</strong> recebido pelo produtor recuou <strong>22,7%</strong> na comparação anual, chegando a <strong>R$ 2,29 por litro</strong> no trimestre. Vale notar que, em fevereiro, Minas registrou o <strong>maior preço líquido médio do país</strong> — R$ 2,2030/litro, à frente de São Paulo (R$ 2,1963) e Paraná (R$ 2,1600).</p>
+      <p><strong>O dado mais preocupante é estrutural.</strong> Segundo os dois últimos Censos Agropecuários, o número de pecuaristas que comercializavam leite <strong>caiu 32% em pouco mais de uma década</strong> no Brasil — e, só em Minas, <strong>quase 29 mil produtores deixaram o segmento</strong>. A liderança mineira é sólida em volume, mas construída sobre uma base de produtores que diminui.</p>
+      <p class="tagline">O sinal recente</p>
+      <p>Em agosto, entre os Conseleites, Paraná (−0,4%), Rio Grande do Sul (−1%) e Santa Catarina (−1,7%) projetaram <strong>queda</strong> no preço do leite entregue. <strong>Minas foi na contramão</strong>, com alta prevista de <strong>1,2%</strong> — sinal de que a disputa por matéria-prima no estado segue mais acirrada que no Sul.</p>
+      <div class="niveis"><span class="n"><b>Captação nacional</b>24,7%</span><span class="n"><b>Propriedades</b>216 mil</span><span class="n"><b>Empregos diretos</b>+35 mil</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 GOIÁS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Goiás — a maior valorização do país</h2></div>
+  <p class="sec-sub">O estado saiu do patamar mais baixo entre os grandes produtores e ultrapassou a média nacional. Entender por que isso aconteceu ajuda a prever quanto dura.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Goiás × Média Brasil · R$/litro</span><span class="now mono alta">+53,1%</span></div><div class="chart-box"><canvas id="chGO"></canvas></div>
+        <div class="leg-sr"><span><span class="ln" style="background:#10b981"></span>Goiás</span><span><span class="ln" style="background:#3b82f6"></span>Brasil</span></div>
+        <div class="chart-foot">A partir de junho, Goiás passa a pagar acima da média.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Valorização acumulada · jan a jul (%)</span></div><div class="chart-box"><canvas id="chGO2"></canvas></div>
+        <div class="chart-foot">Goiás liderou a recuperação em 2026.</div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que aconteceu</p>
+      <p>Goiás registrou a <strong>trajetória de valorização mais expressiva</strong> de 2026. O litro saiu de <strong>R$ 1,92 em janeiro para R$ 2,94 em julho</strong> — alta de <strong>53,1%</strong>, contra 42,6% da média nacional. Desde <strong>junho</strong>, o preço praticado no estado <strong>superou a média do país</strong>, e em julho ficou <strong>2,1% acima</strong> dela.</p>
+      <p><strong>A explicação tem dois lados.</strong> O primeiro é aritmético: Goiás partiu de <strong>um dos patamares mais baixos</strong> entre os estados acompanhados (R$ 1,92 contra R$ 2,02 da média), então tinha mais espaço para subir. O segundo é real: o estado esteve entre os que <strong>mais reduziram captação</strong> no início do ano — junto com Paraná, São Paulo e Minas — o que acirrou a disputa dos laticínios pelo leite goiano.</p>
+      <p><strong>No campo institucional</strong>, o governo estadual anunciou, em evento na FAEG, um pacote voltado ao setor, com foco em <strong>reduzir o peso das importações</strong> e em um estudo das legislações ambiental, sanitária e tributária para <strong>desburocratizar e fomentar mini e pequenos laticínios e pequenas cooperativas</strong> que processam leite no estado — com o objetivo declarado de ampliar a concorrência pela matéria-prima e melhorar a renda do produtor.</p>
+      <p class="tagline">A leitura estratégica</p>
+      <p>Para o produtor goiano, a mensagem é dupla. O preço atual é <strong>historicamente bom</strong>, mas foi construído sobre uma base que partiu de muito baixo e sobre <strong>escassez de oferta</strong>. Quem usar esse preço como premissa para <strong>expandir plantel agora</strong> precisa lembrar: se a oferta nacional se recuperar, o prêmio de Goiás sobre a média tende a ser o primeiro a desaparecer.</p>
+      <div class="niveis"><span class="n"><b>Jan → Jul</b>R$ 1,92 → 2,94</span><span class="n"><b>Valorização</b>+53,1%</span><span class="n"><b>vs média BR</b>+2,1% (jul)</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 CUSTOS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Custos e margem — o outro lado da conta</h2></div>
+  <p class="sec-sub">O preço é só metade da equação. Em 2026, o custo se comportou bem — mas essa folga está acabando.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Relação de troca · litros de leite por saca de milho</span><span class="now mono alta">21,5</span></div><div class="chart-box"><canvas id="chTroca"></canvas></div>
+        <div class="chart-foot">Quanto menor, melhor para o produtor.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Onde o custo pressionou · variação (%)</span></div><div class="chart-box"><canvas id="chCusto"></canvas></div>
+        <div class="chart-foot">Principais itens de pressão no 1º quadrimestre.</div></div>
+    </div>
+    <div class="charts2">
+      <div class="chart-card"><div class="chead"><span class="t">Componentes do custo · variação em agosto (%)</span><span class="now mono baixa">+1,47 ICPLeite</span></div><div class="chart-box"><canvas id="chCompon"></canvas></div>
+        <div class="chart-foot">ICPLeite/Embrapa, medido em propriedades de Minas Gerais.</div></div>
+      <div class="chart-card"><div class="chead"><span class="t">Custo do leite × inflação das famílias · jan–ago (%)</span></div><div class="chart-box"><canvas id="chAcum"></canvas></div>
+        <div class="chart-foot">O custo do produtor subiu mais que o custo de vida.</div></div>
+    </div>
+    <div class="analise">
+      <p class="tagline">A relação de troca foi a grande aliada</p>
+      <p>O indicador mais útil para o pecuarista de leite não é o preço isolado, é a <strong>relação de troca</strong>: quantos litros ele precisa vender para comprar uma saca de milho. Em <strong>janeiro</strong>, eram necessários <strong>33,56 litros por saca de 60 kg</strong> — número ruim, <strong>15,2% acima da média dos 12 meses anteriores</strong> (29,12 l/sc). Em <strong>junho</strong>, esse índice havia caído para <strong>21,5 litros por saca</strong>, uma <strong>melhora de 19,7% na comparação anual</strong>.</p>
+      <p>Foi essa combinação — <strong>queda do milho somada à valorização do leite</strong> — que, nas palavras da pesquisadora do Cepea Natália Grigol, <strong>tornou a aquisição do insumo mais favorável ao produtor</strong> e destravou os investimentos na atividade ao longo do primeiro semestre.</p>
+      <p class="tagline">Mas o custo voltou a subir</p>
+      <p>O <strong>Custo Operacional Efetivo (COE)</strong> subiu <strong>1,32% em janeiro</strong>, <strong>1,10% em abril</strong> e acumulava <strong>3,24% no ano</strong> até aquele mês, em quatro meses consecutivos de elevação. As três frentes de pressão foram o <strong>diesel (+5,42%)</strong>, encarecendo fretes e operações mecanizadas, os <strong>suplementos minerais (+7,60%)</strong> e os <strong>concentrados (+0,33%)</strong>. O <strong>ICPLeite/Embrapa</strong> subiu <strong>1,14% em julho</strong> e acumula <strong>2,61% no ano</strong>.</p>
+      <p><strong>O alerta da Embrapa é direto:</strong> com a alta dos grãos em agosto, <strong>parte da folga começou a desaparecer</strong>. O produtor ainda opera com preços em patamar elevado, mas <strong>a margem de segurança que sustentou o primeiro semestre está encolhendo</strong> — justamente quando milho e farelo de soja voltam a pressionar o custo.</p>
+
+      <p class="tagline">Abrindo a conta: onde o dinheiro realmente sai</p>
+      <p>Falar em "custo subiu 4%" esconde o que interessa. O <strong>ICPLeite/Embrapa</strong> — medido justamente em <strong>propriedades de Minas Gerais</strong>, o que o torna especialmente relevante aqui — decompõe a despesa em seis grupos: <strong>alimentação, minerais, sanidade e reprodução, mão de obra, energia</strong> e <strong>outros insumos e serviços</strong>. E cada um contou uma história diferente em 2026.</p>
+      <p><strong>Minerais — o campeão de alta.</strong> O grupo subiu <strong>10,89% só em agosto</strong>, a maior variação entre todos os componentes, e acumula <strong>alta de dois dígitos</strong> de janeiro a agosto. Para o pequeno produtor, é um item traiçoeiro: parece pequeno na nota fiscal, mas é obrigatório e não tem substituto. Cortar suplementação mineral para economizar <strong>reduz produtividade e fertilidade</strong> — o produtor "economiza" no custo e perde na receita.</p>
+      <p><strong>Concentrado — a pressão que voltou.</strong> O grupo avançou <strong>3,35% em agosto</strong>, puxado principalmente por <strong>ração e milho</strong>. É o componente mais sensível ao que acontece em Chicago e na B3 — e é exatamente por onde a alta recente dos grãos entra na porteira do pecuarista de leite.</p>
+      <p><strong>Sanidade e reprodução — alta de dois dígitos no ano.</strong> Junto com minerais, foi o grupo que mais subiu no acumulado de janeiro a agosto. São despesas que o produtor descapitalizado tende a adiar — vacina, exame, protocolo de IATF — e o adiamento cobra caro no ciclo seguinte, em intervalo entre partos maior e menos bezerras de reposição.</p>
+      <p><strong>Mão de obra — o peso silencioso.</strong> A Embrapa destaca que a mão de obra foi <strong>um dos componentes que mais contribuíram</strong> para a alta acumulada em 12 meses, justamente <strong>pelo peso que tem na composição do custo total</strong>. É o item que não cai: diferente de ração, não se ajusta no mês seguinte, e em propriedades familiares costuma estar subestimado nas contas porque o trabalho da família não é lançado como despesa.</p>
+      <p><strong>Energia e diesel — o custo que atravessa tudo.</strong> O diesel subiu <strong>5,42%</strong>, encarecendo fretes e operações mecanizadas. Como a logística atravessa toda a cadeia — coleta do leite, entrega de insumos, mecanização —, o impacto chega <strong>duas vezes</strong>: uma no custo da propriedade, outra no frete que a cooperativa repassa.</p>
+
+      <p class="tagline">O número que resume o aperto</p>
+      <p>O segundo gráfico desta seção traz a comparação mais desconfortável: entre janeiro e agosto, o <strong>custo de produção de leite subiu 4,13%</strong>, enquanto a <strong>inflação das famílias ficou em 3,11%</strong> — e em agosto, mês em que o custo do leite avançou 1,47%, o IBGE registrou <strong>deflação de 0,32%</strong> para o consumidor. Em 12 meses até agosto, o ICPLeite acumula <strong>3,73%</strong>, <strong>mais que o dobro</strong> dos 1,72% registrados nos 12 meses até julho. A aceleração é recente e forte.</p>
+      <p>Uma ressalva importante da própria Embrapa, que evita conclusão apressada: <strong>essa alta ainda não é consequência do El Niño</strong>. Ela vem da menor disponibilidade de pastagens, do encarecimento dos grãos e da alta de insumos importados num ambiente de tensão no comércio internacional. <strong>Ou seja: o efeito climático ainda está por vir</strong> — e se somará a uma base de custo que já subiu.</p>
+      <div class="niveis"><span class="n"><b>Troca jan</b>33,56 l/sc</span><span class="n"><b>Troca jun</b>21,5 l/sc</span><span class="n"><b>COE no ano</b>+3,24%</span><span class="n"><b>ICPLeite jan–ago</b>+4,13%</span><span class="n"><b>Minerais (ago)</b>+10,89%</span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 07 IMPORTAÇÕES -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Importações — a ameaça que não saiu do radar</h2></div>
+  <p class="sec-sub">O tema que mobilizou a cadeia em 2025 segue vivo em 2026, e atinge de forma desigual os elos da cadeia.</p>
+  <div class="driver">
+    <div class="big">2,1 bilhões<small>litros equivalentes importados pelo Brasil em 2025</small></div>
+    <div class="txt">
+      <p><b>O tamanho do problema.</b> Segundo a Faemg, o Brasil importou em 2025 o equivalente a <b>2,1 bilhões de litros</b> (queda de 5,2% sobre o ano anterior), com <b>62% vindos da Argentina e 27% do Uruguai</b>. Na outra ponta, as exportações brasileiras de lácteos somaram apenas <b>66 milhões de litros</b>, com recuo de 23,8%. A conta é desproporcional: importamos cerca de <b>32 vezes</b> o que exportamos.</p>
+      <p><b>Em 2026 o fluxo aumentou.</b> Os dados apontam <b>alta de 35% nas importações do Mercosul</b> — e isso num ano em que a captação nacional caiu 11,4%. Ou seja: parte do espaço deixado pelo leite brasileiro que não foi produzido <b>está sendo ocupado por produto importado</b>. Desde 2024, a CNA mantém um pedido de <b>investigação antidumping</b> contra a importação de leite em pó via Mercosul, com decisão do MDIC prevista para maio de 2026.</p>
+      <p><b>E o impacto é desigual.</b> O presidente da Abraleite, Geraldo Borges, é claro sobre quem sofre mais: os volumes altos de importação prejudicam <b>"principalmente os produtores de leite, e também pequenos laticínios e cooperativas, pois eles não participam das importações"</b>. Quem importa são as grandes indústrias; quem concorre com o produto importado, sem poder usá-lo, são as estruturas menores. <b>Essa assimetria é o centro do problema para o cooperativismo.</b></p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 08 COOPERATIVAS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Cooperativas de pequenos produtores — os seis pontos de atenção</h2></div>
+  <p class="sec-sub">Em Minas, um em cada cinco litros produzidos passa por uma cooperativa. Essa posição traz responsabilidade — e riscos específicos que o preço alto de hoje pode mascarar.</p>
+  <ul class="timeline">
+    <li class="star"><div class="when">1 · Risco de caixa ⭐</div><div class="what">O preço alto não é margem garantida</div><div class="desc">A cooperativa paga o produtor por um leite que ainda vai processar e vender. Quando o preço da matéria-prima sobe 40% e o preço de gôndola não acompanha — e desde a segunda quinzena de julho há enfraquecimento da demanda nas prateleiras —, a cooperativa fica espremida no meio. É o elo que absorve o descasamento. Monitorar o capital de giro é prioridade number um.</div></li>
+    <li class="star"><div class="when">2 · Base produtiva ⭐</div><div class="what">Quase 29 mil produtores saíram só em Minas</div><div class="desc">O número de pecuaristas que comercializavam leite caiu 32% em pouco mais de uma década. Para a cooperativa, cada produtor que sai significa menos volume para diluir custo fixo de captação, resfriamento e logística. A retenção do cooperado é uma estratégia de sobrevivência, não uma política social.</div></li>
+    <li><div class="when">3 · Concorrência</div><div class="what">A disputa por fornecedor virou o jogo</div><div class="desc">Com a oferta curta, laticínios e cooperativas passaram a disputar o leite cru. Isso é bom para o produtor e difícil para quem capta: aumenta o custo de aquisição e o risco de perder cooperados para quem paga um pouco mais à vista. A resposta não é só preço — é assistência técnica, crédito e previsibilidade.</div></li>
+    <li><div class="when">4 · Importados</div><div class="what">Concorrer com quem não se pode comprar</div><div class="desc">Pequenos laticínios e cooperativas não participam das importações, mas competem com o produto importado na gôndola. Com o fluxo do Mercosul 35% maior em 2026, esse é um risco que não se resolve dentro da porteira — exige articulação setorial e acompanhamento da decisão antidumping no MDIC.</div></li>
+    <li><div class="when">5 · Custo do cooperado</div><div class="what">A margem dele é a saúde da sua captação</div><div class="desc">Diesel +5,42%, suplementos minerais +7,60%, concentrados voltando a subir. Se a margem do cooperado aperta, ele reduz plantel ou sai — e a cooperativa perde volume. Acompanhar a relação de troca de cada perfil de produtor é mais útil que acompanhar só o preço pago.</div></li>
+    <li class="star"><div class="when">6 · Clima ⭐</div><div class="what">Super El Niño entre outubro e dezembro</div><div class="desc">A Embrapa aponta o Super El Niño previsto para o último trimestre de 2026, com efeitos que podem se estender até março de 2027, como o principal fator de risco para a disponibilidade de pastagens e alimentos do rebanho. Para cooperativas de pequenos produtores — mais dependentes de pasto e menos capitalizadas para comprar volumoso — é o risco de maior impacto no horizonte.</div></li>
+  </ul>
+</div></section>
+
+<!-- 09 PERSPECTIVAS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Perspectivas — 4º trimestre de 2026 e início de 2027</h2></div>
+  <p class="sec-sub">O que já está contratado, o que está em disputa e o que pode surpreender.</p>
+  <ul class="timeline">
+    <li class="star"><div class="when">Out–dez ⭐</div><div class="what">A tesoura da margem fecha</div><div class="desc">É o movimento mais provável do trimestre. Com milho e farelo de soja voltando a pressionar o custo e o preço do leite já em acomodação no topo (R$ 2,8761 em 1º de setembro, contra R$ 2,88 em julho), a margem excepcional do primeiro semestre tende a se estreitar. Não é reversão de preço — é compressão de margem.</div></li>
+    <li class="star"><div class="when">Out/26 a mar/27 ⭐</div><div class="what">Super El Niño e o custo do volumoso</div><div class="desc">Se o fenômeno se confirmar na intensidade prevista, a disponibilidade de pastagem cai e o produtor precisa comprar mais concentrado e volumoso — exatamente quando os grãos estão mais caros. É o cenário que mais ameaça o pequeno produtor e, por consequência, o volume das cooperativas em 2027.</div></li>
+    <li><div class="when">Demanda</div><div class="what">O consumidor já reagiu ao preço</div><div class="desc">Os derivados encareceram tanto na gôndola que, desde a segunda quinzena de julho, observa-se enfraquecimento da demanda. No mercado spot, houve recuo generalizado na primeira quinzena de setembro. O repasse ao varejo tem um teto, e ele parece ter sido encontrado.</div></li>
+    <li><div class="when">Mercado externo</div><div class="what">GDT em recuperação parcial</div><div class="desc">O índice geral dos leilões do Global Dairy Trade encadeou quatro altas seguidas (1,5%, 0,1%, 2,3% e 0,9%), recuperando parte da queda de 4,9% de 7 de julho — mas segue 7,5% abaixo do pico de março. Recuperação parcial e desigual, insuficiente para mudar o quadro doméstico.</div></li>
+    <li><div class="when">Institucional</div><div class="what">Antidumping e políticas estaduais</div><div class="desc">A decisão do MDIC sobre a investigação antidumping e os programas estaduais de fomento a pequenos laticínios e cooperativas em Goiás e Minas são as variáveis institucionais capazes de alterar o equilíbrio da cadeia no próximo ciclo.</div></li>
+    <li><div class="when">Início de 2027</div><div class="what">O teste da oferta</div><div class="desc">A pergunta central: o preço alto de 2026 vai atrair produtores de volta à atividade? Se sim, a oferta se recupera e os preços cedem — e o prêmio de Goiás sobre a média nacional é o primeiro a desaparecer. Se não, a escassez persiste e sustenta preços, mas sobre uma base produtiva ainda menor.</div></li>
+  </ul>
+</div></section>
+
+<!-- 10 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">10</span><h2>Leitura do estrategista</h2></div>
+    <p class="sec-sub" style="color:var(--t2)">O que fazer com essa informação.</p>
+    <p class="read">2026 foi um <strong>bom ano para quem ficou</strong> — e essa frase carrega todo o problema. O preço subiu <strong>42,6% no Brasil e 53,1% em Goiás</strong> porque a captação caiu <strong>11,4%</strong>, não porque o mercado cresceu. A margem melhorou de verdade: a relação de troca saiu de 33,56 para <strong>21,5 litros por saca de milho</strong>, e o custo subiu bem menos que o preço. Mas o Cepea é explícito ao dizer que o enxugamento da produção veio de <strong>mudanças estruturais</strong> — produtores que reduziram investimento ou saíram. <strong>O recado central:</strong> não trate o preço de 2026 como o novo normal. Ele é o preço de um mercado com <strong>oferta ferida</strong>. Quem for expandir plantel agora, com custo de grão subindo e Super El Niño no radar, estará investindo no topo de um ciclo cujo fundamento é a escassez — e escassez, por definição, atrai oferta de volta. <strong>Para cooperativas de pequenos produtores</strong>, a prioridade não é capturar o preço alto: é <strong>atravessar o 4º trimestre com caixa</strong> e <strong>manter o cooperado na atividade</strong>. Volume perdido não volta no ciclo seguinte.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Preço 2026</div><div class="vb" style="color:#8fe6bf">Forte</div><div class="ac">+42,6% BR · +53,1% GO.</div></div>
+      <div class="mtile"><div class="h">Margem</div><div class="vb" style="color:#fcd34d">Fechando</div><div class="ac">Grãos voltam a pressionar.</div></div>
+      <div class="mtile"><div class="h">Oferta</div><div class="vb" style="color:#fca5a5">Ferida</div><div class="ac">Captação −11,4%.</div></div>
+      <div class="mtile"><div class="h">Risco 4º tri</div><div class="vb" style="color:#fca5a5">El Niño</div><div class="ac">Pasto e volumoso.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">Cinco decisões para agora</div>
+      <ul>
+        <li><b>Trave custo, não só celebre preço.</b> A relação de troca ainda está boa (21,5 l/sc em junho contra 33,56 em janeiro). Comprar milho e farelo antecipadamente, enquanto a troca favorece, protege o 4º trimestre melhor do que qualquer previsão de preço do leite.</li>
+        <li><b>Planeje o volumoso agora.</b> Com Super El Niño previsto para out–dez e efeitos até março, silagem, feno e reserva de pasto decidem a margem de 2027. Quem esperar o pasto faltar vai comprar volumoso caro e concentrado caro ao mesmo tempo.</li>
+        <li><b>Cooperativas: proteja o caixa antes da margem.</b> O elo intermediário absorve o descasamento entre matéria-prima cara e gôndola resistente. Revisar prazos, estoques e capital de giro é mais urgente que disputar cooperado a preço.</li>
+        <li><b>Retenha o cooperado com o que não é preço.</b> Assistência técnica, crédito, melhoramento genético e qualidade do leite são o que sustenta o vínculo quando o concorrente oferta cinco centavos a mais.</li>
+        <li><b>Não dimensione investimento pelo pico.</b> Expansão de plantel calculada sobre R$ 2,94 em Goiás é aposta na permanência da escassez. Use o preço médio do biênio, não o do melhor mês.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Notas e fontes.</b> Análise de janeiro a setembro de 2026, com foco em Minas Gerais e Goiás. <b>Preços ao produtor (Cepea/ESALQ, líquidos, R$/litro):</b> janeiro/26, Média Brasil R$ 2,02 e Goiás R$ 1,92; fevereiro/26, Média Brasil R$ 2,1464 (+5,43%), com Minas Gerais registrando o maior preço líquido médio do país, R$ 2,2030, seguida de São Paulo (R$ 2,1963) e Paraná (R$ 2,1600), e cotação ainda 25,45% abaixo de fevereiro/25 em termos reais; março/26, Média Brasil R$ 2,3924 (+10,5%), terceiro mês consecutivo de alta, fechando o primeiro trimestre com avanço de 17,6% e ainda 18,7% abaixo de março/25 em termos reais; abril/26, quarta alta consecutiva; julho/26, Média Brasil R$ 2,88 e Goiás R$ 2,94; 1º de setembro de 2026, Média Brasil R$ 2,8761 (+4,72% sobre o levantamento anterior). Goiás acumulou alta de 53,1% de janeiro a julho, contra 42,6% da Média Brasil, superando a média nacional desde junho e ficando 2,1% acima dela em julho. No primeiro semestre, o preço médio pago ao produtor subiu 33,1%. <b>Captação:</b> o ICAP-L caiu 3,6% de dezembro/25 para janeiro/26 e novamente 3,6% de janeiro para fevereiro, influenciado por Paraná, Goiás, São Paulo e Minas Gerais, acumulando recuo de 11,1% no primeiro trimestre; os volumes captados pelos laticínios acompanhados pelo Cepea acumulam retração de 11,4% no ano; a Pesquisa Trimestral do Leite do IBGE mostrou queda de 6,2% na captação nacional no segundo trimestre ante o primeiro. O Cepea atribui o enxugamento à combinação de seca e mudanças estruturais no campo, desencadeadas pelo aumento de custos dos últimos anos e por menores níveis de investimento. <b>Custos:</b> o Custo Operacional Efetivo (COE) subiu 1,32% em janeiro e 1,10% em abril, acumulando 3,24% no ano até aquele mês, em quatro meses consecutivos de elevação, com pressão de diesel (+5,42%), suplementos minerais (+7,60%) e concentrados (+0,33%); o ICPLeite/Embrapa subiu 1,14% em julho e acumula 2,61% de alta no ano. <b>Relação de troca:</b> em janeiro foram necessários 33,56 litros de leite para adquirir uma saca de 60 kg de milho, 3,76% a menos que no mês anterior, porém 15,2% acima da média dos últimos 12 meses (29,12 l/sc); em junho, 21,5 litros por saca, recuo de 0,8% no mês e melhora de 19,7% na comparação anual. A pesquisadora do Cepea Natália Grigol aponta que a queda no preço do milho combinada à valorização do leite tornou a aquisição do insumo mais favorável ao produtor. <b>Minas Gerais:</b> liderou a produção nacional no primeiro trimestre de 2026, com 24,7% de todo o leite cru captado e industrializado no Brasil, mais de 1,67 bilhão de litros entre janeiro e março, de um total nacional de 6,78 bilhões (boletim da FIEMG); a captação caiu 3,4% ante o quarto trimestre de 2025 e o preço médio real recebido pelo produtor mineiro recuou 22,7% na comparação anual, a R$ 2,29 por litro; o estado reúne 216 mil propriedades leiteiras, concentra 24,4% da força de trabalho formal nacional da indústria de laticínios e mais de 35 mil empregos diretos; um em cada cinco litros produzidos passa por cooperativas (Sistema Ocemg); segundo os dois últimos Censos Agropecuários, o número de pecuaristas que comercializavam leite caiu 32% em pouco mais de uma década, com quase 29 mil produtores deixando o segmento em Minas. Entre os Conseleites, para o leite entregue em agosto, Paraná projetou −0,4%, Rio Grande do Sul −1% e Santa Catarina −1,7%, enquanto Minas Gerais projetou alta de 1,2%. <b>Goiás:</b> o governo estadual anunciou, em evento na FAEG, medidas voltadas à redução do impacto das importações e estudo das legislações ambiental, sanitária e tributária para desburocratizar, reduzir custos e fomentar mini e pequenos laticínios e pequenas cooperativas que processam leite no estado. <b>Importações:</b> em 2025 o Brasil importou o equivalente a 2,1 bilhões de litros, queda de 5,2% ante o ano anterior, sendo 62% da Argentina e 27% do Uruguai (Faemg); as exportações brasileiras somaram 66 milhões de litros, recuo de 23,8%; a captação nacional cresceu 7,9% em 2025 enquanto as importações permaneceram elevadas, ampliando a oferta além da capacidade de absorção do mercado; em 2026, as importações do Mercosul avançaram 35%. Desde 2024 a CNA mantém pedido de investigação antidumping contra a importação de leite em pó via Mercosul, com decisão do MDIC prevista para maio de 2026. O presidente da Abraleite, Geraldo Borges, afirma que os níveis elevados de importação prejudicam principalmente os produtores de leite, os pequenos laticínios e as cooperativas, que não participam das importações. <b>Perspectivas:</b> a Nota de Conjuntura do Mercado de Leite e Derivados de setembro de 2026, do Centro de Inteligência do Leite da Embrapa Gado de Leite, aponta que a margem de segurança que sustentou o primeiro semestre está encolhendo, com milho e farelo de soja voltando a pressionar o custo, e identifica o Super El Niño previsto entre outubro e dezembro de 2026, com efeitos que podem se estender até março de 2027, como o principal fator de risco para a disponibilidade de pastagens e alimentos do rebanho. Desde a segunda quinzena de julho observa-se enfraquecimento da demanda diante dos patamares elevados nas gôndolas; no mercado spot houve recuo generalizado na primeira quinzena de setembro. O índice geral dos leilões do Global Dairy Trade encadeou quatro altas seguidas (1,5%, 0,1%, 2,3% e 0,9%), recuperando parte da queda de 4,9% registrada em 7 de julho, mas seguindo 7,5% abaixo do pico de março. Conteúdo informativo e educacional, não é recomendação de compra ou venda. Fontes: CEPEA-Esalq/USP, Embrapa Gado de Leite (ICPLeite e Centro de Inteligência do Leite), IBGE (Pesquisa Trimestral do Leite), FIEMG, Sistema Ocemg, Faemg, FAEG, CNA, Abraleite, Conseleite, Global Dairy Trade, Sebrae Minas, Broto, O Presente Rural, MilkPoint, Zootecnia Brasil, eDairyNews. Elaborado em 19 de setembro de 2026.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralinai-commits.github.io/ruralin-site/" target="_blank" rel="noopener">ruralin-site</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const AZUL='#3b82f6', VERDE='#10b981', AMBAR='#f59e0b', VERM='#ef4444';
+  const meses=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set'];
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  const precoBR=[2.02,2.1464,2.3924,2.4004,2.65,2.7464,2.8761,2.90,2.88];
+  const precoGO=[1.92,2.05,2.28,2.45,2.62,2.78,2.94,2.97,2.93];
+  const precoMG=[2.02,2.2030,2.2001,2.4549,2.75,2.673,2.80,2.86,2.85];
+
+  function eixo(fmt,ymin,ymax){return{
+    x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},
+    y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}};}
+
+  function multi(id,labels,series,fmt,ymin,ymax){
+    const el=document.getElementById(id); if(!el) return;
+    new Chart(el,{type:'line',
+      data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,borderColor:s.c,borderWidth:2.6,
+        pointBackgroundColor:'#0a0e1a',pointBorderColor:s.c,pointBorderWidth:2,pointRadius:4,pointHoverRadius:6,tension:.25,fill:!!s.f,
+        backgroundColor:(ctx)=>{const c=ctx.chart.ctx;const g=c.createLinearGradient(0,0,0,170);g.addColorStop(0,s.c+'33');g.addColorStop(1,s.c+'00');return g;}}))},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:10,titleColor:'#fff',bodyColor:'#e2e8f0',
+          callbacks:{label:(c)=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+        scales:eixo(fmt,ymin,ymax),animation:{duration:700}}});
+  }
+
+  function barras(id,labels,data,cores,fmt,ymin,ymax){
+    const el=document.getElementById(id); if(!el) return;
+    new Chart(el,{type:'bar',
+      data:{labels,datasets:[{data,backgroundColor:cores,borderRadius:5,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:10,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',
+          callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+        scales:eixo(fmt,ymin,ymax),animation:{duration:700}}});
+  }
+
+  const fR=v=>'R$ '+v.toFixed(2), fP=v=>v.toFixed(1)+'%', fI=v=>v.toFixed(0), fL=v=>v.toFixed(1)+' l';
+
+  // 03 — trajetória e tesoura
+  multi('chPreco',meses,[{n:'Média Brasil',d:precoBR,c:AZUL},{n:'Goiás',d:precoGO,c:VERDE}],fR,1.80,3.10);
+  multi('chMGserie',meses,[{n:'Minas Gerais',d:precoMG,c:AMBAR,f:true}],fR,1.80,3.10);
+  multi('chComp',meses,[
+    {n:'Goiás',d:precoGO,c:VERDE},
+    {n:'Minas Gerais',d:precoMG,c:AMBAR},
+    {n:'Média Brasil',d:precoBR,c:AZUL}],fR,1.80,3.10);
+  multi('chTesoura',meses,[
+    {n:'Preço',d:[100,106,118,125,131,137,143,145,142],c:VERDE,f:true},
+    {n:'Custo',d:[100,100.6,101.3,102.4,102.6,101.0,102.1,103.2,104.0],c:AMBAR}],fI,95,150);
+
+  // 04 — Minas
+  barras('chMG',['Minas','Demais estados'],[24.7,75.3],[VERDE,'#334155'],fP,0,80);
+  barras('chMG2',['Captação\n(vs 4ºtri/25)','Preço real\n(vs 1ºtri/25)'],[-3.4,-22.7],[AMBAR,VERM],fP,-26,2);
+
+  // 05 — Goiás
+  multi('chGO',meses,[{n:'Goiás',d:precoGO,c:VERDE,f:true},{n:'Brasil',d:precoBR,c:AZUL}],fR,1.80,3.10);
+  barras('chGO2',['Goiás','Média Brasil'],[53.1,42.6],[VERDE,AZUL],fP,0,60);
+
+  // 06 — custos
+  multi('chTroca',['Jan','Fev','Mar','Abr','Mai','Jun'],[{n:'Litros por saca',d:[33.56,31.5,28.8,25.4,21.7,21.5],c:VERDE,f:true}],fL,18,36);
+  barras('chCusto',['Diesel','Suplem.\nminerais','COE\n(ano)','ICPLeite\n(ano)'],[5.42,7.60,3.24,2.61],[VERM,VERM,AMBAR,AMBAR],fP,0,9);
+  barras('chCompon',['Minerais','Concentrado','ICPLeite\n(mês)'],[10.89,3.35,1.47],[VERM,AMBAR,AZUL],fP,0,12);
+  barras('chAcum',['Custo do leite\n(ICPLeite)','Inflação das\nfamílias (IBGE)'],[4.13,3.11],[VERM,'#334155'],fP,0,5);
+</script>
+</body>
+</html>
