@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Semanal 05–12/10 · Plantio e Clima · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Semanal + Especial</span><span>05 a 12 / 10 / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">O WASDE derrubou o milho e <em>o plantio correu como nunca</em></h1>
+    <p class="thesis">Na sexta o USDA fez o contrário do que o mercado esperava: em vez de cortar a produtividade do milho americano, <b>elevou</b> — e os estoques finais saltaram <b>18% em um mês</b>. O dezembro perdeu <b>4,10% num só pregão</b>. A soja escapou, fechou o período em leve alta, mas o dólar a <b>R$ 4,9856</b> levou a paridade em reais para baixo de novo. O boi não parou: <b>quinze pregões sem um dia de queda</b>. E no Brasil, o plantio da soja está no <b>ritmo mais rápido já registrado</b> para uma safra de verão — com duas consultorias discordando em quase cinco pontos sobre o quanto já foi semeado.</p>
+    <div class="periodo"><span>Semana de <b>05 a 09/10</b> + segunda <b>12/10</b></span><span>12/10: <b>feriado no Brasil</b></span><span>Especial: <b>plantio e clima</b></span></div>
+  </div>
+</header>
+
+<!-- 01 TERMÔMETRO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Termômetro do período</h2></div>
+  <p class="sec-sub">Grãos em Chicago, que operou normalmente na segunda; boi e dólar até sexta, porque <b>12/10 foi feriado de Nossa Senhora Aparecida</b> e não houve pregão no Brasil. Variação medida contra o fechamento de 02/10.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Soja · CBOT nov/26 <span class="tag">12/10</span></div>
+      <div class="val">12,8700<span class="unit"> US$</span></div>
+      <div class="delta alta">▲ +0,68% no período · escapou do WASDE</div>
+      <div class="spark-wrap"><canvas id="spkSoja"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:44%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies neutro">Viés: lateral, plantio brasileiro pesa</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">Milho · CBOT dez/26 <span class="tag">12/10</span></div>
+      <div class="val">4,8300<span class="unit"> US$</span></div>
+      <div class="delta baixa">▼ −2,96% no período · −4,10% só na sexta</div>
+      <div class="spark-wrap"><canvas id="spkMilho"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:22%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies baixa">Viés: baixista, estoque recorde confirmado</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Boi gordo · Cepea/ESALQ <span class="tag">09/10</span></div>
+      <div class="val">377,80<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ +2,14% no período · 15 pregões sem queda</div>
+      <div class="spark-wrap"><canvas id="spkBoi"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:96%"></span></div><div class="ends"><span>Oferta</span><span>Exportação</span></div></div>
+      <div class="vies alta">Viés: altista, recorde atrás de recorde</div>
+    </div>
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Dólar · à vista <span class="tag">09/10</span></div>
+      <div class="val">4,9856<span class="unit"> R$</span></div>
+      <div class="delta baixa">▼ −4,44% na semana · abaixo de R$ 5,00</div>
+      <div class="spark-wrap"><canvas id="spkCambio"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:18%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+      <div class="vies baixa">Viés: real forte com pesquisa eleitoral</div>
+    </div>
+  </div>
+  <div class="proc"><b>Nota de procedência.</b> ① Verificado: soja nov/26 em 12,8075 (05/10), 13,0300 (06/10), 12,9750 (07/10), 12,8750 (08/10, −10,00 ¢), 12,9200 (09/10, +4,50 ¢) e 12,87 (12/10, −0,33%); milho dez/26 em 4,9725 (05/10), 5,0800 (06/10), 5,0200 (07/10), 5,0025 (08/10, −1,75 ¢), 4,7975 (09/10, −20,50 ¢, −4,10%) e 4,83 (12/10, +0,68%). Indicador Cepea/ESALQ do boi em 372,95 · 373,25 · 376,10 · 376,30 (08/10, +0,05%) · 377,80 (09/10, +0,40%). Dólar à vista em 5,0024 (05/10), 4,9745 (06/10), 5,0156 (07/10), 5,024 (08/10, +0,27%) e 4,9856 (09/10, −0,76%, −4,44% na semana). ② Indicativo: <b>12/10 foi feriado nacional</b> — não há Indicador Cepea, ajuste da B3 nem fechamento de câmbio para a segunda, e os pontos estão omitidos dos gráficos, não estimados. O ponto do dólar de 07/10 tem divergência entre fontes (CNN R$ 5,0156; InfoMoney R$ 5,011) e a variação de +0,27% em 08/10 é medida sobre a série da InfoMoney. <b>O conector do grafo RuralIn esteve fora do ar (erro 502) enquanto esta edição foi montada</b>: nenhuma cotação ou cálculo desta edição foi registado, e todos os números vêm de fonte primária consultada diretamente.</div>
+</div></section>
+
+<!-- 02 DRIVER WASDE -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>O relatório que fez o contrário do esperado</h2></div>
+  <p class="sec-sub">Na quarta-feira passada escrevemos que os analistas da Reuters esperavam corte na produtividade do milho americano. Veio o oposto, e em dose dupla.</p>
+  <div class="driver">
+    <div class="big">+18%<small>os estoques finais<br>de milho dos EUA<br>em um único mês</small></div>
+    <div class="txt">
+      <p><b>O que o USDA publicou.</b> No WASDE de 9 de outubro, a produtividade do milho americano subiu para <b>189,56 sacas por hectare</b>, contra 186,74 em setembro e uma média de mercado de 186,01 — acima, inclusive, do topo de boa parte das projeções. Os estoques finais foram de <b>39,80 para 46,97 milhões de toneladas</b>: um salto de <b>7,17 Mt, ou 18%</b>, e 9,2% acima dos 43,03 Mt que o mercado projetava. O dezembro/26 despencou <b>20,50 centavos, 4,10%</b>, para US$ 4,7975.</p>
+      <p><b>A soja levou a mesma dose e reagiu diferente.</b> A produtividade subiu de 59,18 para <b>59,52 sacas por hectare</b> e os estoques finais de 8,44 para <b>8,57 Mt</b> — também acima da média de mercado, de 8,41 Mt. Mesmo assim o novembro fechou a sexta <b>em alta de 0,35%</b>. A diferença é de magnitude: a revisão da soja foi marginal e já estava dentro da faixa esperada, enquanto a do milho rompeu a faixa inteira. Mercado não reage ao nível, reage ao <b>tamanho do erro da expectativa</b>.</p>
+      <p><b>O que isso fecha.</b> Em 30 de setembro os estoques de passagem de milho vieram no maior nível em sete anos. Agora os estoques <em>finais</em> projetados para 2026/27 também subiram 18%. São dois relatórios seguidos dizendo a mesma coisa: <b>a tese de escassez de milho acabou</b>. Do topo de 21/09, em US$ 5,43, ao fechamento de segunda o dezembro já perdeu mais de 11%. Para quem ainda está segurando milho esperando a volta, o mercado já respondeu duas vezes.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 ESPECIAL PLANTIO E CLIMA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Especial — o plantio mais rápido já visto, e o clima que o explica</h2></div>
+  <p class="sec-sub">A safra brasileira está indo ao chão em ritmo recorde. Mas duas consultorias discordam em quase cinco pontos sobre o tamanho do avanço, e a diferença entre elas é informação, não ruído.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Plantio da soja no Brasil · % da área</span><span class="now alta">ritmo recorde</span></div>
+        <div class="chart-box"><canvas id="chPlantio"></canvas></div>
+        <div class="chart-foot">Dados até 08/10 · AgRural e Pátria AgroNegócios, com as respectivas referências do ano anterior</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Plantio por estado · Pátria, 09/10</span><span class="now">MT 33,3% · PR &gt;40%</span></div>
+        <div class="chart-box"><canvas id="chEstados"></canvas></div>
+        <div class="chart-foot">% da área · Brasil 19,77%, média de 5 anos 11,55% · a barra do Paraná é piso: a fonte publicou "acima de 40%" ②</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Milho verão no Centro-Sul</span><span class="now neutro">44%</span></div>
+        <div class="chart-box"><canvas id="chMilhoPlantio"></canvas></div>
+        <div class="chart-foot">% da área · AgRural, dados até 08/10 · chuva constante freou o Sul</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que o campo está dizendo</p>
+      <p><strong>A divergência, primeiro.</strong> A <strong>AgRural</strong> aponta <strong>15%</strong> da área semeada no Brasil com dados até quinta-feira, contra 7% na semana anterior e 14% um ano antes. A <strong>Pátria AgroNegócios</strong> publicou na sexta <strong>19,77%</strong>, contra 12,86% no ano passado e uma média de cinco anos de <strong>11,55%</strong>. São quase <strong>cinco pontos percentuais</strong> de diferença para a mesma semana. Isso acontece porque as duas usam áreas-base e cortes de apuração diferentes — e porque a semana teve chuva forte no meio, o que faz um dia a mais de corte valer muito. <strong>Não existe o número certo: existe a série de cada uma.</strong> Compare AgRural com AgRural, Pátria com Pátria, e nunca misture as duas numa mesma conta.</p>
+      <p><strong>O que as duas concordam.</strong> Que o ritmo é excepcional. A Pátria foi explícita: é <strong>o plantio mais acelerado já registrado para uma safra de verão brasileira</strong>. Pela série dela, estamos 8,22 pontos acima da média de cinco anos. Em Mato Grosso o avanço é de <strong>33,3%</strong>, alinhado com o levantamento do Imea, que mostrou ganho de mais de 20 pontos numa semana. No Paraná já passou de <strong>40%</strong>, e Goiás e Mato Grosso do Sul aparecem como destaques de velocidade.</p>
+      <p><strong>Por que isso é bom — e é no milho que aparece.</strong> Soja plantada cedo significa <strong>colheita a partir de janeiro</strong>, e colheita em janeiro significa <strong>safrinha de milho semeada dentro da janela ideal</strong>. Essa é a maior notícia estrutural do período para quem planta em Goiás. Depois de duas safrinhas plantadas no limite da janela, uma soja precoce bem distribuída pode valer mais na segunda safra do que no preço da primeira. Guarde essa carta.</p>
+      <p><strong>O clima, sem romantismo.</strong> O El Niño está declarado e classificado como de <strong>intensidade muito forte</strong>, e o padrão é o conhecido: <strong>chuva acima da média no Sul</strong>, <strong>irregularidade no Centro-Oeste, Norte e Nordeste</strong>. As chuvas de setembro chegaram cedo e com bom volume nas principais regiões produtoras — foi isso que destravou o plantio. Mas o padrão já está cobrando: no <strong>Paraná a chuva constante freou</strong> tanto a soja quanto o milho de verão, no <strong>noroeste de Mato Grosso houve replantio</strong> por condições desfavoráveis, e o <strong>centro-norte mato-grossense precisa de chuva nova</strong> — a Pátria avisou que o problema aparece se o próximo evento não vier.</p>
+      <p><strong>O risco que ninguém está precificando.</strong> Plantar rápido e cedo concentra a lavoura numa mesma janela fenológica. Se o veranico típico de El Niño chegar em novembro ou dezembro, ele vai pegar <strong>uma proporção maior da área no mesmo estádio crítico</strong> do que pegaria numa safra de plantio escalonado. Velocidade é vantagem logística e <strong>é risco agronômico ao mesmo tempo</strong>. Quem plantou tudo em duas semanas precisa estar mais atento ao boletim de chuva de novembro do que quem escalonou.</p>
+    </div>
+  </div>
+  <div class="proc"><b>Procedência desta seção.</b> ① Verificado: AgRural, dados até 08/10 — soja no Brasil a 15% da área (7% na semana anterior; 14% um ano antes) e milho verão no Centro-Sul a 44% (38% na semana anterior; 45% um ano antes), com a semeadura começando a avançar sobre São Paulo, Minas Gerais e Goiás e perdendo ritmo no Sul por chuvas constantes. Pátria AgroNegócios, divulgado em 09/10 — soja no Brasil a 19,77% da área, contra 12,86% no ano anterior e média de cinco anos de 11,55%; Mato Grosso a 33,3% e Paraná acima de 40%. El Niño classificado como de intensidade muito forte, com tendência de mais chuva no Sul e irregularidade no Centro-Oeste, Norte e Nordeste. ② Indicativo: os valores de Goiás e Mato Grosso do Sul não foram publicados em percentual pelas fontes consultadas — aparecem citados como destaques de velocidade, sem número, e por isso <b>não estão no gráfico</b>. A leitura sobre concentração de janela fenológica e risco de veranico é interpretação nossa, não projeção de nenhuma das consultorias.</div>
+</div></section>
+
+<!-- 04 SOJA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Soja — subiu em dólar, caiu em real, de novo</h2></div>
+  <p class="sec-sub">CBOT novembro/26 em seis pregões. A mesma história da semana passada, com um agravante novo: a safra brasileira entrando no radar.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Soja CBOT nov/26 · 02 a 12/10</span><span class="now neutro">12,8700</span></div>
+        <div class="chart-box"><canvas id="chSoja"></canvas></div>
+        <div class="chart-foot">US$/bushel · pico de 13,03 na terça, fechamento de segunda a 12,87</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Paridade em reais</span><span class="now baixa">−3,79%</span></div>
+        <div class="chart-box"><canvas id="chParidade"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg · paridade pura de Chicago, sem prêmio e sem base</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Zonas técnicas</span><span class="now">S 12,80 / R 13,05</span></div>
+        <div class="chart-box"><canvas id="chSojaT"></canvas></div>
+        <div class="leg-sr"><span><i class="ln lr"></i>Resistência 13,05 · 13,30</span><span><i class="ln ls"></i>Suporte 12,80 · 12,60</span></div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE · níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>+0,68% em dólar, −3,79% em real</div>
+        <div class="n"><b>Por quê</b>câmbio e plantio recorde</div>
+        <div class="n"><b>Pode acontecer</b>12,60–13,05</div>
+        <div class="n"><b>Fazer</b>o prêmio continua sendo o que vale</div>
+      </div>
+      <p><strong>O fato.</strong> O novembro oscilou dentro de uma faixa estreita: 12,8075 na segunda, pico de 13,0300 na terça, 12,9750 na quarta, 12,8750 na quinta, 12,9200 na sexta e <strong>12,87 na segunda do feriado</strong>. No acumulado do período, <strong>+0,68%</strong>. Em reais, porém, a paridade caiu de R$ 147,03 para <strong>R$ 141,46</strong> por saca — <strong>−3,79%</strong>, porque o dólar recuou 4,44% na semana.</p>
+      <p><strong>Pela segunda semana seguida, o mesmo padrão.</strong> Chicago sobe, o real sobe mais, e a receita encolhe. Quem acompanha só a tela segue tendo semanas boas que não aparecem no caixa. A diferença é que agora há um terceiro fator entrando: o <strong>plantio brasileiro em ritmo recorde</strong>, que a própria Reuters já cita como razão de recuo em Chicago. Lavoura brasileira indo bem é notícia baixista lá fora — e é a nossa própria safra pressionando o nosso próprio preço.</p>
+      <p><strong>O WASDE foi levemente negativo e ela aguentou.</strong> Produtividade e estoques americanos subiram acima do esperado, e ainda assim o contrato fechou a sexta em alta. Isso diz que há comprador na faixa dos US$ 12,80 — o suporte está sendo defendido. Mas o espaço para cima também estreitou: sem demanda chinesa nova e com a safra brasileira entrando, a resistência de US$ 13,05 virou teto, não trampolim.</p>
+      <p><strong>A parte que continua boa, e que tem prazo.</strong> O prêmio do porto brasileiro segue vivo porque a soja americana continua pagando 10% de sobretaxa mais 3% de MFN na China. Esse diferencial tem data de revisão: <strong>10 de janeiro de 2027</strong> — que é justamente quando a colheita precoce de Mato Grosso começa a chegar. É uma coincidência de calendário que merece atenção: o prêmio pode ser revisto na mesma semana em que a oferta brasileira aparece.</p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista · 20%</h4><p>China volta a comprar e o veranico aparece no Centro-Oeste. Rompe 13,05 e busca 13,30.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base · 55%</h4><p>Plantio recorde confirmado e demanda morna. Lateral entre 12,80 e 13,05.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista · 25%</h4><p>Safra brasileira sem susto e real seguindo forte. Perde 12,80 e testa 12,60.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 MILHO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Milho — o dia em que a tese morreu</h2></div>
+  <p class="sec-sub">CBOT dezembro/26. A sexta-feira do WASDE foi o pior pregão do contrato desde o choque dos estoques de 30 de setembro.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Milho CBOT dez/26 · 02 a 12/10</span><span class="now baixa">4,8300</span></div>
+        <div class="chart-box"><canvas id="chMilho"></canvas></div>
+        <div class="chart-foot">US$/bushel · a queda de 4,10% na sexta é a reação ao WASDE</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Estoques finais de milho dos EUA</span><span class="now baixa">+18% em um mês</span></div>
+        <div class="chart-box"><canvas id="chEst"></canvas></div>
+        <div class="chart-foot">Milhões de toneladas · setembro, expectativa do mercado e WASDE de outubro</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Curva CME · 09/10</span><span class="now">+27,75 ¢ até jul/27</span></div>
+        <div class="chart-box"><canvas id="chCurva"></canvas></div>
+        <div class="chart-foot">US$/bushel · dez/26 4,7975 · mar/27 4,9425 · mai/27 5,0200 · jul/27 5,0750</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE · níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>−2,96% no período</div>
+        <div class="n"><b>Por quê</b>produtividade e estoque elevados</div>
+        <div class="n"><b>Pode acontecer</b>4,70–4,95</div>
+        <div class="n"><b>Fazer</b>quem compra, a janela abriu mais</div>
+      </div>
+      <p><strong>O fato.</strong> O dezembro andou de lado até quinta — 4,9725, 5,0800, 5,0200, 5,0025 — e desabou na sexta para <strong>US$ 4,7975</strong>, perda de 20,50 centavos e <strong>4,10% num só pregão</strong>. Na segunda tentou recuperação e fechou a <strong>US$ 4,83</strong>, alta de 0,68%. No período, <strong>−2,96%</strong>. Do pico de terça ao fundo de sexta foram <strong>−5,56% em quatro pregões</strong>.</p>
+      <p><strong>Por que foi tão violento.</strong> Porque o mercado estava posicionado para o contrário. Os analistas consultados pela Reuters esperavam <em>corte</em> de produtividade; veio alta de quase três sacas por hectare, acima de praticamente toda a faixa de projeções. Quando a surpresa vai na direção oposta à posição, a liquidação é mecânica — não há quem compre do outro lado. É o mesmo filme de 30 de setembro, com os mesmos fundos ainda desmontando a aposta comprada recorde de 1º de setembro.</p>
+      <p><strong>A tese de escassez acabou, e vale dizer isso com todas as letras.</strong> Dois relatórios seguidos: estoque de passagem no maior nível em sete anos e estoque final projetado 18% maior em um mês. Do topo de US$ 5,43 em 21/09 até agora são mais de <strong>11% de queda</strong>. Quem segurou milho esperando a volta da narrativa de aperto precisa reconhecer que ela foi desmontada pelos dados, não por opinião. <strong>Replanejar não é derrota — é o que separa gestão de teimosia.</strong></p>
+      <p><strong>Do outro lado do balcão, a notícia é ótima.</strong> Com a arroba a R$ 377,80 e o milho de Rio Verde na casa dos R$ 56,00, a relação de troca está em <strong>6,8 sacas por arroba</strong> — a melhor do ano, e melhorando. Confinamento, granja e cooperativa que ainda não travaram ração para o primeiro trimestre de 2027 estão diante da janela mais larga desde o começo da safra. A curva paga 27,75 centavos de dez/26 a jul/27, pouco mais de 4 centavos por mês: <strong>carrego magro, que não cobre armazenagem em terceiro.</strong></p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista · 20%</h4><p>Fundos terminam a liquidação e demanda de etanol surpreende. Volta a 4,95.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base · 55%</h4><p>Acomodação entre 4,70 e 4,95 com o estoque no preço e colheita avançando.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista · 25%</h4><p>Colheita confirma produtividade recorde. Perde 4,70 e busca 4,55.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 BOI E DÓLAR -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Boi e dólar — o recorde e a pesquisa</h2></div>
+  <p class="sec-sub">Os dois ativos brasileiros do informativo, ambos movidos por coisas que não estão em Chicago.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Indicador Cepea/ESALQ · boi gordo</span><span class="now alta">377,80</span></div>
+        <div class="chart-box"><canvas id="chBoi"></canvas></div>
+        <div class="chart-foot">R$/arroba · 12/10 sem Indicador por feriado · 15 pregões consecutivos de alta</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Dólar à vista · 02 a 09/10</span><span class="now baixa">4,9856</span></div>
+        <div class="chart-box"><canvas id="chCambio"></canvas></div>
+        <div class="chart-foot">R$/US$ · fechou a semana abaixo de R$ 5,00, queda de 4,44%</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Base 100 · os quatro ativos</span><span class="now">02/10 = 100</span></div>
+        <div class="chart-box"><canvas id="chBase100"></canvas></div>
+        <div class="chart-foot">Soja, milho, boi e dólar normalizados em 02/10 = 100</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Dois fundamentos diferentes</p>
+      <p><strong>O boi não para.</strong> 372,95 na segunda, 373,25 na terça, 376,10 na quarta, 376,30 na quinta e <strong>R$ 377,80</strong> na sexta. São <strong>quinze pregões consecutivos de alta</strong> desde 18/09, sem um único dia de correção, e <strong>+2,14%</strong> no período. O ajuste do futuro out/26 na B3 fechou a semana em R$ 388,30, e o nov/26 em R$ 396,80. O prêmio do futuro sobre o físico continuou encolhendo — está agora em torno de 2,8%, contra 5,39% em 25/09. Repetimos pela terceira semana: <strong>em mercado de alta, travar tarde custa caro mesmo com o preço subindo</strong>.</p>
+      <p><strong>O risco segue onde estava.</strong> A China esgotou a cota anual sem sobretaxa em 29 de setembro e o excedente paga tarifa adicional de 55%. O preço de hoje ainda reflete embarques anteriores a essa data. O teste aparece primeiro na escala de abate, não na cotação — é isso que precisa ser acompanhado nas próximas semanas.</p>
+      <p><strong>O dólar e a eleição.</strong> A moeda fechou a sexta a <strong>R$ 4,9856</strong>, queda de 0,76% no dia e <strong>4,44% na semana</strong>, abaixo de R$ 5,00. O gatilho foi eleitoral: a pesquisa Atlas/Bloomberg deu <strong>51,1% a Flávio Bolsonaro contra 45,7% a Lula</strong>, e a PoderData/Aya havia mostrado 53% a 47% na quinta. O Ibovespa fechou a <strong>209.066,90 pontos</strong>, alta de 1,38% no dia e cerca de <strong>8% na semana — a maior alta semanal em seis anos</strong>.</p>
+      <p><strong>Mas o pano macro não é só favorável.</strong> O <strong>IPCA de setembro veio em 0,82%</strong>, acima dos 0,73% esperados, puxado por energia elétrica (<strong>+7,98%</strong>). E o petróleo subiu forte: o <strong>Brent fechou a semana em US$ 104,72</strong>, depois de saltar 4,07% na quinta com ataques a navios no Golfo Pérsico e no Estreito de Ormuz. Trump sinalizou pausa nos ataques ao Irã até as eleições de meio de mandato, em <strong>3 de novembro</strong> — o que segurou o preço na sexta, mas é trégua com data, não solução. <strong>Energia cara com real forte é a pior combinação para quem exporta e compra insumo importado.</strong></p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 07 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">07</span><h2>A leitura do estrategista</h2></div>
+    <p class="read">Três coisas aconteceram neste período e nenhuma delas é pequena. A primeira: <strong>a tese de escassez do milho morreu oficialmente</strong>, com dois relatórios do USDA dizendo a mesma coisa em dez dias. A segunda: <strong>o plantio brasileiro está no ritmo mais rápido já registrado</strong>, o que é excelente para a logística da safrinha e péssimo para o preço de Chicago. A terceira: <strong>o real continua se valorizando por conta de pesquisa eleitoral</strong>, e já são duas semanas seguidas em que a alta do grão em dólar não chega ao caixa do produtor.</p>
+    <p class="read">O ponto que amarra as três é desconfortável. <strong>O produtor brasileiro está, neste momento, apostando contra si mesmo em dois lugares ao mesmo tempo.</strong> A lavoura indo bem derruba o preço internacional. A economia doméstica indo bem — ou sendo percebida assim — derruba o câmbio. Quem só torce pelo bom cenário está torcendo por preço menor. É por isso que gestão de risco não é pessimismo: é a única forma de o bom cenário também ser bom para você.</p>
+    <p class="read">E há um risco agronômico que ninguém está colocando na conta. Plantar tudo em duas semanas <strong>concentra a lavoura numa mesma janela fenológica</strong>. Em ano de El Niño muito forte, com irregularidade esperada no Centro-Oeste, um veranico em novembro ou dezembro pega uma fatia maior da área no mesmo estádio crítico. <strong>A velocidade que hoje é motivo de comemoração pode virar concentração de exposição.</strong> Vale olhar o calendário de aplicação e o seguro com esse olho.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Soja</div><div class="vb neutro">+0,68% em dólar</div><div class="ac">−3,79% em real. Plantio recorde pesa.</div></div>
+      <div class="mtile"><div class="h">Milho</div><div class="vb baixa">−2,96%</div><div class="ac">Estoque final +18%. Tese de escassez encerrada.</div></div>
+      <div class="mtile"><div class="h">Boi</div><div class="vb alta">+2,14%</div><div class="ac">15 altas seguidas. Prêmio do hedge em 2,8%.</div></div>
+      <div class="mtile"><div class="h">Dólar</div><div class="vb baixa">−4,44%</div><div class="ac">Abaixo de R$ 5,00 com pesquisa eleitoral.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">O que fazer nesta semana</div>
+      <ul>
+        <li><b>Milho — quem está segurando.</b> Reconheça que a tese mudou. Dois relatórios do USDA em dez dias desmontaram o argumento de aperto, e o contrato já perdeu mais de 11% do topo de setembro. Use qualquer repique acima de US$ 4,95 para vender parcela em vez de esperar a narrativa voltar. O custo de carregar não é só armazenagem: é a margem que some enquanto você espera.</li>
+        <li><b>Milho — quem compra ração.</b> A janela abriu mais: 6,8 sacas de milho por arroba é a melhor relação do ano. Travar a necessidade do primeiro trimestre de 2027 agora, com o preço no fundo e a safrinha ainda por plantar, é decisão de baixo arrependimento.</li>
+        <li><b>Soja — quem vai vender.</b> O prêmio do porto continua sendo a melhor parte do seu preço, e ele tem data de revisão em 10 de janeiro — a mesma semana em que a colheita precoce de Mato Grosso começa a chegar. Vender parcela contra o porto antes dessas duas coisas se encontrarem vale mais do que esperar Chicago.</li>
+        <li><b>Soja — quem fixou em dólar.</b> Segunda semana seguida em que o câmbio comeu a alta do grão. O real abaixo de R$ 5,00 com pesquisa eleitoral favorável é patamar de expectativa, não de fundamento: falta o 2º turno em 25/10. Se a sua exposição é grande, resolver parte antes do evento continua valendo.</li>
+        <li><b>Plantio — quem semeou rápido.</b> Reveja o calendário de aplicação e a cobertura de seguro considerando que a sua área está mais concentrada em estádio do que o normal. Em ano de El Niño muito forte, concentração de janela é concentração de risco. Vale conversar com o agrônomo sobre escalonar o que ainda falta, em vez de acelerar.</li>
+        <li><b>Safrinha — todos.</b> A soja precoce abre a melhor janela de milho segunda safra dos últimos anos. Comece a planejar sementes e insumos agora, enquanto o milho está barato e o câmbio ajuda na compra. É a carta mais valiosa que este período entregou, e ela se joga em janeiro.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Procedência e limites deste informativo.</b> ① Verificado: CBOT soja nov/26 em 12,8075 (05/10), 13,0300 (06/10), 12,9750 (07/10), 12,8750 (08/10), 12,9200 (09/10) e 12,87 (12/10, −0,33%); CBOT milho dez/26 em 4,9725, 5,0800, 5,0200, 5,0025, 4,7975 (09/10, −20,50 ¢, −4,10%) e 4,83 (12/10, +0,68%), com a curva de 09/10 em mar/27 4,9425, mai/27 5,0200 e jul/27 5,0750. WASDE de 09/10: produtividade do milho dos EUA em 189,56 sc/ha (setembro 186,74; média de mercado 186,01) e estoques finais em 46,97 Mt (setembro 39,80; média 43,03); soja em 59,52 sc/ha (setembro 59,18; média 59,29) e estoques finais em 8,57 Mt (setembro 8,44; média 8,41). Indicador Cepea/ESALQ do boi em 372,95 · 373,25 · 376,10 · 376,30 · 377,80 (09/10, +0,40%); futuros da B3 em 388,30 (out/26) e 396,80 (nov/26). Dólar à vista a R$ 5,024 (08/10, +0,27%) e R$ 4,9856 (09/10, −0,76%, −4,44% na semana, −9,17% no ano); Ibovespa a 209.066,90 pontos (09/10, +1,38%, cerca de +8% na semana). IPCA de setembro em 0,82% (expectativa 0,73%), com energia elétrica a +7,98%; DI jan/35 a 12,37% (−23 pb). Brent a US$ 104,28 em 08/10 (+4,07%) e US$ 104,72 em 09/10. Pesquisas: Atlas/Bloomberg com 51,1% para Flávio Bolsonaro e 45,7% para Lula; PoderData/Aya com 53% a 47%. Plantio conforme AgRural (soja 15%, milho verão 44%, dados até 08/10) e Pátria AgroNegócios (soja 19,77%, MT 33,3%, PR acima de 40%, média de 5 anos 11,55%, divulgado em 09/10). ② Indicativo: <b>12 de outubro foi feriado nacional</b> — não há Indicador Cepea, ajuste da B3 nem fechamento de câmbio para esse dia, e os pontos foram omitidos dos gráficos, não estimados; Chicago operou normalmente. O fechamento do dólar de 07/10 diverge entre CNN (R$ 5,0156) e InfoMoney (R$ 5,011). Os percentuais de plantio de Goiás e Mato Grosso do Sul não foram publicados pelas fontes e não constam do gráfico. A leitura sobre concentração de janela fenológica e risco de veranico é interpretação nossa. <b>O conector do grafo RuralIn esteve indisponível (erro 502) durante a montagem desta edição: nenhuma cotação ou cálculo foi registado, e todos os números vêm de fonte primária consultada diretamente, sem conferência automática.</b> <b>Cenários são cenários, com probabilidade atribuída pelo analista — não são previsão.</b> As zonas de suporte e resistência são leitura técnica sobre a série de fechamentos e valem como referência operacional, não como garantia de preço.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralin.cloud/" target="_blank" rel="noopener">ruralin.cloud</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',AZUL='#3b82f6',CIANO='#06b6d4',ROXO='#8b5cf6';
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  const dias=['02/10','05/10','06/10','07/10','08/10','09/10','12/10'];
+  const S=[12.7825,12.8075,13.0300,12.9750,12.8750,12.9200,12.8700];
+  const M=[4.9775,4.9725,5.0800,5.0200,5.0025,4.7975,4.8300];
+  const B=[369.90,372.95,373.25,376.10,376.30,377.80,null];
+  const C=[5.2173,5.0024,4.9745,5.0156,5.0240,4.9856,null];
+  const BU=2.2046;
+  const PAR=S.map((v,i)=>C[i]===null?null:v*BU*C[i]);
+
+  function spark(id,data,color){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,34);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});}
+  spark('spkSoja',S,SOJA); spark('spkMilho',M,MILHO); spark('spkBoi',B,BOI); spark('spkCambio',C,AZUL);
+
+  function line(id,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function tech(id,data,color,fmt,ymin,ymax,sup,res){const n=data.length,flat=v=>Array(n).fill(v);
+    const ds=[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,order:1,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'33');g.addColorStop(1,color+'00');return g;}}];
+    res.forEach(r=>ds.push({data:flat(r),borderColor:'#34d399',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    sup.forEach(s=>ds.push({data:flat(s),borderColor:'#f87171',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    new Chart(document.getElementById(id),{type:'line',data:{labels:dias,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{filter:(i)=>i.datasetIndex===0,backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function curva(id,labels,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:color+'99',borderColor:color,borderWidth:1.4,borderRadius:5,maxBarThickness:42}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function barrasCor(id,labels,data,cores,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores.map(c=>c+'99'),borderColor:cores,borderWidth:1.4,borderRadius:5,maxBarThickness:48}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function grupo(id,labels,series,fmt,ymin,ymax){
+    new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,backgroundColor:s.c+'99',borderColor:s.c,borderWidth:1.3,borderRadius:4,maxBarThickness:34}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:9,boxHeight:9,padding:9,font:{size:9.5}}},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function multi(id,series,fmt){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:series.map(s=>({label:s.n,data:s.d,borderColor:s.c,borderWidth:2.2,pointBackgroundColor:'#0a0e1a',pointBorderColor:s.c,pointBorderWidth:1.6,pointRadius:3.2,pointHoverRadius:6,tension:.25,fill:false,spanGaps:true}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:9,boxHeight:9,padding:9,font:{size:9.5}}},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  const vg=(v,d)=>v.toFixed(d).replace('.',',');
+  const fUS=v=>'US$ '+vg(v,2), fUS4=v=>'US$ '+vg(v,4), fR=v=>'R$ '+vg(v,0), fRd=v=>'R$ '+vg(v,2),
+        fB=v=>vg(v,1), fPc=v=>vg(v,0)+'%', fPc1=v=>vg(v,1)+'%', fMt=v=>vg(v,1)+' Mt';
+
+  // --- especial plantio
+  grupo('chPlantio',['AgRural','Pátria'],[
+    {n:'Safra 2026/27',d:[15.0,19.77],c:SOJA},
+    {n:'Mesma semana em 2025',d:[14.0,12.86],c:'#64748b'}
+  ],fPc1,0,24);
+  barrasCor('chEstados',['Brasil','Mato Grosso','Paraná','Média 5 anos'],[19.77,33.3,40.0,11.55],
+    [SOJA,'#34d399',CIANO,'#64748b'],fPc1,0,46);
+  grupo('chMilhoPlantio',['Milho verão · Centro-Sul'],[
+    {n:'Semana anterior',d:[38],c:'#64748b'},
+    {n:'Atual (08/10)',d:[44],c:MILHO},
+    {n:'Ano passado',d:[45],c:CIANO}
+  ],fPc,0,52);
+
+  // --- soja
+  line('chSoja',S,SOJA,fUS,12.72,13.10);
+  line('chParidade',PAR,CIANO,fRd,138,150);
+  tech('chSojaT',S,SOJA,fUS,12.50,13.42,[12.80,12.60],[13.05,13.30]);
+
+  // --- milho
+  line('chMilho',M,MILHO,fUS,4.74,5.13);
+  barrasCor('chEst',['setembro','esperado','WASDE out'],[39.80,43.03,46.97],
+    ['#64748b',AZUL,MILHO],fMt,36,50);
+  curva('chCurva',['dez/26','mar/27','mai/27','jul/27'],[4.7975,4.9425,5.0200,5.0750],MILHO,fUS4,4.72,5.14);
+
+  // --- boi e dolar
+  line('chBoi',B,BOI,fR,367,381);
+  line('chCambio',C,AZUL,fRd,4.92,5.27);
+  multi('chBase100',[
+    {n:'Soja',d:S.map(v=>v/S[0]*100),c:SOJA},
+    {n:'Milho',d:M.map(v=>v/M[0]*100),c:MILHO},
+    {n:'Boi',d:B.map(v=>v===null?null:v/B[0]*100),c:BOI},
+    {n:'Dólar',d:C.map(v=>v===null?null:v/C[0]*100),c:AZUL}
+  ],fB);
+</script>
+</body>
+</html>
