@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informativo 13/10 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Informativo</span><span>13 / 10 / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">A chuva chegou forte, e <em>o mercado ficou parado</em></h1>
+    <p class="thesis">O primeiro pregão depois do feriado foi de pouca coisa: soja caiu 0,31%, milho recuou um quarto de centavo e o boi subiu 0,05%. Mas duas coisas se moveram de verdade. O <b>dólar voltou a passar de R$ 5,02</b>, e a <b>chuva entrou com força no Centro-Oeste e no Sul</b>, com volumes de até 130 mm em Mato Grosso do Sul e 80 mm no Paraná. Para quem está semeando, isso resolve um problema e cria outro. E a relação de troca em Rio Verde rompeu <b>sete sacas de milho por arroba</b>, a melhor do ano.</p>
+    <div class="periodo"><span>Pregão de <b>13/10</b></span><span>Base: fechamentos de <b>09 e 12/10</b></span><span>Com quadro de <b>clima</b></span></div>
+  </div>
+</header>
+
+<!-- 01 TERMÔMETRO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Termômetro do dia</h2></div>
+  <p class="sec-sub">Grãos em Chicago, boi no Indicador Cepea/ESALQ e dólar comercial à vista, todos no fechamento de terça-feira. Segunda, 12/10, foi feriado no Brasil, então boi e câmbio comparam com sexta, 09/10.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Soja · CBOT nov/26 <span class="tag">13/10</span></div>
+      <div class="val">12,8375<span class="unit"> US$</span></div>
+      <div class="delta baixa">▼ 0,31% no dia, segunda queda seguida</div>
+      <div class="spark-wrap"><canvas id="spkSoja"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:40%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies baixa">Viés: colheita americana manda</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">Milho · CBOT dez/26 <span class="tag">13/10</span></div>
+      <div class="val">4,8275<span class="unit"> US$</span></div>
+      <div class="delta neutro">≈ 0,05% no dia, praticamente estável</div>
+      <div class="spark-wrap"><canvas id="spkMilho"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:24%"></span></div><div class="ends"><span>Safra</span><span>Demanda</span></div></div>
+      <div class="vies neutro">Viés: fundo do WASDE sendo testado</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Boi gordo · Cepea/ESALQ <span class="tag">13/10</span></div>
+      <div class="val">378,00<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ 0,05% no dia, 16 pregões sem queda</div>
+      <div class="spark-wrap"><canvas id="spkBoi"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:97%"></span></div><div class="ends"><span>Oferta</span><span>Exportação</span></div></div>
+      <div class="vies alta">Viés: altista, mas perdendo força</div>
+    </div>
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Dólar · à vista <span class="tag">13/10</span></div>
+      <div class="val">5,0228<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ 0,74% no dia, voltou acima de R$ 5,00</div>
+      <div class="spark-wrap"><canvas id="spkCambio"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:30%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+      <div class="vies neutro">Viés: realização depois da queda da semana</div>
+    </div>
+  </div>
+  <div class="proc"><b>Nota de procedência.</b> ① Verificado: soja nov/26 a US$ 12,83¾, queda de 4,00 centavos, 0,31%; milho dez/26 a US$ 4,8275, queda de 0,25 centavo; farelo dez/26 a US$ 370,10/t, queda de 1,46%; óleo dez/26 a 68,02 centavos, queda de 0,88%; trigo dez/26 a US$ 6,6925, queda de 3 centavos. Indicador Cepea/ESALQ do boi gordo a R$ 378,00, alta de 0,05%, e futuros da B3 a R$ 389,20 em out/26 e R$ 397,75 em nov/26. Dólar comercial a R$ 5,0228 na venda, alta de 0,74%, com faixa do dia entre R$ 4,9898 e R$ 5,0293. Indicador Cepea do milho a R$ 65,59/sc, queda de 2,61%. Físico do milho em Rio Verde/GO, pela Comigo, a R$ 54,00/sc, estável. ② Indicativo: os preços do físico da soja por praça têm <b>duas compilações diferentes circulando</b>, e elas não são comparáveis entre si; a seção 04 explica a diferença e qual usamos. O Indicador Cepea do boi de 14/10 ainda não havia sido publicado quando esta edição foi montada.</div>
+</div></section>
+
+<!-- 02 CLIMA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Clima: a chuva chegou, e agora o problema é outro</h2></div>
+  <p class="sec-sub">O quadro mudou de sinal em poucos dias. Saímos da pergunta "vai chover?" para a pergunta "dá para entrar com máquina?". São problemas diferentes e exigem decisões diferentes.</p>
+  <div class="driver">
+    <div class="big">130 mm<small>no sul de Mato Grosso do Sul<br>somando terça e quarta</small></div>
+    <div class="txt">
+      <p><b>Centro-Oeste.</b> Chuva intensa no sul de Mato Grosso do Sul até quarta-feira, com <b>100 a 130 mm</b> acumulados em dois dias. Na quinta e na sexta as pancadas perdem força no estado e se espalham por <b>Mato Grosso, Goiás e Distrito Federal</b>, com temporais localmente fortes. A umidade favorece a semeadura no Mato Grosso do Sul e no oeste mato-grossense, e melhora gradualmente o plantio em Goiás e no leste e nordeste de Mato Grosso. O contraponto está na operação: <b>volume alto impede a entrada de máquina</b>. Para a semana de 19 a 23, os modelos projetam perto de 100 mm em pontos de Mato Grosso do Sul, o que pode voltar a travar o campo.</p>
+      <p><b>Sul.</b> Uma área de baixa pressão traz chuva intensa entre quarta e sexta, com <b>até 80 mm no Paraná</b> e risco de temporais em Santa Catarina e no norte do Rio Grande do Sul. A partir de domingo, 18, uma massa de ar polar derruba as temperaturas. Para o trigo em maturação e colheita, o risco é o pior possível: <b>atraso de colheita, perda de qualidade, doença e germinação na espiga</b>. Para a soja, solo encharcado atrasa a semeadura e prejudica a emergência. Na semana seguinte, mais 80 a 100 mm no Paraná e em Santa Catarina.</p>
+      <p><b>Sudeste e Nordeste.</b> No Sudeste, chuva aumentando entre quarta e sexta, com mais de 70 mm no centro-leste paulista na quinta. Para o <b>café</b>, a umidade favorece a florada e a frutificação, mas temporal derruba flor e interrompe trato cultural. No Nordeste, calor e baixa umidade até quinta, com a frente chegando ao oeste da Bahia e, de sexta ao fim de semana, a áreas que estão há <b>mais de cem dias sem chuva significativa</b>. O risco de queimada está em nível de emergência em partes da Bahia, do Piauí e de Pernambuco.</p>
+    </div>
+  </div>
+  <div class="proc"><b>Procedência desta seção.</b> ① Verificado: boletim Agroclima/Climatempo de 13/10/2026, com os volumes e as janelas por região transcritos acima. Condição das lavouras americanas pelo USDA: 57% boas a excelentes, 29% regulares e 14% ruins a muito ruins, sem mudança sobre a semana anterior. ② Indicativo: previsão sazonal indica tendência e não evento. Os volumes citados são acumulados previstos por modelo e a distribuição dentro de cada estado varia entre municípios e até entre propriedades vizinhas, de modo que nenhum número aqui substitui a leitura da umidade na sua área.</div>
+</div></section>
+
+<!-- 03 SOJA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Soja: segunda queda seguida, e o farelo puxando para baixo</h2></div>
+  <p class="sec-sub">CBOT novembro/26. A colheita americana avançando e a ausência da China seguram qualquer tentativa de reação.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Soja CBOT nov/26</span><span class="now baixa">12,8375</span></div>
+        <div class="chart-box"><canvas id="chSoja"></canvas></div>
+        <div class="chart-foot">US$/bushel, do fechamento de 09/10 ao de 13/10</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Complexo soja em 13/10</span><span class="now baixa">farelo puxa</span></div>
+        <div class="chart-box"><canvas id="chComplexo"></canvas></div>
+        <div class="chart-foot">Variação do dia em %, grão, farelo dez/26 e óleo dez/26</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Zonas técnicas</span><span class="now">S 12,75 / R 13,00</span></div>
+        <div class="chart-box"><canvas id="chSojaT"></canvas></div>
+        <div class="leg-sr"><span><i class="ln lr"></i>Resistência 13,00 e 13,20</span><span><i class="ln ls"></i>Suporte 12,75 e 12,60</span></div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE, níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>queda de 0,31%</div>
+        <div class="n"><b>Por quê</b>colheita e farelo</div>
+        <div class="n"><b>Pode acontecer</b>12,75 a 13,00</div>
+        <div class="n"><b>Fazer</b>o prêmio do porto segue firme</div>
+      </div>
+      <p><strong>O fato.</strong> O novembro fechou a <strong>US$ 12,83¾</strong>, queda de 4,00 centavos, a segunda sessão consecutiva de baixa. O complexo inteiro cedeu: o farelo de dezembro caiu <strong>1,46%</strong>, para US$ 370,10 a tonelada, e o óleo recuou 0,88%, para 68,02 centavos. Quando as três pernas caem juntas, não é rotação dentro do complexo, é saída de posição.</p>
+      <p><strong>Por que caiu.</strong> Dois motivos somados. A colheita americana ganhou ritmo no Meio-Oeste depois de um período seco, com o produtor acelerando antes das chuvas previstas para o fim da semana, e os analistas esperavam que <strong>44% da soja e 38% do milho</strong> estivessem colhidos até domingo. E a demanda chinesa continua ausente. A condição das lavouras ficou em <strong>57% boa a excelente</strong>, sem mudança sobre a semana anterior, o que não dá argumento para nenhum dos lados.</p>
+      <p><strong>No Brasil, o mercado não negociou.</strong> O físico teve poucas mudanças e volume fraco, com o produtor afastado das vendas e concentrado no plantio, e poucos compradores na mesa. Os prêmios ficaram praticamente estáveis. É o retrato de outubro: quem planta não vende, e quem compra não tem pressa.</p>
+      <p><strong>O prêmio do porto ficou maior, e isso é o que importa.</strong> Com a paridade de Chicago em <strong>R$ 142,15</strong> por saca e Paranaguá a R$ 157,00 pela Insoy no fechamento de sexta, o prêmio subiu para <strong>10,56%</strong>, contra 8,82% em 02/10. O comprador segue pagando acima da paridade para garantir origem brasileira, porque a soja americana continua com 10% de sobretaxa mais 3% de MFN na China. <strong>A sua melhor notícia continua não vindo de Chicago.</strong></p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista · 20%</h4><p>China reaparece comprando e a chuva atrapalha a colheita americana. Volta a 13,00.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base · 55%</h4><p>Colheita avançando e demanda parada. Lateral entre 12,75 e 13,00.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista · 25%</h4><p>Colheita rápida e plantio brasileiro recorde confirmado. Perde 12,75 e testa 12,60.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 AS DUAS LISTAS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Atenção: há duas listas de preço de soja circulando</h2></div>
+  <p class="sec-sub">Esta seção existe porque quase caímos na armadilha ao montar esta edição. Se você acompanha preço de praça por mais de uma fonte, vale ler.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">A mesma soja, dois números</span><span class="now">base de 24 ou de 15,50?</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chDuasListas"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, compilação Insoy e Comigo em 09/10 contra a do Canal Rural em 13/10</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Base real, mesma dupla de fontes</span><span class="now neutro">estável em 24,00</span></div>
+        <div class="chart-box"><canvas id="chBase"></canvas></div>
+        <div class="chart-foot">R$/sc, Paranaguá pela Insoy menos Rio Verde pela Comigo</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Por que isso importa</p>
+      <p><strong>O que apareceu.</strong> Uma compilação traz Paranaguá a <strong>R$ 155,50</strong> e Rio Verde a <strong>R$ 140,00</strong>, o que dá base de R$ 15,50 por saca. A outra, no mesmo intervalo, traz Paranaguá a <strong>R$ 157,00</strong> pela Insoy e Rio Verde a <strong>R$ 133,00</strong> pela Comigo, o que dá base de <strong>R$ 24,00</strong>. São quase <strong>nove reais por saca</strong> de diferença na mesma conta.</p>
+      <p><strong>O que é verdade.</strong> As duas listas estão certas dentro de si. O que não vale é cruzar o porto de uma com a praça da outra, e foi exatamente o que quase fizemos. Medindo <strong>sempre pela mesma dupla de fontes</strong>, a base está em R$ 24,00 e <strong>não se mexeu</strong> desde 02/10, quando Paranaguá marcava R$ 160,00 e Rio Verde R$ 136,00. Não houve estreitamento nenhum.</p>
+      <p><strong>Por que isso custa dinheiro de verdade.</strong> Se você acreditar que a base caiu de R$ 24,00 para R$ 15,50, vai concluir que vender na praça ficou mais vantajoso em relação ao porto e pode deixar de negociar frete ou de buscar prêmio. Nove reais por saca, numa lavoura de 60 sacas por hectare, são <strong>R$ 540 por hectare</strong> de decisão tomada em cima de um número que não existe.</p>
+      <p><strong>A regra prática.</strong> Escolha uma fonte para cada praça e fique nela. Compare Comigo com Comigo, Insoy com Insoy. Quando trocar de fonte, refaça a série inteira, nunca só o último ponto. <strong>Série trocada no meio é pior do que série sem dado</strong>, porque a sem dado você percebe que falta, e a trocada parece completa.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 MILHO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Milho: Chicago parou, mas o Brasil ainda está caindo</h2></div>
+  <p class="sec-sub">CBOT dezembro/26 e o físico brasileiro, que ainda está digerindo o WASDE com atraso.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Milho CBOT dez/26</span><span class="now neutro">4,8275</span></div>
+        <div class="chart-box"><canvas id="chMilho"></canvas></div>
+        <div class="chart-foot">US$/bushel, fundo em 4,7975 na sexta do WASDE</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Indicador Cepea do milho</span><span class="now baixa">65,59</span></div>
+        <div class="chart-box"><canvas id="chCepeaMilho"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, queda de 4,29% desde 02/10</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Relação de troca em Rio Verde</span><span class="now alta">7,00 sc por @</span></div>
+        <div class="chart-box"><canvas id="chTroca"></canvas></div>
+        <div class="chart-foot">Sacas de milho por arroba de boi, Comigo e Cepea</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE, níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>estável em Chicago</div>
+        <div class="n"><b>Por quê</b>oferta de colheita x exportação</div>
+        <div class="n"><b>Pode acontecer</b>4,75 a 4,95</div>
+        <div class="n"><b>Fazer</b>comprador, a janela é agora</div>
+      </div>
+      <p><strong>O fato.</strong> O dezembro fechou a <strong>US$ 4,8275</strong>, praticamente onde abriu, com queda de apenas um quarto de centavo. Duas forças se anularam: a colheita intensa aumentando a oferta de um lado, e a retomada da demanda por exportações sustentando o preço do outro, depois da alta inesperada da estimativa de produção pelo USDA.</p>
+      <p><strong>No Brasil, a queda ainda está chegando.</strong> O Indicador Cepea caiu <strong>2,61% em um único dia</strong>, para <strong>R$ 65,59</strong> por saca, e acumula <strong>4,29% de queda</strong> desde 02/10. Rio Verde ficou estável em R$ 54,00 pela Comigo, mas já veio dos R$ 56,00 do começo do mês. O mercado interno reage ao WASDE com alguns dias de atraso, e esse ajuste ainda não terminou.</p>
+      <p><strong>Para quem compra, o número do dia é este.</strong> Com a arroba a R$ 378,00 e o milho de Rio Verde a R$ 54,00, a relação de troca rompeu <strong>sete sacas por arroba</strong>, contra 6,61 em 02/10. É a melhor do ano, e as duas pontas andaram a favor ao mesmo tempo: o boi subiu e o milho caiu. Confinamento, granja e cooperativa que ainda não travaram ração para o primeiro trimestre de 2027 estão diante da janela mais larga da safra.</p>
+      <p><strong>Para quem vende, o recado é o mesmo da semana passada.</strong> A tese de escassez foi desmontada por dois relatórios do USDA e o físico brasileiro ainda está se ajustando para baixo. Segurar esperando a volta da narrativa de aperto significa carregar um produto que está caindo, pagando armazenagem e capital para isso. <strong>O custo de esperar não é só o juro, é a margem que some.</strong></p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista · 25%</h4><p>Demanda de exportação se firma e os fundos encerram a liquidação. Volta a 4,95.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base · 55%</h4><p>Lateral entre 4,75 e 4,95 enquanto a colheita americana avança.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista · 20%</h4><p>Colheita confirma a produtividade elevada do WASDE. Perde 4,75 e testa 4,60.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 BOI E DÓLAR -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Boi e dólar: a sequência continua, mas o fôlego diminuiu</h2></div>
+  <p class="sec-sub">O boi completou dezesseis pregões sem queda, e o câmbio devolveu parte da valorização da semana passada.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Indicador Cepea/ESALQ do boi</span><span class="now alta">378,00</span></div>
+        <div class="chart-box"><canvas id="chBoi"></canvas></div>
+        <div class="chart-foot">R$/arroba, sem Indicador em 12/10 por feriado</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Dólar à vista</span><span class="now alta">5,0228</span></div>
+        <div class="chart-box"><canvas id="chCambio"></canvas></div>
+        <div class="chart-foot">R$/US$, faixa do dia entre 4,9898 e 5,0293</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Prêmio da B3 sobre o físico</span><span class="now neutro">encolhendo</span></div>
+        <div class="chart-box"><canvas id="chPremio"></canvas></div>
+        <div class="chart-foot">% do futuro out/26 sobre o Indicador Cepea, em três datas</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Dois movimentos, duas leituras</p>
+      <p><strong>O boi subiu de novo, mas quase nada.</strong> O Indicador fechou a <strong>R$ 378,00</strong>, alta de 0,05%, o décimo sexto pregão consecutivo sem queda desde 18/09. No acumulado dessa sequência são <strong>7,11%</strong>. Só que o ritmo mudou: depois de dias de 0,76% e 0,93%, as últimas altas vieram em 0,40% e 0,05%. <strong>A sequência continua, o fôlego não.</strong></p>
+      <p><strong>E o prêmio do hedge seguiu encolhendo.</strong> O futuro out/26 da B3 fechou a R$ 389,20, um prêmio de <strong>2,96%</strong> sobre o Indicador. Era 5,39% em 25/09 e 3,52% em 07/10. Pela quarta edição seguida registramos a mesma coisa: o físico correu mais que o futuro e quem adiou a trava viu a vantagem evaporar. O novembro, a R$ 397,75, ainda paga <strong>5,22%</strong>, e é onde está a oportunidade que resta.</p>
+      <p><strong>O dólar devolveu parte da queda.</strong> Fechou a <strong>R$ 5,0228</strong> na venda, alta de 0,74%, depois de perder 4,44% na semana passada. A faixa do dia foi de R$ 4,9898 a R$ 5,0293, o que mostra que o patamar de R$ 5,00 virou um ponto de disputa, não uma barreira. Para quem exporta, cada centavo de volta é receita que retorna, e esta foi a primeira notícia cambial favorável em duas semanas.</p>
+      <p><strong>A leitura que junta os dois.</strong> O boi perdendo força e o câmbio subindo apontam na mesma direção prática: <strong>a janela de travar preço de boi em reais está melhor hoje do que estará se o Indicador parar de subir</strong>. Quem espera o pico para travar costuma travar na descida, porque o pico só se reconhece depois.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 07 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">07</span><h2>A leitura do estrategista</h2></div>
+    <p class="read">Um pregão de pouca variação não é um pregão sem informação. Hoje o mercado disse três coisas. Que a <strong>colheita americana virou o fator dominante</strong> da soja e vai continuar sendo até terminar. Que o <strong>ajuste do milho brasileiro ao WASDE ainda está acontecendo</strong>, com o Indicador Cepea caindo 2,61% num dia, dias depois de Chicago já ter caído. E que o <strong>boi está perdendo fôlego sem perder direção</strong>, o que é o momento mais difícil de gerir, porque não dá sinal claro nem de continuar nem de parar.</p>
+    <p class="read">A chuva é a história que vai dominar as próximas duas semanas. Ela resolve o problema de umidade que travava a semeadura em Goiás e no leste de Mato Grosso, e cria o problema oposto no Paraná e em Santa Catarina, onde o solo encharcado tira a máquina do campo e ameaça o trigo em colheita. <strong>Quem ainda tem área para semear deveria estar olhando a janela operacional, não a janela de preço.</strong></p>
+    <p class="read">E fica o aprendizado da seção 04, que vale mais que qualquer cotação desta edição: <strong>duas listas de preço de praça não se misturam</strong>. A diferença entre elas chegava a nove reais por saca na mesma conta de base. Numa decisão de frete ou de local de entrega, isso é R$ 540 por hectare tomados em cima de um número inexistente.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Soja</div><div class="vb baixa">Queda de 0,31%</div><div class="ac">Colheita manda. Prêmio do porto subiu para 10,56%.</div></div>
+      <div class="mtile"><div class="h">Milho</div><div class="vb neutro">Estável lá fora</div><div class="ac">Cepea caiu 2,61% no dia. Ajuste interno em curso.</div></div>
+      <div class="mtile"><div class="h">Boi</div><div class="vb alta">16 altas seguidas</div><div class="ac">Prêmio do hedge em out/26 já é só 2,96%.</div></div>
+      <div class="mtile"><div class="h">Dólar</div><div class="vb alta">Alta de 0,74%</div><div class="ac">Voltou acima de R$ 5,00. Primeira boa notícia em duas semanas.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">O que fazer</div>
+      <ul>
+        <li><b>Milho, para quem compra ração.</b> Sete sacas por arroba é a melhor relação do ano e as duas pontas andaram a favor ao mesmo tempo. Travar a necessidade do primeiro trimestre de 2027 nesta semana é decisão de baixo arrependimento, porque o milho já absorveu o WASDE e o boi está no topo da série.</li>
+        <li><b>Milho, para quem vende.</b> O ajuste interno não terminou. O Indicador Cepea caiu 2,61% num dia e Rio Verde já veio de R$ 56,00 para R$ 54,00. Se a sua estratégia previa vender parcela neste trimestre, cada semana de espera está custando preço, não só armazenagem.</li>
+        <li><b>Soja, para quem vai vender.</b> O prêmio do porto subiu para 10,56% e é a melhor parte do seu preço. Deixe a ordem contra o porto, não contra Chicago, e lembre que esse prêmio depende de uma tarifa chinesa com revisão marcada para 10 de janeiro de 2027.</li>
+        <li><b>Boi, para quem tem animal pronto.</b> O out/26 já paga só 2,96% sobre o físico, mas o nov/26 ainda paga 5,22%. Se você vai travar, o vencimento de novembro é onde está o prêmio que sobrou. Desconte frete e base da sua praça antes de decidir o tamanho.</li>
+        <li><b>Plantio, para quem está no Centro-Oeste.</b> A umidade chegou e a janela abriu, mas os volumes previstos para a próxima semana podem travar a máquina de novo. Quem tem área para semear deveria priorizar os dias secos desta semana em vez de esperar condição ideal.</li>
+        <li><b>Plantio, para quem está no Sul.</b> O problema é o oposto. Com 80 mm no Paraná e temporais em Santa Catarina, a prioridade é proteger o trigo em maturação e reavaliar o calendário de semeadura da soja. Pressa com solo encharcado compromete emergência e cobra replantio.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Procedência e limites deste informativo.</b> ① Verificado: CBOT em 13/10/2026, soja nov/26 a US$ 12,83¾ com queda de 4,00 centavos e 0,31%, soja jan/27 a US$ 13,00 com queda de 4,75 centavos, milho dez/26 a US$ 4,8275 com queda de 0,25 centavo, trigo dez/26 a US$ 6,6925 com queda de 3 centavos, farelo dez/26 a US$ 370,10 por tonelada com queda de 1,46% e óleo dez/26 a 68,02 centavos com queda de 0,88%. Indicador Cepea/ESALQ do boi gordo a R$ 378,00 em 13/10 com alta de 0,05%, e futuros da B3 a R$ 389,20 em out/26 e R$ 397,75 em nov/26. Dólar comercial a R$ 5,0228 na venda com alta de 0,74%, faixa do dia entre R$ 4,9898 e R$ 5,0293. Indicador Cepea do milho a R$ 65,59 por saca com queda de 2,61% em 13/10. Físico da soja no fechamento de 09/10, pela mesma compilação: Paranaguá disponível a R$ 157,00 pela Insoy e Rio Verde/GO a R$ 133,00 pela Comigo. Físico do milho em 13/10: Rio Verde/GO a R$ 54,00 pela Comigo, estável. Condição das lavouras de soja nos EUA pelo USDA: 57% boas a excelentes, 29% regulares, 14% ruins a muito ruins, sem mudança sobre a semana anterior; expectativa de 44% da soja e 38% do milho colhidos até domingo. Clima conforme boletim Agroclima/Climatempo de 13/10/2026. ② Indicativo: existem <b>duas compilações de preço físico de soja circulando</b>, com diferença de até nove reais por saca na conta de base, e a seção 04 trata disso; adotamos a dupla Insoy para Paranaguá e Comigo para Rio Verde, que é a mesma usada nas edições anteriores. O Indicador Cepea do boi de 14/10 não havia sido publicado quando esta edição foi montada e não aparece em nenhum gráfico. Os volumes de chuva são acumulados previstos por modelo e indicam tendência, não evento, com distribuição que varia entre municípios. <b>Cenários são cenários, com probabilidade atribuída pelo analista, e não são previsão.</b> As zonas de suporte e resistência são leitura técnica sobre a série de fechamentos e valem como referência operacional, não como garantia de preço.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralin.cloud/" target="_blank" rel="noopener">ruralin.cloud</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',AZUL='#3b82f6',CIANO='#06b6d4',ROXO='#8b5cf6';
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  const dias=['09/10','12/10','13/10'];
+  const S=[12.9200,12.8700,12.8375];
+  const M=[4.7975,4.8300,4.8275];
+  const B=[377.80,null,378.00];
+  const C=[4.9856,null,5.0228];
+
+  function spark(id,data,color){new Chart(document.getElementById(id),{type:'line',
+    data:{labels:dias,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,34);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});}
+  spark('spkSoja',S,SOJA); spark('spkMilho',M,MILHO); spark('spkBoi',B,BOI); spark('spkCambio',C,AZUL);
+
+  function line(id,labels,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function tech(id,data,color,fmt,ymin,ymax,sup,res){const n=data.length,flat=v=>Array(n).fill(v);
+    const ds=[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,order:1,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'33');g.addColorStop(1,color+'00');return g;}}];
+    res.forEach(r=>ds.push({data:flat(r),borderColor:'#34d399',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    sup.forEach(s=>ds.push({data:flat(s),borderColor:'#f87171',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,order:2}));
+    new Chart(document.getElementById(id),{type:'line',data:{labels:dias,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{filter:(i)=>i.datasetIndex===0,backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+        scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function barrasCor(id,labels,data,cores,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores.map(c=>c+'99'),borderColor:cores,borderWidth:1.4,borderRadius:5,maxBarThickness:52}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function grupo(id,labels,series,fmt,ymin,ymax){
+    new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,backgroundColor:s.c+'99',borderColor:s.c,borderWidth:1.3,borderRadius:4,maxBarThickness:40}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:9,boxHeight:9,padding:9,font:{size:9.5}}},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  const vg=(v,d)=>v.toFixed(d).replace('.',',');
+  const fUS=v=>'US$ '+vg(v,2), fR=v=>'R$ '+vg(v,0), fRd=v=>'R$ '+vg(v,2), fRs=v=>'R$ '+vg(v,2),
+        fPct=v=>vg(v,2)+'%', fSc=v=>vg(v,2)+' sc';
+
+  line('chSoja',dias,S,SOJA,fUS,12.78,12.97);
+  barrasCor('chComplexo',['Grão','Farelo','Óleo'],[-0.31,-1.46,-0.88],[SOJA,CIANO,'#fbbf24'],fPct,-1.7,0.1);
+  tech('chSojaT',S,SOJA,fUS,12.50,13.30,[12.75,12.60],[13.00,13.20]);
+
+  grupo('chDuasListas',['Paranaguá','Rio Verde/GO'],[
+    {n:'Insoy e Comigo, 09/10',d:[157.00,133.00],c:SOJA},
+    {n:'Outra compilação, 13/10',d:[155.50,140.00],c:'#64748b'}
+  ],fRs,125,165);
+  barrasCor('chBase',['02/10','09/10'],[24.00,24.00],['#64748b',CIANO],fRs,0,30);
+
+  line('chMilho',dias,M,MILHO,fUS,4.76,4.88);
+  line('chCepeaMilho',['02/10','13/10'],[68.53,65.59],MILHO,fRd,64,70);
+  barrasCor('chTroca',['02/10','13/10'],[6.61,7.00],['#64748b',MILHO],fSc,6.0,7.4);
+
+  line('chBoi',dias,B,BOI,fR,376,380);
+  line('chCambio',dias,C,AZUL,fRd,4.95,5.06);
+  barrasCor('chPremio',['25/09','07/10','13/10'],[5.39,3.52,2.96],['#64748b','#94a3b8',BOI],fPct,0,6.2);
+</script>
+</body>
+</html>
