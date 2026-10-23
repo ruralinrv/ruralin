@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Café · Outubro 2026 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Informativo café</span><span>Outubro / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">O café fez um V, e <em>o que sustenta a alta é um estoque de 27 anos atrás</em></h1>
+    <p class="thesis">O arábica desabou cerca de 17% entre o fim de agosto e o fim de setembro e recuperou pouco mais de um terço em outubro. O Indicador Cepea fechou em <b>R$ 1.620,92</b> em 21/10, alta de <b>7,13%</b> sobre o fundo de 23/09, mas ainda <b>11,00% abaixo</b> do pico de agosto. Em Nova York o dezembro tocou <b>318,20 centavos</b> na quarta, máxima de quase seis semanas, e corrigiu para <b>312,45</b> na quinta. O que explica a recuperação não é demanda nova: são os <b>estoques certificados da ICE</b>, que bateram a mínima de <b>27 anos</b> em 15/09, com 217.646 sacas. Contra isso pesam exportações brasileiras fortes e as safras do Hemisfério Norte chegando. E a curva da bolsa diz o resto: o <b>dezembro de 2027 está 9,75% abaixo</b> do dezembro de 2026. No campo, a florada veio dentro do esperado, mas o El Niño mantém o alerta máximo para abortamento de chumbinho, e novembro e dezembro decidem a safra 2027/28.</p>
+    <div class="periodo"><span>Cepea de <b>21/10</b></span><span>Bolsas de <b>22/10</b></span><span>Físico de <b>22/10</b></span></div>
+  </div>
+</header>
+
+<!-- 01 TERMÔMETRO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Termômetro do café</h2></div>
+  <p class="sec-sub">Quatro referências que precisam ser lidas separadas. O Indicador Cepea mede arábica tipo 6 bebida dura no mercado interno. O contrato C da ICE referencia arábica lavado de grade superior. O robusta de Londres e o conilon do Espírito Santo são outra espécie, com outro mercado e outro comprador. Nenhum dos quatro é substituto do outro.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Arábica · Cepea/ESALQ <span class="tag">21/10</span></div>
+      <div class="val">1.620,92<span class="unit"> R$/sc</span></div>
+      <div class="delta alta">▲ 7,13% sobre o fundo de 23/09</div>
+      <div class="spark-wrap"><canvas id="spkArabica"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:35%"></span></div><div class="ends"><span>Oferta</span><span>Estoque baixo</span></div></div>
+      <div class="vies alta">Viés: recuperou um terço da queda</div>
+    </div>
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Arábica · ICE dez/26 <span class="tag">22/10</span></div>
+      <div class="val">312,45<span class="unit"> US¢/lb</span></div>
+      <div class="delta baixa">▼ 1,2% no dia, correção técnica</div>
+      <div class="spark-wrap"><canvas id="spkICE"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:40%"></span></div><div class="ends"><span>Oferta</span><span>Estoque baixo</span></div></div>
+      <div class="vies neutro">Viés: máxima de 6 semanas em 21/10</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">Robusta · Cepea/ESALQ <span class="tag">21/10</span></div>
+      <div class="val">968,87<span class="unit"> R$/sc</span></div>
+      <div class="delta neutro">≈ 0,09% no dia, praticamente parado</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:22%"></span></div><div class="ends"><span>Oferta</span><span>Demanda</span></div></div>
+      <div class="vies baixa">Viés: 67,30% abaixo do arábica</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Robusta · Londres nov/26 <span class="tag">22/10</span></div>
+      <div class="val">3.288<span class="unit"> US$/t</span></div>
+      <div class="delta baixa">▼ 64 pontos no dia</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:18%"></span></div><div class="ends"><span>Oferta</span><span>Demanda</span></div></div>
+      <div class="vies baixa">Viés: pressionado por oferta global</div>
+    </div>
+  </div>
+  <div class="proc"><b>Nota de procedência.</b> ① Verificado: Indicador Cepea/ESALQ do café arábica a R$ 1.620,92 por saca de 60 kg em 21/10/2026, alta de 0,67% no dia, e do robusta e conilon a R$ 968,87, alta de 0,09%. ICE de Nova York em 22/10, contrato C em centavos de dólar por libra: dez/26 a 312,45 com queda de 3,70, mar/27 a 297,45, mai/27 a 292,45, jul/27 a 289,00, set/27 a 285,65 e dez/27 a 282,00. Máxima de US$ 3,1820 por libra em 21/10, a maior desde 09/09. ICE de Londres em 22/10, robusta em dólares por tonelada: nov/26 a 3.288 com queda de 64 pontos, jan/27 a 3.301, mar/27 a 3.274 e mai/27 a 3.259. B3 arábica 4/5 em 22/10: dez/26 a US$ 387,00 com queda de 0,51%, mar/27 a US$ 375,45 e mai/27 a US$ 365,25. Estoques certificados da ICE em 239.748 sacas em 21/10, alta de 4.847 sacas, contra 234.901 em 20/10, mínima de cinco semanas, e 217.646 em 15/09, mínima de 27 anos, com cerca de 28.000 sacas aguardando classificação. Dólar comercial de R$ 5,0390 em 22/10. ② Indicativo: <b>os cartões do robusta e do conilon não trazem gráfico de série porque não há série diária registada para eles</b>, apenas o ponto do dia, e preferimos deixar o espaço vazio a desenhar uma curva de vencimentos como se fosse histórico. A série do arábica tem um intervalo sem ponto entre 23/09 e 21/10, e o traço entre os dois é ligação e não trajetória medida. As notícias de agência reportaram o robusta a US$ 3.301 com queda de 1,9%, que é o <b>janeiro/27</b> e não o novembro, porque é o contrato mais líquido: a divergência com a tabela é de contrato, não de fonte. O painel em tempo real da B3 marcava o mar/27 a zero e o da ICE marcava variação de 0,00% às 08:00 de hoje; são artefatos de exibição intradiária e não foram usados.</div>
+</div></section>
+
+<!-- 02 O V E OS ESTOQUES -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>O V do arábica, e o estoque que o explica</h2></div>
+  <p class="sec-sub">A recuperação de outubro não veio de demanda nova nem de quebra de safra. Veio de um número de armazém que está no menor nível desde 1999.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Indicador Cepea do arábica</span><span class="now alta">1.620,92</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chArabicaHist"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, do pico de 26/08 ao fundo de 23/09 e a recuperação de outubro</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Estoques certificados da ICE</span><span class="now baixa">mínima de 27 anos</span></div>
+        <div class="chart-box"><canvas id="chEstoques"></canvas></div>
+        <div class="chart-foot">Mil sacas, da mínima de 15/09 à recomposição parcial de outubro</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE, níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>recuperou 7,13% em outubro</div>
+        <div class="n"><b>Por quê</b>estoque certificado no fundo histórico</div>
+        <div class="n"><b>Pode acontecer</b>290 a 320 centavos</div>
+        <div class="n"><b>Fazer</b>vender contra o físico, não contra a bolsa</div>
+      </div>
+      <p><strong>O fato.</strong> O Indicador Cepea do arábica saiu de <strong>R$ 1.821,25</strong> em 26/08 para <strong>R$ 1.513,01</strong> em 23/09, uma queda de cerca de 17%, e voltou a <strong>R$ 1.620,92</strong> em 21/10, alta de <strong>7,13%</strong> sobre o fundo. Recuperou pouco mais de um terço da perda e segue <strong>11,00% abaixo</strong> do pico.</p>
+      <p><strong>O número que sustenta o preço.</strong> Os estoques certificados da ICE chegaram a <strong>217.646 sacas</strong> em 15/09, a <strong>mínima em 27 anos</strong>. Em 20/10 estavam em 234.901, mínima de cinco semanas, e em 21/10 subiram 4.847 sacas, para <strong>239.748</strong>. Há cerca de <strong>28.000 sacas aguardando classificação</strong>, o maior volume em mais de um mês. Ou seja, o estoque está recompondo, mas de um patamar historicamente baixíssimo: ainda são apenas 10,16% acima da mínima de 27 anos.</p>
+      <p><strong>Por que isso é frágil como sustentação.</strong> Estoque baixo é argumento de alta enquanto o estoque está baixo. As 28.000 sacas na fila de classificação são oferta já contratada esperando para entrar, e analistas apontam que uma recomposição significativa leva alguns meses. <strong>A tese de estoque baixo tem prazo de validade</strong>, e o mercado já está vendo o começo do prazo correr.</p>
+      <p><strong>Do outro lado, a oferta brasileira está pesando.</strong> As exportações do Brasil estão em ritmo acelerado, e as safras do Hemisfério Norte se aproximam. Foi essa combinação que derrubou o preço em setembro e é ela que limita a recuperação agora. Em contrapeso, os estoques de café verde no Japão e na Europa caíram em agosto na comparação anual, o que indica que a cadeia lá fora também está magra.</p>
+      <p><strong>E tem a eleição no meio.</strong> Operadores apontam que uma vitória de Flávio Bolsonaro no domingo tende a valorizar o real, o que <strong>desestimula o exportador a vender café cotado em dólar</strong>. Se o real fortalecer, a receita em reais do mesmo preço de bolsa cai, e a tendência é de retração de oferta brasileira no curto prazo, o que segura a bolsa. É um canal cambial, não um canal de fundamento.</p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Otimista · 30%</h4><p>Estoque volta a cair e o calor confirma dano na florada. Rompe 320 centavos.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Base · 45%</h4><p>Lateral entre 290 e 320, com estoque recompondo devagar.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Pessimista · 25%</h4><p>Safra do Hemisfério Norte confirma volume e a fila de classificação entra. Perde 290.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 A CURVA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>A curva da bolsa está descendente, e isso é uma mensagem</h2></div>
+  <p class="sec-sub">Quando o vencimento mais longo vale menos que o mais curto, a bolsa está dizendo que espera mais café no futuro. Para quem vai colher em 2027, isso tem consequência direta de hedge.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Curva da ICE, dez/26 a dez/27</span><span class="now baixa">9,75% de desconto</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chCurva"></canvas></div>
+        <div class="chart-foot">Centavos de dólar por libra, fechamentos de 22/10 por vencimento</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Paridade contra o Indicador</span><span class="now">diferencial de tipo</span></div>
+        <div class="chart-box"><canvas id="chParidade"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, ICE dez/26 convertida contra o Cepea tipo 6</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que a curva diz e o que ela não diz</p>
+      <p><strong>A curva inteira desce.</strong> Em 22/10 o dez/26 fechou a <strong>312,45</strong> centavos, o mar/27 a 297,45, o mai/27 a 292,45, o jul/27 a 289,00, o set/27 a 285,65 e o <strong>dez/27 a 282,00</strong>. Do primeiro ao último vencimento são <strong>9,75% de desconto</strong>. Convertido pelo dólar de R$ 5,0390, o dez/26 equivale a R$ 2.082,62 por saca e o dez/27 a R$ 1.879,66.</p>
+      <p><strong>O que isso significa na prática.</strong> O mercado está pagando <strong>mais pelo café de agora</strong> do que pelo de um ano à frente. É o retrato de estoque apertado no presente com expectativa de oferta normalizada depois. Para quem tem café em armazém, a curva favorece vender perto, não carregar. Para quem vai colher em 2027, ela avisa que travar o preço da safra futura hoje significa travar num nível <strong>mais baixo</strong> que o disponível, e não mais alto.</p>
+      <p><strong>Agora a ressalva que precisa vir junto.</strong> A paridade da ICE em reais dá <strong>R$ 2.082,62</strong> por saca e o Indicador Cepea está em R$ 1.620,92, ou seja <strong>22,17% abaixo</strong>. <strong>Isso não é arbitragem nem oportunidade.</strong> A diferença é estrutural e de tipo: o contrato da ICE referencia arábica lavado de grade superior entregável em armazém certificado, e o Cepea mede tipo 6 bebida dura bica corrida no mercado interno. Somam-se frete até o porto, custo de preparo, classificação e desconto de qualidade.</p>
+      <p><strong>O uso correto desse número.</strong> Não é o nível, é a variação. Acompanhar se o diferencial de 22% <strong>alarga ou estreita ao longo das semanas</strong> diz se o mercado interno está descolando da bolsa ou convergindo. Alargar significa que o comprador interno está pagando relativamente menos, e é hora de olhar exportação direta ou cooperativa com acesso a porto. Estreitar significa o contrário. <strong>O nível absoluto, isolado, não diz nada</strong>, e quem o lê como oportunidade descobre o diferencial na hora da classificação.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 PRAÇAS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>As praças: R$ 252,50 de diferença no mesmo tipo, no mesmo dia</h2></div>
+  <p class="sec-sub">Sul de Minas, Cerrado Mineiro, Mogiana, Oeste da Bahia e o conilon do Espírito Santo. E um achado de método que vale mais que qualquer cotação desta seção.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Arábica tipo 6 por praça</span><span class="now">16,32% de dispersão</span></div>
+        <div class="chart-box"><canvas id="chPracas"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, bebida dura bica corrida em 22/10</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Variação do dia, mesmo tipo</span><span class="now baixa">direções opostas</span></div>
+        <div class="chart-box"><canvas id="chVarDia"></canvas></div>
+        <div class="chart-foot">% no dia, 22/10, entre cooperativas diferentes</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Arábica contra conilon</span><span class="now">R$ 652,05</span></div>
+        <div class="chart-box"><canvas id="chArabConilon"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, indicadores Cepea e conilon disponível do ES</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Atenção a esta seção se você compara cotações de cooperativa</p>
+      <p><strong>A dispersão.</strong> No mesmo tipo 6 bebida dura e no mesmo dia, <strong>Machado/MG pela Coopama pagava R$ 1.800,00</strong> e o <strong>Oeste da Bahia pela AIBA pagava R$ 1.547,50</strong>. São <strong>R$ 252,50</strong> por saca, ou <strong>16,32%</strong>. No meio: Guaxupé R$ 1.760,00, Franca e Araguari R$ 1.700,00, Campos Gerais R$ 1.698,00, Patrocínio R$ 1.695,00, Poços de Caldas R$ 1.660,00 e Varginha R$ 1.640,00. Parte disso é base legítima, de frete e de qualidade média da região.</p>
+      <p><strong>Mas o achado é outro, e é de método.</strong> No mesmo dia e no mesmo tipo, <strong>Guaxupé marcou alta de 1,21% e Varginha marcou queda de 3,53%</strong>. São <strong>4,74 pontos percentuais em direções opostas</strong>, para o mesmo café, na mesma região, na mesma data. Patrocínio caiu 3,42% e Machado subiu 1,12%. Isso não é mercado, é calendário.</p>
+      <p><strong>Por que acontece.</strong> Preço de cooperativa não é índice apurado. Cada cooperativa publica a sua tabela em dia e hora próprios, e algumas atualizam com defasagem. Quando você compara a variação diária de duas delas, pode estar comparando <strong>dias diferentes rotulados com a mesma data</strong>. É exatamente o mesmo problema das duas listas de preço de soja que tratamos em 13/10, e ele volta aqui com uma diferença de quase cinco pontos.</p>
+      <p><strong>A regra prática, de novo.</strong> Escolha uma fonte para a sua praça e fique nela. Nunca cruze a variação de uma cooperativa com o nível de outra. Quando trocar de fonte, <strong>refaça a série inteira</strong>, não só o último ponto. E se a sua decisão de venda depende de um movimento de 1% ou 2%, confirme a data real da tabela antes, porque nesta amostra o ruído de calendário é maior que o movimento que você está tentando capturar.</p>
+      <p><strong>O conilon é outro mercado, e a diferença está grande.</strong> O Indicador Cepea do robusta e conilon está em <strong>R$ 968,87</strong>, contra R$ 1.620,92 do arábica: o arábica vale <strong>67,30% mais</strong>, uma diferença de <strong>R$ 652,05</strong> por saca. No disponível do Espírito Santo, o CCCV de Vitória marcava tipo 7/8 a <strong>R$ 909,00</strong> com queda de 1,52%, e a Cooabriel de São Gabriel tipo 7 a R$ 890,00 e tipo 8 a R$ 880,00. Atenção: no mesmo dia, outra compilação marcava o 7/8 de Vitória a <strong>R$ 950,00</strong>, R$ 41,00 acima do CCCV para o mesmo tipo e praça. Mais uma vez, duas listas.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 FLORADA E EXPORTAÇÃO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Florada, El Niño e o que a exportação já revelou</h2></div>
+  <p class="sec-sub">A safra 2027/28 está sendo decidida agora, e o Brasil já mostrou nas exportações de 2026 uma mudança de mix que ninguém anunciou.</p>
+  <div class="driver">
+    <div class="big">nov e dez<small>os dois meses que fixam<br>o potencial de 2027/28</small></div>
+    <div class="txt">
+      <p><strong>A florada veio dentro do esperado, e esse é o lado bom.</strong> O Cepea aponta que a safra 2027/28 começou com sinais positivos nas principais praças, com floradas dentro do esperado e <strong>pegamento inicial bom na maior parte das regiões</strong>. As chuvas das últimas semanas aliviaram os cafezais, e a umidade é essencial para nutrir a planta e sustentar os frutos. A lavoura ainda está no início do ciclo biológico.</p>
+      <p><strong>O risco é o calor somado ao El Niño.</strong> Há ondas de calor intenso, e os cafeicultores estão em <strong>alerta máximo para abortamento dos chumbinhos</strong>, os frutos recém-formados. No <strong>Cerrado Mineiro</strong>, as pancadas de chuva se intercalam com dias de sol forte e calor extremo, e agrônomos avaliam que a consolidação do pegamento só poderá ser confirmada <strong>por volta de dezembro</strong>. Na <strong>Mogiana Paulista</strong>, a preocupação é que o calor com El Niño provoque queda prematura de florada e de frutos nas próximas semanas.</p>
+      <p><strong>E o El Niño desta vez é grande.</strong> No Fórum Café e Clima da Cooxupé, em 29/07, o meteorologista Marco Antônio dos Santos classificou o evento como confirmado e <strong>possivelmente um dos três mais intensos em 76 anos</strong>, com possibilidade de períodos secos no Cerrado Mineiro em <strong>novembro e dezembro</strong> e ao longo do verão. O mesmo fórum apontou que um inverno e uma primavera mais úmidos podem provocar <strong>floradas múltiplas</strong>, o que deixa a maturação desuniforme e é a principal preocupação de manejo para 2027.</p>
+      <p><strong>O que fazer com uma informação qualitativa.</strong> Nada aqui tem número de produtividade, e isso é honesto: ninguém tem ainda. O que a florada boa com risco de abortamento significa, em termos de decisão, é que <strong>o potencial está alto e a variância está alta junto</strong>. Quem precifica 2027/28 hoje está precificando a média de um intervalo muito largo, e é por isso que a curva da bolsa, descendente, não deve ser lida como previsão de safra grande: ela é preço de risco, não estimativa agronômica.</p>
+    </div>
+  </div>
+  <div class="asset" style="margin-top:18px">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Mudança de mix na exportação</span><span class="now">canéfora +68,3%</span></div>
+        <div class="chart-box"><canvas id="chExportMix"></canvas></div>
+        <div class="chart-foot">% de variação do volume embarcado, janeiro a setembro de 2026 contra 2025</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Preço médio de exportação</span><span class="now baixa">US$ 347,59</span></div>
+        <div class="chart-box"><canvas id="chPrecoMedio"></canvas></div>
+        <div class="chart-foot">US$ por saca, receita dividida pelo volume de janeiro a setembro</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Principais destinos</span><span class="now">EUA voltaram ao topo</span></div>
+        <div class="chart-box"><canvas id="chDestinos"></canvas></div>
+        <div class="chart-foot">Milhões de sacas, janeiro a setembro de 2026</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que a exportação revelou</p>
+      <p><strong>Volume igual, receita bem menor.</strong> De janeiro a setembro o Brasil embarcou <strong>29,095 milhões de sacas</strong>, queda de 0,2%, e faturou <strong>US$ 10,113 bilhões</strong>, queda de <strong>8,6%</strong>. O preço médio caiu de <strong>US$ 379,55 para US$ 347,59</strong> por saca, menos <strong>8,42%</strong>. Em setembro foram 3,894 milhões de sacas, alta de 3,1%, com receita de US$ 1,282 bilhão, queda de 7,1%.</p>
+      <p><strong>E parte dessa queda é mix, não preço.</strong> O <strong>arábica caiu 10,7%</strong> em volume, para 20,739 milhões de sacas, enquanto o <strong>canéfora subiu 68,3%</strong>, para 5,162 milhões. Como o canéfora vale bem menos por saca, o Brasil exportou mais café barato, e isso derruba o preço médio mesmo sem o preço de cada tipo cair tanto. <strong>Quem olha só o preço médio de exportação conclui errado sobre o que recebeu pelo arábica.</strong></p>
+      <p><strong>Os Estados Unidos voltaram, e voltaram forte.</strong> Em setembro os EUA compraram <strong>625.192 sacas</strong>, alta de <strong>86,44%</strong> sobre as 335.339 de setembro de 2025, e retomaram a liderança de destino. No acumulado do ano ainda estão 12,8% abaixo, com 3,805 milhões de sacas e 13,1% do total, atrás apenas do próprio histórico. A explicação é tarifária: os EUA retiraram a tarifa da maior parte do café brasileiro em novembro de 2025, e o solúvel seguiu tarifado até julho de 2026. <strong>Resolvida a incerteza, o embarque voltou.</strong></p>
+      <p><strong>Os diferenciados perderam espaço, e isso dói na margem.</strong> Os cafés diferenciados somaram 4,950 milhões de sacas, <strong>17% do volume</strong> e <strong>20% da receita</strong>, com preço médio de <strong>US$ 408,07</strong> por saca. Mas caíram <strong>16,3% em volume</strong> e <strong>19,6% em receita</strong>. Num ano em que o preço médio geral caiu 8,42%, o segmento que paga mais caiu quase o dobro disso. Para quem investiu em qualidade, essa é a notícia mais importante da seção.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">06</span><h2>A leitura do estrategista</h2></div>
+    <p class="read">O café está num ponto desconfortável de ler: o preço subiu em outubro, mas <strong>subiu por escassez de estoque e não por força de demanda</strong>. Os certificados da ICE bateram a mínima de 27 anos em 15/09 e seguem apenas 10,16% acima dela, com 28.000 sacas na fila de classificação esperando para entrar. Estoque baixo é um argumento de alta com prazo de validade, e o prazo começou a correr. Enquanto isso, as exportações brasileiras estão fortes e as safras do Hemisfério Norte chegam. <strong>A recuperação de 7,13% é real, e a sua base é frágil.</strong></p>
+    <p class="read">A curva da bolsa é a parte que mais gente deixa passar. <strong>O dezembro de 2027 vale 9,75% menos que o dezembro de 2026.</strong> Para quem tem café em armazém, isso favorece vender perto em vez de carregar, porque o mercado está pagando prêmio pelo café de agora. E para quem vai colher em 2027, avisa que travar a safra futura hoje é travar num nível mais baixo que o disponível. Não é motivo para não travar, é motivo para saber o que se está travando: proteção contra queda, não captura de prêmio.</p>
+    <p class="read">No campo, a notícia é boa com uma ressalva grande. Florada dentro do esperado e pegamento inicial bom na maior parte das regiões, mas <strong>alerta máximo para abortamento de chumbinho</strong>, com ondas de calor e um El Niño que pode ser um dos três mais intensos em 76 anos. Cerrado Mineiro e Mogiana são as praças citadas com preocupação, e a consolidação só se confirma em dezembro. Potencial alto com variância alta: é isso que está no preço de 2027, e é por isso que a curva descendente não deve ser lida como previsão de safra grande.</p>
+    <p class="read">E fica o aprendizado da seção 04, que é o terceiro da mesma família em três semanas. Em 13/10 foram <strong>duas listas de preço de soja</strong> com nove reais de diferença na conta de base. Na semana passada fui eu que <strong>troquei a fonte do câmbio no meio da série</strong>. Agora é o café: no mesmo tipo e no mesmo dia, uma cooperativa marcou alta de 1,21% e outra marcou queda de 3,53%, quase cinco pontos em direções opostas, porque cada uma atualiza a tabela no seu próprio calendário. <strong>Três culturas diferentes, o mesmo erro</strong>. A regra não muda: uma fonte por praça, e quem troca de fonte refaz a série inteira.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Arábica</div><div class="vb alta">R$ 1.620,92</div><div class="ac">+7,13% do fundo, mas 11,00% abaixo do pico.</div></div>
+      <div class="mtile"><div class="h">Estoque ICE</div><div class="vb baixa">239,7 mil sc</div><div class="ac">Só 10,16% acima da mínima de 27 anos.</div></div>
+      <div class="mtile"><div class="h">Curva</div><div class="vb baixa">dez/27 menor</div><div class="ac">9,75% de desconto contra o dez/26.</div></div>
+      <div class="mtile"><div class="h">Conilon</div><div class="vb neutro">R$ 968,87</div><div class="ac">Arábica vale 67,30% mais. Canéfora +68,3% na exportação.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">O que fazer</div>
+      <ul>
+        <li><b>Quem tem café em armazém.</b> Gatilho: curva da ICE descendente, com dez/27 9,75% abaixo do dez/26, e estoque certificado recompondo com 28.000 sacas na fila de classificação. O mercado paga prêmio pelo café de agora. Carregar para 2027 significa carregar contra uma curva que já desconta o seu produto, pagando armazenagem e capital para isso. Priorize os vencimentos curtos na venda.</li>
+        <li><b>Quem vai colher em 2027.</b> Gatilho: dez/27 a 282,00 centavos, equivalente a R$ 1.879,66 por saca pelo câmbio de 22/10, contra R$ 2.082,62 do dez/26. Travar hoje é comprar proteção contra queda, não capturar prêmio. Decida o percentual com essa clareza, e não com a expectativa de estar fixando no topo. Com a variância da florada alta, travar parcela pequena agora e reavaliar em dezembro, quando o pegamento se confirma, é a estrutura de menor arrependimento.</li>
+        <li><b>Quem compara cotações de cooperativa.</b> Gatilho: 4,74 pontos percentuais de divergência de variação no mesmo tipo e no mesmo dia, entre Guaxupé e Varginha. Escolha uma fonte por praça e fique nela. Antes de agir sobre um movimento de 1% ou 2%, confirme a data real da tabela, porque o ruído de calendário nesta amostra é maior que o movimento.</li>
+        <li><b>Quem investiu em café diferenciado.</b> Gatilho: diferenciados caíram 16,3% em volume e 19,6% em receita de janeiro a setembro, mais que o dobro da queda de 8,42% do preço médio geral, mesmo mantendo preço médio de US$ 408,07 por saca. O prêmio de qualidade continua existindo por saca, mas o mercado dele encolheu. Reavalie a premissa de volume do seu plano de diferenciados antes de ampliar área ou investir em pós-colheita.</li>
+        <li><b>Quem olha o diferencial contra a bolsa.</b> Gatilho: Indicador Cepea 22,17% abaixo da paridade da ICE em reais. Não leia isso como oportunidade, é diferencial de tipo e de logística. Acompanhe a variação do diferencial ao longo das semanas: se alargar, o mercado interno está descolando da bolsa e vale olhar exportação via cooperativa com acesso a porto; se estreitar, o inverso.</li>
+        <li><b>Todos, antes de domingo.</b> Gatilho: segundo turno em 25/10 com empate técnico nas pesquisas, e operadores apontando que real mais forte desestimula a venda de café cotado em dólar. Saiba qual é a sua receita em reais nos dois cenários de câmbio, calculada antes da abertura de segunda. O canal aqui é cambial e não de fundamento, mas mexe no seu caixa do mesmo jeito.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Procedência e limites deste informativo.</b> ① Verificado: Indicador Cepea/ESALQ do café arábica a R$ 1.620,92 por saca de 60 kg em 21/10/2026 com alta de 0,67%, e do robusta e conilon a R$ 968,87 com alta de 0,09%. Série do arábica Cepea em 2026: R$ 1.725,66 em 31/07, R$ 1.762,44 em 12/08, R$ 1.784,82 em 18/08, R$ 1.821,25 em 26/08, R$ 1.696,62 em 02/09, R$ 1.647,29 em 09/09, R$ 1.588,43 em 15/09, R$ 1.513,01 em 23/09 e R$ 1.620,92 em 21/10. ICE de Nova York em 22/10, contrato C em centavos por libra: dez/26 312,45 com queda de 3,70 e 1,2%, mar/27 297,45, mai/27 292,45, jul/27 289,00, set/27 285,65, dez/27 282,00; máxima de 318,20 em 21/10, a maior desde 09/09. ICE de Londres em 22/10, robusta em dólares por tonelada: nov/26 3.288 com queda de 64, jan/27 3.301, mar/27 3.274, mai/27 3.259. B3 arábica 4/5 em 22/10: dez/26 US$ 387,00, mar/27 US$ 375,45, mai/27 US$ 365,25. Estoques certificados da ICE: 217.646 sacas em 15/09, mínima de 27 anos; 234.901 em 20/10, mínima de cinco semanas; 239.748 em 21/10, alta de 4.847 sacas, com cerca de 28.000 aguardando classificação. Físico do arábica tipo 6 bebida dura bica corrida em 22/10, em R$/saca: Machado/MG pela Coopama 1.800,00 com alta de 1,12%, Guaxupé/MG pela Cooxupé 1.760,00 com alta de 1,21%, Araguari/MG pela Coocacer 1.700,00 com queda de 2,30%, Franca/SP pela Cocapec 1.700,00 estável, Campos Gerais/MG pela Coopercam 1.698,00 com queda de 0,88%, Patrocínio/MG pela Expocaccer 1.695,00 com queda de 3,42%, Poços de Caldas/MG pela CaféPoços 1.660,00 com queda de 1,48%, Varginha/MG pela Minasul 1.640,00 com queda de 3,53% e Oeste da Bahia pela AIBA 1.547,50 estável. Cereja descascado em 22/10: Poços de Caldas 1.810,00, Guaxupé 1.797,00, Campos Gerais 1.758,00, Patrocínio 1.725,00 e Varginha 1.720,00. Conilon disponível do Espírito Santo em 22/10: CCCV Vitória tipo 7/8 R$ 909,00 com queda de 1,52%, Cooabriel São Gabriel tipo 7 R$ 890,00 e tipo 8 R$ 880,00. Exportações pelo Cecafé: setembro de 2026 com 3,894 milhões de sacas e alta de 3,1% sobre 3,778 milhões, receita de US$ 1,282 bilhão com queda de 7,1%, e Estados Unidos com 625.192 sacas, alta de 86,4% sobre 335.339; safra 2026/27 de julho a setembro com 11,210 milhões de sacas e alta de 15,5%; janeiro a setembro de 2026 com 29,095 milhões de sacas e queda de 0,2% e receita de US$ 10,113 bilhões com queda de 8,6% sobre US$ 11,065 bilhões; arábica 20,739 milhões de sacas e 71,3% do total com queda de 10,7%, canéfora 5,162 milhões e 17,7% com alta de 68,3%, solúvel 3,141 milhões e 10,8%; destinos com Estados Unidos 3,805 milhões e 13,1%, Alemanha 3,307 milhões, Itália 2,597 milhões com alta de 11,6%, Bélgica 2,463 milhões com alta de 44,5% e Japão 1,451 milhões com queda de 23,3%; diferenciados com 4,950 milhões de sacas, 17% do volume e 20% da receita, preço médio de US$ 408,07 por saca, queda de 16,3% em volume e 19,6% em receita; portos com Santos em 70,7%, Rio de Janeiro em 25,2% e Paranaguá em 1,1%. Tarifa dos Estados Unidos retirada da maior parte do café brasileiro em novembro de 2025, com o solúvel tarifado até julho de 2026. Avaliação de florada do Cepea em 22/10/2026 e Fórum Café e Clima da Cooxupé de 29/07/2026, com Marco Antônio dos Santos classificando o El Niño como confirmado e possivelmente um dos três mais intensos em 76 anos. Dólar comercial de R$ 5,0390 em 22/10. ② Indicativo: <b>o Indicador Cepea do arábica está gravado no grafo sob cinco nomes de série diferentes</b>, o que fragmenta a série histórica; esta edição adotou uma série única para o arábica e outra para o robusta, e a lacuna ficou aberta para consolidação. A série do arábica tem intervalo sem ponto entre 23/09 e 21/10, e o traço entre eles é ligação e não trajetória medida; os pontos de agosto no grafo estão sem fonte e sem unidade preenchidas. <b>Os cartões do robusta e do conilon não trazem gráfico de série</b> porque não existe série diária registada para eles. O volume exportado de janeiro a setembro de 2025 usado no cálculo do preço médio é reconstruído a partir da queda publicada de 0,2% e não de valor publicado, logo o resultado de menos 8,42% é indicativo na segunda casa. <b>O diferencial de 22,17% entre a paridade da ICE e o Indicador Cepea não é arbitragem nem oportunidade</b>: é diferencial de tipo, porque o contrato C referencia arábica lavado de grade superior e o Cepea mede tipo 6 bebida dura, mais frete, preparo, classificação e desconto de qualidade. <b>Preço de cooperativa não é índice apurado</b> e cada cooperativa atualiza a sua tabela em dia e hora próprios, de modo que a variação diária entre duas delas pode comparar dias diferentes rotulados com a mesma data; na amostra de 22/10 a divergência chegou a 4,74 pontos percentuais em direções opostas. Há duas compilações divergentes para o conilon 7/8 de Vitória no mesmo dia, R$ 909,00 pelo CCCV e R$ 950,00 em outro painel. A avaliação de florada do Cepea é <b>qualitativa e sem números</b> de temperatura, chuva, pegamento ou produtividade, e nenhuma estimativa de safra 2027/28 é afirmada aqui. <b>Cenários são cenários, com probabilidade atribuída pelo analista, e não são previsão.</b> A leitura sobre o efeito cambial da eleição é relato de operadores de mercado, não projeção própria. O grafo RuralIn foi consultado, forneceu a série do arábica de agosto e setembro e está defasado nas camadas de frontend, planeamento, BDI e KPI; nenhum número desta edição depende dessas camadas. As quatro cotações e os quatro cálculos derivados aqui publicados foram registados antes de entrar no texto.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralin.cloud/" target="_blank" rel="noopener">ruralin.cloud</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',AZUL='#3b82f6',CIANO='#06b6d4',ROXO='#8b5cf6';
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  const diasAra=['31/07','12/08','18/08','26/08','02/09','09/09','15/09','23/09','21/10'];
+  const ARA=[1725.66,1762.44,1784.82,1821.25,1696.62,1647.29,1588.43,1513.01,1620.92];
+  const diasICE=['03/09','09/09','22/10'];
+  const ICE=[324.35,319.20,312.45];
+
+  function spark(id,labels,data,color){new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,34);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});}
+  spark('spkArabica',diasAra,ARA,SOJA); spark('spkICE',diasICE,ICE,AZUL);
+
+  function line(id,labels,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function barrasCor(id,labels,data,cores,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores.map(c=>c+'99'),borderColor:cores,borderWidth:1.4,borderRadius:5,maxBarThickness:52,minBarLength:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  const vg=(v,d)=>v.toFixed(d).replace('.',',');
+  const fRs=v=>'R$ '+vg(v,2), fRs0=v=>'R$ '+vg(v,0), fCt=v=>vg(v,2)+' ¢',
+        fPct=v=>vg(v,2)+'%', fMil=v=>vg(v,1)+' mil sc', fMi=v=>vg(v,3)+' Mi sc', fUS=v=>'US$ '+vg(v,2);
+
+  line('chArabicaHist',diasAra,ARA,SOJA,fRs0,1480,1860);
+  barrasCor('chEstoques',['15/09','20/10','21/10'],[217.6,234.9,239.7],[BOI,'#94a3b8',CIANO],fMil,205,250);
+
+  line('chCurva',['dez/26','mar/27','mai/27','jul/27','set/27','dez/27'],
+    [312.45,297.45,292.45,289.00,285.65,282.00],AZUL,fCt,278,316);
+  barrasCor('chParidade',['Paridade ICE dez/26','Indicador Cepea tipo 6'],[2082.62,1620.92],[AZUL,SOJA],fRs0,0,2300);
+
+  barrasCor('chPracas',['Machado','Guaxupé','Franca','Patrocínio','Varginha','O. Bahia'],
+    [1800,1760,1700,1695,1640,1547.50],[SOJA,SOJA,'#94a3b8','#94a3b8',MILHO,BOI],fRs0,1500,1850);
+  barrasCor('chVarDia',['Guaxupé','Machado','Franca','C. Gerais','Patrocínio','Varginha'],
+    [1.21,1.12,0.00,-0.88,-3.42,-3.53],[SOJA,SOJA,'#64748b',MILHO,BOI,BOI],fPct,-4.2,1.8);
+  barrasCor('chArabConilon',['Arábica Cepea','Robusta Cepea','Conilon ES CCCV'],
+    [1620.92,968.87,909.00],[SOJA,MILHO,BOI],fRs0,0,1800);
+
+  barrasCor('chExportMix',['Arábica','Canéfora'],[-10.7,68.3],[SOJA,MILHO],fPct,-20,80);
+  barrasCor('chPrecoMedio',['jan a set/25','jan a set/26'],[379.55,347.59],['#64748b',BOI],fUS,320,395);
+  barrasCor('chDestinos',['EUA','Alemanha','Itália','Bélgica','Japão'],
+    [3.805,3.307,2.597,2.463,1.451],[AZUL,'#94a3b8',SOJA,CIANO,'#64748b'],fMi,0,4.2);
+</script>
+</body>
+</html>
