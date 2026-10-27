@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Especial pós-eleição · 26/10/2026 · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow"><span class="pill">Especial pós-eleição</span><span>Pregão de 26 / 10 / 2026</span><span>Ruralin.AI</span></p>
+    <h1 class="title">O pior dia da bolsa desde 2020 foi <em>um dos melhores do ano para a sua saca</em></h1>
+    <p class="thesis">O TSE proclamou a reeleição de <b>Lula com 51,79%</b> dos votos válidos contra <b>48,21%</b> de Flávio Bolsonaro. O mercado vinha apostando no outro resultado, e a segunda-feira foi violenta: o <b>Ibovespa caiu 13,88%</b>, com <b>circuit breaker</b> aos 9h57, o primeiro desde março de 2020, e o <b>dólar à vista subiu 8,21%</b>, para R$ 5,4030. Os juros futuros explodiram: o DI de janeiro de 2029 saltou <b>2,655 pontos percentuais</b> em um dia, para 15,250%. Mas para quem vende grão a conta é outra. Com Chicago caindo 1,21%, a <b>paridade da soja em reais subiu 6,90%</b> num único pregão, de R$ 138,31 para <b>R$ 147,85</b> por saca, e a do milho subiu <b>7,97%</b>. O milho da B3 fechou <b>2,34% em alta</b> no dia em que a bolsa perdia quase 14%. <b>Desvalorização é transferência para quem exporta e imposto sobre quem toma crédito, e o produtor é os dois.</b></p>
+    <div class="periodo"><span>Resultado de <b>25/10</b></span><span>Pregão de <b>26/10</b></span><span>Soja, milho, boi e dólar</span></div>
+  </div>
+</header>
+
+<!-- 01 COMO FOI O DIA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Como foi o dia</h2></div>
+  <p class="sec-sub">Todos os valores abaixo são fechamentos do pregão de segunda, 26/10, e não valores intradiários. A distinção importa porque o dia teve amplitude de 17 pontos percentuais na bolsa, e qualquer leitura feita no meio do pregão conta uma história diferente da do fechamento.</p>
+  <div class="grid-cards">
+    <div class="card" style="--acg:var(--gAzul)">
+      <div class="lbl">Dólar · à vista <span class="tag">26/10</span></div>
+      <div class="val">5,4030<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ 8,21% no dia, de R$ 4,9931</div>
+      <div class="spark-wrap"><canvas id="spkDolar"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:97%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+      <div class="vies alta">Viés: receita de exportação em reais salta</div>
+    </div>
+    <div class="card" style="--acg:var(--gBoi)">
+      <div class="lbl">Ibovespa <span class="tag">26/10</span></div>
+      <div class="val">176.608<span class="unit"> pts</span></div>
+      <div class="delta baixa">▼ 13,88% no dia, circuit breaker às 9h57</div>
+      <div class="spark-wrap"><canvas id="spkIbov"></canvas></div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:5%"></span></div><div class="ends"><span>Aversão</span><span>Apetite</span></div></div>
+      <div class="vies baixa">Viés: pior desde março de 2020</div>
+    </div>
+    <div class="card" style="--acg:var(--gMilho)">
+      <div class="lbl">DI · janeiro de 2029 <span class="tag">26/10</span></div>
+      <div class="val">15,250<span class="unit"> %</span></div>
+      <div class="delta baixa">▲ 2,655 pontos percentuais no dia</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:95%"></span></div><div class="ends"><span>Juro baixo</span><span>Juro alto</span></div></div>
+      <div class="vies baixa">Viés: custo de capital do custeio 2027/28</div>
+    </div>
+    <div class="card" style="--acg:var(--gSoja)">
+      <div class="lbl">Ptax de liquidação <span class="tag">26/10</span></div>
+      <div class="val">5,5007<span class="unit"> R$</span></div>
+      <div class="delta alta">▲ 1,81% acima do fechamento à vista</div>
+      <div class="therm"><div class="scale"><span class="mark" style="left:99%"></span></div><div class="ends"><span>Real forte</span><span>Dólar ↑</span></div></div>
+      <div class="vies alta">Viés: é esta que liquida o seu contrato</div>
+    </div>
+  </div>
+  <div class="proc"><b>Nota de procedência.</b> ① Verificado: resultado oficial proclamado pelo TSE em 25/10/2026, com Luiz Inácio Lula da Silva somando 64.256.232 votos, 51,79% dos válidos, e Flávio Bolsonaro 59.826.041 votos, 48,21%; abstenção de cerca de 19,2% contra 21,08% no primeiro turno, com mais de 158 milhões de eleitores aptos e 128,2 milhões de comparecimentos. Pregão de 26/10/2026: Ibovespa fechando a 176.608,23 pontos com queda de 13,88%, máxima de 205.088,74, mínima de 169.516,43 e volume de R$ 76,90 bilhões; circuit breaker acionado por volta das 9h57, o primeiro desde março de 2020, com suspensão de 30 minutos, e mínima intradiária de 15,54% negativos às 13h51. Dólar comercial a R$ 5,4030 na venda. Juros futuros: DI jan/27 a 13,723% com alta de 0,248 ponto, jan/28 a 14,905% com 2,080, jan/29 a 15,250% com 2,655, jan/31 a 15,240% com 2,665, jan/32 a 15,240% com 2,650, jan/33 a 15,250% com 2,600, jan/34 a 15,185% com 2,515 e jan/35 a 15,195% com 2,540. CDS de cinco anos a 151,6 pontos, alta de 26%, o maior nível desde julho de 2025. Boletim final da B3 de 26/10 com Ptax de R$ 5,5007 e dólar B3 de R$ 5,4112. ② Indicativo: <b>o fechamento preliminar do Ibovespa das 16h55 saiu em 177.539,81 pontos, queda de 13,43%, e foi substituído pelo valor final de 176.608,23</b>; usamos o final. A fonte do dólar traz 8,25% numa atualização e 8,21% no corpo do texto; a aritmética contra o fechamento de R$ 4,9931 de sexta dá <b>8,21%</b>, e é esse que publicamos. O fechamento de sexta, 23/10, em R$ 4,9931 com queda de 0,92%, foi atribuído a esse dia pelo encadeamento aritmético a partir dos R$ 5,0394 de 22/10, porque a fonte que o publicou não nomeou o dia. O CDS aparece como reação do dia sem horário, logo não é confirmável como fechamento. <b>O grafo RuralIn está fora do ar com erro 502 e nada desta edição foi registado nem conferido contra a base</b>; todos os números vieram de fonte primária ou de publicação do dia e estão transcritos acima para auditoria manual.</div>
+</div></section>
+
+<!-- 02 A CONTA DO AGRO -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">02</span><h2>A conta do agro: a paridade saltou quase sete por cento num dia</h2></div>
+  <p class="sec-sub">Esta é a seção que separa o produtor do investidor de bolsa. O mesmo choque que derrubou 13,88% do Ibovespa aumentou a receita em reais de quem tem grão para vender, porque o preço da sua saca é preço internacional convertido por um câmbio que acabou de subir oito por cento.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Paridade da soja em reais</span><span class="now alta">147,85</span></div>
+        <div class="chart-box"><canvas id="chParSoja"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, Chicago convertido pelo dólar à vista de cada dia</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Paridade do milho em reais</span><span class="now alta">54,20</span></div>
+        <div class="chart-box"><canvas id="chParMilho"></canvas></div>
+        <div class="chart-foot">R$/sc 60 kg, Chicago convertido pelo dólar à vista de cada dia</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">De onde veio o ganho</span><span class="now">câmbio, não bolsa</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chDecomposicao"></canvas></div>
+        <div class="chart-foot">% de variação no dia, Chicago contra câmbio contra o resultado em reais</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Leitura RISE, níveis 1 a 4</p>
+      <div class="niveis">
+        <div class="n"><b>Aconteceu</b>paridade da soja +6,90% num dia</div>
+        <div class="n"><b>Por quê</b>dólar +8,21%, Chicago 1,21% negativo</div>
+        <div class="n"><b>Pode acontecer</b>devolução parcial se houver sinal fiscal</div>
+        <div class="n"><b>Fazer</b>precificar agora, não esperar</div>
+      </div>
+      <p><strong>O fato.</strong> A paridade da soja em reais saiu de <strong>R$ 138,31</strong> em 23/10 para <strong>R$ 147,85</strong> por saca em 26/10, alta de <strong>6,90%</strong>, enquanto o contrato novembro em Chicago <strong>caía 1,21%</strong>, de US$ 12,5650 para US$ 12,4125. No milho, a paridade subiu <strong>7,97%</strong>, de R$ 50,20 para R$ 54,20, com Chicago praticamente parado, em queda de 0,22%.</p>
+      <p><strong>A decomposição é o que importa entender.</strong> Nenhum centavo desse ganho veio de fundamento agrícola. Não houve quebra de safra, nem compra chinesa, nem revisão de estoque. <strong>Veio inteiro do câmbio</strong>, e por isso tem natureza diferente de uma alta de Chicago: uma alta de bolsa pode durar meses se o fundamento mudou, e uma alta de câmbio pode ser devolvida em uma semana se o mercado receber um sinal fiscal que considere crível.</p>
+      <p><strong>O milho da B3 confirmou na prática.</strong> O contrato novembro fechou a <strong>R$ 66,89</strong>, alta de <strong>2,34%</strong> sobre os R$ 65,36 de sexta, no mesmo dia em que a bolsa perdia 13,88%. Quem olhou só a manchete do Ibovespa concluiu que foi um dia terrível para o agro. Foi o contrário: <strong>o contrato de milho em reais subiu porque o real caiu.</strong></p>
+      <p><strong>E o Chicago continua caindo, o que limita a festa.</strong> O milho dezembro fechou a <strong>US$ 4,5500</strong>, agora <strong>16,21% abaixo</strong> do topo de US$ 5,43 de 21/09. Na edição de 23/10 apontamos 4,55 como próxima referência técnica, e ela foi atingida em três pregões. O ganho em reais está mascarando uma deterioração real do preço internacional, e quem mede a sua posição só em reais não vê isso acontecendo.</p>
+      <p><strong>O que fazer com uma alta de origem cambial.</strong> Uma alta que vem de choque político é mais frágil que uma que vem de oferta. A regra prática é oposta à da alta de fundamento: <strong>na alta cambial você executa, não espera.</strong> Se a sua estratégia previa vender parcela neste trimestre, o preço em reais de ontem é melhor que o de quinta passada em quase sete por cento sem que nada tenha melhorado na sua lavoura. Esperar aqui é apostar que o câmbio piora mais, o que é apostar em deterioração do seu próprio país.</p>
+      <div class="cenarios">
+        <div class="cen bull"><h4><span class="dot" style="background:var(--alta)"></span>Dólar sobe mais · 30%</h4><p>Sem sinal fiscal crível, o câmbio busca novo patamar e a paridade sobe de novo.</p></div>
+        <div class="cen base"><h4><span class="dot" style="background:#60a5fa"></span>Acomoda · 45%</h4><p>Devolve parte do choque e estabiliza entre R$ 5,20 e R$ 5,45.</p></div>
+        <div class="cen bear"><h4><span class="dot" style="background:#f87171"></span>Devolve · 25%</h4><p>Anúncio fiscal ou de equipe econômica bem recebido devolve a maior parte do movimento.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 03 OS JUROS -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">03</span><h2>O outro lado da moeda: a curva de juros virou de uma vez</h2></div>
+  <p class="sec-sub">Se a seção anterior foi a boa notícia, esta é a conta. O produtor não é só exportador, ele é também tomador de crédito, e o preço do crédito mudou de patamar em um único pregão.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Curva de juros, antes e depois</span><span class="now baixa">+2,6 pp no longo</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chDI"></canvas></div>
+        <div class="chart-foot">% ao ano por vencimento do DI, fechamento de 23/10 contra 26/10</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Risco Brasil, CDS de 5 anos</span><span class="now baixa">151,6 pts</span></div>
+        <div class="chart-box"><canvas id="chCDS"></canvas></div>
+        <div class="chart-foot">Pontos, alta de 26% no dia, maior nível desde julho de 2025</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Por que isso é a notícia mais cara do dia</p>
+      <p><strong>O fato.</strong> A curva inteira subiu, mas o longo subiu muito mais que o curto. O DI de <strong>janeiro de 2027</strong> subiu <strong>0,248 ponto</strong>, para 13,723%. O de <strong>janeiro de 2029</strong> subiu <strong>2,655 pontos</strong>, para <strong>15,250%</strong>, e o de janeiro de 2031 subiu 2,665 pontos, para 15,240%. O CDS de cinco anos subiu <strong>26%</strong>, para 151,6 pontos, o maior nível desde julho de 2025.</p>
+      <p><strong>O que o desenho da curva diz.</strong> Antes de segunda, a curva era <strong>descendente</strong>: o mercado precificava Selic alta agora e cortes adiante, com o longo perto de 12,6%. Depois de segunda, a curva ficou <strong>plana e alta</strong>, toda acima de 15% a partir de 2028. Em português: <strong>o mercado deixou de acreditar em queda de juros estrutural.</strong> Não é uma aposta sobre a próxima reunião do Copom, é uma reprecificação de onde o juro brasileiro vive nos próximos cinco anos.</p>
+      <p><strong>Onde isso pega na fazenda, concretamente.</strong> Crédito rural com taxa livre, CPR financeira, financiamento de máquina fora do Moderfrota, capital de giro de cooperativa e antecipação de recebível são precificados contra essa curva, não contra a Selic. <strong>Um salto de 2,6 pontos no vencimento de 2029 é um salto direto no custo do custeio da safra 2027/28</strong>, que é exatamente a safra que está sendo plantada agora. E quem tem dívida pós-fixada em CDI sentiu no mesmo dia.</p>
+      <p><strong>O crédito subsidiado não escapa, só demora mais.</strong> As taxas de Pronamp, Pronaf e dos programas de investimento são fixadas por resolução do CMN e não se movem com a curva no dia. Mas a equalização que sustenta essas taxas sai do Tesouro, e o custo dela sobe junto com o juro de mercado. <strong>Curva mais alta hoje é pressão sobre o tamanho do Plano Safra de amanhã</strong>, e o CMN se reuniu na quinta passada, 22/10.</p>
+      <p><strong>Juntando as duas seções.</strong> No mesmo pregão, a sua receita potencial em reais subiu quase sete por cento e o seu custo de capital para a próxima safra subiu 2,6 pontos. <strong>Desvalorização é transferência para quem exporta e imposto sobre quem toma crédito.</strong> O produtor rural é os dois ao mesmo tempo, e o resultado líquido depende de uma coisa só: se ele está mais vendido em produto ou mais alavancado em dívida. Essa conta é individual e ninguém pode fazer por você.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 04 O QUE ESPERAR DA ECONOMIA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">04</span><h2>O que esperar da economia, segundo quem publicou número</h2></div>
+  <p class="sec-sub">Esta seção traz apenas projeções atribuídas, com a casa e a data de cada uma. Onde duas casas discordam, mostramos as duas e não tiramos média, porque média de metodologias diferentes não é metodologia nenhuma.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">Dívida bruta projetada</span><span class="now baixa">rumo a 95%</span></div>
+        <div class="chart-box"><canvas id="chDivida"></canvas></div>
+        <div class="chart-foot">% do PIB, projeções da ASA para 2027 e da Capital Economics para 2026 e 2030</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Selic projetada, duas casas</span><span class="now">elas discordam</span></div>
+        <div class="chart-box"><canvas id="chSelic"></canvas></div>
+        <div class="chart-foot">% ao ano, projeções publicadas em 26/10, sem média entre elas</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">O que cada casa publicou, em 26/10</p>
+      <p><strong>Capital Economics.</strong> Projeta a <strong>dívida bruta saindo de cerca de 82,5% do PIB em 2026 para cerca de 95% ao fim do mandato, em 2030</strong>, e crescimento médio do PIB de <strong>1,3% ao ano</strong> no próximo mandato, contra 2,7% no atual. Espera a <strong>Selic parada em 13,75%</strong> nas duas reuniões restantes de 2026 e não descarta cortes em 2027, mas só com sinais concretos de disciplina fiscal. Afirma que o arcabouço de 2023 carece de credibilidade e não conteve o crescimento real do gasto. O economista William Jackson acrescenta que reformas de produtividade ficam menos prováveis e que estímulo fiscal, se vier, deve produzir mais inflação do que crescimento.</p>
+      <p><strong>ASA.</strong> Projeta <strong>PIB de 0% em 2027</strong>, com risco de recessão dependendo da evolução das expectativas, IPCA de <strong>5,1%</strong> ao fim de 2026 e <strong>dívida bruta em 88,5% do PIB em 2027</strong>, novo recorde acima do pico da pandemia. Na Selic, projeta <strong>13,5% ao fim de 2026</strong>, assumindo um corte em novembro, com o Banco Central retomando cortes apenas no segundo ou terceiro trimestre de 2027 e fechando o ano a <strong>13%</strong>.</p>
+      <p><strong>Onde as duas discordam, e isso é informação.</strong> Na Selic de 2026, a Capital Economics vê <strong>13,75% parado</strong> e a ASA vê <strong>13,5% com um corte em novembro</strong>. É um quarto de ponto de diferença que depende de uma reunião, e as duas foram publicadas no mesmo dia. Para quem vai contratar custeio, a diferença entre as duas visões é menor que o movimento que a curva de mercado já fez em um único pregão, o que diz algo sobre onde está a incerteza de verdade.</p>
+      <p><strong>Os riscos de inflação de 2027 que a ASA lista, e um deles é nosso.</strong> Volta dos impostos federais sobre combustíveis, possíveis efeitos do fim da escala 6x1, inflação de serviços resistente, aumento da carga de consumo com o início da reforma tributária e <strong>El Niño</strong>. O El Niño está na lista de uma casa de análise macro, e é o mesmo evento que colocamos em alerta máximo para a florada do café na semana passada e para a safra no Centro-Oeste. <strong>O mesmo risco climático aparece como risco de inflação e como risco de lavoura.</strong></p>
+      <p><strong>E a declaração que mais mexeu com a curva.</strong> O secretário-executivo da Fazenda, Dario Durigan, afirmou no dia que o governo vai <strong>mudar a lei ou, se necessário, a Constituição</strong> para buscar o centro da meta fiscal. Analistas citados apontaram risco fiscal com Congresso mais hostil e incerteza sobre o cumprimento da meta. Para o produtor, o que importa dessa frase não é o mérito político: é que <strong>enquanto a regra fiscal estiver em discussão, a curva longa cobra prêmio</strong>, e esse prêmio é o seu custo de crédito.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 ONDE PEGA EM CADA PONTA -->
+<section><div class="wrap">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Onde pega em cada ponta: soja, milho, boi e dólar</h2></div>
+  <p class="sec-sub">O choque é um só, mas chega diferente em cada cultura, porque cada uma tem uma exposição diferente a câmbio, a mercado interno e a crédito.</p>
+  <div class="asset">
+    <div class="charts2">
+      <div class="chart-card">
+        <div class="chead"><span class="t">O contraste do dia</span><span class="now">agro subiu, bolsa caiu</span></div>
+        <div class="chart-box" style="height:200px"><canvas id="chContraste"></canvas></div>
+        <div class="chart-foot">% de variação em 26/10, contratos agrícolas da B3 contra o Ibovespa</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Boi gordo Cepea</span><span class="now alta">381,40</span></div>
+        <div class="chart-box"><canvas id="chBoi"></canvas></div>
+        <div class="chart-foot">R$/arroba, novo recorde nominal em 23/10, antes da eleição</div>
+      </div>
+      <div class="chart-card">
+        <div class="chead"><span class="t">Milho em Chicago desde o topo</span><span class="now baixa">16,21%</span></div>
+        <div class="chart-box"><canvas id="chMilhoTopo"></canvas></div>
+        <div class="chart-foot">US$/bushel, do topo de 21/09 ao fechamento de 26/10</div>
+      </div>
+    </div>
+    <div class="analise">
+      <p class="tagline">Ponta por ponta</p>
+      <p><strong>Soja: a mais beneficiada, e por um canal duplo.</strong> A soja é a mais dolarizada das quatro, com <strong>mais de 70% da produção exportada ou processada para exportação</strong>. A paridade subiu 6,90% num dia e, além disso, o prêmio do porto que vínhamos acompanhando continua pago em dólar. O risco é o inverso: se o câmbio devolver o movimento, a receita devolve junto. <strong>Quem tem soja para vender ganhou o maior prêmio do trimestre sem plantar um grão a mais.</strong></p>
+      <p><strong>Milho: beneficiado no preço, pressionado no insumo do ano seguinte.</strong> O milho ganha pela paridade, com alta de 7,97% no dia e 2,34% no contrato da B3, mas é menos dolarizado que a soja porque boa parte vai para o consumo interno de proteína animal. E tem um efeito cruzado: <strong>milho mais caro em reais é custo maior para confinamento, granja e leite</strong>, exatamente os setores para quem recomendamos travar ração nas últimas duas edições. Quem travou na semana passada, com Rio Verde a R$ 51,00, travou antes deste choque.</p>
+      <p><strong>Boi: o menos exposto ao câmbio no curto prazo, e já estava no recorde.</strong> O Indicador Cepea fechou sexta a <strong>R$ 381,40</strong>, novo recorde nominal, com alta de 4,69% em outubro. O boi é majoritariamente mercado interno, então a desvalorização não entra no preço no mesmo dia. Entra pelo canal da exportação, com prazo de semanas: dólar mais alto aumenta a competitividade da carne brasileira e a margem do frigorífico exportador. <strong>O contrato de outubro da B3 fechou a R$ 384,55, prêmio de apenas 0,83% sobre o Indicador</strong>, ou seja o prêmio de hedge continua praticamente inexistente, como vínhamos registrando.</p>
+      <p><strong>Dólar: deixou de ser variável secundária.</strong> Em todo outubro a Ptax andou numa faixa de R$ 0,09, e nós escrevemos na sexta que o câmbio tinha sido quase irrelevante no mês e poderia deixar de ser na segunda. Deixou. <strong>De irrelevante a principal fator de preço em um pregão.</strong> Quem tinha ordem de venda amarrada em reais foi executado em condições muito diferentes das previstas, e quem tinha dívida em dólar sem hedge levou o choque do lado errado.</p>
+      <p><strong>Um alerta operacional que vale dinheiro de verdade.</strong> Houve <strong>três dólares diferentes</strong> para o mesmo 26/10: o à vista fechou em <strong>R$ 5,4030</strong>, o dólar B3 em <strong>R$ 5,4112</strong> e a <strong>Ptax em R$ 5,5007</strong>. A Ptax ficou <strong>1,81% acima</strong> do fechamento à vista porque as janelas de apuração pegaram o pior momento do dia, antes da recuperação da tarde. <strong>Contrato indexado à Ptax liquidou a 5,5007, não a 5,4030.</strong> Se você tem CPR, contrato de insumo ou operação de barter indexados a Ptax, confira a cláusula antes de estimar o seu resultado, porque a diferença de quase dois por cento num dia como ontem é maior que a margem de muitas operações.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- 06 SÍNTESE -->
+<section><div class="wrap">
+  <div class="sintese">
+    <div class="sec-head"><span class="sec-num">06</span><h2>A leitura do estrategista</h2></div>
+    <p class="read">A manchete de ontem foi a bolsa caindo 13,88% com circuit breaker, e para a maior parte do país essa é a história certa. Para quem produz grão, ela é enganosa. <strong>No mesmo pregão, a paridade da soja em reais subiu 6,90% e a do milho 7,97%</strong>, com Chicago caindo nos dois casos. O contrato de milho da B3 fechou em alta de 2,34% num dia de pânico. Quem leu só a manchete do Ibovespa e concluiu que foi um dia ruim para o agro concluiu o contrário do que aconteceu com o preço da sua saca.</p>
+    <p class="read">Mas a conta não termina aí, e a segunda metade dela é mais cara. <strong>O DI de 2029 subiu 2,655 pontos percentuais em um dia</strong> e a curva, que era descendente, virou plana e alta, toda acima de 15% a partir de 2028. O mercado deixou de precificar queda estrutural de juros. Isso é o custo de capital do custeio da safra 2027/28, que está sendo plantada agora, e é o preço da CPR financeira, do capital de giro e da máquina fora do crédito subsidiado. <strong>Desvalorização é transferência para quem exporta e imposto sobre quem toma crédito. O produtor é os dois.</strong></p>
+    <p class="read">E aí está a única pergunta que importa esta semana, e ela é individual: <strong>você está mais vendido em produto ou mais alavancado em dívida?</strong> Quem tem soja em armazém e pouca dívida saiu de ontem melhor. Quem tem a safra toda por plantar e custeio por contratar saiu pior. Ninguém pode responder isso por você, e é por isso que esta edição não traz uma recomendação única: traz a conta para você fazer com os seus números.</p>
+    <p class="read">Sobre o que esperar, as casas que publicaram número em 26/10 convergem no desconforto e divergem no detalhe. A Capital Economics vê dívida rumo a 95% do PIB em 2030 e PIB médio de 1,3% ao ano; a ASA vê PIB zero em 2027 e dívida em 88,5% já no ano que vem. Na Selic de 2026, uma vê 13,75% parado e a outra 13,5% com corte em novembro. <strong>A divergência entre as duas é menor que o movimento que a curva fez em um único pregão</strong>, o que diz onde está a incerteza real: não na projeção, no prêmio de risco. Enquanto a regra fiscal estiver em discussão, a curva longa cobra, e quem paga essa conta na fazenda é o custeio.</p>
+    <p class="read">Uma nota de transparência que precisa constar. <strong>O grafo RuralIn está fora do ar com erro 502 desde o início desta edição.</strong> Nenhuma cotação foi registada, nenhum cálculo foi conferido contra a base e nenhuma análise foi arquivada. Todos os números aqui vieram de fonte primária ou de publicação do mesmo dia e estão transcritos integralmente na nota de procedência, para auditoria manual. Quando o conector voltar, esta edição entra na base e os cálculos passam pela conferência que não foi possível fazer hoje.</p>
+    <div class="matriz">
+      <div class="mtile"><div class="h">Soja</div><div class="vb alta">Paridade +6,90%</div><div class="ac">R$ 147,85/sc. A mais beneficiada, por canal duplo.</div></div>
+      <div class="mtile"><div class="h">Milho</div><div class="vb alta">Paridade +7,97%</div><div class="ac">B3 +2,34%. Mas encarece ração do ano seguinte.</div></div>
+      <div class="mtile"><div class="h">Boi</div><div class="vb alta">Recorde: 381,40</div><div class="ac">Mercado interno. Câmbio entra depois, via exportação.</div></div>
+      <div class="mtile"><div class="h">Dólar</div><div class="vb alta">Alta de 8,21%</div><div class="ac">De irrelevante a principal fator em um pregão.</div></div>
+    </div>
+    <div class="acao">
+      <div class="t">O que fazer</div>
+      <ul>
+        <li><b>Soja, para quem tem produto e precisa de caixa.</b> Gatilho: paridade a R$ 147,85 por saca, alta de 6,90% num dia, com Chicago em queda. Alta de origem cambial é mais frágil que alta de fundamento, porque pode ser devolvida com um anúncio bem recebido. Se a sua estratégia previa vender parcela neste trimestre, execute agora, com ordem contra a paridade em reais. Esperar aqui é apostar que o câmbio piora mais.</li>
+        <li><b>Milho, para quem vende.</b> Gatilho: paridade a R$ 54,20 e contrato da B3 a R$ 66,89, alta de 2,34%, enquanto Chicago está 16,21% abaixo do topo de setembro. O ganho é cambial e esconde deterioração do preço internacional. É uma janela para executar venda, não para reabrir a tese de alta.</li>
+        <li><b>Milho, para quem compra ração.</b> Gatilho: milho em reais subindo por câmbio, depois de Rio Verde ter chegado a R$ 51,00 em 22/10. Quem travou na semana passada travou antes do choque. Quem não travou perdeu o melhor ponto, e agora a decisão mudou: não é mais capturar o fundo, é limitar o risco de o câmbio levar o milho interno mais para cima. Reavalie o volume que falta com o preço novo.</li>
+        <li><b>Boi, para quem tem animal pronto.</b> Gatilho: Indicador em R$ 381,40, novo recorde nominal, com futuro out/26 a R$ 384,55 e prêmio de apenas 0,83%. O prêmio de hedge continua praticamente zerado no vencimento curto. O canal cambial favorece o frigorífico exportador e pode sustentar a arroba nas próximas semanas, mas isso é expectativa e não preço na tela.</li>
+        <li><b>Crédito, para todos, e esta é a mais urgente.</b> Gatilho: DI de 2029 em 15,250%, alta de 2,655 pontos num dia, e CDS a 151,6 pontos. Se você tem custeio da safra 2027/28 por contratar com taxa livre, refaça a conta com a curva de ontem e não com a de sexta. E se tem proposta de crédito em análise com taxa ainda não fixada, pergunte ao banco qual curva está sendo usada, porque a de ontem é 2,6 pontos mais caro no longo.</li>
+        <li><b>Contratos indexados à Ptax, antes de fechar qualquer conta.</b> Gatilho: Ptax de 26/10 em R$ 5,5007 contra fechamento à vista de R$ 5,4030, uma diferença de 1,81% no mesmo dia. CPR, contrato de insumo e barter indexados a Ptax liquidaram no número maior. Confira a cláusula de cada contrato antes de estimar resultado, porque essa diferença é maior que a margem de muitas operações.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="nota"><b>Procedência e limites deste informativo.</b> ① Verificado: resultado oficial do segundo turno proclamado pelo TSE em 25/10/2026, com Lula somando 64.256.232 votos e 51,79% dos válidos e Flávio Bolsonaro 59.826.041 votos e 48,21%, abstenção de cerca de 19,2%, mais de 158 milhões de eleitores aptos e 128,2 milhões de comparecimentos. Pregão de 26/10/2026: Ibovespa a 176.608,23 pontos com queda de 13,88%, máxima de 205.088,74, mínima de 169.516,43, volume de R$ 76,90 bilhões, circuit breaker às 9h57 com suspensão de 30 minutos, o primeiro desde março de 2020, e mínima intradiária de 15,54% negativos às 13h51; dólar comercial a R$ 5,4030 na venda contra R$ 4,9931 em 23/10 e R$ 5,0394 em 22/10; Ptax de 26/10 a R$ 5,5007 e dólar B3 a R$ 5,4112, pelo boletim final da B3; DI jan/27 13,723% com alta de 0,248 ponto, jan/28 14,905% com 2,080, jan/29 15,250% com 2,655, jan/31 15,240% com 2,665, jan/32 15,240% com 2,650, jan/33 15,250% com 2,600, jan/34 15,185% com 2,515, jan/35 15,195% com 2,540; CDS de cinco anos a 151,6 pontos com alta de 26%, maior nível desde julho de 2025. Soja CBOT nov/26 a US$ 12,5650 em 23/10 com alta de 3,50 centavos e a US$ 12,4125 em 26/10 com queda de 15,25 centavos e 1,21%; milho CBOT dez/26 a US$ 4,5600 em 23/10 com queda de 4,50 centavos e a US$ 4,5500 em 26/10 com queda de 1,00 centavo e 0,22%, contra topo de US$ 5,43 em 21/09. B3 em 26/10 pelo boletim final: boi gordo out/26 a R$ 384,55 com variação de 0,25, milho nov/26 a R$ 66,89 com variação de 1,53 e soja cross nov/26 a US$ 27,3644. Indicador Cepea/ESALQ do boi gordo a R$ 381,40 em 23/10 com alta de 0,22% e 4,69% acumulado em outubro, novo recorde nominal; Indicador Cepea do milho a R$ 64,27 em 23/10 com alta de 0,05%. Escalas de abate em média de sete dias em São Paulo e entre sete e dez dias no Mato Grosso do Sul em 23/10, pela Scot. Projeções publicadas em 26/10/2026: Capital Economics com dívida bruta de cerca de 82,5% do PIB em 2026 e cerca de 95% em 2030, PIB médio de 1,3% ao ano no próximo mandato contra 2,7% no atual, Selic parada em 13,75% nas duas reuniões restantes de 2026 e cortes em 2027 condicionados a sinais concretos de disciplina fiscal; ASA com PIB de 0% em 2027 e risco de recessão, IPCA de 5,1% ao fim de 2026, dívida bruta geral do governo em 88,5% do PIB em 2027, Selic de 13,5% ao fim de 2026 com um corte em novembro e de 13% ao fim de 2027, e riscos de inflação de 2027 incluindo volta de impostos federais sobre combustíveis, fim da escala 6x1, El Niño, inflação de serviços resistente e aumento da carga de consumo com a reforma tributária. Declaração do secretário-executivo da Fazenda, Dario Durigan, de que o governo mudará a lei ou, se necessário, a Constituição para buscar o centro da meta fiscal. ② Indicativo: <b>o grafo RuralIn esteve fora do ar com erro 502 durante toda a produção desta edição</b>, de modo que nenhuma cotação foi registada, nenhum cálculo passou pela conferência automática da base e nenhuma análise foi arquivada; os números acima estão transcritos na íntegra para auditoria manual e a edição será registada quando o conector voltar. O fechamento preliminar do Ibovespa das 16h55 saiu em 177.539,81 pontos com queda de 13,43% e foi substituído pelo valor final de 176.608,23; usamos o final. A fonte do dólar traz 8,25% numa atualização e 8,21% no corpo; a aritmética contra R$ 4,9931 dá 8,21% e é esse que publicamos. O fechamento de R$ 4,9931 foi atribuído a 23/10 pelo encadeamento aritmético a partir dos R$ 5,0394 de 22/10, porque a fonte que o publicou não nomeou o dia; se essa atribuição estiver errada, a variação do dólar de segunda muda. O fechamento do Ibovespa de sexta não foi localizado em fonte primária e os cerca de 205.072 pontos usados como referência <b>resultam de dividir o fechamento de segunda pela variação publicada</b>, logo são reconstruídos. O mesmo vale para o CDS anterior, de cerca de 120,3 pontos, obtido a partir da alta publicada de 26%. Os valores de 23/10 do milho e do boi na B3, R$ 65,36 e R$ 384,30, foram deduzidos subtraindo a variação publicada do ajuste de 26/10 e não são leitura direta. O Indicador Cepea do boi de 26/10 não havia sido publicado quando esta edição foi montada. As paridades em reais usam o fator de 2,2046 bushels por saca de 60 kg e o dólar à vista de cada dia, e <b>não são preço de mercado físico</b>: são a conversão direta da bolsa, útil como referência de ordem de venda e não como cotação de praça. As <b>projeções econômicas são de terceiros, atribuídas e datadas</b>, não são projeções da Ruralin, e as duas casas citadas divergem entre si na Selic de 2026; não tiramos média. <b>Cenários são cenários, com probabilidade atribuída pelo analista, e não são previsão.</b> Este informativo descreve a reação de mercado a um resultado eleitoral e as projeções publicadas por casas de análise; <b>não contém avaliação política do resultado nem recomendação de voto ou de posição política</b>, e as declarações de autoridades e de gestores aparecem como fato noticiado, com a fonte, e não como endosso.</div>
+</div></section>
+
+<footer class="cred"><div class="wrap">
+  <div class="assin">Análise e Construção</div>
+  <div class="cred-grid">
+    <div>
+      <p class="name">Dr. Sidney Souza</p>
+      <p class="role">Economista Agrícola</p>
+      <p class="role">Estrategista Econômico do Produtor</p>
+      <p class="desc">Especialista em economia da fazenda e gestão de risco no agro.</p>
+      <p class="desc">Transformamos dados da fazenda em decisões econômicas.</p>
+      <p class="tagit">“Dado gera informação. Inteligência gera decisão.”</p>
+    </div>
+    <div class="contatos">
+      <div><a href="https://ruralin.cloud/" target="_blank" rel="noopener">ruralin.cloud</a></div>
+      <div><a href="https://instagram.com/ruralin.ai" target="_blank" rel="noopener">@ruralin.ai</a></div>
+      <div><a href="mailto:contato@ruralin.cloud">contato@ruralin.cloud</a></div>
+      <div><a href="https://wa.me/5564992233264" target="_blank" rel="noopener">(64) 9 9223-3264</a></div>
+    </div>
+  </div>
+</div></footer>
+
+<script>
+  const SUB='#94a3b8', GRID='rgba(148,163,184,.13)';
+  const SOJA='#10b981',MILHO='#f59e0b',BOI='#ef4444',AZUL='#3b82f6',CIANO='#06b6d4',ROXO='#8b5cf6';
+  Chart.defaults.font.family="'JetBrains Mono', monospace"; Chart.defaults.font.size=10; Chart.defaults.color=SUB;
+
+  const diasD=['22/10','23/10','26/10'];
+  const DOL=[5.0394,4.9931,5.4030];
+  const IBOV=[204120.12,205072.26,176608.23];
+
+  function spark(id,labels,data,color){new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,tension:.3,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,34);g.addColorStop(0,color+'55');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{enabled:false}},scales:{x:{display:false},y:{display:false}},animation:{duration:500}}});}
+  spark('spkDolar',diasD,DOL,AZUL); spark('spkIbov',diasD,IBOV,BOI);
+
+  function line(id,labels,data,color,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.6,pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:(c)=>{const g=c.chart.ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,color+'44');g.addColorStop(1,color+'00');return g;}}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:color,borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{grid:{color:GRID},border:{display:false},suggestedMin:ymin,suggestedMax:ymax,ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function barrasCor(id,labels,data,cores,fmt,ymin,ymax){new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores.map(c=>c+'99'),borderColor:cores,borderWidth:1.4,borderRadius:5,maxBarThickness:52,minBarLength:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,displayColors:false,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  function grupo(id,labels,series,fmt,ymin,ymax){
+    new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,backgroundColor:s.c+'99',borderColor:s.c,borderWidth:1.3,borderRadius:4,maxBarThickness:40,minBarLength:3}))},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{boxWidth:9,boxHeight:9,padding:9,font:{size:9.5}}},tooltip:{backgroundColor:'#080b14',borderColor:'#2a3654',borderWidth:1,padding:9,titleColor:'#fff',bodyColor:'#e2e8f0',callbacks:{label:(c)=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},border:{color:GRID},ticks:{color:SUB}},y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},border:{display:false},ticks:{color:SUB,callback:(v)=>fmt(v)}}},animation:{duration:700}}});}
+
+  const vg=(v,d)=>v.toFixed(d).replace('.',',');
+  const fRs=v=>'R$ '+vg(v,2), fPct=v=>vg(v,2)+'%', fPp=v=>vg(v,3)+'%', fPts=v=>vg(v,1)+' pts',
+        fPibPct=v=>vg(v,1)+'%', fUS=v=>'US$ '+vg(v,2);
+
+  barrasCor('chParSoja',['23/10','26/10'],[138.31,147.85],['#64748b',SOJA],fRs,130,155);
+  barrasCor('chParMilho',['23/10','26/10'],[50.20,54.20],['#64748b',MILHO],fRs,46,58);
+  grupo('chDecomposicao',['Soja','Milho'],[
+    {n:'Chicago em dólar',d:[-1.21,-0.22],c:'#64748b'},
+    {n:'Câmbio',d:[8.21,8.21],c:AZUL},
+    {n:'Paridade em reais',d:[6.90,7.97],c:SOJA}
+  ],fPct,-3,10);
+
+  grupo('chDI',['jan/27','jan/28','jan/29','jan/31','jan/33','jan/35'],[
+    {n:'Antes, 23/10',d:[13.475,12.825,12.595,12.575,12.650,12.655],c:'#64748b'},
+    {n:'Depois, 26/10',d:[13.723,14.905,15.250,15.240,15.250,15.195],c:BOI}
+  ],fPp,12,16);
+  barrasCor('chCDS',['Antes, reconstruído','26/10'],[120.3,151.6],['#64748b',BOI],fPts,100,165);
+
+  barrasCor('chDivida',['2026 · CE','2027 · ASA','2030 · CE'],[82.5,88.5,95.0],['#64748b',MILHO,BOI],fPibPct,75,100);
+  barrasCor('chSelic',['Hoje','ASA fim/26','CE fim/26','ASA fim/27'],[13.75,13.50,13.75,13.00],
+    ['#94a3b8',CIANO,ROXO,SOJA],fPibPct,12.5,14.2);
+
+  grupo('chContraste',['Variação em 26/10'],[
+    {n:'Milho B3 nov/26',d:[2.34],c:MILHO},
+    {n:'Boi B3 out/26',d:[0.07],c:SOJA},
+    {n:'Ibovespa',d:[-13.88],c:BOI}
+  ],fPct,-16,5);
+  line('chBoi',['13/10','16/10','21/10','23/10'],[378.00,380.70,380.40,381.40],BOI,fRs,377,383);
+  line('chMilhoTopo',['21/09','02/10','16/10','22/10','26/10'],[5.43,4.9775,4.7425,4.6050,4.5500],MILHO,fUS,4.45,5.50);
+</script>
+</body>
+</html>
