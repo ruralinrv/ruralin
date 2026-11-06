@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O custo que não vem em nota fiscal · Soja e milho · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .chart-box.tall{height:210px}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .tabela{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:4px}
+  .tabela th{text-align:left;padding:8px 9px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--bdr);font-weight:600}
+  .tabela th.n,.tabela td.n{text-align:right}
+  .tabela td{padding:8px 9px;border-bottom:1px solid rgba(42,54,84,.5);color:var(--t1)}
+  .tabela tbody tr:nth-child(odd){background:rgba(255,255,255,.018)}
+  .tabela td.rub{font-family:'Inter',sans-serif;font-size:12.5px;color:#cdd6e4}
+  .tabela tr.tot td{border-top:1px solid var(--bdr);border-bottom:none;font-weight:700;color:#fff;background:rgba(59,130,246,.07)}
+  .tbl-wrap{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 15px 6px;box-shadow:var(--sh);overflow-x:auto}
+  .ins{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);border-radius:11px;padding:13px 15px;font-size:13.5px;color:#e8d9bd;margin:14px 0 0}
+  .ins b{color:#fbbf24}
+  .cta{background:radial-gradient(130% 150% at 85% -20%,rgba(16,185,129,.17),transparent 58%),linear-gradient(150deg,#0d1424,#17203a);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .cta::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#06b6d4 55%,#3b82f6)}
+  .cta h3{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(20px,3vw,27px);margin:0 0 10px;color:#fff;line-height:1.14}
+  .cta p{font-size:14.5px;color:#cdd6e4;margin:0 0 13px;max-width:76ch}
+  .cta p strong{color:#fff}
+  .servs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:20px 0 0}
+  .serv{background:rgba(255,255,255,.035);border:1px solid var(--bdr);border-radius:12px;padding:14px 13px}
+  .serv .sh{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--alta);font-weight:700;margin-bottom:6px}
+  .serv .sb{font-size:12.5px;color:var(--t2);line-height:1.5}
+  .serv .sb b{color:#fff}
+  .convite{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .convite .cl{font-size:14.5px;color:#cdd6e4;max-width:60ch}
+  .convite .cl b{color:#fbbf24}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:linear-gradient(135deg,#10b981,#06b6d4);color:#06231c;padding:13px 22px;border-radius:50px;text-decoration:none;white-space:nowrap;box-shadow:0 6px 18px rgba(16,185,129,.26)}
+  .selo{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--t3);border:1px solid var(--bdr);background:var(--card2);border-radius:50px;padding:4px 11px;margin:0 6px 6px 0}
+  .selo b{color:var(--alta)}
+  .fontes{font-size:11.5px;color:var(--t3);line-height:1.75;margin-top:14px}
+  .fontes a{color:var(--t2);text-decoration:none;border-bottom:1px solid rgba(100,116,139,.45)}
+  .fontes b{color:var(--t2)}
+  @media (max-width:820px){.duo{grid-template-columns:1fr}.servs{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){
+    .tabela{font-size:11px}
+    .tabela th,.tabela td{padding:7px 6px}
+    .tabela td.rub{font-size:11.5px}
+    .tabela th:nth-child(3),.tabela td:nth-child(3),
+    .tabela th:nth-child(6),.tabela td:nth-child(6){display:none}
+    .tbl-wrap{padding:12px 11px 4px}
+  }
+  @media (max-width:520px){.servs{grid-template-columns:1fr}.convite{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">
+      <span class="pill">Especial custos</span>
+      <span>Ruralin.AI</span>
+      <span>Rio Verde (GO)</span>
+      <span>06 de novembro de 2026</span>
+    </p>
+    <h1 class="title">O custo que não vem em <em>nota fiscal</em></h1>
+    <p class="thesis">Máquinas, depreciação, juros, custo de oportunidade, administração. Em soja, metade do custo por saca já não é insumo. Em milho de segunda safra, a parte que não é insumo passou a de insumo. Série da CONAB para Rio Verde, de 1997 a 2026/27, rubrica a rubrica, e o que a inflação, o juro, o petróleo e o minério indicam para as safras à frente.</p>
+    <div class="periodo">
+      <span>Fonte de custo: <b>CONAB, série histórica</b></span>
+      <span>Soja: <b>ficha 2026/27, preços de mar/2026</b></span>
+      <span>Milho: <b>ficha 2025, preços de mar/2025</b></span>
+      <span>Praça: <b>Rio Verde (GO), empresarial, plantio direto, alta tecnologia</b></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>A conta que ninguém confere</h2></div>
+    <p class="sec-sub">O produtor negocia adubo durante meses. O resto do custo chega sem vendedor, sem proposta e, em boa parte, sem fatura. É exatamente a metade da conta.</p>
+
+    <div class="grid-cards">
+      <div class="card" style="--acg:var(--gSoja)">
+        <div class="lbl"><span>Soja, custo total</span><span class="tag">2026/27</span></div>
+        <div class="val">94,29 <span class="unit">R$/sc</span></div>
+        <div class="delta neutro">R$ 6.128,77 por hectare</div>
+        <div class="spark-wrap"><canvas id="skSoja"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gBoi)">
+        <div class="lbl"><span>Soja, o que não é insumo</span><span class="tag">49,50%</span></div>
+        <div class="val">46,67 <span class="unit">R$/sc</span></div>
+        <div class="delta baixa">+71,64% por saca desde 2022</div>
+        <div class="spark-wrap"><canvas id="skSojaNI"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gMilho)">
+        <div class="lbl"><span>Milho, custo total</span><span class="tag">2025</span></div>
+        <div class="val">57,29 <span class="unit">R$/sc</span></div>
+        <div class="delta neutro">R$ 5.729,50 por hectare</div>
+        <div class="spark-wrap"><canvas id="skMilho"></canvas></div>
+      </div>
+      <div class="card" style="--acg:linear-gradient(135deg,#8b5cf6,#a78bfa)">
+        <div class="lbl"><span>Milho, o que não é insumo</span><span class="tag">50,78%</span></div>
+        <div class="val">29,09 <span class="unit">R$/sc</span></div>
+        <div class="delta baixa">já maior que o insumo, de R$ 28,20</div>
+        <div class="spark-wrap"><canvas id="skMilhoNI"></canvas></div>
+      </div>
+    </div>
+
+    <div class="driver" style="margin-top:22px">
+      <div class="big">50,78%<small>milho, parcela sem insumo</small></div>
+      <div class="txt">
+        <p>No milho de segunda safra de Rio Verde, a soma de máquinas, depreciação, juros, remuneração do capital, terra, administração e logística chega a <b>R$ 29,09 por saca</b>, contra <b>R$ 28,20</b> de semente, fertilizante e agrotóxico juntos. A linha foi cruzada.</p>
+        <p>Na soja ainda não cruzou, mas está em <b>R$ 46,67 contra R$ 47,62</b>. Falta menos de um real por saca.</p>
+      </div>
+    </div>
+
+    <div class="asset" style="margin-top:24px">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Composição do custo por saca, R$</span><span class="now alta">Soja 94,29 · Milho 57,29</span></div>
+          <div class="chart-box tall"><canvas id="cComp"></canvas></div>
+          <p class="chart-foot">CONAB. Soja 2026/27 a preços de mar/2026, milho 2025 a preços de mar/2025</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O que a tabela da CONAB mostra</p>
+        <p>Na soja de 2026/27, o fertilizante é a maior rubrica isolada, com <strong>R$ 1.401,60 por hectare</strong>, ou 22,87% do custo total. Logo abaixo vem algo que quase nunca entra em reunião de planejamento: a <strong>terra</strong>, somando terra própria e arrendamento, com <strong>R$ 1.378,25 por hectare</strong>, ou 22,49%.</p>
+        <p>Depois vêm as rubricas que o produtor raramente abre. <strong>Depreciações</strong> de máquinas, implementos e benfeitorias, R$ 417,82. <strong>Juros do financiamento</strong>, R$ 187,30. <strong>Remuneração esperada sobre o capital fixo</strong>, R$ 197,13. <strong>Operação de tratores e colheitadeiras</strong>, R$ 238,27. <strong>Administração</strong>, R$ 121,02.</p>
+        <p>Nenhuma dessas cinco chega a 7% sozinha. Juntas, dão <strong>R$ 1.161,54 por hectare</strong>, quase o valor do adubo, e esse é o ponto: elas se esconderam na pulverização.</p>
+        <div class="niveis">
+          <div class="n"><b>Aconteceu</b>Insumo caiu, custo não</div>
+          <div class="n"><b>Por quê</b>Estrutura e capital subiram</div>
+          <div class="n"><b>Pode acontecer</b>Juro e diesel pressionam 27/28</div>
+          <div class="n"><b>Fazer</b>Abrir o custo rubrica a rubrica</div>
+        </div>
+        <div class="proc">
+          <b>Procedência.</b> Custo de produção da CONAB, série histórica por município de referência, aba Rio Verde-GO. Valores nominais, a preços da data de referência de cada safra, sem correção monetária. A divisão por saca usa a produtividade esperada da própria ficha, 3.900 kg/ha na soja e 6.000 kg/ha no milho. Custo não é cotação e não entra em série de preço.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>O adubo caiu e o custo por saca subiu</h2></div>
+    <p class="sec-sub">De 2022 para 2026, as duas metades do custo andaram em sentidos opostos. Quem olhou só a nota do fertilizante concluiu que o custo tinha cedido. Não cedeu.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Soja Rio Verde, R$ por saca</span><span class="now">insumo x o resto</span></div>
+          <div class="chart-box tall"><canvas id="cDois"></canvas></div>
+          <p class="chart-foot">Calculado das colunas R$/ha da CONAB, dividido pela produtividade de cada safra</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Custo total, R$ por saca</span><span class="now alta">94,29</span></div>
+          <div class="chart-box"><canvas id="cTotal"></canvas></div>
+          <p class="chart-foot">CONAB, coluna de custo total por saca declarada na ficha</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Os três números da virada</p>
+        <p>Entre a safra 2022/23 e a 2026/27, por saca de soja em Rio Verde:</p>
+        <p>O insumo caiu de <strong>R$ 64,74 para R$ 47,62</strong>, uma queda de <strong>26,44%</strong>. Foi o alívio do adubo depois do choque de 2022, e foi real.</p>
+        <p>O que não é insumo subiu de <strong>R$ 27,19 para R$ 46,67</strong>, uma alta de <strong>71,64%</strong>.</p>
+        <p>E o custo total, que é o que importa, passou de <strong>R$ 91,93 para R$ 94,29</strong>. Subiu <strong>2,57%</strong>. Todo o alívio do insumo foi consumido do outro lado, e ainda sobrou pressão.</p>
+        <p>Em 2022 a divisão era de 70% insumo contra 30% o resto. Hoje é praticamente meio a meio.</p>
+        <div class="ins">
+          <b>Ressalva que precisa ser dita.</b> Parte do salto de 2022 para 2023 nessa série não é inflação de custo, é mudança de metodologia: a CONAB passou a lançar o <b>arrendamento</b> como linha própria a partir de 2023, e a rubrica de terra saltou de R$ 336,35 para R$ 1.479,20 por hectare de uma safra para a outra. Essa única rubrica explica <b>79,12%</b> de todo o aumento do bloco naquele ano. Excluindo a terra inteira, o bloco de estrutura, capital, administração e logística ainda sobe <b>27,82%</b> de 2022 para 2026, de R$ 1.295,05 para R$ 1.655,32 por hectare, enquanto o insumo recua 20,32% no mesmo período. A conclusão sobrevive à ressalva, com força menor do que o gráfico sugere.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Rubrica a rubrica, treze anos</h2></div>
+    <p class="sec-sub">Com 2013 igual a 100, fica claro qual rubrica realmente correu. Não foi o adubo.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Índice 2013 = 100, soja Rio Verde</span><span class="now baixa">Juros 809</span></div>
+          <div class="chart-box tall"><canvas id="cIndice"></canvas></div>
+          <p class="chart-foot">R$/ha nominais da CONAB, base 2013, sem correção monetária</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Variação 2013 a 2026/27, %</span><span class="now">por rubrica</span></div>
+          <div class="chart-box tall"><canvas id="cCresc"></canvas></div>
+          <p class="chart-foot">CONAB, R$/ha nominais</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Quem correu mais</p>
+        <p><strong>Juros do financiamento: mais 709,07%.</strong> De R$ 23,15 para R$ 187,30 por hectare. Nenhuma rubrica do custo de produção cresceu tanto.</p>
+        <p><strong>Remuneração do capital fixo: mais 468,92%.</strong> De R$ 34,65 para R$ 197,13. É o custo de oportunidade do capital imobilizado em máquina, benfeitoria e instalação. Não sai do caixa, mas é o aluguel que o produtor deixa de receber por manter patrimônio parado na fazenda.</p>
+        <p><strong>Depreciação: mais 273,98%.</strong> De R$ 111,75 para R$ 417,82. Ela sobe porque o valor de reposição da máquina subiu, e não porque a máquina trabalhou mais.</p>
+        <p><strong>Insumos: mais 326,54%.</strong> Para comparação, o bloco que recebe toda a atenção.</p>
+        <p><strong>Operação de máquinas: mais 146,66%.</strong> A única que ficou claramente abaixo do custo total, que subiu 251,84%.</p>
+        <p>Dito de outro modo: o <strong>dinheiro</strong> encareceu mais que o <strong>adubo</strong>, e por uma margem larga.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:18px">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Rubrica, soja Rio Verde (GO)</th>
+            <th class="n">2013</th>
+            <th class="n">2022/23</th>
+            <th class="n">2026/27</th>
+            <th class="n">13 anos</th>
+            <th class="n">% do custo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rub">Juros do financiamento</td><td class="n">23,15</td><td class="n">141,21</td><td class="n">187,30</td><td class="n baixa">+709,07%</td><td class="n">3,06%</td></tr>
+          <tr><td class="rub">Remuneração esperada sobre o capital fixo</td><td class="n">34,65</td><td class="n">63,19</td><td class="n">197,13</td><td class="n baixa">+468,92%</td><td class="n">3,22%</td></tr>
+          <tr><td class="rub">Depreciações de máquinas, implementos e benfeitorias</td><td class="n">111,75</td><td class="n">266,85</td><td class="n">417,82</td><td class="n baixa">+273,98%</td><td class="n">6,82%</td></tr>
+          <tr><td class="rub">Operação de tratores e colheitadeiras</td><td class="n">96,60</td><td class="n">168,29</td><td class="n">238,27</td><td class="n">+146,66%</td><td class="n">3,89%</td></tr>
+          <tr><td class="rub">Administração e administrador</td><td class="n">10,84</td><td class="n">163,57</td><td class="n">121,02</td><td class="n neutro">base frágil</td><td class="n">1,97%</td></tr>
+          <tr><td class="rub">Manutenção periódica de benfeitorias</td><td class="n">0,00</td><td class="n">20,57</td><td class="n">12,27</td><td class="n neutro">base zero</td><td class="n">0,20%</td></tr>
+          <tr><td class="rub">Terra própria e arrendamento</td><td class="n">372,00</td><td class="n">336,35</td><td class="n">1.378,25</td><td class="n neutro">metodologia muda em 2023</td><td class="n">22,49%</td></tr>
+          <tr><td class="rub">Insumos, para comparação</td><td class="n">725,61</td><td class="n">3.884,68</td><td class="n">3.095,20</td><td class="n">+326,54%</td><td class="n">50,50%</td></tr>
+          <tr class="tot"><td class="rub">Custo total</td><td class="n">1.741,93</td><td class="n">5.516,08</td><td class="n">6.128,77</td><td class="n">+251,84%</td><td class="n">100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="proc">
+      <b>Duas bases que não servem para calcular variação.</b> Em 2013 a ficha de Rio Verde traz apenas a linha de administrador, sem a linha de despesas administrativas, que aparece a partir de 2014: a alta aparente da administração é mudança de composição, não inflação, e por isso está marcada como base frágil. A manutenção periódica tem valor zero em 2013, e divisão por zero não produz variação. A terra muda de metodologia em 2023, como explicado na seção anterior.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Por que a depreciação disparou: a máquina nova</h2></div>
+    <p class="sec-sub">A depreciação não mede desgaste, mede valor de reposição. Quando a máquina nova encarece, a depreciação do que já está no pátio sobe junto, sem que nada aconteça na lavoura.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Colheitadeiras vendidas no Brasil, unidades</span><span class="now baixa">-58%</span></div>
+          <div class="chart-box"><canvas id="cColh"></canvas></div>
+          <p class="chart-foot">Anfavea, via The AgriBiz, 15/04/2026. Números aproximados citados na reportagem</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Máquinas agrícolas em 2026, variação %</span><span class="now">importação x venda interna</span></div>
+          <div class="chart-box tall"><canvas id="cImport"></canvas></div>
+          <p class="chart-foot">Anfavea, jan a set/2026 na importação, jan a ago/2026 na venda interna</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O mercado de máquina parou de comprar</p>
+        <p>As vendas de colheitadeiras caíram de cerca de <strong>8 mil unidades em 2021 para 3,3 mil em 2025</strong>. O mercado total de máquinas agrícolas recuou <strong>3,6% em 2025</strong>, quarto ano seguido de retração, e tratores caíram 2,1%. No primeiro trimestre de 2026 a queda foi de <strong>13%</strong>, e a Anfavea projeta cerca de <strong>6%</strong> de recuo no ano.</p>
+        <p>Até agosto de 2026, a venda interna de tratores caiu <strong>14,1%</strong> e o varejo de máquinas somou 27 mil unidades, <strong>15,8%</strong> menos. Colheitadeiras recuaram <strong>39,4%</strong>.</p>
+        <p>Do outro lado, a importação de máquinas agrícolas cresceu <strong>42%</strong> de janeiro a setembro, chegando a 11,2 mil unidades, mais que o dobro do que o país exportou. A importação de tratores da China subiu <strong>117%</strong>, para cerca de 5,2 mil unidades. China e Índia juntas respondem por 93% dos tratores importados, e 90% deles têm até 100 HP.</p>
+        <p>A leitura é incômoda: o produtor parou de trocar máquina porque a conta deixou de fechar, e a demanda que restou está migrando para equipamento mais barato e de menor porte.</p>
+        <div class="ins">
+          <b>E a indústria diz a mesma coisa que este informativo.</b> O presidente da Anfavea, Igor Calvet, defende que o preço de compra seja avaliado junto aos custos de operação ao longo dos anos, e que licitações considerem o <b>custo total de propriedade</b>, não apenas o valor pago na compra. É exatamente o argumento aqui, visto do outro lado do balcão: o número que aparece na proposta é a menor parte da decisão.
+        </div>
+        <div class="proc">
+          <b>Procedência.</b> Dados da Anfavea, relatados por The AgriBiz em 15/04/2026 e pelo Portal do Agronegócio em 23/10/2026. As unidades de 2021 e 2025 são aproximações citadas nas reportagens, e o próprio texto registra divergência entre a queda de 58% que seus números produzem e os 60% do título. Não localizei série de preço de máquina nova por modelo, que seria a medida direta do valor de reposição: enquanto isso, a depreciação da CONAB é a melhor aproximação disponível.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>O custo do dinheiro está precificado para subir</h2></div>
+    <p class="sec-sub">Esta é a parte do informativo que fala sobre as safras à frente, e ela não depende de opinião. A curva de juros da B3 já mostra o preço que o mercado cobra por dinheiro em cada ano.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Curva DI1 da B3, 05/11/2026, % a.a.</span><span class="now baixa">sobe até jan/33</span></div>
+          <div class="chart-box tall"><canvas id="cDI"></canvas></div>
+          <p class="chart-foot">B3, boletim diário de 05/11/2026, taxas de fechamento por vencimento</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Teto do MCR contra o mercado, % a.a.</span><span class="now">crédito x curva</span></div>
+          <div class="chart-box"><canvas id="cMCR"></canvas></div>
+          <p class="chart-foot">MCR cap. 7, Res CMN 5.324, vigente desde 30/06/2026. Selic e DI1 de nov/2026</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Três fatos e uma consequência</p>
+        <p><strong>Um.</strong> O Copom manteve a Selic em <strong>13,75%</strong> em 4 de novembro, interrompendo cinco cortes seguidos. O IPCA acumulava <strong>4,58%</strong> em doze meses até setembro, acima do teto da meta. A ata sai em 10 de novembro e a próxima reunião é em 8 e 9 de dezembro.</p>
+        <p><strong>Dois.</strong> A curva DI1 de 5 de novembro é <strong>ascendente em toda a extensão útil</strong>. Dezembro de 2026 está em 13,653% e janeiro de 2028 em <strong>14,325%</strong>. Janeiro de 2031 em 14,977% e janeiro de 2033 em <strong>15,081%</strong>. O mercado não está comprando queda de juro, está comprando alta.</p>
+        <p><strong>Três.</strong> O teto que o CMN manda para custeio sem vinculação a programa é <strong>12,5% ao ano</strong>, e o Moderfrota está em 12,5% prefixado, ou 6,64% mais FAM, com 11,5% para quem se enquadra no Pronamp.</p>
+        <p><strong>A consequência.</strong> O crédito oficial está <strong>abaixo da curva de mercado em todo o horizonte</strong>, e a distância aumenta com o prazo. Em janeiro de 2028 a diferença entre o teto de 12,5% e o DI1 já é de 1,83 ponto. Isso quer dizer duas coisas ao mesmo tempo: a cota subvencionada vale mais do que no ano passado, e quem financiar máquina em cinco anos fora dela estará comprando justamente o trecho mais caro da curva.</p>
+        <div class="proc">
+          <b>Procedência.</b> Curva DI1 e Selic transcritas do grafo RuralIn, que indexa o boletim diário da B3, pregão de 05/11/2026, e a decisão do Copom de 04/11/2026. Taxas do crédito rural transcritas do Manual de Crédito Rural, capítulo 7, conforme a Resolução CMN 5.324, página 109 para o custeio sem programa e 135 para o Moderfrota. Nenhum desses números foi estimado.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Diesel e minério: por onde a geopolítica entra na fazenda</h2></div>
+    <p class="sec-sub">Dois canais, dois prazos. O diesel chega na operação de máquinas desta safra. O minério chega na depreciação das próximas, através do aço da máquina e do implemento.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Diesel, R$ por litro</span><span class="now baixa">risco de 30,3%</span></div>
+          <div class="chart-box"><canvas id="cDiesel"></canvas></div>
+          <p class="chart-foot">ANP, média nacional da semana de 25 a 31/10/2026. Os dois cenários à direita são aritmética sobre a subvenção vigente</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Minério de ferro, US$ por tonelada</span><span class="now">04/11/2026</span></div>
+          <div class="chart-box"><canvas id="cMinerio"></canvas></div>
+          <p class="chart-foot">Dalian, contrato mais negociado, e Cingapura, dez/26</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O diesel que o produtor queima hoje está subsidiado</p>
+        <p>A média nacional do diesel na pesquisa da ANP da última semana de outubro foi de <strong>R$ 7,00 por litro</strong>, alta de 0,14% sobre a semana anterior, com o Norte na maior média, R$ 7,41.</p>
+        <p>Esse preço embute uma <strong>subvenção de R$ 2,12 por litro</strong>, criada pela MP 1.391, de 11 de setembro de 2026. Há ainda uma subvenção adicional de <strong>R$ 1,40</strong> para algumas operações de importação, iniciada em outubro, e quando as duas incidem sobre o mesmo produto a soma chega a <strong>R$ 3,52 por litro</strong>.</p>
+        <p>O Congresso prorrogou a vigência da MP por mais 60 dias, pelo Ato 115/2026, publicado no Diário Oficial <strong>hoje, 6 de novembro</strong>. A Portaria MF 3.181, de 27 de outubro, sustenta os R$ 2,12 para os períodos de apuração da ANP de 12 de outubro a 11 de novembro e de 12 a 26 de novembro.</p>
+        <p>Em números diretos: sem os R$ 2,12, o litro iria a <strong>R$ 9,12</strong>, uma alta de <strong>30,3%</strong>. Essa é uma decisão de Brasília com data marcada, e não uma hipótese remota.</p>
+        <p class="tagline" style="margin-top:16px">O minério, o aço e a máquina</p>
+        <p>O contrato mais negociado em Dalian fechou a sessão de 4 de novembro a <strong>682 yuans, ou US$ 102,01 por tonelada</strong>, alta de 1,56%, máxima desde 29 de outubro. Em Cingapura, o contrato de dezembro subiu 1,27%, a <strong>US$ 91,85</strong>.</p>
+        <p>O minério não entra na planilha da safra. Ele entra no preço do aço, o aço entra no preço da máquina e do implemento, e o preço da máquina entra na <strong>depreciação e na remuneração do capital</strong> das safras seguintes, as duas rubricas que já subiram 273,98% e 468,92% em treze anos. O caminho é longo e é por isso que ninguém o acompanha.</p>
+        <div class="ins">
+          <b>Uma sensibilidade que cada um pode fazer na própria planilha.</b> A operação de tratores e colheitadeiras custa R$ 238,27 por hectare na soja de Rio Verde. Se o diesel subir os 30,3% da retirada da subvenção, <b>cada 10 pontos percentuais de peso do combustível dentro dessa rubrica acrescentam R$ 7,22 por hectare</b>. Não publico um número único porque não tenho a decomposição do combustível dentro da rubrica para esta praça, e inventá-la seria pior do que entregar a conta aberta.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>O que montar para 2027/28</h2></div>
+    <p class="sec-sub">Probabilidades atribuídas por mim, como analista, não são dado de fonte. O que é dado está nas seções anteriores, com origem citada.</p>
+
+    <div class="cenarios">
+      <div class="cen base">
+        <h4><span class="dot" style="background:#60a5fa"></span>Base, 50%</h4>
+        <p>Selic cede devagar e a curva se realiza perto do que já está precificada. Subvenção do diesel renovada mais uma ou duas vezes, com retirada gradual. Minério lateral entre US$ 90 e US$ 105. O bloco de estrutura e capital sobe acima da inflação, puxado por juro contratado e depreciação, e o insumo fica estável. O custo por saca da soja em Rio Verde não cede, e o produtor sente que o custo não caiu apesar de o adubo não ter subido.</p>
+      </div>
+      <div class="cen bear">
+        <h4><span class="dot" style="background:#f87171"></span>Adverso, 30%</h4>
+        <p>Subvenção do diesel não é renovada e o litro vai à casa dos R$ 9. O juro realiza o topo da curva, acima de 15% nos vencimentos longos, e o crédito livre fica proibitivo para investimento. Câmbio pressionado sustenta o preço da máquina importada em reais. Nesse cenário, a rubrica de juros e a de operação de máquinas sobem juntas, e o milho de segunda safra, que já não paga o custo total na praça, passa a não pagar nem o custeio em áreas arrendadas.</p>
+      </div>
+      <div class="cen bull">
+        <h4><span class="dot" style="background:#34d399"></span>Favorável, 20%</h4>
+        <p>Inflação converge, o Copom retoma cortes e a curva se desloca para baixo. Subvenção mantida ou retirada com Brent em baixa. A entrada de máquina importada da China e da Índia pressiona o preço de reposição no mercado interno, e isso reduz tanto a depreciação quanto a remuneração do capital nas fichas seguintes. É o único cenário em que o bloco que não é insumo recua de verdade, e repare que ele depende de duas coisas que estão fora da fazenda.</p>
+      </div>
+    </div>
+
+    <div class="driver" style="margin-top:20px">
+      <div class="big">1,83 pp<small>teto do MCR x DI1 de jan/28</small></div>
+      <div class="txt">
+        <p>É a distância entre os 12,5% que o CMN manda para custeio e os 14,325% que o mercado cobra para janeiro de 2028. Em qualquer dos três cenários, essa distância é o ativo mais barato que o produtor tem à disposição, e ele é <b>racionado por cota, não por preço</b>.</p>
+        <p>A conclusão prática é a mesma nos três: <b>a disputa pela cota subvencionada vale mais do que a disputa pelo desconto no insumo</b>, e exige a mesma preparação de documentação, enquadramento e antecedência que ninguém dedica a ela.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">08</span><h2>A mesma energia gasta no adubo tem que ser gasta aqui</h2></div>
+    <p class="sec-sub">Este é o argumento central, e ele é aritmético.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Ganho de 5%, R$ por hectare</span><span class="now alta">2,16 vezes</span></div>
+          <div class="chart-box"><canvas id="cEsforco"></canvas></div>
+          <p class="chart-foot">CONAB, soja Rio Verde 2026/27. Fertilizante R$ 1.401,60/ha, bloco sem insumo R$ 3.033,57/ha</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Para onde vão as 65 sacas de um hectare</span><span class="now">a R$ 140,00</span></div>
+          <div class="chart-box"><canvas id="cSacas"></canvas></div>
+          <p class="chart-foot">Preço de Rio Verde de 06/11/2026, R$ 140,00/sc, fonte Agrolink, não oficial</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Dois números para levar</p>
+        <p>Cinco por cento arrancados do fertilizante, a maior rubrica isolada do custo, valem <strong>R$ 70,08 por hectare</strong>. É um bom resultado e normalmente custa meses de cotação, viagem e barganha.</p>
+        <p>Os mesmos cinco por cento arrancados do bloco que não é insumo valem <strong>R$ 151,68 por hectare</strong>. <strong>2,16 vezes mais</strong>, porque esse bloco soma R$ 3.033,57 contra R$ 1.401,60 do adubo.</p>
+        <p>E num hectare de 65 sacas, a <strong>R$ 140,00</strong> a saca: <strong>22,11 sacas</strong> pagam o insumo, <strong>21,67 sacas</strong> pagam tudo o que não é insumo, e <strong>21,22 sacas</strong> sobram. A segunda fatia é do mesmo tamanho da primeira, e é a única das três que quase ninguém audita.</p>
+        <p>A diferença é que o adubo tem vendedor do outro lado da mesa e o resto não. Juros contratados, política de troca de máquina, estrutura de capital, custo de oportunidade da terra, despesa administrativa: ninguém liga oferecendo desconto nessas linhas. Elas só caem por decisão interna, e decisão interna exige número aberto.</p>
+        <div class="ins">
+          <b>O caso do milho é o alerta mais duro deste informativo.</b> Ao preço de <b>R$ 53,67</b> da praça de Rio Verde, o milho de segunda safra paga o custo operacional de R$ 49,30 e sobram R$ 4,37. Só que o custo total é <b>R$ 57,29</b>, porque inclui R$ 7,99 de renda de fatores, isto é a terra e a remuneração do capital. O preço cobre <b>54,7%</b> dessa renda de fatores, e faltam <b>R$ 3,62 por saca</b>. Não é prejuízo de caixa. É patrimônio sendo consumido sem aparecer em fatura nenhuma, safra após safra, até o dia em que a máquina precisa ser trocada e o dinheiro não está lá.
+        </div>
+        <div class="proc">
+          <b>Duas ressalvas sobre o milho.</b> O custo é a preços de março de 2025, a ficha mais recente que a CONAB publicou para milho em qualquer praça, e o preço é de novembro de 2026: há 20 meses entre as duas pernas da conta, e isso foi registrado como lacuna de dado. Além disso, a referência oficial do milho na B3 em 05/11 estava em <b>R$ 66,60</b>, que cobriria o custo total com folga: o problema de Rio Verde é tanto de base da praça, 19,41% abaixo da B3, quanto de nível de custo.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sintese">
+      <div class="sec-head"><span class="sec-num">09</span><h2>Onde a RuralIn entra nisso</h2></div>
+      <p class="read">Este informativo foi produzido do começo ao fim com <strong>tecnologia própria</strong>. Os custos saíram da série histórica da CONAB indexada município a município, safra a safra, rubrica a rubrica. As taxas de crédito saíram do Manual de Crédito Rural do Banco Central, com a resolução que fixou cada uma e desde quando. A curva de juros saiu do boletim diário da B3. Cada número publicado aqui tem a conta registrada, com as parcelas que o formaram e a origem de cada parcela, e pode ser auditado linha a linha.</p>
+      <p class="read" style="margin-top:14px">É esse mesmo mecanismo que aplicamos à fazenda de um cliente, com uma diferença importante: ali o custo não é o da região, é o dele, e a comparação com a referência da CONAB mostra em que rubrica ele está fora da curva.</p>
+
+      <div class="servs">
+        <div class="serv">
+          <div class="sh">Análise</div>
+          <div class="sb">Custo aberto <b>rubrica a rubrica</b>, custo por saca, breakeven, cobertura do custeio e comparação com a referência da região.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Estratégia</div>
+          <div class="sb">Quando travar preço, quando esperar, qual cota de crédito disputar e <b>qual máquina não trocar</b>. Com gatilho declarado, não com palpite.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Redução de custos</div>
+          <div class="sb">A taxa da cédula conferida contra o <b>teto do MCR</b>, a depreciação real contra a política de troca, e o custo de oportunidade da terra posto na conta.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">BPO Gerencial</div>
+          <div class="sb">A gestão administrativa e financeira operada por nós, com <b>número fechado todo mês</b>, para o dono decidir em vez de apurar.</div>
+        </div>
+      </div>
+
+      <div class="acao">
+        <div class="t">O que fazer com este informativo esta semana</div>
+        <ul>
+          <li>Abra a sua planilha de custo e separe o que é insumo do que não é. Se a segunda metade não estiver detalhada por rubrica, o problema já apareceu.</li>
+          <li>Pegue a taxa das suas cédulas de custeio e compare com os 12,5% do teto do MCR. A diferença, multiplicada pelo saldo, é dinheiro.</li>
+          <li>Calcule a depreciação real da sua frota pelo valor de reposição de hoje, não pelo valor de compra. É quase sempre a maior surpresa.</li>
+          <li>No milho de segunda safra, teste o preço da sua praça contra o custo total, e não contra o custeio. Se só o custeio fecha, você está financiando a safra com patrimônio.</li>
+          <li>Antes de Brasília decidir sobre a subvenção do diesel, saiba quantos litros por hectare você queima. Sem isso não há como medir o impacto.</li>
+        </ul>
+      </div>
+
+      <div class="convite">
+        <div class="cl"><b>Convite.</b> Se você quer ver esse trabalho feito sobre os números da sua fazenda, e não sobre a média da região, fale com a gente. A primeira conversa é para entender a sua estrutura e mostrar, com o seu próprio custo aberto, onde está a metade que ninguém confere.</div>
+        <a class="btn" href="https://ruralin.cloud/">Conhecer a RuralIn</a>
+      </div>
+    </div>
+
+    <div class="nota">
+      <b>Metodologia e limites.</b> Custos de produção da CONAB, série histórica por município de referência, aba Rio Verde-GO, sistema de agricultura empresarial, plantio direto, alta tecnologia, OGM. Valores nominais a preços da data de referência de cada safra, <b>sem correção monetária</b>: comparações de treze anos misturam inflação e mudança real de preço relativo, e foram apresentadas como estão porque é assim que a fonte publica. A soja usa a ficha 2026/27, estimativa anterior à safra, com preços de março de 2026 e produtividade esperada de 3.900 kg/ha. O milho usa a ficha de 2025, com preços de março de 2025 e produtividade de 6.000 kg/ha, por não existir ficha de 2026 para milho em praça alguma. A divisão do custo em blocos fecha exatamente com o custo total declarado pela CONAB em todos os anos e nas duas culturas, com resíduo zero. As rubricas de administração em 2013, manutenção periódica em 2013 e terra a partir de 2023 têm quebra de base ou de metodologia e estão assinaladas no texto. Preços de praça de Rio Verde são do Agrolink, que declara não auditá-los, e portanto <b>não oficiais</b>: o indicador CEPEA de Paranaguá em 05/11 estava em R$ 158,53 por saca, e a praça de Rio Verde negocia 11,69% abaixo dele. As probabilidades dos cenários são atribuição do analista, não previsão de fonte. Não é recomendação de compra ou venda.
+    </div>
+
+    <div class="fontes">
+      <b>Fontes.</b>
+      CONAB, série histórica de custos de produção, soja 1997 a 2026 e milho 2005 a 2025, abas Rio Verde-GO ·
+      Banco Central do Brasil, Manual de Crédito Rural, capítulo 7, Resolução CMN 5.324, vigente desde 30/06/2026 ·
+      B3, boletim diário de 05/11/2026, curva DI1 e indicador de milho ·
+      Copom, decisão de 04/11/2026, via <a href="https://www.remessaonline.com.br/blog/reuniao-copom-novembro-2026/">Remessa Online</a> ·
+      CEPEA/ESALQ, Indicador da Soja Paranaguá, via <a href="https://www.noticiasagricolas.com.br/cotacoes/soja/soja-indicador-cepea-esalq-porto-paranagua">Notícias Agrícolas</a> ·
+      <a href="https://www.agrolink.com.br/regional/go/rio-verde/cotacoes">Agrolink</a>, cotações de Rio Verde (GO), 06/11/2026 ·
+      ANP, levantamento de 25 a 31/10/2026, via <a href="https://minaspetro.com.br/precos-do-diesel-e-da-gasolina-registraram-ligeiro-recuo-na-ultima-semana-de-outubro-diz-anp/">Minaspetro</a> ·
+      <a href="https://diariodotransporte.com.br/2026/11/06/congresso-prorroga-por-60-dias-medida-provisoria-que-sustenta-subvencao-de-r-212-por-litro-ao-diesel/">Diário do Transporte</a>, subvenção do diesel e Ato 115/2026, 06/11/2026 ·
+      Anfavea, via <a href="https://www.theagribiz.com/maquinas-agricolas/depois-da-euforia-mercado-de-colheitadeiras-despencou-60-desde-2021/">The AgriBiz</a>, 15/04/2026, e <a href="https://www.portaldoagronegocio.com.br/agroindustria/maquinas-e-implementos/noticias/importacao-de-tratores-da-china-cresce-117-em-2026-e-acende-alerta-da-anfavea">Portal do Agronegócio</a>, 23/10/2026 ·
+      Minério de ferro, Reuters via <a href="https://www.infomoney.com.br/mercados/minerio-sobe-com-cobertura-de-posicoes-e-expectativa-de-reposicao-de-estoques/">InfoMoney</a>, 04/11/2026
+    </div>
+  </div>
+</section>
+
+<footer class="cred">
+  <div class="wrap">
+    <p class="assin">Ruralin.AI · Inteligência de mercado</p>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola | Estrategista Econômico do Produtor</p>
+        <p class="desc">Análise, estratégia, redução de custos e BPO Gerencial para o produtor rural, com tecnologia própria de dados.</p>
+        <p class="tagit">Dado gera informação. Inteligência gera decisão.</p>
+      </div>
+      <div class="contatos">
+        <div>(64) 9 9223-3264</div>
+        <div><a href="https://ruralin.cloud/">ruralin.cloud</a></div>
+        <div>Rio Verde · Goiás</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const vg=(v,d)=>v.toFixed(d).replace('.',',');
+const GRID='rgba(42,54,84,.55)', TXT='#64748b';
+const BASE={responsive:true,maintainAspectRatio:false,animation:false,
+  interaction:{mode:'index',intersect:false}};
+
+function spark(id,data,color){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels:data.map((_,i)=>i),datasets:[{data,borderColor:color,borderWidth:1.9,
+      pointRadius:0,tension:.25,fill:true,spanGaps:true,
+      backgroundColor:'rgba(255,255,255,.045)'}]},
+    options:{...BASE,plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{x:{display:false},y:{display:false}}}});
+}
+
+function line(id,labels,data,color,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.5,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:1.8,
+      pointRadius:3.2,pointHoverRadius:6,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:'rgba(59,130,246,.07)'}]},
+    options:{...BASE,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function multi(id,labels,series,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,borderColor:s.c,borderWidth:2.3,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:s.c,pointBorderWidth:1.7,
+      pointRadius:2.9,pointHoverRadius:6,tension:.2,fill:false,spanGaps:true}))},
+    options:{...BASE,plugins:{
+      legend:{display:true,position:'bottom',labels:{color:TXT,boxWidth:10,boxHeight:10,
+        padding:9,font:{size:9.5,family:'JetBrains Mono'},usePointStyle:true,pointStyle:'line'}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function barrasCor(id,labels,data,cores,fmt,ymin,ymax,horiz){
+  new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores,borderRadius:4,
+      borderSkipped:false,minBarLength:4,barPercentage:.74,categoryPercentage:.82}]},
+    options:{...BASE,indexAxis:horiz?'y':'x',plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(horiz?c.parsed.x:c.parsed.y)}}},
+      scales:{x:{grid:{display:!!horiz,color:GRID},
+          ticks:{color:TXT,font:{size:9,family:'JetBrains Mono'},maxRotation:0,autoSkip:false,
+            callback:horiz?(v=>fmt(v)):function(v){const l=this.getLabelForValue(v);return l.length>15?l.slice(0,14)+'.':l;}},
+          min:horiz?ymin:undefined,max:horiz?ymax:undefined},
+        y:{grid:{display:!horiz,color:GRID},
+          beginAtZero:false,min:horiz?undefined:ymin,max:horiz?undefined:ymax,
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},
+            callback:horiz?function(v){return this.getLabelForValue(v);}:(v=>fmt(v))}}}}});
+}
+
+function empilhado(id,labels,series,fmt){
+  new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,backgroundColor:s.c,
+      borderRadius:3,borderSkipped:false,minBarLength:3,barPercentage:.62,categoryPercentage:.8}))},
+    options:{...BASE,plugins:{
+      legend:{display:true,position:'bottom',labels:{color:TXT,boxWidth:10,boxHeight:10,
+        padding:7,font:{size:9,family:'JetBrains Mono'},usePointStyle:true,pointStyle:'rect'}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{stacked:true,grid:{display:false},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0}},
+        y:{stacked:true,beginAtZero:true,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+const rs=v=>'R$ '+vg(v,2);
+const rs0=v=>'R$ '+vg(v,0);
+const pc=v=>vg(v,1)+'%';
+const ix=v=>vg(v,0);
+const us=v=>'US$ '+vg(v,2);
+const un=v=>vg(v,0)+' un.';
+const sc=v=>vg(v,2)+' sc';
+
+const ANOS=['2013','2014','2015','2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+
+/* 01 sparks e composicao */
+spark('skSoja',[32.20,34.24,41.15,42.50,43.06,47.33,47.37,51.97,51.67,91.93,99.88,81.71,86.20,94.29],'#10b981');
+spark('skSojaNI',[18.76,14.71,17.80,18.49,19.17,19.69,18.04,19.42,18.08,27.19,47.32,39.43,40.28,46.67],'#ef4444');
+spark('skMilho',[23.46,27.19,28.93,31.93,33.73,34.27,31.28,33.67,36.64,65.65,64.78,56.86,57.29],'#f59e0b');
+spark('skMilhoNI',[15.38,11.54,12.77,14.01,14.50,14.84,13.84,14.86,14.53,20.57,32.75,28.51,29.09],'#8b5cf6');
+
+empilhado('cComp',['Soja 2026/27','Milho 2ª safra 2025'],[
+  {n:'Insumos',d:[47.62,28.20],c:'#10b981'},
+  {n:'Terra',d:[21.20,12.04],c:'#ef4444'},
+  {n:'Máquinas e estrutura',d:[10.56,6.22],c:'#8b5cf6'},
+  {n:'Capital financeiro',d:[5.91,2.70],c:'#f59e0b'},
+  {n:'Administração',d:[5.40,3.24],c:'#06b6d4'},
+  {n:'Logística',d:[3.60,4.89],c:'#3b82f6'}
+],rs);
+
+/* 02 os dois blocos */
+multi('cDois',ANOS,[
+  {n:'Insumos por saca',d:[13.40,19.52,23.36,24.02,23.88,27.60,29.34,32.55,33.58,64.74,52.56,42.29,45.92,47.62],c:'#10b981'},
+  {n:'O que não é insumo',d:[18.76,14.71,17.80,18.49,19.17,19.69,18.04,19.42,18.08,27.19,47.32,39.43,40.28,46.67],c:'#ef4444'}
+],rs,0,70);
+
+line('cTotal',ANOS,[32.20,34.24,41.15,42.50,43.06,47.33,47.37,51.97,51.67,91.93,99.88,81.71,86.20,94.29],'#3b82f6',rs,20,110);
+
+/* 03 indice e crescimento */
+multi('cIndice',ANOS,[
+  {n:'Juros',d:[100,125.8,198.7,204.0,214.5,227.6,242.0,243.6,174.6,610.0,759.8,565.1,673.1,809.1],c:'#ef4444'},
+  {n:'Remuneração do capital',d:[100,107.8,142.6,163.7,176.9,160.0,119.5,124.3,60.7,182.4,582.5,423.7,397.0,568.9],c:'#f59e0b'},
+  {n:'Depreciação',d:[100,90.1,96.5,101.8,101.2,102.3,141.9,152.6,203.5,238.8,349.2,319.3,313.9,373.9],c:'#8b5cf6'},
+  {n:'Operação de máquinas',d:[100,66.4,91.2,94.5,95.4,98.8,104.5,106.6,126.6,174.2,192.7,188.0,201.7,246.7],c:'#06b6d4'},
+  {n:'Insumos',d:[100,148.0,177.1,182.1,181.0,209.2,242.6,269.2,277.7,535.3,470.8,378.8,411.3,426.6],c:'#10b981'}
+],ix,0,820);
+
+barrasCor('cCresc',
+  ['Juros do financiamento','Remuneração do capital','Insumos','Depreciação','Custo total','Operação de máquinas'],
+  [709.1,468.9,326.5,274.0,251.8,146.7],
+  ['#ef4444','#f59e0b','#10b981','#8b5cf6','#3b82f6','#06b6d4'],
+  pc,0,780,true);
+
+/* 04 maquinas */
+barrasCor('cColh',['2021','2025'],[8000,3300],['#06b6d4','#ef4444'],un,0,9000);
+
+barrasCor('cImport',
+  ['Importação de máquinas','Tratores da China','Tratores 50 a 100 HP','Tratores, venda interna','Varejo de máquinas','Colheitadeiras'],
+  [42,117,56,-14.1,-15.8,-39.4],
+  ['#06b6d4','#06b6d4','#06b6d4','#ef4444','#ef4444','#ef4444'],
+  pc,-55,130,true);
+
+/* 05 juros */
+line('cDI',
+  ['dez/26','jan/27','abr/27','jul/27','out/27','jan/28','jul/28','jan/29','jul/29','jan/30','jan/31','jan/32','jan/33'],
+  [13.653,13.660,13.815,14.015,14.186,14.325,14.559,14.727,14.854,14.907,14.977,15.044,15.081],
+  '#ef4444',v=>vg(v,2)+'%',13.4,15.3);
+
+barrasCor('cMCR',
+  ['Moderfrota Pronamp','Custeio, teto MCR','Moderfrota, teto MCR','Selic','DI1 jan/28','DI1 jan/33'],
+  [11.5,12.5,12.5,13.75,14.325,15.081],
+  ['#10b981','#10b981','#10b981','#f59e0b','#ef4444','#ef4444'],
+  v=>vg(v,2)+'%',10.5,15.8,true);
+
+/* 06 diesel e minerio */
+barrasCor('cDiesel',
+  ['Com subvenção','Sem os R$ 2,12','Sem as duas'],
+  [7.00,9.12,10.52],
+  ['#10b981','#f59e0b','#ef4444'],
+  rs,0,11.5);
+
+barrasCor('cMinerio',['Dalian','Cingapura'],[102.01,91.85],['#8b5cf6','#3b82f6'],us,80,110);
+
+/* 08 esforco e sacas */
+barrasCor('cEsforco',
+  ['5% no fertilizante','5% no que não é insumo'],
+  [70.08,151.68],
+  ['#f59e0b','#10b981'],
+  rs,0,170,true);
+
+barrasCor('cSacas',
+  ['Paga o insumo','Paga o resto','Sobra'],
+  [22.11,21.67,21.22],
+  ['#10b981','#ef4444','#3b82f6'],
+  sc,0,25);
+</script>
+</body>
+</html>
