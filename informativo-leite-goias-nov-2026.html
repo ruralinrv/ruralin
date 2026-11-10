@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leite em Goiás: panorama de 2026 e o que esperar · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .chart-box.tall{height:210px}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .tabela{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:4px}
+  .tabela th{text-align:left;padding:8px 9px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--bdr);font-weight:600}
+  .tabela th.n,.tabela td.n{text-align:right}
+  .tabela td{padding:8px 9px;border-bottom:1px solid rgba(42,54,84,.5);color:var(--t1)}
+  .tabela tbody tr:nth-child(odd){background:rgba(255,255,255,.018)}
+  .tabela td.rub{font-family:'Inter',sans-serif;font-size:12.5px;color:#cdd6e4}
+  .tabela tr.tot td{border-top:1px solid var(--bdr);border-bottom:none;font-weight:700;color:#fff;background:rgba(59,130,246,.07)}
+  .tbl-wrap{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 15px 6px;box-shadow:var(--sh);overflow-x:auto}
+  .ins{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);border-radius:11px;padding:13px 15px;font-size:13.5px;color:#e8d9bd;margin:14px 0 0}
+  .ins b{color:#fbbf24}
+  .errata{background:rgba(239,68,68,.09);border:1px solid rgba(239,68,68,.3);border-radius:11px;padding:14px 16px;font-size:13.5px;color:#f0d4d4;margin:14px 0 0}
+  .errata b{color:#fca5a5}
+  .errata .et{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#f87171;font-weight:700;margin-bottom:7px}
+  .fontes{font-size:11.5px;color:var(--t3);line-height:1.75;margin-top:14px}
+  .fontes a{color:var(--t2);text-decoration:none;border-bottom:1px solid rgba(100,116,139,.45)}
+  .fontes b{color:var(--t2)}
+  .cta{background:radial-gradient(130% 150% at 85% -20%,rgba(16,185,129,.17),transparent 58%),linear-gradient(150deg,#0d1424,#17203a);border:1px solid var(--bdr);border-radius:18px;padding:28px clamp(19px,4vw,36px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .cta::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#06b6d4 55%,#3b82f6)}
+  .cta h3{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,3vw,26px);margin:0 0 11px;color:#fff;line-height:1.16}
+  .cta p{font-size:14.3px;color:#cdd6e4;margin:0 0 11px;max-width:78ch}
+  .cta p strong{color:#fff}
+  .servs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:19px 0 0}
+  .serv{background:rgba(255,255,255,.035);border:1px solid var(--bdr);border-radius:12px;padding:13px 12px}
+  .serv .sh{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--alta);font-weight:700;margin-bottom:6px}
+  .serv .sb{font-size:12.4px;color:var(--t2);line-height:1.5}
+  .serv .sb b{color:#fff}
+  .convite{margin-top:20px;border-top:1px solid var(--bdr);padding-top:17px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .convite .cl{font-size:14.3px;color:#cdd6e4;max-width:62ch}
+  .convite .cl b{color:#fbbf24}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:linear-gradient(135deg,#10b981,#06b6d4);color:#06231c;padding:13px 22px;border-radius:50px;text-decoration:none;white-space:nowrap;box-shadow:0 6px 18px rgba(16,185,129,.26)}
+  @media (max-width:880px){.servs{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:820px){.duo{grid-template-columns:1fr}}
+  @media (max-width:620px){
+    .tabela{font-size:11px}.tabela th,.tabela td{padding:7px 6px}.tabela td.rub{font-size:11.5px}
+    .tbl-wrap{padding:12px 11px 4px}
+    .tabela th:nth-child(4),.tabela td:nth-child(4){display:none}
+  }
+  @media (max-width:520px){.servs{grid-template-columns:1fr}.convite{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">
+      <span class="pill">Especial leite</span>
+      <span>Ruralin.AI</span>
+      <span>10 de novembro de 2026</span>
+      <span>Foco em Goiás</span>
+    </p>
+    <h1 class="title">Goiás virou praça de prêmio, <em>e a maré virou junto</em></h1>
+    <p class="thesis">O leite goiano subiu 54,70% de janeiro a agosto e deixou de ser a praça de desconto que sempre foi. Em setembro o mercado virou: o preço nacional caiu, o spot de Goiás já perdeu três quedas seguidas e o milho voltou a subir. O panorama do ano e o que esperar até março.</p>
+    <div class="periodo">
+      <span>Captado: <b>Cepea, até setembro de 2026</b></span>
+      <span>Spot: <b>MilkPoint, 1ª quinzena de novembro</b></span>
+      <span>Milho: <b>indicador Cepea/B3 de 06/11</b></span>
+      <span>Estado: <b>Agro em Dados, Seapa Goiás</b></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Onde o leite de Goiás está</h2></div>
+    <p class="sec-sub">Dois preços contam histórias diferentes, e é preciso saber qual é qual.</p>
+
+    <div class="grid-cards">
+      <div class="card" style="--acg:var(--gSoja)">
+        <div class="lbl"><span>Captado Goiás, Cepea</span><span class="tag">agosto</span></div>
+        <div class="val">2,9692 <span class="unit">R$/L</span></div>
+        <div class="delta alta">+54,70% desde janeiro</div>
+        <div class="spark-wrap"><canvas id="skGO"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gAzul)">
+        <div class="lbl"><span>Captado Média Brasil</span><span class="tag">setembro</span></div>
+        <div class="val">2,7650 <span class="unit">R$/L</span></div>
+        <div class="delta baixa">-4,22% nominal no mês</div>
+        <div class="spark-wrap"><canvas id="skBR"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gBoi)">
+        <div class="lbl"><span>Spot Goiás</span><span class="tag">1ª quinz. nov</span></div>
+        <div class="val">2,409 <span class="unit">R$/L</span></div>
+        <div class="delta baixa">-R$ 0,081 na quinzena</div>
+        <div class="spark-wrap"><canvas id="skSpot"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gMilho)">
+        <div class="lbl"><span>Milho Cepea/B3</span><span class="tag">06/11</span></div>
+        <div class="val">66,77 <span class="unit">R$/sc</span></div>
+        <div class="delta baixa">+3,89% desde 23/10</div>
+        <div class="spark-wrap"><canvas id="skMilho"></canvas></div>
+      </div>
+    </div>
+
+    <div class="driver" style="margin-top:22px">
+      <div class="big">27,72 L<small>de leite para comprar uma saca de milho</small></div>
+      <div class="txt">
+        <p>Ao spot de novembro, o produtor goiano precisa entregar <b>27,72 litros</b> para comprar uma saca de milho. Usando o último captado publicado de Goiás, que é de agosto, seriam <b>22,49 litros</b>.</p>
+        <p>Essa diferença de <b>5,23 litros por saca</b> é o aperto de margem que ainda não apareceu no preço recebido, porque o Cepea publica o mês com dois meses de atraso. <b>O produtor já está pagando o novo custo e ainda recebendo o preço antigo.</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>O ano de Goiás: de praça de desconto a praça de prêmio</h2></div>
+    <p class="sec-sub">É a mudança estrutural mais relevante do ano para quem produz leite no estado, e ela aconteceu em junho.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Leite captado, R$ por litro</span><span class="now alta">GO +54,70%</span></div>
+          <div class="chart-box tall"><canvas id="cCaptado"></canvas></div>
+          <p class="chart-foot">Cepea/ESALQ. Goiás e Minas Gerais até agosto; Média Brasil até setembro</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Goiás face à média nacional, %</span><span class="now">virou em junho</span></div>
+          <div class="chart-box tall"><canvas id="cPremio"></canvas></div>
+          <p class="chart-foot">Diferença percentual do captado de Goiás sobre a Média Brasil</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">A virada de junho</p>
+        <p>Em janeiro, o produtor goiano recebia <strong>R$ 1,9193</strong> por litro, <strong>5,06% abaixo</strong> da média nacional. Goiás era o que sempre foi: praça de desconto, longe dos grandes centros consumidores, com indústria disputando menos o leite.</p>
+        <p>Em junho isso inverteu. Goiás passou a <strong>0,94% acima</strong> da média. Em julho, 2,26%. Em agosto, <strong>2,85% acima</strong>.</p>
+        <p>O giro completo foi de <strong>7,91 pontos percentuais</strong> em sete meses, e nenhum outro estado grande fez movimento parecido. Em valor, o litro saiu de R$ 1,9193 para <strong>R$ 2,9692</strong>, uma alta de <strong>54,70%</strong>, contra 42,80% da média nacional.</p>
+        <p class="tagline" style="margin-top:16px">E a vantagem de Minas encolheu</p>
+        <p>Em janeiro, Minas Gerais pagava <strong>7,50% mais</strong> que Goiás. Em agosto, apenas <strong>2,54%</strong>. Dois terços da vantagem mineira desapareceram em sete meses.</p>
+        <p>Para quem decide onde comprar ou arrendar terra leiteira, isso não é detalhe: é a premissa que sustentava pagar mais caro por hectare em Minas. Ela mudou.</p>
+        <div class="niveis">
+          <div class="n"><b>Aconteceu</b>GO virou praça de prêmio</div>
+          <div class="n"><b>Por quê</b>Preço subiu mais que a média</div>
+          <div class="n"><b>Pode acontecer</b>Oferta nova comprime o prêmio</div>
+          <div class="n"><b>Fazer</b>Rever premissa de terra</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ins">
+      <b>Um número do estado que não fecha com a euforia, e precisa ser dito.</b> O Valor Bruto da Produção do leite em Goiás está estimado em <b>R$ 5,6 bilhões</b> para 2026, o que é <b>11,0% MENOS</b> que 2025, mesmo com o preço subindo 54,70%. No Brasil a queda estimada é de 2,5%. Se o preço sobe e o valor da produção cai, a conta só fecha com <b>produção menor</b>. A publicação do estado traz a produção apenas em gráfico, que não consegui ler, então não decomponho o número: registro a tensão e deixo a pergunta aberta. Vale notar que a mesma estimativa foi <b>revisada para cima em 24,4%</b> face à projeção de janeiro, o que indica que o ano surpreendeu positivamente dentro de uma base menor.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>A maré virou em setembro</h2></div>
+    <p class="sec-sub">E o spot, que anda na frente, já deu três quedas seguidas.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Leite spot em Goiás, R$/L</span><span class="now baixa">2,409</span></div>
+          <div class="chart-box tall"><canvas id="cSpot"></canvas></div>
+          <p class="chart-foot">Agosto e setembro pelo Cepea, outubro e novembro pelo levantamento quinzenal da MilkPoint</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Spot por estado, 1ª quinzena nov</span><span class="now">queda unânime</span></div>
+          <div class="chart-box tall"><canvas id="cSpotUF"></canvas></div>
+          <p class="chart-foot">MilkPoint, publicado em 04/11/2026</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O que aconteceu em setembro</p>
+        <p>O captado da Média Brasil caiu de R$ 2,8869 para <strong>R$ 2,7650</strong>, queda nominal de <strong>4,22%</strong>. Na imprensa circulou <strong>5%</strong>, que é o número deflacionado pelo IPCA de 0,82% no mês. Os dois estão certos, mas são coisas diferentes, e quem usa um pelo outro erra o orçamento.</p>
+        <p>As quatro forças que derrubaram o preço:</p>
+        <p><strong>Oferta.</strong> O índice de captação subiu <strong>2,16%</strong> de agosto para setembro. A recuperação sazonal chegou, sobretudo no Sudeste.</p>
+        <p><strong>Importação.</strong> Entraram <strong>249,6 milhões de litros</strong> em equivalente-leite, alta de <strong>8,38%</strong> sobre agosto. O déficit da balança de lácteos cresceu 8,4%.</p>
+        <p><strong>Derivados.</strong> No atacado paulista o UHT caiu <strong>4,76%</strong>, o leite em pó <strong>4,38%</strong> e a muçarela <strong>2,77%</strong>. Indústria com margem apertada compra menos e paga menos.</p>
+        <p><strong>Custo.</strong> O Custo Operacional Efetivo subiu <strong>0,46%</strong>, puxado pelos concentrados, que subiram 0,84%. Preço caindo com custo subindo é a pior combinação possível.</p>
+        <p class="tagline" style="margin-top:16px">O spot já foi mais longe</p>
+        <p>O spot é o termômetro que anda na frente, porque é o leite negociado entre laticínios, sem contrato. Em Goiás ele saiu de <strong>R$ 3,17</strong> em agosto para <strong>R$ 2,95</strong> em setembro, queda de <strong>6,94%</strong> pelo Cepea. Pelo acompanhamento quinzenal da MilkPoint, continuou: <strong>R$ 2,49</strong> em meados de outubro e <strong>R$ 2,409</strong> na primeira quinzena de novembro.</p>
+        <p>Não publico uma queda única de agosto a novembro porque as duas metades vêm de levantamentos diferentes, e somar fonte com fonte é como eu erro. Cada trecho está medido dentro da sua própria série.</p>
+        <div class="ins">
+          <b>Goiás agora paga menos que Minas no spot.</b> Na primeira quinzena de novembro, Goiás estava em R$ 2,409 e Minas em R$ 2,506, uma diferença de <b>4,03%</b> a favor de Minas. No captado de agosto a diferença era de 2,54%. O prêmio que Goiás conquistou no ano está sendo testado primeiro no mercado que não tem contrato.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>A armadilha que quase entrou neste informativo</h2></div>
+    <p class="sec-sub">Vale mais que qualquer número desta edição, porque é o que separa decidir de adivinhar.</p>
+
+    <div class="errata">
+      <div class="et">Como o dado quase me enganou</div>
+      <p style="margin:0 0 9px">Ao levantar o captado de setembro, a tabela agregadora que costuma trazer a série por estado publicou em <b>03/11/2026</b> uma linha nova com os preços de todos os estados e <b>variação de 0,00% em todos eles</b>. Goiás aparecia em R$ 2,9692, Minas em R$ 3,0446, Brasil em R$ 2,8869.</p>
+      <p style="margin:0 0 9px">São exatamente os valores de <b>agosto</b>, repetidos. O dado real de setembro, divulgado pelo Cepea em 30/10, é <b>R$ 2,7650</b> na Média Brasil, queda de 4,22%. Se eu tivesse lido a tabela, teria publicado que setembro ficou estável quando ele caiu.</p>
+      <p style="margin:0">A regra que fica: <b>linha com 0,00% em todos os estados ao mesmo tempo não é estabilidade, é bloco não atualizado</b>. E o Cepea publica o leite do mês M só no início do mês M mais dois, então o que parece ser o dado do mês passado quase nunca é.</p>
+    </div>
+
+    <div class="proc" style="margin-top:14px">
+      <b>O que ficou sem resposta, e assumo.</b> Não consegui o captado de setembro <b>aberto por estado</b>: o site do Cepea bloqueia acesso automatizado e as reportagens que cobriram a divulgação trazem apenas a Média Brasil e o spot. Por isso o último preço recebido confirmado para Goiás nesta edição é o de <b>agosto</b>, R$ 2,9692, e <b>não estimo o de setembro</b>, nem aplicando o prêmio histórico do estado. A lacuna está registrada e o número entra assim que sair.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>O custo voltou a subir, e o milho é o problema</h2></div>
+    <p class="sec-sub">Em outubro eu disse para travar o milho do primeiro trimestre. A janela estreitou.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Indicador de milho Cepea/B3, R$/sc</span><span class="now baixa">+3,89%</span></div>
+          <div class="chart-box tall"><canvas id="cMilho"></canvas></div>
+          <p class="chart-foot">B3, boletim diário, de 20/10 a 06/11/2026</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Litros de leite por saca de milho</span><span class="now baixa">27,72</span></div>
+          <div class="chart-box"><canvas id="cTroca"></canvas></div>
+          <p class="chart-foot">Milho de 06/11 contra o captado de agosto e contra o spot de novembro</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O que eu recomendei e o que aconteceu</p>
+        <p>No informativo de 23 de outubro recomendei ao produtor de leite de Goiás travar a necessidade de milho do primeiro trimestre de 2027, com o gatilho de que o milho tinha caído 16,39% desde setembro.</p>
+        <p>Desde então o indicador Cepea/B3 saiu de <strong>R$ 64,27</strong> para <strong>R$ 66,77</strong>, alta de <strong>3,89%</strong> em duas semanas. Quem travou travou bem. Quem não travou paga quase 4% a mais pelo mesmo volume, e a janela continua se fechando.</p>
+        <p>Vale a honestidade: esses 3,89% não são um acerto de previsão, são o resultado de uma decisão tomada com gatilho declarado. Se o milho tivesse caído mais, a trava teria custado dinheiro e eu estaria escrevendo isso aqui do mesmo jeito.</p>
+        <p class="tagline" style="margin-top:16px">A conta que importa</p>
+        <p>Com o milho a R$ 66,77 e o último captado publicado de Goiás a R$ 2,9692, são <strong>22,49 litros por saca</strong>. Com o spot de novembro, a R$ 2,409, são <strong>27,72 litros</strong>.</p>
+        <p>Entre as duas contas há <strong>5,23 litros de diferença</strong>, e essa diferença é o futuro chegando. O preço recebido ainda é o de agosto porque a divulgação atrasa dois meses, mas o custo é de hoje.</p>
+        <div class="proc">
+          <b>Procedência.</b> Milho pelo indicador Cepea/B3, oficial, transcrito do boletim diário da B3 indexado na base RuralIn. Leite captado pelo Cepea/ESALQ, oficial. Leite spot pelo levantamento quinzenal da MilkPoint, <b>não oficial</b>. O produtor goiano compra milho na praça local, que negocia abaixo do indicador nacional, então a relação efetiva da sua fazenda é menor do que a publicada aqui: use o seu preço, não o índice.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>A importação continua sendo o teto</h2></div>
+    <p class="sec-sub">E a decisão que podia mudar isso foi tomada, mas não valeu.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Derivados no atacado paulista, set/26</span><span class="now baixa">todos em queda</span></div>
+          <div class="chart-box"><canvas id="cDeriv"></canvas></div>
+          <p class="chart-foot">Variação de setembro sobre agosto de 2026</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Balança de lácteos jan a jul, US$ milhões</span><span class="now baixa">déficit</span></div>
+          <div class="chart-box"><canvas id="cBalanca"></canvas></div>
+          <p class="chart-foot">Agro em Dados, Seapa Goiás. Goiás ao lado do Brasil, escalas muito diferentes</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O antidumping foi reconhecido e suspenso</p>
+        <p>Em <strong>28 de maio de 2026</strong>, a Camex reconheceu a prática de dumping no leite em pó do Mercosul, com margens apuradas de até <strong>60% para a Argentina</strong> e <strong>50% para o Uruguai</strong>. Aprovou as tarifas e, no mesmo ato, <strong>suspendeu a aplicação</strong>, abrindo avaliação de interesse público.</p>
+        <p>Argentina e Uruguai respondem por <strong>90%</strong> dos 604 milhões de litros equivalentes importados. Em 7 de novembro o setor ainda cobrava resposta, mais de cinco meses depois.</p>
+        <p>Na prática: <strong>o teto continua lá</strong>. Sempre que o preço interno sobe o suficiente, o leite em pó importado fica competitivo e limita o repasse. Foi assim no segundo semestre e deve seguir assim.</p>
+        <p class="tagline" style="margin-top:16px">Goiás na balança</p>
+        <p>De janeiro a julho, Goiás exportou <strong>US$ 1,1 milhão</strong> em lácteos, alta de 7,1%, e importou <strong>US$ 3,9 milhões</strong>, com déficit de US$ 2,8 milhões. O creme de leite responde por <strong>70,8%</strong> do que o estado exporta.</p>
+        <p>Os números são pequenos, e esse é o ponto: <strong>Goiás não exporta leite, Goiás abastece o Brasil</strong>. O que define o preço aqui é a demanda interna e o leite em pó que entra pelo porto, não o mercado internacional.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>O que esperar até dezembro e no começo de 2027</h2></div>
+    <p class="sec-sub">Probabilidades atribuídas por mim, como analista, não são dado de fonte.</p>
+
+    <div class="cenarios">
+      <div class="cen base">
+        <h4><span class="dot" style="background:#60a5fa"></span>Base, 55%</h4>
+        <p>O captado de outubro e novembro, que saem em dezembro e janeiro, acompanham o spot para baixo, com quedas mensais entre 3% e 6%. Goiás encerra 2026 com o captado entre <strong>R$ 2,55 e R$ 2,75</strong>, ainda muito acima do R$ 1,92 de janeiro. O prêmio sobre a média nacional comprime mas não desaparece. No primeiro trimestre de 2027 vem o pico sazonal de oferta e o preço faz o fundo do ano entre janeiro e março, sem repetir o patamar deprimido do início de 2026, porque a base de produtores é menor.</p>
+      </div>
+      <div class="cen bear">
+        <h4><span class="dot" style="background:#f87171"></span>Baixa, 30%</h4>
+        <p>O preço de 2026 traz produtor de volta e a oferta cresce mais rápido do que a demanda absorve. As importações seguem acima de 240 milhões de litros por mês com o antidumping suspenso. Derivados continuam cedendo no atacado e a indústria repassa tudo. Nesse cenário o captado de Goiás volta para a casa dos <strong>R$ 2,30</strong> no primeiro trimestre, o prêmio do estado se perde e a margem fica negativa para quem comprou concentrado caro e não travou.</p>
+      </div>
+      <div class="cen bull">
+        <h4><span class="dot" style="background:#34d399"></span>Alta, 15%</h4>
+        <p>O El Niño, com pico previsto para dezembro, limita o pasto no Centro-Oeste e trava a recuperação da oferta. A queda perde força já em novembro, como o próprio levantamento quinzenal começou a indicar em outubro. O captado estabiliza acima de <strong>R$ 2,80</strong> e o primeiro trimestre de 2027 entra sem o excesso que costuma derrubar o preço nas águas. É o único cenário em que o produtor que não travou custo sai ileso.</p>
+      </div>
+    </div>
+
+    <div class="driver" style="margin-top:20px">
+      <div class="big">2 meses<small>de atraso entre o que você recebe e o que o mercado faz</small></div>
+      <div class="txt">
+        <p>O Cepea publica o leite do mês M no início do mês M mais dois. O captado de <b>outubro sai no início de dezembro</b> e o de <b>novembro no início de janeiro</b>.</p>
+        <p>Isso significa que a queda que o spot já mostrou em outubro e novembro <b>ainda não entrou</b> no preço que aparece nas suas notas. Quem for renovar contrato com indústria em novembro ou dezembro está negociando com um retrovisor de dois meses, e o comprador do outro lado sabe disso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sintese">
+      <div class="sec-head"><span class="sec-num">08</span><h2>O que fazer</h2></div>
+      <p class="read">2026 foi um ano excepcional para o leite goiano, e ele acabou em setembro. Quem tratar os próximos seis meses com a cabeça dos últimos seis vai errar o orçamento, porque <strong>o preço que ainda aparece nas notas é o de agosto e o mercado já está dois meses à frente</strong>.</p>
+      <p class="read" style="margin-top:14px">O ganho estrutural de Goiás no ano, de praça de desconto para praça de prêmio, é real e provavelmente não se desfaz inteiro. Mas ele está sendo testado agora, e o primeiro lugar onde se vê é o spot, onde Goiás <strong>já voltou a pagar menos que Minas</strong>.</p>
+
+      <div class="matriz">
+        <div class="mtile">
+          <div class="h">Preço recebido</div>
+          <div class="vb baixa">Queda a caminho</div>
+          <div class="ac">O captado de outubro sai em dezembro e deve acompanhar o spot, que já caiu três vezes seguidas.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Prêmio de Goiás</div>
+          <div class="vb neutro">Em teste</div>
+          <div class="ac">Foi de -5,06% em janeiro a +2,85% em agosto. No spot de novembro já está 4,03% abaixo de Minas.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Custo</div>
+          <div class="vb baixa">Milho subindo</div>
+          <div class="ac">+3,89% em duas semanas. A relação de troca piorou de 22,49 para 27,72 litros por saca.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Importação</div>
+          <div class="vb baixa">Teto mantido</div>
+          <div class="ac">Antidumping reconhecido e suspenso desde maio. 249,6 milhões de litros entraram em setembro.</div>
+        </div>
+      </div>
+
+      <div class="acao">
+        <div class="t">Para fazer nas próximas semanas</div>
+        <ul>
+          <li><strong>Renovação de contrato em novembro ou dezembro.</strong> Negocie agora, antes que o captado de outubro saia em dezembro e dê ao comprador o argumento que ele ainda não tem. Você está com dois meses de vantagem informacional e ela expira.</li>
+          <li><strong>Orçamento de 2027.</strong> Refaça com premissa de preço em queda no primeiro trimestre, não com o preço de agosto. Teste o caixa com o leite a R$ 2,30 e veja o que quebra.</li>
+          <li><strong>Milho e concentrado.</strong> Se não travou o primeiro trimestre, a janela estreitou 3,89% mas ainda está aberta. Minerais e medicamentos, que não entram no estoque de grão, continuam sem cobertura na maioria das fazendas.</li>
+          <li><strong>Terra.</strong> Qualquer decisão pendente de compra ou arrendamento que compare Goiás com Minas precisa ser refeita: a vantagem mineira caiu de 7,50% para 2,54% no captado e virou desvantagem no spot.</li>
+          <li><strong>Acompanhe o spot, não o captado.</strong> O spot anda dois meses na frente do que você recebe. É o melhor aviso prévio que existe de graça.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nota">
+      <b>Metodologia e limites.</b> Leite captado pelo Cepea/ESALQ, preço médio do leite cru pago ao produtor, <b>oficial</b>: série de Goiás, Minas Gerais e Média Brasil de janeiro a agosto de 2026, mais a Média Brasil de setembro, divulgada em 30/10/2026. O Cepea publica o mês M no início do mês M mais dois, e por isso setembro é o dado mais recente disponível. <b>O captado de setembro aberto por estado não foi obtido</b>: o site do Cepea bloqueia acesso automatizado e as reportagens trazem apenas a Média Brasil, de modo que o último preço recebido confirmado para Goiás é o de agosto e não há estimativa para setembro neste documento. Leite spot de agosto e setembro pelo Cepea e de outubro e novembro pelo levantamento quinzenal da MilkPoint, <b>não oficial</b>: as duas metades não são somadas numa variação única porque vêm de levantamentos diferentes. Milho pelo indicador Cepea/B3, oficial, transcrito do boletim diário da B3 indexado na base RuralIn. Dados do estado pelo Agro em Dados da Seapa Goiás, edição de setembro de 2026, cujo VBP usa produção do IBGE dos últimos quatro trimestres e preços da Conab de janeiro a julho; a produção do estado aparece ali apenas em gráfico e não foi lida, por isso a queda de 11,0% no VBP não é decomposta. Importações, exportações e custos conforme divulgação do Cepea de 30/10/2026. A queda de 4,22% em setembro é nominal; os 5% que circularam são o valor deflacionado pelo IPCA do mês, de 0,82%. As faixas de preço e as probabilidades dos cenários são atribuição do analista, não previsão de fonte. Conteúdo informativo. <b>Não é recomendação de compra ou venda.</b>
+    </div>
+
+    <div class="fontes">
+      <b>Fontes.</b>
+      CEPEA/ESALQ, leite cru captado e mercado spot, divulgação de 30/10/2026, via <a href="https://feedfood.com.br/preco-do-leite-ao-produtor-cai-5-em-setembro-com-avanco-da-oferta/">Feed&amp;Food</a> e <a href="https://baldebranco.com.br/maior-oferta-e-importacoes-pressionam-valor-do-leite-ao-produtor/">Balde Branco</a> ·
+      CEPEA/ESALQ, série por estado de janeiro a agosto de 2026, via <a href="https://www.noticiasagricolas.com.br/cotacoes/leite/leite-precos-ao-produtor-cepea-rs-litro">Notícias Agrícolas</a> ·
+      <a href="https://www.milkpoint.com.br/noticias-e-mercado/panorama-mercado/preco-do-leite-spot-segue-pressionado-por-alta-na-oferta-e-recuo-nos-derivados-242783/">MilkPoint</a>, leite spot da 1ª quinzena de novembro, 04/11/2026 ·
+      <a href="https://www.milkpoint.com.br/noticias-e-mercado/panorama-mercado/leite-spot-recua-em-todos-os-estados-mas-queda-perde-forca-na-segunda-quinzena-242531/">MilkPoint</a>, leite spot da 2ª quinzena de outubro, 16/10/2026 ·
+      <a href="https://goias.gov.br/agricultura/lacteos-agro-em-dados-setembro2026/">Seapa Goiás</a>, Agro em Dados Lácteos, setembro de 2026 ·
+      B3, boletim diário, indicador de milho CCM RTCNI, de 20/10 a 06/11/2026 ·
+      <a href="https://cnabrasil.org.br/noticias/cna-lamenta-suspensao-dos-efeitos-do-antidumping-do-leite">CNA</a>, decisão da Camex de 28/05/2026 sobre o antidumping do leite em pó ·
+      Secex, importações e exportações de lácteos de setembro de 2026
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h3>Este informativo é uma amostra do que fazemos todo dia</h3>
+      <p>A série do Cepea, o levantamento do spot, o indicador de milho da B3 e os dados do estado foram levantados, conferidos e auditados por <strong>tecnologia própria</strong>. Foi ela que apanhou a linha repetida na tabela de preços antes que virasse número publicado, e cada conta aqui tem a origem registrada.</p>
+      <p>É o mesmo mecanismo que aplicamos à fazenda de um cliente, com uma diferença decisiva: <strong>ali o preço e o custo não são os da região, são os dele</strong>.</p>
+
+      <div class="servs">
+        <div class="serv">
+          <div class="sh">BPO Gerencial</div>
+          <div class="sb">A gestão administrativa e financeira operada por nós, com <b>número fechado todo mês</b>. O dono decide em vez de apurar.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Software de gestão</div>
+          <div class="sb">Custo por litro, por lote e por safra, rebanho, estoque, contratos e fiscal no mesmo lugar, com <b>NF-e integrada</b>.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">IA própria</div>
+          <div class="sb">Lê o seu dado, cruza com mercado, crédito e custo, e responde <b>citando a origem de cada número</b>.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Terminal Agro</div>
+          <div class="sb">Mercado em <b>tempo real</b>: leite, milho, câmbio, spot da sua praça e alerta quando o seu gatilho dispara.</div>
+        </div>
+      </div>
+
+      <div class="convite">
+        <div class="cl">Se a leitura de hoje te fez pensar <b>"eu não sei o meu custo por litro"</b>, essa é exatamente a conversa que vale ter. A primeira é sem compromisso e serve para mostrar, com os seus números, onde está o dinheiro que ninguém está olhando.</div>
+        <a class="btn" href="https://ruralin.cloud/">Falar com a RuralIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="cred">
+  <div class="wrap">
+    <p class="assin">Ruralin.AI · Inteligência de mercado</p>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola | Estrategista Econômico do Produtor</p>
+        <p class="desc">Análise, estratégia, redução de custos e BPO Gerencial para o produtor rural, com tecnologia própria de dados.</p>
+        <p class="tagit">Dado gera informação. Inteligência gera decisão.</p>
+      </div>
+      <div class="contatos">
+        <div>(64) 9 9223-3264</div>
+        <div><a href="https://ruralin.cloud/">ruralin.cloud</a></div>
+        <div>Rio Verde · Goiás</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const vg=(v,d)=>v.toFixed(d).replace('.',',');
+const GRID='rgba(42,54,84,.55)', TXT='#64748b';
+const BASE={responsive:true,maintainAspectRatio:false,animation:false,
+  interaction:{mode:'index',intersect:false}};
+
+function spark(id,data,color){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels:data.map((_,i)=>i),datasets:[{data,borderColor:color,borderWidth:1.9,
+      pointRadius:0,tension:.25,fill:true,spanGaps:true,
+      backgroundColor:'rgba(255,255,255,.045)'}]},
+    options:{...BASE,plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{x:{display:false},y:{display:false}}}});
+}
+
+function line(id,labels,data,color,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.5,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:1.8,
+      pointRadius:3.6,pointHoverRadius:6,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:'rgba(59,130,246,.07)'}]},
+    options:{...BASE,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function multi(id,labels,series,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,borderColor:s.c,borderWidth:2.3,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:s.c,pointBorderWidth:1.7,
+      pointRadius:3,pointHoverRadius:6,tension:.2,fill:false,spanGaps:true}))},
+    options:{...BASE,plugins:{
+      legend:{display:true,position:'bottom',labels:{color:TXT,boxWidth:10,boxHeight:10,
+        padding:9,font:{size:9.5,family:'JetBrains Mono'},usePointStyle:true,pointStyle:'line'}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function barrasCor(id,labels,data,cores,fmt,ymin,ymax,horiz){
+  new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores,borderRadius:4,
+      borderSkipped:false,minBarLength:4,barPercentage:.74,categoryPercentage:.82}]},
+    options:{...BASE,indexAxis:horiz?'y':'x',plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(horiz?c.parsed.x:c.parsed.y)}}},
+      scales:{x:{grid:{display:!!horiz,color:GRID},
+          ticks:{color:TXT,font:{size:9,family:'JetBrains Mono'},maxRotation:0,autoSkip:false,
+            callback:horiz?(v=>fmt(v)):function(v){const l=this.getLabelForValue(v);return l.length>15?l.slice(0,14)+'.':l;}},
+          min:horiz?ymin:undefined,max:horiz?ymax:undefined},
+        y:{grid:{display:!horiz,color:GRID},
+          beginAtZero:false,min:horiz?undefined:ymin,max:horiz?undefined:ymax,
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},
+            callback:horiz?function(v){return this.getLabelForValue(v);}:(v=>fmt(v))}}}}});
+}
+
+const rs=v=>'R$ '+vg(v,4);
+const rs2=v=>'R$ '+vg(v,2);
+const pc=v=>vg(v,2)+'%';
+const lt=v=>vg(v,2)+' L';
+const us=v=>'US$ '+vg(v,1)+' mi';
+
+const MESES=['jan','fev','mar','abr','mai','jun','jul','ago','set'];
+
+/* 01 sparks */
+spark('skGO',[1.9193,2.1037,2.3391,2.5894,2.6319,2.7723,2.9410,2.9692],'#10b981');
+spark('skBR',[2.0216,2.1464,2.3924,2.6584,2.6617,2.7464,2.8761,2.8869,2.7650],'#3b82f6');
+spark('skSpot',[3.17,2.95,2.490,2.409],'#ef4444');
+spark('skMilho',[64.34,64.30,64.24,64.27,64.24,64.87,64.73,65.59,65.64,66.19,66.47,66.60,66.77],'#f59e0b');
+
+/* 02 captado e premio */
+multi('cCaptado',MESES,[
+  {n:'Goiás',d:[1.9193,2.1037,2.3391,2.5894,2.6319,2.7723,2.9410,2.9692,null],c:'#10b981'},
+  {n:'Média Brasil',d:[2.0216,2.1464,2.3924,2.6584,2.6617,2.7464,2.8761,2.8869,2.7650],c:'#3b82f6'},
+  {n:'Minas Gerais',d:[2.0633,2.2030,2.4580,2.7534,2.7726,2.8927,3.0231,3.0446,null],c:'#8b5cf6'}
+],rs,1.80,3.15);
+
+barrasCor('cPremio',MESES.slice(0,8),
+  [-5.06,-1.99,-2.23,-2.60,-1.12,0.94,2.26,2.85],
+  ['#ef4444','#ef4444','#ef4444','#ef4444','#ef4444','#10b981','#10b981','#10b981'],
+  pc,-6,3.6);
+
+/* 03 spot */
+line('cSpot',['ago','set','2ª q out','1ª q nov'],[3.17,2.95,2.490,2.409],'#ef4444',rs2,2.30,3.30);
+
+barrasCor('cSpotUF',['São Paulo','Paraná','Minas Gerais','Média Brasil','Goiás','Rio G. do Sul'],
+  [2.738,2.597,2.506,2.512,2.409,2.333],
+  ['#10b981','#10b981','#8b5cf6','#3b82f6','#f59e0b','#ef4444'],
+  rs2,2.20,2.85,true);
+
+/* 05 milho e troca */
+line('cMilho',['20/10','21/10','22/10','23/10','26/10','27/10','28/10','29/10','30/10','03/11','04/11','05/11','06/11'],
+  [64.34,64.30,64.24,64.27,64.24,64.87,64.73,65.59,65.64,66.19,66.47,66.60,66.77],
+  '#f59e0b',rs2,63.8,67.2);
+
+barrasCor('cTroca',['Com captado de ago','Com spot de nov'],[22.49,27.72],
+  ['#10b981','#ef4444'],lt,0,30);
+
+/* 06 derivados e balanca */
+barrasCor('cDeriv',['UHT','Leite em pó','Muçarela'],[-4.76,-4.38,-2.77],
+  ['#ef4444','#ef4444','#f59e0b'],pc,-5.5,0);
+
+barrasCor('cBalanca',['Brasil exporta','Brasil importa','Goiás exporta','Goiás importa'],
+  [53.0,675.9,1.1,3.9],
+  ['#10b981','#ef4444','#10b981','#ef4444'],us,0,720,true);
+</script>
+</body>
+</html>
