@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boi gordo: o recorde, o que o sustenta e onde ele trinca · Ruralin.AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0a0e1a;--card:#131a2e;--card2:#1a2236;--bdr:#2a3654;
+    --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;
+    --soja:#10b981;--milho:#f59e0b;--boi:#ef4444;--azul:#3b82f6;
+    --gSoja:linear-gradient(135deg,#10b981,#34d399);--gMilho:linear-gradient(135deg,#f59e0b,#fbbf24);
+    --gBoi:linear-gradient(135deg,#ef4444,#f97316);--gAzul:linear-gradient(135deg,#3b82f6,#06b6d4);
+    --alta:#34d399;--baixa:#f87171;--neutro:#22d3ee;
+    --sup:#f87171;--res:#34d399;
+    --sh:0 8px 26px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--t1);font-family:'Inter',system-ui,sans-serif;line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .alta{color:var(--alta)}.baixa{color:var(--baixa)}.neutro{color:var(--neutro)}
+
+  header.top{background:radial-gradient(120% 140% at 88% -30%, rgba(59,130,246,.18), transparent 55%),linear-gradient(160deg,#0c1120 0%,#141c32 130%);color:var(--t1);padding:34px 0 28px;border-bottom:1px solid var(--bdr);position:relative}
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--t2);margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+  .eyebrow .pill{background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.12));border:1px solid rgba(59,130,246,.3);padding:4px 12px;border-radius:50px;font-weight:700;color:var(--azul);letter-spacing:.12em}
+  h1.title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(27px,5vw,46px);line-height:1.05;margin:0 0 14px;letter-spacing:-.01em;color:#fff}
+  h1.title em{font-style:italic;background:linear-gradient(135deg,#fbbf24,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .thesis{font-size:clamp(15px,2.4vw,18px);max-width:68ch;color:var(--t2);margin:0}
+  .periodo{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px 26px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--t3);border-top:1px solid var(--bdr);padding-top:15px}
+  .periodo b{color:var(--t1)}
+
+  section{padding:40px 0}
+  section+section{border-top:1px solid var(--bdr)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin:0 0 6px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--azul);font-weight:700;padding-top:6px}
+  h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em;line-height:1.1;color:#fff}
+  .sec-sub{color:var(--t2);margin:4px 0 24px;font-size:15px;max-width:72ch}
+
+  .grid-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+  .card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:18px 16px 15px;box-shadow:var(--sh);display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--acg,var(--gAzul))}
+  .card .lbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t2);display:flex;justify-content:space-between;gap:6px}
+  .card .lbl .tag{font-size:9px;padding:2px 6px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--t3)}
+  .card .val{font-family:'JetBrains Mono',monospace;font-size:23px;font-weight:700;line-height:1;color:#fff}
+  .card .unit{font-size:12px;color:var(--t2);font-weight:400;font-family:'Inter',sans-serif}
+  .card .delta{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+  .spark-wrap{position:relative;height:34px;margin-top:2px}
+  .spark-wrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .therm .scale{position:relative;height:8px;border-radius:50px;background:linear-gradient(90deg,#ef4444,#f59e0b 50%,#10b981)}
+  .therm .mark{position:absolute;top:-4px;width:3px;height:16px;border-radius:2px;background:#fff;box-shadow:0 0 0 2px var(--card)}
+  .therm .ends{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);margin-top:4px;text-transform:uppercase}
+  .vies{font-size:12px;font-weight:700}
+
+  .driver{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:16px;padding:22px clamp(18px,4vw,28px);box-shadow:var(--sh);position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+  .driver::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#3b82f6)}
+  .driver .big{font-family:'Fraunces',serif;font-size:clamp(24px,5vw,34px);font-weight:600;color:#fff;line-height:1.05;white-space:nowrap}
+  .driver .big small{display:block;font-size:11px;color:#fbbf24;letter-spacing:.06em;text-transform:uppercase;margin-top:7px;white-space:normal;font-family:'JetBrains Mono',monospace}
+  .driver p{margin:0;font-size:14.5px;color:var(--t2)}
+    .driver .txt{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .driver p b{color:#fff}
+
+  .asset{display:grid;grid-template-columns:1.05fr 1fr;gap:28px;align-items:start}
+  .charts2{display:grid;grid-template-columns:1fr;gap:14px}
+  .chart-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:15px 15px 11px;box-shadow:var(--sh)}
+  .chart-card .chead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:8px}
+  .chart-card .chead .t{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+  .chart-card .chead .now{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px}
+  .chart-box{position:relative;height:170px}
+  .chart-box canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+  .leg-sr{display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--t3);margin-top:8px}
+  .leg-sr span{display:inline-flex;align-items:center;gap:5px}.leg-sr .ln{width:16px;height:0}.leg-sr .lr{border-top:2px dashed var(--res)}.leg-sr .ls{border-top:2px dashed var(--sup)}
+  .chart-foot{font-size:10px;color:var(--t3);margin:7px 2px 0;font-family:'JetBrains Mono',monospace}
+
+  .tagline{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700;margin:0 0 7px}
+  .analise p{margin:0 0 12px;font-size:14.5px;color:#cdd6e4}.analise p strong{color:#fff}
+  .niveis{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .niveis .n{font-family:'JetBrains Mono',monospace;font-size:12px;border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;background:var(--card2);color:var(--t1)}
+  .niveis .n b{display:block;font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);font-weight:600;margin-bottom:2px}
+  .cenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+  .cen{border-radius:11px;padding:11px 12px;font-size:12.5px;border:1px solid var(--bdr);background:var(--card2)}
+  .cen h4{margin:0 0 5px;font-size:10.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .cen p{margin:0;color:var(--t2)}
+  .cen.bull{background:rgba(16,185,129,.09);border-color:rgba(16,185,129,.3)}.cen.bull h4{color:var(--alta)}
+  .cen.base{background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.3)}.cen.base h4{color:#60a5fa}
+  .cen.bear{background:rgba(239,68,68,.09);border-color:rgba(239,68,68,.3)}.cen.bear h4{color:#f87171}
+  .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .proc{margin-top:12px;background:var(--card2);border:1px solid var(--bdr);border-radius:9px;padding:9px 12px;font-size:10.5px;color:var(--t3);line-height:1.5}.proc b{color:var(--t2)}
+
+  .timeline{list-style:none;margin:0;padding:0}
+  .timeline li{position:relative;padding:0 0 20px 26px;border-left:2px solid var(--bdr)}
+  .timeline li:last-child{border-left-color:transparent;padding-bottom:0}
+  .timeline li::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--azul)}
+  .timeline li.star::before{background:#fbbf24;border-color:#fbbf24;box-shadow:0 0 0 4px rgba(245,158,11,.18)}
+  .timeline .when{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--azul);font-weight:700}
+  .timeline .what{font-weight:700;margin:2px 0;font-size:15px;color:#fff}
+  .timeline .desc{font-size:13.5px;color:var(--t2)}
+
+  .sintese{background:linear-gradient(135deg,#111827,#1a2236);border:1px solid var(--bdr);border-radius:18px;padding:30px clamp(20px,4vw,38px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .sintese::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#f59e0b)}
+  .sintese h2{color:#fff}.sintese .sec-num{color:var(--alta)}
+  .sintese .read{font-size:15.5px;max-width:78ch;color:#cdd6e4}.sintese .read strong{color:#fbbf24}
+  .matriz{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:22px}
+  .mtile{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:11px;padding:12px}
+  .mtile .h{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+  .mtile .vb{font-weight:800;font-size:14px;margin-bottom:3px}.mtile .ac{font-size:11.5px;color:var(--t2)}
+  .acao{margin-top:22px;border-top:1px solid var(--bdr);padding-top:18px}
+  .acao .t{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#fbbf24;margin-bottom:10px}
+  .acao ul{margin:0;padding-left:18px;font-size:14.5px;color:#cdd6e4}.acao li{margin-bottom:7px}
+
+  .nota{font-size:11.5px;color:var(--t3);background:var(--card2);border:1px solid var(--bdr);border-radius:10px;padding:13px 15px;margin-top:24px;line-height:1.5}.nota b{color:var(--t2)}
+  footer.cred{background:#080b14;color:var(--t2);padding:34px 0 28px;border-top:1px solid var(--bdr);position:relative}
+  footer.cred::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#3b82f6 50%,#06b6d4)}
+  .cred-grid{display:flex;justify-content:space-between;gap:26px;flex-wrap:wrap}
+  .cred .name{font-family:'Fraunces',serif;font-size:23px;font-weight:600;color:#fff;margin:0 0 2px}
+  .cred .role{color:var(--azul);font-weight:600;font-size:13.5px;margin:0}
+  .cred .desc{font-size:13px;color:var(--t2);max-width:52ch;margin:6px 0 0}
+  .cred .tagit{font-family:'Fraunces',serif;font-style:italic;font-size:14.5px;color:var(--alta);margin:12px 0 0}
+  .cred .contatos{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:2;text-align:right}
+  .cred .contatos a{color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(59,130,246,.5)}
+  .cred .assin{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--azul);margin-bottom:16px}
+
+  @media (max-width:820px){.grid-cards{grid-template-columns:repeat(2,1fr)}.driver{grid-template-columns:1fr;text-align:center}.asset{grid-template-columns:1fr;gap:18px}.cenarios{grid-template-columns:1fr}.matriz{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.grid-cards{grid-template-columns:1fr}.matriz{grid-template-columns:1fr}.cred-grid{flex-direction:column}.cred .contatos{text-align:left}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  .chart-box.tall{height:210px}
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .tabela{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:12px;margin-top:4px}
+  .tabela th{text-align:left;padding:8px 9px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--t3);border-bottom:1px solid var(--bdr);font-weight:600}
+  .tabela th.n,.tabela td.n{text-align:right}
+  .tabela td{padding:8px 9px;border-bottom:1px solid rgba(42,54,84,.5);color:var(--t1)}
+  .tabela tbody tr:nth-child(odd){background:rgba(255,255,255,.018)}
+  .tabela td.rub{font-family:'Inter',sans-serif;font-size:12.5px;color:#cdd6e4}
+  .tabela tr.tot td{border-top:1px solid var(--bdr);border-bottom:none;font-weight:700;color:#fff;background:rgba(59,130,246,.07)}
+  .tbl-wrap{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:14px 15px 6px;box-shadow:var(--sh);overflow-x:auto}
+  .ins{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.28);border-radius:11px;padding:13px 15px;font-size:13.5px;color:#e8d9bd;margin:14px 0 0}
+  .ins b{color:#fbbf24}
+  .fontes{font-size:11.5px;color:var(--t3);line-height:1.75;margin-top:14px}
+  .fontes a{color:var(--t2);text-decoration:none;border-bottom:1px solid rgba(100,116,139,.45)}
+  .fontes b{color:var(--t2)}
+  .cta{background:radial-gradient(130% 150% at 85% -20%,rgba(16,185,129,.17),transparent 58%),linear-gradient(150deg,#0d1424,#17203a);border:1px solid var(--bdr);border-radius:18px;padding:28px clamp(19px,4vw,36px);box-shadow:var(--sh);position:relative;overflow:hidden}
+  .cta::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#10b981,#06b6d4 55%,#3b82f6)}
+  .cta h3{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(19px,3vw,26px);margin:0 0 11px;color:#fff;line-height:1.16}
+  .cta p{font-size:14.3px;color:#cdd6e4;margin:0 0 11px;max-width:78ch}
+  .cta p strong{color:#fff}
+  .servs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:19px 0 0}
+  .serv{background:rgba(255,255,255,.035);border:1px solid var(--bdr);border-radius:12px;padding:13px 12px}
+  .serv .sh{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--alta);font-weight:700;margin-bottom:6px}
+  .serv .sb{font-size:12.4px;color:var(--t2);line-height:1.5}
+  .serv .sb b{color:#fff}
+  .convite{margin-top:20px;border-top:1px solid var(--bdr);padding-top:17px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+  .convite .cl{font-size:14.3px;color:#cdd6e4;max-width:62ch}
+  .convite .cl b{color:#fbbf24}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:linear-gradient(135deg,#10b981,#06b6d4);color:#06231c;padding:13px 22px;border-radius:50px;text-decoration:none;white-space:nowrap;box-shadow:0 6px 18px rgba(16,185,129,.26)}
+  @media (max-width:880px){.servs{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:820px){.duo{grid-template-columns:1fr}}
+  @media (max-width:620px){
+    .tabela{font-size:11px}.tabela th,.tabela td{padding:7px 6px}.tabela td.rub{font-size:11.5px}
+    .tbl-wrap{padding:12px 11px 4px}
+    .tabela th:nth-child(3),.tabela td:nth-child(3){display:none}
+  }
+  @media (max-width:520px){.servs{grid-template-columns:1fr}.convite{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">
+      <span class="pill">Especial boi gordo</span>
+      <span>Ruralin.AI</span>
+      <span>13 de novembro de 2026</span>
+    </p>
+    <h1 class="title">O recorde que não veio da <em>exportação</em></h1>
+    <p class="thesis">A arroba fez máxima histórica em sete sessões seguidas de novembro. E as exportações caíram 35,5% em outubro. As duas coisas são verdadeiras, e entender por que convivem é o que decide se você vende agora, trava no futuro ou espera.</p>
+    <div class="periodo">
+      <span>Indicador: <b>Cepea, até 11/11</b></span>
+      <span>Praças: <b>Safras e Mercado, 12/11</b></span>
+      <span>Futuro: <b>B3, dez/26 em 09/11</b></span>
+      <span>Exportação: <b>Abiec e Secex, outubro</b></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Onde a arroba está</h2></div>
+    <p class="sec-sub">Sete altas seguidas em novembro, sem um único dia de recuo.</p>
+
+    <div class="grid-cards">
+      <div class="card" style="--acg:var(--gBoi)">
+        <div class="lbl"><span>Indicador, série da B3</span><span class="tag">11/11</span></div>
+        <div class="val">394,65 <span class="unit">R$/@</span></div>
+        <div class="delta alta">máxima histórica</div>
+        <div class="spark-wrap"><canvas id="skBoi"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gAzul)">
+        <div class="lbl"><span>Futuro B3 dez/26</span><span class="tag">09/11</span></div>
+        <div class="val">410,10 <span class="unit">R$/@</span></div>
+        <div class="delta alta">máxima do contrato</div>
+        <div class="spark-wrap"><canvas id="skFut"></canvas></div>
+      </div>
+      <div class="card" style="--acg:var(--gMilho)">
+        <div class="lbl"><span>Praça de Goiás</span><span class="tag">12/11</span></div>
+        <div class="val">386,07 <span class="unit">R$/@</span></div>
+        <div class="delta baixa">1,84% abaixo do indicador</div>
+      </div>
+      <div class="card" style="--acg:linear-gradient(135deg,#8b5cf6,#a78bfa)">
+        <div class="lbl"><span>Escala de abate em GO</span><span class="tag">12/11</span></div>
+        <div class="val">4 <span class="unit">dias úteis</span></div>
+        <div class="delta alta">a mais curta do país</div>
+      </div>
+    </div>
+
+    <div class="driver" style="margin-top:22px">
+      <div class="big">4 dias<small>de escala em Goiás</small></div>
+      <div class="txt">
+        <p>Escala de abate é quantos dias de gado o frigorífico tem comprado à frente. A média nacional caiu de 6,06 para <b>5,77 dias úteis</b>, e Goiás está em <b>4</b>.</p>
+        <p>Isso é o indicador mais honesto de poder de barganha que existe nesse mercado. <b>Frigorífico com escala de 4 dias não tem gado</b>, e quem tem boi pronto sabe disso antes de qualquer cotação sair.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>O ano do boi: 23% e o fundo em julho</h2></div>
+    <p class="sec-sub">A alta não foi linear. Houve uma queda de quase 12% no meio do ano que muita gente esqueceu.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Indicador do boi em 2026, R$/@</span><span class="now alta">394,65</span></div>
+          <div class="chart-box tall"><canvas id="cAno"></canvas></div>
+          <p class="chart-foot">Máxima e mínima de cada mês na série do indicador no boletim da B3</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Novembro, dia a dia</span><span class="now alta">7 altas seguidas</span></div>
+          <div class="chart-box tall"><canvas id="cNov"></canvas></div>
+          <p class="chart-foot">B3, de 30/10 a 11/11/2026</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O caminho até aqui</p>
+        <p>A arroba abriu 2026 em <strong>R$ 319,20</strong> e subiu até <strong>R$ 367,09</strong> em abril. Então caiu: maio, junho e julho foram de queda, até o fundo do ano em <strong>R$ 325,08</strong>, em julho. De abril ao fundo, a perda foi de <strong>11,44%</strong>.</p>
+        <p>A virada começou em agosto e ganhou força em outubro, quando o indicador saiu de R$ 367,20 para R$ 389,47 no mês. Em novembro vieram sete sessões seguidas de alta, sem um único recuo, até <strong>R$ 394,65</strong> em 11/11.</p>
+        <p>No ano, pelo indicador publicado do Cepea, a alta é de <strong>23,22%</strong>, de R$ 319,20 para R$ 393,30 em 09/11. E um terço de todo o ganho do ano aconteceu <strong>só em outubro</strong>.</p>
+        <p class="tagline" style="margin-top:16px">Por que isso importa para quem decide agora</p>
+        <p>Um ano que já teve uma queda de 11,44% no meio não é um ano de alta linear. É um ano de ciclo, e ciclo volta. Quem estiver olhando os últimos quarenta dias e projetando a mesma inclinação para a frente está ignorando o que o próprio 2026 fez entre maio e julho.</p>
+        <div class="niveis">
+          <div class="n"><b>Aconteceu</b>Máxima histórica em novembro</div>
+          <div class="n"><b>Por quê</b>Oferta curta e câmbio</div>
+          <div class="n"><b>Pode acontecer</b>China volta em janeiro</div>
+          <div class="n"><b>Fazer</b>Travar parte, não tudo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>A exportação caiu 35,5%, e isso não é o que parece</h2></div>
+    <p class="sec-sub">O título assusta. O número por dentro conta outra história.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Exportação em outubro, variação anual %</span><span class="now">com e sem China</span></div>
+          <div class="chart-box tall"><canvas id="cExp"></canvas></div>
+          <p class="chart-foot">Abiec com dados da Secex. Outubro de 2026 contra outubro de 2025</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Destinos em outubro, mil toneladas</span><span class="now">China 19,7%</span></div>
+          <div class="chart-box tall"><canvas id="cDest"></canvas></div>
+          <p class="chart-foot">Abiec com dados da Secex, outubro de 2026</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O que o número agregado esconde</p>
+        <p>Em outubro o Brasil embarcou <strong>231,3 mil toneladas</strong>, queda de <strong>35,5%</strong> sobre outubro de 2025, com receita de US$ 1,37 bilhão, queda de 27,9%.</p>
+        <p>Agora tire a China da conta. O volume para todos os outros destinos <strong>subiu 10,7%</strong>, para 185,7 mil toneladas, e a receita <strong>subiu 24,9%</strong>, para US$ 1,07 bilhão.</p>
+        <p>Toda a queda é China, e a causa é mecânica, não comercial: a <strong>salvaguarda chinesa</strong>, em vigor desde janeiro de 2026, fixou uma cota de <strong>1,106 milhão de toneladas</strong> para o Brasil no ano, com sobretaxa de <strong>55%</strong> acima dela. A cota acabou, e as empresas pararam de embarcar para lá.</p>
+        <p class="tagline" style="margin-top:16px">E o preço médio subiu</p>
+        <p>A receita caiu menos que o volume, e isso significa preço melhor: o embarque saiu a cerca de <strong>US$ 5,92 por quilo</strong> em outubro, contra algo perto de US$ 5,30 um ano antes, uma alta de aproximadamente <strong>11,7%</strong>.</p>
+        <p>No acumulado de janeiro a outubro a fotografia fica clara: volume de <strong>2,66 milhões de toneladas</strong>, queda de 5%, mas receita de <strong>US$ 15,55 bilhões</strong>, alta de <strong>8,6%</strong>. O Brasil está vendendo menos carne por muito mais dinheiro.</p>
+        <p>E a diversificação funcionou: os Estados Unidos somam <strong>352,9 mil toneladas</strong> no ano, alta de <strong>52,2%</strong>, enquanto a China caiu 28,8%. Os demais mercados cresceram 16,9%.</p>
+        <div class="proc">
+          <b>Procedência.</b> Dados da Abiec com base na Secex e no MDIC, divulgados em 09/11/2026. O preço médio por quilo é cálculo sobre volume e receita publicados, não um número divulgado pela fonte, e por isso aparece como aproximação. As duas fontes que consultei divergem na cota chinesa: uma informa 1,106 milhão de toneladas para 2026 com sobretaxa de 55%, outra informa 1,128 milhão para 2027 com tarifa de 12% dentro da cota e 55% acima. Podem ser as duas corretas, por serem anos diferentes, e por isso cito cada uma com o seu ano, sem média.
+        </div>
+      </div>
+    </div>
+
+    <div class="ins">
+      <b>O gatilho de janeiro está marcado no calendário.</b> Com a cota de 2026 esgotada, os frigoríficos já estão programando embarques para <b>chegar à China a partir de janeiro de 2027</b>, quando a nova cota abre. Isso não é expectativa de mercado, é logística em execução: navio que sai em dezembro chega em janeiro. É por isso que a demanda voltou a aparecer agora, com a China saltando <b>253,6% sobre setembro</b> mesmo com queda de 76,1% na comparação anual.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Então o que está sustentando o recorde</h2></div>
+    <p class="sec-sub">Três forças, e nenhuma delas é volume de exportação.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Preço por praça, R$/@</span><span class="now">GO 386,07</span></div>
+          <div class="chart-box tall"><canvas id="cPracas"></canvas></div>
+          <p class="chart-foot">Safras e Mercado, 12/11/2026. Negócio pontual a R$ 405 em Corguinho/MS</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">Um: a oferta está curta de verdade</p>
+        <p>O ciclo pecuário virou. A escala média de abate caiu para <strong>5,77 dias úteis</strong> e Goiás está em <strong>4 dias</strong>. Frigorífico com escala curta compra na pressão, e isso aparece no preço antes de aparecer em qualquer estatística.</p>
+        <p class="tagline" style="margin-top:14px">Dois: o câmbio</p>
+        <p>O dólar subiu <strong>9,15%</strong> na semana seguinte ao segundo turno das eleições. Lygia Pimentel, da Agrifatto, aponta o câmbio como a <strong>principal causa</strong> da alta, e não a demanda física. Para o exportador, cada real de dólar a mais torna a mesma tonelada mais rentável em reais, e ele consegue pagar mais pela arroba.</p>
+        <p class="tagline" style="margin-top:14px">Três: a antecipação de janeiro</p>
+        <p>O mercado está comprando hoje o gado que vai virar carne embarcada em dezembro para chegar à China em janeiro. É demanda real, com data.</p>
+        <p class="tagline" style="margin-top:16px">E onde isso trinca</p>
+        <p>Thiago Bernardino de Carvalho, do Cepea, aponta que a diferença entre o preço de compra do boi e o de venda da carne está <strong>entre as menores desde 2023</strong>. Ou seja: o frigorífico está pagando caro pela arroba e não conseguindo repassar na carne.</p>
+        <p>Isso é o limite físico da alta. <strong>Margem de indústria comprimida não se sustenta indefinidamente</strong>: ou a carne sobe na ponta, ou o frigorífico reduz abate e a pressão de compra alivia. João Figueiredo, da Datagro, trata os <strong>R$ 400</strong> como teto para o mercado interno por essa razão.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>A reposição está caríssima</h2></div>
+    <p class="sec-sub">E é aqui que o recorde deixa de ser boa notícia para metade dos pecuaristas.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Bezerro nelore por estado, R$/cabeça</span><span class="now">GO 4.021,65</span></div>
+          <div class="chart-box tall"><canvas id="cBez"></canvas></div>
+          <p class="chart-foot">Scot Consultoria, 03/11/2026. Macho de 12 meses e cerca de 240 kg</p>
+        </div>
+        <div class="chart-card">
+          <div class="chead"><span class="t">Arrobas de boi por bezerro</span><span class="now baixa">acima da média</span></div>
+          <div class="chart-box"><canvas id="cTroca"></canvas></div>
+          <p class="chart-foot">Série do Cepea, com média de dez anos para São Paulo</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">O bezerro passou de R$ 4 mil em cinco estados</p>
+        <p>Em 3 de novembro, o bezerro nelore macho de 12 meses custava <strong>R$ 4.385,82</strong> em Mato Grosso do Sul, R$ 4.300,56 no Paraná, R$ 4.151,80 em Mato Grosso, R$ 4.123,64 em São Paulo e <strong>R$ 4.021,65 em Goiás</strong>.</p>
+        <p class="tagline" style="margin-top:14px">A relação de troca melhorou, mas segue ruim</p>
+        <p>Pela série do Cepea, foram necessárias <strong>9,46 arrobas</strong> para comprar um bezerro no fim de setembro e <strong>9,16</strong> no fim de outubro, uma melhora de 3,1% para quem compra. A média de dez anos de São Paulo é de <strong>8,62 arrobas</strong>.</p>
+        <p>Então sim, melhorou. E continua <strong>acima da média histórica</strong>. O boi subiu mais rápido que o bezerro nos últimos dois meses, mas a reposição ainda está caro em termos históricos.</p>
+        <p class="tagline" style="margin-top:16px">Quem ganha e quem perde com o mesmo recorde</p>
+        <p>Essa é a parte que quase nunca é dita com clareza. <strong>Para quem engorda e vende, o recorde é receita.</strong> Para quem vende e precisa repor, o recorde é receita de um lado e custo do outro, e a conta líquida depende da relação de troca, não do preço da arroba.</p>
+        <p>E <strong>para quem cria</strong>, a notícia é pior do que parece: no ano, o boi gordo subiu <strong>19,3%</strong> até meados de outubro enquanto o bezerro de Mato Grosso do Sul subiu <strong>13,8%</strong> por cabeça. O elo que mais valorizou foi o da ponta, não o da cria.</p>
+        <div class="proc">
+          <b>Duas séries de bezerro que não se misturam.</b> Os preços por estado são da Scot Consultoria, para macho de 12 meses e cerca de 240 kg, levantados em 03/11. A relação de troca em arrobas usa o indicador de bezerro do Cepea, que é outro animal e outra especificação, com valores por cabeça bem menores. <b>Dividir o bezerro da Scot pela arroba do Cepea daria um número que não é comparável com a média histórica de 8,62</b>, e por isso não publico essa divisão. Cada bloco está medido dentro da sua própria fonte.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>O futuro paga 6,22% mais que a praça de Goiás</h2></div>
+    <p class="sec-sub">Esse é o número que transforma leitura de mercado em decisão.</p>
+
+    <div class="asset">
+      <div class="charts2">
+        <div class="chart-card">
+          <div class="chead"><span class="t">Onde vender a arroba hoje, R$</span><span class="now alta">+6,22%</span></div>
+          <div class="chart-box tall"><canvas id="cHedge"></canvas></div>
+          <p class="chart-foot">Futuro de 09/11, indicador de 11/11 e praça de Goiás de 12/11</p>
+        </div>
+      </div>
+      <div class="analise">
+        <p class="tagline">A conta</p>
+        <p>A praça de Goiás paga <strong>R$ 386,07</strong>. O contrato de dezembro na B3 fechou a <strong>R$ 410,10</strong> em 09/11, nova máxima do contrato. A diferença é de <strong>R$ 24,03 por arroba</strong>, ou <strong>6,22%</strong>.</p>
+        <p>Numa boiada de 500 arrobas, são <strong>R$ 12.015</strong>. É dinheiro que está na mesa e que a maioria não pega.</p>
+        <p class="tagline" style="margin-top:16px">O que essa conta não inclui, e precisa ser dito</p>
+        <p>Não é arbitragem e não é dinheiro de graça. Travar no futuro custa <strong>corretagem</strong>, exige <strong>margem de garantia</strong> em caixa, obriga a acompanhar <strong>ajustes diários</strong> e carrega <strong>risco de base</strong>, que é o risco de a praça de Goiás não convergir para o indicador de liquidação no vencimento. Goiás está hoje 1,84% abaixo do indicador, e essa distância pode aumentar.</p>
+        <p>E tem a parte operacional: o contrato vence em dezembro. Travar exige que o animal esteja pronto na janela, ou que a posição seja rolada para o vencimento seguinte, com custo.</p>
+        <p>Mesmo assim, <strong>6,22% é uma diferença grande o suficiente para pagar todos esses custos com folga</strong> na maioria das estruturas. Quem não trava por desconhecimento está deixando de capturar; quem não trava por decisão consciente, tendo feito a conta, está apenas escolhendo carregar o risco, e isso é legítimo.</p>
+        <div class="ins">
+          <b>O que eu disse antes e o que aconteceu.</b> Há quatro semanas recomendei trava parcial do boi, e na semana seguinte o choque cambial ressuscitou o prêmio: quem não travou saiu melhor. Escrevi na época que <b>quem não a seguiu teve sorte, não razão</b>, e mantenho. O indicador subiu de R$ 381,06 em 22/10 para R$ 394,65 em 11/11, mais 3,57%. Quem travou capturou menos do que quem esperou. E a recomendação continua a mesma, porque ela nunca foi sobre acertar o topo: é sobre não depender de acertar o topo.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>O que esperar até março</h2></div>
+    <p class="sec-sub">Aqui as casas de análise divergem, e a divergência é informação.</p>
+
+    <div class="tbl-wrap">
+      <table class="tabela">
+        <thead>
+          <tr><th>Quem</th><th>Quem assina</th><th>O que projeta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="rub">Cepea</td><td class="rub">Thiago Bernardino de Carvalho</td><td>Não há espaço para a arroba recuar até a virada do ano e provavelmente ao longo do primeiro semestre de 2027. Margens apertadas para toda a cadeia em 2027.</td></tr>
+          <tr><td class="rub">Datagro</td><td class="rub">João Figueiredo</td><td>R$ 400 pode se sustentar no fim do ano, mas o preço já flerta com as máximas. Vê R$ 400 como teto para o mercado interno e se preocupa com a demanda doméstica em 2027 diante de possível ajuste fiscal.</td></tr>
+          <tr><td class="rub">Agrifatto</td><td class="rub">Lygia Pimentel</td><td>A principal causa da alta é o câmbio. A margem menor dos frigoríficos deve ser compensada adiante, com exportação a dólar mais alto e maiores compras de China e Estados Unidos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cenarios" style="margin-top:20px">
+      <div class="cen base">
+        <h4><span class="dot" style="background:#60a5fa"></span>Base, 50%</h4>
+        <p>A oferta segue curta até o fim do ano e a abertura da cota chinesa em janeiro sustenta a demanda de embarque. O indicador trabalha entre <strong>R$ 385 e R$ 410</strong> até março, testando os R$ 400 sem romper com força, porque a margem comprimida da indústria limita o repasse. A reposição segue caro e a relação de troca oscila perto da faixa atual, acima da média histórica.</p>
+      </div>
+      <div class="cen bear">
+        <h4><span class="dot" style="background:#f87171"></span>Correção, 32%</h4>
+        <p>A margem da indústria não aguenta: o frigorífico reduz abate, a escala se alonga e a pressão de compra alivia. Some-se um recuo do dólar, se o prêmio de risco político ceder, e a antecipação de janeiro já ter sido comprada. O indicador volta para a casa dos <strong>R$ 360 a R$ 375</strong> no primeiro trimestre, que é a repetição do que o próprio 2026 fez entre maio e julho. É o cenário em que quem travou em dezembro ganha a diferença.</p>
+      </div>
+      <div class="cen bull">
+        <h4><span class="dot" style="background:#34d399"></span>Extensão, 18%</h4>
+        <p>A cota chinesa de 2027 abre com compras agressivas, os Estados Unidos mantêm o ritmo de mais 52% e o ciclo de oferta curta se prolonga. A carne sobe na ponta e devolve margem à indústria, liberando espaço para novo repasse. O indicador rompe os R$ 410 do futuro de dezembro e busca a casa dos <strong>R$ 430</strong>. É o único cenário em que não travar nada se mostra a decisão certa, e ele é o menos provável dos três.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sintese">
+      <div class="sec-head"><span class="sec-num">08</span><h2>A leitura em uma página</h2></div>
+      <p class="read">A arroba está em máxima histórica e a exportação caiu 35,5% no mês. Não há contradição: <strong>toda a queda é a cota chinesa esgotada</strong>, e sem a China o volume subiu 10,7% com receita 24,9% maior. O que sustenta o preço é <strong>oferta curta, câmbio alto e a antecipação da cota que abre em janeiro</strong>, não volume embarcado.</p>
+      <p class="read" style="margin-top:14px">O limite está visível: o spread entre a compra do boi e a venda da carne está entre os menores desde 2023. <strong>Margem de indústria comprimida é o freio físico da alta</strong>, e é por isso que uma casa trata os R$ 400 como teto enquanto outra não vê espaço para recuo. As duas estão olhando o mesmo dado e pesando diferente.</p>
+      <p class="read" style="margin-top:14px">E a conta que mais importa não é o preço da arroba: é que <strong>o futuro de dezembro paga 6,22% mais que a praça de Goiás</strong>. Isso existe hoje, está medido e não depende de nenhuma previsão se concretizar.</p>
+
+      <div class="matriz">
+        <div class="mtile">
+          <div class="h">Preço</div>
+          <div class="vb alta">Máxima histórica</div>
+          <div class="ac">R$ 394,65 no indicador e sete altas seguidas em novembro. No ano, mais 23,22%.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Oferta</div>
+          <div class="vb alta">Curta</div>
+          <div class="ac">Escala nacional em 5,77 dias e Goiás em 4. É poder de barganha do pecuarista.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Indústria</div>
+          <div class="vb baixa">Margem no limite</div>
+          <div class="ac">Spread entre os menores desde 2023. É o freio da alta, não o combustível.</div>
+        </div>
+        <div class="mtile">
+          <div class="h">Reposição</div>
+          <div class="vb baixa">Caro</div>
+          <div class="ac">Bezerro acima de R$ 4 mil em cinco estados. Relação de troca melhorou mas segue acima da média.</div>
+        </div>
+      </div>
+
+      <div class="acao">
+        <div class="t">O que fazer</div>
+        <ul>
+          <li><strong>Faça a conta do futuro antes de vender no físico.</strong> São 6,22% de diferença entre a praça de Goiás e o dezembro da B3. Se você nunca calculou corretagem, margem e risco de base para a sua estrutura, essa é a conta de maior retorno por hora de trabalho disponível agora.</li>
+          <li><strong>Trave parte, não tudo.</strong> Com uma casa vendo teto em R$ 400 e outra vendo sustentação no primeiro semestre, travar metade garante que você não vai estar inteiramente errado em nenhum dos dois cenários. Isso não é indecisão, é o preço de não precisar adivinhar.</li>
+          <li><strong>Se vende e repõe, olhe a relação de troca e não o preço.</strong> A R$ 394 a arroba com bezerro a R$ 4.021 em Goiás, a sua receita subiu e o seu custo de reposição também. O número que decide é quantas arrobas custa o bezerro, não quanto vale a arroba.</li>
+          <li><strong>Use a escala de abate como termômetro.</strong> Goiás em 4 dias é informação pública e de graça que diz mais sobre o seu poder de negociação nesta semana do que qualquer projeção anual. Quando a escala alongar, o jogo virou.</li>
+          <li><strong>Marque janeiro no calendário.</strong> A cota chinesa abre e os embarques já estão programados. Se a demanda não aparecer como esperado em janeiro, o cenário de correção ganha peso rápido.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nota">
+      <b>Metodologia e limites.</b> Indicador do boi gordo pelo Cepea/ESALQ, <b>oficial</b>: R$ 393,30 em 09/11/2026 e R$ 389,90 no fechamento de outubro. A série diária e os máximos e mínimos mensais de 2026 vêm do indicador no boletim diário da B3 indexado na base RuralIn, que marca R$ 394,65 em 11/11; essa série <b>difere do valor publicado pelo Cepea em alguns centavos</b>, divergência que já registrei em edição anterior e cuja causa não sei, por isso cada número está atribuído à sua própria série e não há mistura numa mesma conta. Preços por praça da Safras e Mercado, <b>não oficiais</b>, levantamento de 12/11. Escalas de abate da Agrobrazil e da Safras e Mercado. Futuro de boi gordo da B3, contrato dez/26, ajuste de 09/11; os futuros de boi não estão indexados na base, por isso vêm de publicação e não da série própria. Bezerro por estado da Scot Consultoria, <b>não oficial</b>, macho de 12 meses e cerca de 240 kg, levantado em 03/11; a relação de troca em arrobas usa o indicador de bezerro do Cepea, que é <b>outra especificação</b>, e por isso as duas não são combinadas numa mesma divisão. Exportações da Abiec com dados da Secex e do MDIC, divulgadas em 09/11; o preço médio por quilo é cálculo sobre volume e receita publicados. As duas fontes consultadas divergem na cota chinesa, 1,106 milhão de toneladas para 2026 e 1,128 milhão para 2027, e cada uma é citada com o seu ano. As projeções das casas estão atribuídas nominalmente e são delas, não minhas; as faixas de preço e as probabilidades dos cenários são atribuição do analista. Conteúdo informativo. <b>Não é recomendação de compra ou venda de ativo financeiro.</b>
+    </div>
+
+    <div class="fontes">
+      <b>Fontes.</b>
+      CEPEA/ESALQ, Indicador do boi gordo ·
+      B3, boletim diário, série do indicador BGI de janeiro a 11/11/2026 ·
+      <a href="https://farmnews.com.br/mercado/preco-boi-gordo-dezembro-lidera-a-curva-futura-na-b3/">FarmNews</a>, futuro de dezembro na B3, 10/11/2026 ·
+      <a href="https://folhaagricola.com.br/2026/11/12/boi-gordo-ganha-forca-com-negocio-a-r-405-por-arroba-e-escalas-mais-curtas-nos-frigorificos/">Folha Agrícola</a>, preços por praça e escalas de abate, 12/11/2026 ·
+      Abiec com dados da Secex e do MDIC, exportações de outubro, via <a href="https://feedfood.com.br/exportacoes-de-carne-bovina-caem-355-em-outubro-e-china-volta-a-lideranca/">Feed&amp;Food</a>, 09/11/2026 ·
+      <a href="https://forbes.com.br/forbes-agro/2026/11/dolar-alto-oferta-restrita-e-demanda-da-china-colocam-arroba-do-boi-gordo-na-rota-dos-r-400/">Forbes Agro</a>, cota chinesa, spread da indústria e projeções de Cepea, Datagro e Agrifatto, 02/11/2026 ·
+      Scot Consultoria, bezerro por estado, via <a href="https://folhaagricola.com.br/2026/11/05/preco-do-bezerro-supera-r-4-mil-em-cinco-estados-enquanto-alta-do-boi-melhora-relacao-de-troca/">Folha Agrícola</a>, 05/11/2026 ·
+      Terra Investimentos com dados do Cepea e da B3, relação de troca e média de dez anos, via <a href="https://www.portaldoagronegocio.com.br/pecuaria/bovinos-de-corte/noticias/boi-gordo-sobe-e-melhora-compra-de-bezerros-mas-reposicao-segue-acima-da-media-historica">Portal do Agronegócio</a>, 07/10/2026 ·
+      <a href="https://farmnews.com.br/mercado/boi-gordo-e-bezerro-valorizam-em-2026-mas-bezerro-por-arroba-sobe-mais/">FarmNews</a>, valorização de boi e bezerro em 2026, 19/10/2026
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta">
+      <h3>Este informativo é uma amostra do que fazemos todo dia</h3>
+      <p>A série do indicador, a curva do futuro, os preços por praça, as exportações e a reposição foram levantados, conferidos e auditados por <strong>tecnologia própria</strong>. Foi ela que separou a queda de 35,5% da exportação no que era cota chinesa e no que era mercado, e cada conta aqui tem a origem registrada.</p>
+      <p>É o mesmo mecanismo que aplicamos à fazenda de um cliente, com uma diferença decisiva: <strong>ali o preço, o custo e a relação de troca não são os da região, são os dele</strong>.</p>
+
+      <div class="servs">
+        <div class="serv">
+          <div class="sh">BPO Gerencial</div>
+          <div class="sb">A gestão administrativa e financeira operada por nós, com <b>número fechado todo mês</b>. O dono decide em vez de apurar.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Software de gestão</div>
+          <div class="sb">Custo por arroba, por lote e por safra, rebanho, estoque, contratos e fiscal no mesmo lugar, com <b>NF-e integrada</b>.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">IA própria</div>
+          <div class="sb">Lê o seu dado, cruza com mercado, crédito e custo, e responde <b>citando a origem de cada número</b>.</div>
+        </div>
+        <div class="serv">
+          <div class="sh">Terminal Agro</div>
+          <div class="sb">Mercado em <b>tempo real</b>: arroba, futuro, bezerro, câmbio e alerta quando o seu gatilho dispara.</div>
+        </div>
+      </div>
+
+      <div class="convite">
+        <div class="cl">Se a leitura de hoje te fez pensar <b>"eu nunca calculei se vale travar na B3"</b>, essa é exatamente a conversa que vale ter. A primeira é sem compromisso e serve para mostrar, com os seus números, onde está o dinheiro que ninguém está olhando.</div>
+        <a class="btn" href="https://ruralin.cloud/">Falar com a RuralIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="cred">
+  <div class="wrap">
+    <p class="assin">Ruralin.AI · Inteligência de mercado</p>
+    <div class="cred-grid">
+      <div>
+        <p class="name">Dr. Sidney Souza</p>
+        <p class="role">Economista Agrícola | Estrategista Econômico do Produtor</p>
+        <p class="desc">Análise, estratégia, redução de custos e BPO Gerencial para o produtor rural, com tecnologia própria de dados.</p>
+        <p class="tagit">Dado gera informação. Inteligência gera decisão.</p>
+      </div>
+      <div class="contatos">
+        <div>(64) 9 9223-3264</div>
+        <div><a href="https://ruralin.cloud/">ruralin.cloud</a></div>
+        <div>Rio Verde · Goiás</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const vg=(v,d)=>v.toFixed(d).replace('.',',');
+const GRID='rgba(42,54,84,.55)', TXT='#64748b';
+const BASE={responsive:true,maintainAspectRatio:false,animation:false,
+  interaction:{mode:'index',intersect:false}};
+
+function spark(id,data,color){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels:data.map((_,i)=>i),datasets:[{data,borderColor:color,borderWidth:1.9,
+      pointRadius:0,tension:.25,fill:true,spanGaps:true,
+      backgroundColor:'rgba(255,255,255,.045)'}]},
+    options:{...BASE,plugins:{legend:{display:false},tooltip:{enabled:false}},
+      scales:{x:{display:false},y:{display:false}}}});
+}
+
+function line(id,labels,data,color,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:[{data,borderColor:color,borderWidth:2.5,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:color,pointBorderWidth:1.8,
+      pointRadius:3.4,pointHoverRadius:6,tension:.2,fill:true,spanGaps:true,
+      backgroundColor:'rgba(239,68,68,.07)'}]},
+    options:{...BASE,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function multi(id,labels,series,fmt,ymin,ymax){
+  new Chart(document.getElementById(id),{type:'line',
+    data:{labels,datasets:series.map(s=>({label:s.n,data:s.d,borderColor:s.c,borderWidth:2.3,
+      pointBackgroundColor:'#0a0e1a',pointBorderColor:s.c,pointBorderWidth:1.7,
+      pointRadius:3,pointHoverRadius:6,tension:.2,fill:false,spanGaps:true}))},
+    options:{...BASE,plugins:{
+      legend:{display:true,position:'bottom',labels:{color:TXT,boxWidth:10,boxHeight:10,
+        padding:9,font:{size:9.5,family:'JetBrains Mono'},usePointStyle:true,pointStyle:'line'}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+      scales:{x:{grid:{display:false},ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},maxRotation:0,autoSkipPadding:9}},
+        y:{beginAtZero:false,min:ymin,max:ymax,grid:{color:GRID},
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},callback:v=>fmt(v)}}}}});
+}
+
+function barrasCor(id,labels,data,cores,fmt,ymin,ymax,horiz){
+  new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{data,backgroundColor:cores,borderRadius:4,
+      borderSkipped:false,minBarLength:4,barPercentage:.74,categoryPercentage:.82}]},
+    options:{...BASE,indexAxis:horiz?'y':'x',plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:c=>fmt(horiz?c.parsed.x:c.parsed.y)}}},
+      scales:{x:{grid:{display:!!horiz,color:GRID},
+          ticks:{color:TXT,font:{size:9,family:'JetBrains Mono'},maxRotation:0,autoSkip:false,
+            callback:horiz?(v=>fmt(v)):function(v){const l=this.getLabelForValue(v);return l.length>15?l.slice(0,14)+'.':l;}},
+          min:horiz?ymin:undefined,max:horiz?ymax:undefined},
+        y:{grid:{display:!horiz,color:GRID},
+          beginAtZero:false,min:horiz?undefined:ymin,max:horiz?undefined:ymax,
+          ticks:{color:TXT,font:{size:9.5,family:'JetBrains Mono'},
+            callback:horiz?function(v){return this.getLabelForValue(v);}:(v=>fmt(v))}}}}});
+}
+
+const rs=v=>'R$ '+vg(v,2);
+const rs0=v=>'R$ '+vg(v,0).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const pc=v=>vg(v,1)+'%';
+const kt=v=>vg(v,1)+' mil t';
+const ar=v=>vg(v,2)+' @';
+
+/* 01 sparks */
+spark('skBoi',[380.00,380.42,381.01,380.31,381.74,381.06,382.42,382.14,386.12,388.88,389.05,389.47,389.87,390.54,391.67,392.65,393.15,393.63,394.65],'#ef4444');
+spark('skFut',[405.90,408.50,410.10],'#3b82f6');
+
+/* 02 o ano */
+multi('cAno',['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov'],[
+  {n:'Máxima do mês',d:[326.80,353.00,355.97,367.09,352.97,353.72,348.08,350.39,365.40,389.47,394.65],c:'#10b981'},
+  {n:'Mínima do mês',d:[316.81,326.87,343.49,352.96,343.48,334.44,325.08,341.41,346.69,367.20,389.87],c:'#ef4444'}
+],rs,310,405);
+
+line('cNov',['30/10','03/11','04/11','05/11','06/11','09/11','10/11','11/11'],
+  [389.47,389.87,390.54,391.67,392.65,393.15,393.63,394.65],'#ef4444',rs,388.5,395.5);
+
+/* 03 exportacao */
+barrasCor('cExp',['Volume total','Receita total','Volume sem China','Receita sem China'],
+  [-35.5,-27.9,10.7,24.9],
+  ['#ef4444','#ef4444','#10b981','#10b981'],pc,-40,30);
+
+barrasCor('cDest',['China','Estados Unidos','Chile','Egito','Arábia Saudita'],
+  [45.6,35.5,15.1,13.8,11.3],
+  ['#f59e0b','#10b981','#06b6d4','#8b5cf6','#3b82f6'],kt,0,50,true);
+
+/* 04 pracas */
+barrasCor('cPracas',['São Paulo','Mato Grosso do Sul','Minas Gerais','Goiás','Mato Grosso'],
+  [396.48,390.45,388.06,386.07,373.45],
+  ['#10b981','#10b981','#06b6d4','#f59e0b','#ef4444'],rs,365,400,true);
+
+/* 05 bezerro */
+barrasCor('cBez',['Mato Grosso do Sul','Paraná','Mato Grosso','São Paulo','Goiás','Minas Gerais'],
+  [4385.82,4300.56,4151.80,4123.64,4021.65,3971.75],
+  ['#ef4444','#ef4444','#f59e0b','#f59e0b','#06b6d4','#10b981'],rs0,3800,4500,true);
+
+barrasCor('cTroca',['Fim de setembro','Fim de outubro','Média 10 anos, SP'],
+  [9.46,9.16,8.62],
+  ['#ef4444','#f59e0b','#10b981'],ar,8.2,9.8);
+
+/* 06 hedge */
+barrasCor('cHedge',['Praça de Goiás','Indicador Cepea','Futuro B3 dez/26'],
+  [386.07,394.65,410.10],
+  ['#f59e0b','#06b6d4','#10b981'],rs,370,415);
+</script>
+</body>
+</html>
